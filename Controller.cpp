@@ -39,7 +39,13 @@ int main(int argc, char* argv[])
         if (s[0] == '-')
         {
             std::string flag = s.substr(1);
-            std::string value = argv[++i];
+            if (++i >= argc)
+            {
+                std::cout << "Missing arguments for " << s << "\n";
+                help();
+                return 2;
+            }
+            std::string value = argv[i];
 
             flags[flag] = value;
         }

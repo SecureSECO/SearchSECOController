@@ -1,0 +1,3 @@
+[submodule "Parser"]
+  path = parser
+  url = ../Parser.git

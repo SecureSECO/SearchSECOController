@@ -1,0 +1,6 @@
+verbose : 4
+storage : 
+cores : 
+location : 
+report : console
+save : false

@@ -2,6 +2,9 @@
 #include <string>
 #include <map>
 #include <functional>
+#include "parser/Parser/XmlParser.h"
+#include "parser/Parser/StringStream.h"
+#include "parser/Parser/SrcMLCaller.h"
 
 
 void help();
@@ -12,6 +15,13 @@ void quit(std::string args[]);
 
 int main(int argc, char* argv[])
 {
+    /*std::string path = "C:\\Users\\ilan\\Downloads\\linux-master\\linux-master\\arch\\alpha";
+    StringStream* ss = SrcMLCaller::StartSrcML(path);
+    XmlParser xmlparser = XmlParser(path.length() + 1);
+    std::vector<std::string> hashes = xmlparser.ParseXML(ss);
+
+    std::cout << hashes.size() << '\n';*/
+
     std::map<std::string, std::function<void(std::string*)>> argmap = 
     {
         {"start", start},

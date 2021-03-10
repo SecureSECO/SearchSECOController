@@ -5,6 +5,7 @@
 
 
 void help();
+void help(std::string);
 void start(std::string args[]);
 void quit(std::string args[]);
 
@@ -41,8 +42,7 @@ int main(int argc, char* argv[])
             std::string flag = s.substr(1);
             if (++i >= argc)
             {
-                std::cout << "Missing arguments for " << s << "\n";
-                help();
+                help("Missing arguments for " + s + "\n");
                 return 2;
             }
             std::string value = argv[i];
@@ -59,6 +59,11 @@ int main(int argc, char* argv[])
 void help()
 {
     std::cout << "help section is yet to be implemented :(";
+}
+void help(std::string message)
+{
+    std::cout << message;
+    help();
 }
 
 void start(std::string args[])

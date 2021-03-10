@@ -47,6 +47,12 @@ int main(int argc, char* argv[])
             }
             std::string value = argv[i];
 
+            if (value[0] == '-')
+            {
+                help(value + "is not a valid argument for " + s);
+                return 2;
+            }
+
             flags[flag] = value;
         }
     }

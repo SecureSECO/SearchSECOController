@@ -168,9 +168,6 @@
   <ItemGroup>
     <Text Include="config.txt" />
   </ItemGroup>
-  <ItemGroup>
-    <None Include="Controller_Tests\Controller_Tests.vcxproj" />
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

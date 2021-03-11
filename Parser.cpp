@@ -53,9 +53,9 @@ void Parser::parseFile(std::map<std::string, std::string>& flagArgs, std::string
 	
 	while(std::getline(configFile, line))
 	{
-		flagArg = Utils::split(line, ':');
-		flag = Utils::trimWhiteSpaces(flagArg[0]);
-		arg = Utils::trimWhiteSpaces(flagArg[1]);
+		flagArg = utils::split(line, ':');
+		flag = utils::trimWhiteSpaces(flagArg[0]);
+		arg = utils::trimWhiteSpaces(flagArg[1]);
 		delete[] flagArg;
 
 		sanitize(flagArgs, flag, arg, true);

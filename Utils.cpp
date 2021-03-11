@@ -2,7 +2,7 @@
 #include <algorithm>
 
 
-std::string* Utils::split(std::string str, char delimiter)
+std::string* utils::split(std::string str, char delimiter)
 {
 	int pivot = str.find(delimiter);
 	std::string* ret = new std::string[2]();
@@ -12,14 +12,31 @@ std::string* Utils::split(std::string str, char delimiter)
 	return ret;
 }
 
-std::string Utils::trim(std::string str, std::string delimiters)
+std::string utils::trim(std::string str, std::string delimiters)
 {
 	str.erase(0, str.find_first_not_of(delimiters));
 	str.erase(str.find_last_not_of(delimiters)+1);
 	return str;
 }
 
-std::string Utils::trimWhiteSpaces(std::string str)
+std::string utils::trimWhiteSpaces(std::string str)
 {
-	return Utils::trim(str, " \t\n\r");
+	return utils::trim(str, " \t\n\r");
+}
+
+bool is_number(std::string str)
+{
+	std::string::const_iterator it = str.begin();
+	while (it != str.end() && std::isdigit(*it)) ++it;
+	return !str.empty() && it == str.end();
+}
+
+std::string pad_left(std::string src, char pad, int length)
+{
+	while(src.length() < length)
+	{
+		src = pad + src;
+	}
+
+	return src;
 }

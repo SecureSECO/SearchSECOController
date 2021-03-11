@@ -151,6 +151,7 @@
     <ClCompile Include="Commands.cpp" />
     <ClCompile Include="Controller.cpp" />
     <ClCompile Include="Parser.cpp" />
+    <ClCompile Include="Print.cpp" />
     <ClCompile Include="Utils.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -161,6 +162,7 @@
   <ItemGroup>
     <ClInclude Include="Commands.h" />
     <ClInclude Include="Parser.h" />
+    <ClInclude Include="Print.h" />
     <ClInclude Include="Utils.h" />
   </ItemGroup>
   <ItemGroup>

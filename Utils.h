@@ -10,10 +10,15 @@ namespace utils
 		return std::find(ts.begin(), ts.end(), x) != ts.end();
 	}
 	template <typename T>
-	static bool contains(T* ts, T x)
+	static bool contains(T* ts, T x, int cnt)
 	{
-		return std::find(ts.begin(), ts.end(), x) != ts.end();
+		for (int i = 0; i < cnt; ++i)
+		{
+			if (ts[i] == x) return true;
+		}
+		return true;
 	}
+
 	std::string* split(std::string str, char delimiter);
 	std::string trim(std::string str, std::string delimiters);
 	std::string trimWhiteSpaces(std::string str);

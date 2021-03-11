@@ -76,9 +76,9 @@ void Parser::sanitize(std::map<std::string, std::string>& flagArgs, std::string 
 	if (flag == "verbose")
 	{
 		std::string* levels = new std::string[]{ "1", "2", "3", "4", "5" };
-		if (!utils::contains(levels, argument))
+		if (!utils::contains(levels, argument, 5))
 		{
-			error::TODOJOCHEM(flag, argument, fromFile);
+			error::err_flag_invalid_arg(flag, argument, fromFile);
 			return;
 		}
 	}
@@ -87,7 +87,7 @@ void Parser::sanitize(std::map<std::string, std::string>& flagArgs, std::string 
 		// currently only checks if the argument is numerical, no cap is set
 		if (!utils::is_number(argument))
 		{
-			error::TODOJOCHEM(flag, argument, fromFile);
+			error::err_flag_invalid_arg(flag, argument, fromFile);
 			return;
 		}
 	}
@@ -96,7 +96,7 @@ void Parser::sanitize(std::map<std::string, std::string>& flagArgs, std::string 
 		// currently only checks if the argument is numerical, no cap is set
 		if (!utils::is_number(argument) || argument == "0" || argument == "1")
 		{
-			error::TODOJOCHEM(flag, argument, fromFile);
+			error::err_flag_invalid_arg(flag, argument, fromFile);
 			return;
 		}
 	}
@@ -107,30 +107,24 @@ void Parser::sanitize(std::map<std::string, std::string>& flagArgs, std::string 
 	else if (flag == "report")
 	{
 		std::string* allowed = new std::string[]{ "console", "file", "both" };
-		if (!utils::contains(allowed, argument))
+		if (!utils::contains(allowed, argument, 3))
 		{
-			error::TODOJOCHEM(flag, argument, fromFile);
+			error::err_flag_invalid_arg(flag, argument, fromFile);
 			return;
 		}
 	}
 	else if (flag == "save")
 	{
 		std::string* allowed = new std::string[]{ "t", "f", "true", "false" };
-		if (!utils::contains(allowed, argument))
+		if (!utils::contains(allowed, argument, 4))
 		{
-			error::TODOJOCHEM(flag, argument, fromFile);
+			error::err_flag_invalid_arg(flag, argument, fromFile);
 			return;
 		}
 
 		// translate shorthands to full size
-		if (argument == "t")
-		{
-			argument = "true";
-		}
-		else if (argument == "f")
-		{
-			argument = "false";
-		}
+		if (argument == "t") argument = "true";
+		else if (argument == "f") argument = "false";
 	}
 
 	flagArgs[flag] = argument;

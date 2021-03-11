@@ -30,14 +30,16 @@ namespace
 	{
 		flag_not_exist = 1,
 		flag_not_exist_cfg,
-		flag_invalid_arg
+		flag_invalid_arg,
+		flag_invalid_arg_cfg
 	};
 
 	std::map <int, std::string> err_msg =
 	{
 		{flag_not_exist, "The specified flag does not exist."},
-		{flag_not_exist_cfg, "The specified flag in the config file does not exist."},
+		{flag_not_exist_cfg, "The specified flag does not exist in the config file."},
 		{flag_invalid_arg, "The specified argument is invalid for its corresponding flag."},
+		{flag_invalid_arg_cfg, "The specified argument is invalid for its corresponding flag in the config file."},
 	};
 
 	void err(int code, std::string extra_msg = "")
@@ -72,5 +74,12 @@ void err_flag_not_exist(bool from_config, std::string flag)
 
 void err_flag_invalid_arg(std::string flag, std::string arg, bool from_config)
 {
-	err(flag_invalid_arg, "Flag \"" + flag + "\" with argument \"" + arg + "\"");
+	if(from_config)
+	{
+		err(flag_invalid_arg_cfg, "Flag \"" + flag + "\" with argument \"" + arg + "\"");
+	}
+	else
+	{
+		err(flag_invalid_arg, "Flag \"" + flag + "\" with argument \"" + arg + "\"");
+	}
 }

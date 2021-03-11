@@ -22,27 +22,7 @@ int main(int argc, char* argv[])
 	//std::vector<std::string> hashes = xmlparser.parsexml(ss);
 
 	//std::cout << hashes.size() << '\n';
-	Parser::parse("config.json", nullptr, argc);
+	Parser::parse("config.txt", nullptr, argc);
 
 }
 
-void help()
-{
-	std::cout << "help section is yet to be implemented :(";
-
-}
-void help(std::string message)
-{
-	std::cout << message;
-	help();
-}
-
-void start(std::string args[])
-{
-	std::cout << "Starting program...";
-}
-
-void quit(std::string args[])
-{
-	std::cout << "Stoping program...";
-}

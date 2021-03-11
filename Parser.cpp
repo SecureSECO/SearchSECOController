@@ -6,7 +6,7 @@
 
 #define CONTROLLER_VERSION "0.0.1"
 
-std::map<std::string, std::string> Parser::parse(std::string path, std::string* args, int argc)
+std::map<std::string, std::string> Parser::parse(std::string path, std::string* args, int argc) 
 {
 	std::map<std::string, std::string> shortToLong =
 	{

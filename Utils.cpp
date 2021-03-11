@@ -24,14 +24,15 @@ std::string utils::trimWhiteSpaces(std::string str)
 	return utils::trim(str, " \t\n\r");
 }
 
-bool is_number(std::string str)
+bool utils::is_number(std::string str)
 {
 	std::string::const_iterator it = str.begin();
 	while (it != str.end() && std::isdigit(*it)) ++it;
 	return !str.empty() && it == str.end();
 }
 
-std::string pad_left(std::string src, char pad, int length)
+std::string utils::pad_left(std::string src, char pad, int length)
+
 {
 	while(src.length() < length)
 	{

@@ -53,4 +53,7 @@
       <Filter>cfg</Filter>
     </Text>
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Controller_Tests\Controller_Tests.vcxproj" />
+  </ItemGroup>
 </Project>

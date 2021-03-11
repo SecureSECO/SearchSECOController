@@ -2,6 +2,7 @@
 #include <fstream>
 #include <iostream>
 #include "Utils.h"
+#include "Print.h"
 
 #define CONTROLLER_VERSION "0.0.1"
 
@@ -56,9 +57,83 @@ void Parser::parseFile(std::map<std::string, std::string>& flagArgs, std::string
 		flag = Utils::trimWhiteSpaces(flagArg[0]);
 		arg = Utils::trimWhiteSpaces(flagArg[1]);
 		delete[] flagArg;
-		
-		flagArgs[flag] = arg;
+
+		sanitize(flagArgs, flag, arg, true);
 	}
 
 	configFile.close();
 }
+
+void Parser::sanitize(std::map<std::string, std::string>& flagArgs, std::string flag, std::string argument, bool fromFile)
+{
+	// see if the flag exists
+	if (flagArgs.count(flag) != 1)
+	{
+		error::err_flag_not_exist(flag, fromFile);
+	}
+
+	// check if the flag is valid
+	if (flag == "verbose")
+	{
+		std::string* levels = new std::string[]{ "1", "2", "3", "4", "5" };
+		if (!utils::contains(levels, argument))
+		{
+			error::TODOJOCHEM(flag, argument, fromFile);
+			return;
+		}
+	}
+	else if (flag == "storage")
+	{
+		// currently only checks if the argument is numerical, no cap is set
+		if (!utils::is_number(argument))
+		{
+			error::TODOJOCHEM(flag, argument, fromFile);
+			return;
+		}
+	}
+	else if (flag == "cores")
+	{
+		// currently only checks if the argument is numerical, no cap is set
+		if (!utils::is_number(argument) || argument == "0" || argument == "1")
+		{
+			error::TODOJOCHEM(flag, argument, fromFile);
+			return;
+		}
+	}
+	else if (flag == "location")
+	{
+		// TODO: do we want to check anything here?
+	}
+	else if (flag == "report")
+	{
+		std::string* allowed = new std::string[]{ "console", "file", "both" };
+		if (!utils::contains(allowed, argument))
+		{
+			error::TODOJOCHEM(flag, argument, fromFile);
+			return;
+		}
+	}
+	else if (flag == "save")
+	{
+		std::string* allowed = new std::string[]{ "t", "f", "true", "false" };
+		if (!utils::contains(allowed, argument))
+		{
+			error::TODOJOCHEM(flag, argument, fromFile);
+			return;
+		}
+
+		// translate shorthands to full size
+		if (argument == "t")
+		{
+			argument = "true";
+		}
+		else if (argument == "f")
+		{
+			argument = "false";
+		}
+	}
+
+	flagArgs[flag] = argument;
+}
+
+

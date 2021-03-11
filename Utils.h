@@ -11,7 +11,7 @@ namespace Utils
 	}
 
 	std::string* split(std::string str, char delimiter);
-	std::string trim(std::string str, std::vector<char> delimiters);
+	std::string trim(std::string str, std::string delimiters);
 	std::string trimWhiteSpaces(std::string str);
 };
 

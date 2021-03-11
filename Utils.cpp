@@ -12,15 +12,14 @@ std::string* Utils::split(std::string str, char delimiter)
 	return ret;
 }
 
-std::string Utils::trim(std::string str, std::vector<char> delimiters)
+std::string Utils::trim(std::string str, std::string delimiters)
 {
-	while (str.size() > 0 && Utils::contains(delimiters, str[0])) str = str.substr(1);
-
-	// todo trimmings at the end
+	str.erase(0, str.find_first_not_of(delimiters));
+	str.erase(str.find_last_not_of(delimiters)+1);
 	return str;
 }
 
 std::string Utils::trimWhiteSpaces(std::string str)
 {
-	return Utils::trim(str, std::vector<char>{' ', '\t', '\n', '\r'});
+	return Utils::trim(str, " \t\n\r");
 }

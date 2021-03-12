@@ -40,6 +40,10 @@ void update(std::map<std::string, std::string> flags)
 	std::cout << "updating";
 }
 
+void version(std::map<std::string, std::string> flags)
+{
+	std::cout << "version number here";
+}
 
 // init dict
 
@@ -50,4 +54,5 @@ std::map<std::string, std::function<void(std::map<std::string, std::string>)>> C
 	{"upload", upload},
 	{"checkupload", checkupload},
 	{"update", update},
+	{"update", version},
 };

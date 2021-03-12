@@ -6,12 +6,12 @@
 #include "parser/Parser/StringStream.h"
 #include "parser/Parser/SrcMLCaller.h"
 #include "Parser.h"
+#include "Commands.h"
 
 
 void help();
 void help(std::string);
-void start(std::string args[]);
-void quit(std::string args[]);
+
 
 
 int main(int argc, char* argv[])
@@ -23,6 +23,7 @@ int main(int argc, char* argv[])
 
 	//std::cout << hashes.size() << '\n';
 
+
 	std::string* args = new std::string[argc]();
 
 	for (int i = 0; i < argc; i++)
@@ -30,7 +31,18 @@ int main(int argc, char* argv[])
 		args[i] = argv[i];
 	}
 
-	Parser::parse("config.txt", args, argc);
-
+	std::map<std::string, std::string> flagArgs = Parser::parse("config.txt", args, argc);
+	if (flagArgs.count("command") == 0)
+	{
+		std::cout << "No command found\n";
+		return 2;
+	}
+	if (Commands::isCommand(flagArgs["command"]))
+	{
+		Commands::execute(flagArgs["command"], flagArgs);
+	}
+	else
+	{
+		std::cout << "command not implemented\n";
+	}
 }
-

@@ -16,12 +16,12 @@ void help(std::string);
 
 int main(int argc, char* argv[])
 {
-	//std::string path = "\"c:\\users\\izak\\documents\\uu vakken\\3.3 sp\\code\\parser\"";
-	//stringstream* ss = srcmlcaller::startsrcml(path);
-	//xmlparser xmlparser = xmlparser(path.length() + 1);
-	//std::vector<std::string> hashes = xmlparser.parsexml(ss);
+	/*std::string path = "\"c:\\users\\izak\\documents\\uu vakken\\3.3 sp\\code\\parser\"";
+	StringStream* ss = SrcMLCaller::StartSrcML(path);
+	XmlParser xmlparser = XmlParser(path.length() + 1);
+	std::vector<std::string> hashes = xmlparser.ParseXML(ss);
 
-	//std::cout << hashes.size() << '\n';
+	std::cout << hashes.size() << '\n';*/
 
 
 	std::string* args = new std::string[argc]();

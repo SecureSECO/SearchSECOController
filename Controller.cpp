@@ -22,7 +22,15 @@ int main(int argc, char* argv[])
 	//std::vector<std::string> hashes = xmlparser.parsexml(ss);
 
 	//std::cout << hashes.size() << '\n';
-	Parser::parse("config.txt", nullptr, argc);
+
+	std::string* args = new std::string[argc]();
+
+	for (int i = 0; i < argc; i++)
+	{
+		args[i] = argv[i];
+	}
+
+	Parser::parse("config.txt", args, argc);
 
 }
 

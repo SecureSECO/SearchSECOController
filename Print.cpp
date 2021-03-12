@@ -42,7 +42,9 @@ std::map <int, std::string> err_msg =
 
 void err(int code, std::string extra_msg = "")
 {
+	// TODO JOCHEM: throw so program wont go on and hlep
 	printline("E" + utils::pad_left(std::to_string(code), '0', err_code_length) + " - " + err_msg[code] + extra_msg);
+	throw 123434;
 }
 
 
@@ -54,6 +56,18 @@ void error::log(std::string str)
 void error::warn(int code)
 {
 	printline("W" + code);
+}
+
+void error::err_insufficient_arguments(std::string command)
+{
+	//TODO JOCHEM
+	printline("Need a argument for " + command);
+}
+
+void error::err_invalid_command(std::string command)
+{
+	// TODO JOCHEM
+	printline("WRONG COMMAND!!!!! " + command);
 }
 
 void error::err_flag_not_exist(std::string flag, bool from_config)

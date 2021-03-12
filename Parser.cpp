@@ -10,7 +10,7 @@ std::map<std::string, std::string> Parser::parse(std::string path, std::string* 
 {
 	if (argc <= 1)
 	{
-		error::err_insufficient_arguments("searchSECO");
+		error::err_insufficient_arguments("searchseco");
 	}
 	std::map<std::string, std::string> shortToLong =
 	{

@@ -1,6 +1,6 @@
 verbose : 4
-storage : 
-cores : 
+storage : 8
+cores : 5
 location : 
 report : console
 save : false

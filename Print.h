@@ -12,6 +12,8 @@ namespace print
 	std::string quote(std::string str);
 
 	std::string text_then_quote(std::string str, std::string q);
+
+	void version_full();
 }
 
 namespace error 

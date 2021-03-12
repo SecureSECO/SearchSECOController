@@ -5,6 +5,8 @@
 #include<map>
 #include<stdlib.h>
 
+#define CONTROLLER_VERSION "0.0.1"
+
 void print::printline(std::string str)
 {
 	std::cout << str << '\n';
@@ -34,6 +36,13 @@ std::string print::text_then_quote(std::string str, std::string q)
 {
 	return encapsulate(str, ' ') + quote(q);
 }
+
+// Versioning
+void print::version_full()
+{
+	print::printline("searchseco version " + std::string(CONTROLLER_VERSION));
+}
+
 // ERRORS
 
 int err_code_length = 3;

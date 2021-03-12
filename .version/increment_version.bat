@@ -1,1 +1,0 @@
-FOR /F "eol=; tokens=2,3* delims=." %i in (VERSION.txt) do @echo %i %j %k

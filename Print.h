@@ -59,6 +59,7 @@ namespace print
 	/// Prints the Controller version, and the versions of the subsystems to the console.
 	/// </summary>
 	void version_full();
+
 }
 
 namespace error 
@@ -111,4 +112,8 @@ namespace error
 	/// <param name="command">The command that does not exist.</param>
 	void err_cmd_not_exist(std::string command);
 
+	/// <summary>
+	/// TODO: Jochem
+	/// </summary>
+	void not_implemented(std::string message);
 }

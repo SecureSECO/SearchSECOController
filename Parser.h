@@ -9,7 +9,7 @@ Utrecht University within the Software Project course.
 #include<string>
 #include<map>
 
-class Parser
+class FlagParser
 {
 public:
 	/// <summary>

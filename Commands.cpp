@@ -7,6 +7,8 @@ Utrecht University within the Software Project course.
 #include "Commands.h"
 #include <iostream>
 #include "Print.h"
+//#include "spider/SearchSECOSpider/Spider.h"
+#include "Utils.h"
 
 // general function
 
@@ -22,38 +24,73 @@ bool Commands::isCommand(std::string s)
 
 // Commands
 
-void start(std::map<std::string, std::string> flags) 
+void Commands::start(std::map<std::string, std::string> flags) 
 {
-	std::cout << "started";
+	// depends: crawler, spider, db, distribution
+	error::not_implemented("start");
 }
 
-void check(std::map<std::string, std::string> flags)
+void Commands::check(std::map<std::string, std::string> flags)
 {
-	std::cout << "checking";
+	// depends: spider, db
+	std::string tempLocation = "temp";
+	Commands::downloadRepository(flags["argument"], flags, tempLocation);
+	std::vector<HashData> hashes = Commands::parseRepository(tempLocation, flags);
+	// temporary printing of all the hashes
+	for (int i = 0; i < hashes.size(); i++)
+	{
+		print::printline(hashes[i].hash);
+	}
+	//TODO: delete temp folder
 }
 
-void upload(std::map<std::string, std::string> flags)
+void Commands::upload(std::map<std::string, std::string> flags)
 {
-	std::cout << "uploading";
+	// depends: spider, db
+	error::not_implemented("upload");
 }
 
-void checkupload(std::map<std::string, std::string> flags)
+void Commands::checkupload(std::map<std::string, std::string> flags)
 {
-	std::cout << "checkuploading";
+	// depends: spider, db
+	error::not_implemented("checkupload");
 }
 
-void update(std::map<std::string, std::string> flags)
+void Commands::update(std::map<std::string, std::string> flags)
 {
-	std::cout << "updating";
+	// depends: a lot
+	error::not_implemented("update");
 }
 
-void version(std::map<std::string, std::string> flags)
+void Commands::version(std::map<std::string, std::string> flags)
 {
 	print::version_full();
 }
 
+// helpers
+
+void Commands::downloadRepository(std::string repository, std::map<std::string, std::string> flags, std::string downloadPath)
+{
+	//TODO: implement
+	std::vector<std::string> url = utils::split(repository, '/');
+	//Spider::run_spider(url[url.size()-2], url[url.size() - 1], "master", downloadPath);
+}
+
+std::vector<HashData> Commands::parseRepository(std::string repository, std::map<std::string, std::string> flags)
+{
+	// set default value
+	int cores = -1;
+	// try to parse it
+	if (flags["cores"] != "")
+	{
+		cores = std::stoi(flags["cores"]) - 1;
+	}
+	
+	return Parser::Parse(repository, cores);
+}
+
 // init dict
-std::map<std::string, std::function<void(std::map<std::string, std::string>)>> Commands::perform = 
+std::map<std::string, std::function<void(std::map<std::string, std::string>)>> Commands::perform =
 {
 	{"start", start},
 	{"check", check},

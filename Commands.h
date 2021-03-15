@@ -9,6 +9,7 @@ Utrecht University within the Software Project course.
 #include <map>
 #include <string>
 #include <functional>
+#include "parser/Parser/Parser.h"
 
 class Commands
 {
@@ -26,5 +27,14 @@ public:
 	/// <param name="command">The command you want to check if it exists</param>
 	static bool isCommand(std::string command);
 private:
+	static void downloadRepository(std::string repository, std::map<std::string, std::string> flags, std::string downloadPath);
+	static std::vector<HashData> parseRepository(std::string repository, std::map<std::string, std::string> flags);
 	static std::map<std::string, std::function<void(std::map<std::string, std::string>)>> perform;
+
+	static void start(std::map<std::string, std::string> flags);
+	static void check(std::map<std::string, std::string> flags);
+	static void upload(std::map<std::string, std::string> flags);
+	static void checkupload(std::map<std::string, std::string> flags);
+	static void update(std::map<std::string, std::string> flags);
+	static void version(std::map<std::string, std::string> flags);
 };

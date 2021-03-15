@@ -49,7 +49,7 @@ int main(int argc, char* argv[])
 
 
 	// Getting all the flags and arguments out of the config file and command line arguments
-	std::map<std::string, std::string> flagArgs = Parser::parse("config.txt", args, argc);
+	std::map<std::string, std::string> flagArgs = FlagParser::parse("config.txt", args, argc);
 
 	// Checking if a command was given
 	if (flagArgs.count("command") == 0)

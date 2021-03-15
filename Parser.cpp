@@ -10,7 +10,7 @@ Utrecht University within the Software Project course.
 #include "Utils.h"
 #include "Print.h"
 
-std::map<std::string, std::string> Parser::parse(std::string path, std::string* args, int argc)
+std::map<std::string, std::string> FlagParser::parse(std::string path, std::string* args, int argc)
 {
 	// We need at least 2 arguments (first one is the path to the executable, second the command)
 	if (argc <= 1)
@@ -74,7 +74,7 @@ std::map<std::string, std::string> Parser::parse(std::string path, std::string* 
 	return flagArgs;
 }
 
-std::map<std::string, std::string> Parser::getDefaultFlagsForCommand(std::string command)
+std::map<std::string, std::string> FlagParser::getDefaultFlagsForCommand(std::string command)
 {
 	if (command == "start")
 	{
@@ -112,7 +112,7 @@ std::map<std::string, std::string> Parser::getDefaultFlagsForCommand(std::string
 	return std::map<std::string, std::string>();
 }
 
-void Parser::parseFile(std::map<std::string, std::string>& flagArgs, std::string path)
+void FlagParser::parseFile(std::map<std::string, std::string>& flagArgs, std::string path)
 {
 	std::ifstream configFile(path);
 
@@ -133,7 +133,7 @@ void Parser::parseFile(std::map<std::string, std::string>& flagArgs, std::string
 	configFile.close();
 }
 
-void Parser::parseFlags(std::map<std::string, std::string>& flagArgs, std::string* args, int argc, int start)
+void FlagParser::parseFlags(std::map<std::string, std::string>& flagArgs, std::string* args, int argc, int start)
 {
 	for (int i = start; i < argc; i++)
 	{
@@ -142,7 +142,7 @@ void Parser::parseFlags(std::map<std::string, std::string>& flagArgs, std::strin
 	}
 }
 
-void Parser::sanitize(std::map<std::string, std::string>& flagArgs, std::string flag, std::string argument, bool fromFile)
+void FlagParser::sanitize(std::map<std::string, std::string>& flagArgs, std::string flag, std::string argument, bool fromFile)
 {
 	// see if the flag exists
 	if (flagArgs.count(flag) != 1)

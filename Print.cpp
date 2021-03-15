@@ -59,11 +59,11 @@ void print::version_full()
 	std::string main_name = "searchseco";
 
 	// Get subsystem versions
-	int systemc = 1;
+	int systemc = 2;
 	std::string* subsystems = new std::string[systemc]
 	{
 		"parser",
-		//"spider",
+		"spider",
 		//"database_api"
 	};
 
@@ -119,6 +119,8 @@ enum err_code
 	cmd_insufficient_args,
 	cmd_not_found,
 	cmd_not_exist,
+	// TODO JOCHEM
+	not_implmented,
 };
 
 // Maps an error code to a description.
@@ -132,6 +134,9 @@ std::map <int, std::string> err_msg =
 	{cmd_invalid, "An invalid command was entered."},
 	{cmd_not_found, "No command was entered."},
 	{cmd_not_exist, "The specified command does not exist."},
+	// TODO JOCHEM
+	{not_implmented, "This function is not implmented."},
+
 };
 
 // Displays the actual error message, defined by its code, and then exits the program..
@@ -139,6 +144,11 @@ void err(err_code code, std::string extra_msg = "")
 {
 	print::printline("E" + utils::padLeft(std::to_string(code), '0', err_code_length) + " - " + err_msg[code] + extra_msg);
 	exit(EXIT_FAILURE);
+}
+// TODO JOCHEM
+void error::not_implemented(std::string message)
+{
+	err(not_implmented, message);
 }
 
 void error::err_insufficient_arguments(std::string command)

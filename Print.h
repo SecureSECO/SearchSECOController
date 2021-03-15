@@ -17,6 +17,11 @@ namespace print
 	void printline(std::string str);
 
 	/// <summary>
+	/// Returns a string of n tabs.
+	/// </summary>
+	std::string tab(int n = 1);
+
+	/// <summary>
 	/// Prints the help message to the console.
 	/// </summary>
 	void help();

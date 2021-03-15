@@ -6,6 +6,7 @@ Utrecht University within the Software Project course.
 
 #include "Commands.h"
 #include <iostream>
+#include "Print.h"
 
 // general function
 
@@ -48,7 +49,7 @@ void update(std::map<std::string, std::string> flags)
 
 void version(std::map<std::string, std::string> flags)
 {
-	std::cout << "version number here";
+	print::version_full();
 }
 
 // init dict

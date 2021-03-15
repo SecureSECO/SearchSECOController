@@ -7,16 +7,25 @@ Utrecht University within the Software Project course.
 #include "Print.h"
 #include "Utils.h"
 
-#include<iostream>
-#include<map>
-#include<stdlib.h>
+#include <iostream>
+#include <fstream>
+#include <map>
+#include <stdlib.h>
 
-// TODO File versioning
-#define CONTROLLER_VERSION "0.0.1"
 
 void print::printline(std::string str)
 {
 	std::cout << str << '\n';
+}
+
+std::string print::tab(int n)
+{
+	std::string result = "";
+	for (int i = 0; i < n; ++i)
+	{
+		result += "\t";
+	}
+	return result;
 }
 
 void print::help()
@@ -47,8 +56,40 @@ std::string print::text_then_quote(std::string str, std::string q)
 // Versioning
 void print::version_full()
 {
-	// TODO File versioning and subsystem versioning
-	print::printline("searchseco version " + std::string(CONTROLLER_VERSION));
+	std::string main_name = "searchseco";
+
+	// Get subsystem versions
+	int systemc = 1;
+	std::string* subsystems = new std::string[systemc]
+	{
+		"parser",
+		//"spider",
+		//"database_api"
+	};
+
+	std::ifstream version_file;
+	std::string version;
+
+	// print version of the main program
+	version_file.open("VERSION");
+	std::getline(version_file, version);
+
+	print::printline(main_name + " version " + version);
+	
+	version_file.close();
+
+	// Loop over the subsystems
+	for (int i = 0; i < systemc; ++i)
+	{
+		std::string system = subsystems[i];
+		version_file.open(system + "/VERSION");
+
+		std::getline(version_file, version);
+
+		print::printline(print::tab() + system + " version " + version);
+		
+		version_file.close();
+	}
 }
 
 // Logging and warning

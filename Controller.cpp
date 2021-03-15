@@ -7,12 +7,7 @@
 #include "parser/Parser/SrcMLCaller.h"
 #include "Parser.h"
 #include "Commands.h"
-
-
-void help();
-void help(std::string);
-
-
+#include "Print.h"
 
 int main(int argc, char* argv[])
 {
@@ -34,8 +29,7 @@ int main(int argc, char* argv[])
 	std::map<std::string, std::string> flagArgs = Parser::parse("config.txt", args, argc);
 	if (flagArgs.count("command") == 0)
 	{
-		std::cout << "No command found\n";
-		return 2;
+		error::err_cmd_not_found();
 	}
 	if (Commands::isCommand(flagArgs["command"]))
 	{
@@ -43,6 +37,6 @@ int main(int argc, char* argv[])
 	}
 	else
 	{
-		std::cout << "command not implemented\n";
+		error::err_cmd_not_exist(flagArgs["command"]);
 	}
 }

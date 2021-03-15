@@ -4,13 +4,11 @@
 #include "Utils.h"
 #include "Print.h"
 
-#define CONTROLLER_VERSION "0.0.1"
-
 std::map<std::string, std::string> Parser::parse(std::string path, std::string* args, int argc)
 {
 	if (argc <= 1)
 	{
-		error::err_insufficient_arguments("searchSECO");
+		error::err_insufficient_arguments("searchseco");
 	}
 	std::map<std::string, std::string> shortToLong =
 	{
@@ -35,8 +33,8 @@ std::map<std::string, std::string> Parser::parse(std::string path, std::string* 
 	// check if version is asked
 	if (args[currentArg] == "version")
 	{
-		// Do something else
-		return{{ "command", "version" }};
+		print::version_full();
+		exit(EXIT_SUCCESS);
 	}
 	else if (args[currentArg] == "update")
 	{

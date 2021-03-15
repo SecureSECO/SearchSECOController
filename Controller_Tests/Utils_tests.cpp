@@ -20,7 +20,7 @@ TEST(contains_tests, is_in_array)
 TEST(split_tests, basic_split)
 {
 	std::string s = "Hello World!";
-	std::string* splitted = utils::split(s, ' ');
+	std::vector<std::string> splitted = utils::split(s, ' ');
 	EXPECT_EQ("Hello", splitted[0]);
 	EXPECT_EQ("World!", splitted[1]);
 }
@@ -28,7 +28,7 @@ TEST(split_tests, basic_split)
 TEST(split_tests, wrong_split)
 {
 	std::string s = "Hello World!";
-	std::string* splitted = utils::split(s, 'x');
+	std::vector<std::string> splitted = utils::split(s, 'x');
 	EXPECT_EQ("Hello World!", splitted[0]);
 }
 
@@ -52,15 +52,15 @@ TEST(trim_tests, whitespace_trim)
 
 TEST(is_number_tests, number)
 {
-	EXPECT_TRUE(utils::is_number("123"));
+	EXPECT_TRUE(utils::isNumber("123"));
 }
 
 TEST(is_number_tests, not_number)
 {
-	EXPECT_FALSE(utils::is_number("1d3"));
+	EXPECT_FALSE(utils::isNumber("1d3"));
 }
 
 TEST(pad_left_tests, basic_pad_left)
 {
-	EXPECT_EQ("   test", utils::pad_left("test", ' ', 7));
+	EXPECT_EQ("   test", utils::padLeft("test", ' ', 7));
 }

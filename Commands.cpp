@@ -46,7 +46,6 @@ void version(std::map<std::string, std::string> flags)
 }
 
 // init dict
-
 std::map<std::string, std::function<void(std::map<std::string, std::string>)>> Commands::perform = 
 {
 	{"start", start},

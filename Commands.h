@@ -7,8 +7,18 @@
 class Commands
 {
 public:
-	static void execute(std::string s, std::map<std::string, std::string> flags);
-	static bool isCommand(std::string s);
+	/// <summary>
+	/// Will execute the given command with the flags you give it.
+	/// </summary>
+	/// <param name="command">The command you want to execute</param>
+	/// <param name="flags">The flags with which you want to execute the command</param>
+	static void execute(std::string command, std::map<std::string, std::string> flags);
+
+	/// <summary>
+	/// Checks if there is a command with the given name.
+	/// </summary>
+	/// <param name="command">The command you want to check if it exists</param>
+	static bool isCommand(std::string command);
 private:
 	static std::map<std::string, std::function<void(std::map<std::string, std::string>)>> perform;
 };

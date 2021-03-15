@@ -6,10 +6,13 @@
 
 std::map<std::string, std::string> Parser::parse(std::string path, std::string* args, int argc)
 {
+	// We need at least 2 arguments (first one is the path to the executable, second the command)
 	if (argc <= 1)
 	{
 		error::err_insufficient_arguments("searchseco");
 	}
+
+	// translations from shorthand terms to what the mean
 	std::map<std::string, std::string> shortToLong =
 	{
 		{"v", "version"},
@@ -30,7 +33,7 @@ std::map<std::string, std::string> Parser::parse(std::string path, std::string* 
 			args[i] = shortToLong[args[i]];
 		}
 	}
-	// check if version is asked
+	// handle commands that do not take any flags
 	if (args[currentArg] == "version")
 	{
 		print::version_full();
@@ -38,13 +41,13 @@ std::map<std::string, std::string> Parser::parse(std::string path, std::string* 
 	}
 	else if (args[currentArg] == "update")
 	{
-		// Update
 		return{{ "command", "update" }};
 	}
 
 	// get default hardcoded dict
 	std::map<std::string, std::string> flagArgs = getDefaultFlagsForCommand(args[currentArg++]);
 
+	// read direct argument for command, if it is needed
 	if (flagArgs.count("argument") != 0)
 	{
 		if (argc <= currentArg)
@@ -55,14 +58,11 @@ std::map<std::string, std::string> Parser::parse(std::string path, std::string* 
 	}
 
 
-
-
 	// apply user defaults
 	parseFile(flagArgs, path);
 
 	// apply command values
 	parseFlags(flagArgs, args, argc, currentArg);
-
 
 	// return result
 	return flagArgs;
@@ -111,7 +111,7 @@ void Parser::parseFile(std::map<std::string, std::string>& flagArgs, std::string
 	std::ifstream configFile(path);
 
 	std::string line;
-	std::string* flagArg;
+	std::vector<std::string> flagArg;
 	std::string flag;
 	std::string arg;
 
@@ -120,7 +120,6 @@ void Parser::parseFile(std::map<std::string, std::string>& flagArgs, std::string
 		flagArg = utils::split(line, ':');
 		flag = utils::trimWhiteSpaces(flagArg[0]);
 		arg = utils::trimWhiteSpaces(flagArg[1]);
-		delete[] flagArg;
 
 		sanitize(flagArgs, flag, arg, true);
 	}
@@ -130,7 +129,6 @@ void Parser::parseFile(std::map<std::string, std::string>& flagArgs, std::string
 
 void Parser::parseFlags(std::map<std::string, std::string>& flagArgs, std::string* args, int argc, int start)
 {
-
 	for (int i = start; i < argc; i++)
 	{
 		std::string flag = args[i];
@@ -150,32 +148,29 @@ void Parser::sanitize(std::map<std::string, std::string>& flagArgs, std::string 
 		return;
 	}
 
-	// check if the flag is valid
+	// check if the flag is valid, throw an error if not
 	if (flag == "verbose")
 	{
 		std::string* levels = new std::string[]{ "1", "2", "3", "4", "5" };
 		if (!utils::contains(levels, argument, 5))
 		{
 			error::err_flag_invalid_arg(flag, argument, fromFile);
-			return;
 		}
 	}
 	else if (flag == "storage")
 	{
 		// currently only checks if the argument is numerical, no cap is set
-		if (!utils::is_number(argument))
+		if (!utils::isNumber(argument))
 		{
 			error::err_flag_invalid_arg(flag, argument, fromFile);
-			return;
 		}
 	}
 	else if (flag == "cores")
 	{
 		// currently only checks if the argument is numerical, no cap is set
-		if (!utils::is_number(argument) || argument == "0" || argument == "1")
+		if (!utils::isNumber(argument) || argument == "0" || argument == "1")
 		{
 			error::err_flag_invalid_arg(flag, argument, fromFile);
-			return;
 		}
 	}
 	else if (flag == "location")
@@ -188,7 +183,6 @@ void Parser::sanitize(std::map<std::string, std::string>& flagArgs, std::string 
 		if (!utils::contains(allowed, argument, 3))
 		{
 			error::err_flag_invalid_arg(flag, argument, fromFile);
-			return;
 		}
 	}
 	else if (flag == "save")
@@ -197,7 +191,6 @@ void Parser::sanitize(std::map<std::string, std::string>& flagArgs, std::string 
 		if (!utils::contains(allowed, argument, 4))
 		{
 			error::err_flag_invalid_arg(flag, argument, fromFile);
-			return;
 		}
 
 		// translate shorthands to full size
@@ -205,6 +198,7 @@ void Parser::sanitize(std::map<std::string, std::string>& flagArgs, std::string 
 		else if (argument == "f") argument = "false";
 	}
 
+	// succesfully parsed the flag
 	flagArgs[flag] = argument;
 }
 

@@ -5,6 +5,7 @@
 #include<map>
 #include<stdlib.h>
 
+// TODO File versioning
 #define CONTROLLER_VERSION "0.0.1"
 
 void print::printline(std::string str)
@@ -14,13 +15,13 @@ void print::printline(std::string str)
 
 void print::help()
 {
-	printline("help section is yet to be implemented");
+	print::printline("help section is yet to be implemented");
 }
 
 void print::help(std::string message)
 {
-	printline(message);
-	help();
+	print::printline(message);
+	print::help();
 }
 
 std::string print::encapsulate(std::string str, char c)
@@ -40,13 +41,27 @@ std::string print::text_then_quote(std::string str, std::string q)
 // Versioning
 void print::version_full()
 {
+	// TODO File versioning and subsystem versioning
 	print::printline("searchseco version " + std::string(CONTROLLER_VERSION));
 }
 
-// ERRORS
+// Logging and warning
+
+void error::log(std::string str)
+{
+	print::printline("L - " + str);
+}
+
+void error::warn(int code)
+{
+	print::printline("W" + code);
+}
+
+// Error handling
 
 int err_code_length = 3;
 
+// Defines the (order of the) error codes for the various errors.
 enum err_code
 {
 	flag_not_exist = 1,
@@ -59,6 +74,7 @@ enum err_code
 	cmd_not_exist,
 };
 
+// Maps an error code to a description.
 std::map <int, std::string> err_msg =
 {
 	{flag_not_exist, "The specified flag does not exist."},
@@ -71,21 +87,11 @@ std::map <int, std::string> err_msg =
 	{cmd_not_exist, "The specified command does not exist."},
 };
 
-void err(int code, std::string extra_msg = "")
+// Displays the actual error message, defined by its code, and then exits the program..
+void err(err_code code, std::string extra_msg = "")
 {
-	print::printline("E" + utils::pad_left(std::to_string(code), '0', err_code_length) + " - " + err_msg[code] + extra_msg);
+	print::printline("E" + utils::padLeft(std::to_string(code), '0', err_code_length) + " - " + err_msg[code] + extra_msg);
 	exit(EXIT_FAILURE);
-}
-
-
-void error::log(std::string str)
-{
-	print::printline("L - " + str);
-}
-
-void error::warn(int code)
-{
-	print::printline("W" + code);
 }
 
 void error::err_insufficient_arguments(std::string command)

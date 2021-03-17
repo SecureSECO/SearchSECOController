@@ -45,16 +45,20 @@ TEST(encapsulate, succeeding)
 		std::string encapsulated = print::encapsulate(word, c);
 
 		EXPECT_EQ(c + word + c, encapsulated);
-		//EXPECT_THAT(encapsulated, HasSubstr(word));
 	}
 }
 
 TEST(encapsulate, failing)
 {
-	std::string s = "";
-	char c = 'l';
-	std::string tabstring = print::tab(3);
-	EXPECT_EQ(s, "");
+	for (int i = 0; i < test_strc; ++i)
+	{
+		std::string word = test_strs[i];
+		char c = (char)(std::rand() % 255 + 1);
+		std::string encapsulated = print::encapsulate(word, c);
+
+		EXPECT_FALSE(word == encapsulated);
+		EXPECT_FALSE(std::to_string(c) == encapsulated);
+	}
 }
 
 TEST(Print_line, print_line_test)

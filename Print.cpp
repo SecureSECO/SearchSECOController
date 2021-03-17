@@ -101,7 +101,10 @@ void error::log(std::string str)
 
 void error::warn(int code)
 {
-	print::printline("W" + code);
+	if (code <= 0) throw std::out_of_range("Argument \"code\" out of range in warn function.");
+
+	std::string generic_warning_msg = "Generic warning message";
+	print::printline("W" + std::to_string(code) + " - " + generic_warning_msg);
 }
 
 // Error handling
@@ -119,8 +122,7 @@ enum err_code
 	cmd_insufficient_args,
 	cmd_not_found,
 	cmd_not_exist,
-	// TODO JOCHEM
-	not_implmented,
+	not_implemented,
 };
 
 // Maps an error code to a description.
@@ -134,8 +136,7 @@ std::map <int, std::string> err_msg =
 	{cmd_invalid, "An invalid command was entered."},
 	{cmd_not_found, "No command was entered."},
 	{cmd_not_exist, "The specified command does not exist."},
-	// TODO JOCHEM
-	{not_implmented, "This function is not implmented."},
+	{not_implemented, "This function is not implemented."},
 
 };
 
@@ -145,10 +146,10 @@ void err(err_code code, std::string extra_msg = "")
 	print::printline("E" + utils::padLeft(std::to_string(code), '0', err_code_length) + " - " + err_msg[code] + extra_msg);
 	exit(EXIT_FAILURE);
 }
-// TODO JOCHEM
-void error::not_implemented(std::string message)
+
+void error::err_not_implemented(std::string message)
 {
-	err(not_implmented, message);
+	err(not_implemented, print::text_then_quote("Function:", message));
 }
 
 void error::err_insufficient_arguments(std::string command)

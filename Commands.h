@@ -9,7 +9,9 @@ Utrecht University within the Software Project course.
 #include <map>
 #include <string>
 #include <functional>
-#include "parser/Parser/Parser.h"
+#include <vector>
+
+struct HashData;
 
 class Commands
 {

@@ -113,7 +113,7 @@ namespace error
 	void err_cmd_not_exist(std::string command);
 
 	/// <summary>
-	/// TODO: Jochem
+	/// Throws the "Not Implemented" error.
 	/// </summary>
-	void not_implemented(std::string message);
+	void err_not_implemented(std::string message);
 }

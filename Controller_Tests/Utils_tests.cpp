@@ -6,7 +6,6 @@ Utrecht University within the Software Project course.
 
 #include "pch.h"
 #include "../Utils.h"
-#include "../Utils.cpp"
 
 
 TEST(contains_tests, is_in_vector)
@@ -36,6 +35,16 @@ TEST(split_tests, wrong_split)
 	std::string s = "Hello World!";
 	std::vector<std::string> splitted = utils::split(s, 'x');
 	EXPECT_EQ("Hello World!", splitted[0]);
+}
+
+TEST(split_tests, multiple_split)
+{
+	std::string s = "Hello World!";
+	std::vector<std::string> splitted = utils::split(s, 'l');
+	EXPECT_EQ("He", splitted[0]);
+	EXPECT_EQ("", splitted[1]);
+	EXPECT_EQ("o Wor", splitted[2]);
+	EXPECT_EQ("d!", splitted[3]);
 }
 
 TEST(trim_tests, basic_trim)

@@ -9,6 +9,7 @@ Utrecht University within the Software Project course.
 #include "Print.h"
 //#include "spider/SearchSECOSpider/Spider.h"
 #include "Utils.h"
+#include "parser/Parser/Parser.h"
 
 // general function
 
@@ -19,7 +20,7 @@ void Commands::execute(std::string s, std::map<std::string, std::string> flags)
 
 bool Commands::isCommand(std::string s) 
 {
-	return perform.count(std::string(s)) >= 0;
+	return perform.count(s) >= 1;
 }
 
 // Commands
@@ -27,7 +28,7 @@ bool Commands::isCommand(std::string s)
 void Commands::start(std::map<std::string, std::string> flags) 
 {
 	// depends: crawler, spider, db, distribution
-	error::not_implemented("start");
+	error::err_not_implemented("start");
 }
 
 void Commands::check(std::map<std::string, std::string> flags)
@@ -47,19 +48,19 @@ void Commands::check(std::map<std::string, std::string> flags)
 void Commands::upload(std::map<std::string, std::string> flags)
 {
 	// depends: spider, db
-	error::not_implemented("upload");
+	error::err_not_implemented("upload");
 }
 
 void Commands::checkupload(std::map<std::string, std::string> flags)
 {
 	// depends: spider, db
-	error::not_implemented("checkupload");
+	error::err_not_implemented("checkupload");
 }
 
 void Commands::update(std::map<std::string, std::string> flags)
 {
 	// depends: a lot
-	error::not_implemented("update");
+	error::err_not_implemented("update");
 }
 
 void Commands::version(std::map<std::string, std::string> flags)
@@ -97,5 +98,5 @@ std::map<std::string, std::function<void(std::map<std::string, std::string>)>> C
 	{"upload", upload},
 	{"checkupload", checkupload},
 	{"update", update},
-	{"update", version},
+	{"version", version},
 };

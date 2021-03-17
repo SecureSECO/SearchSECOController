@@ -15,7 +15,7 @@ std::map<std::string, std::string> FlagParser::parse(std::string path, std::stri
 	// We need at least 2 arguments (first one is the path to the executable, second the command)
 	if (argc <= 1)
 	{
-		error::err_insufficient_arguments("searchseco");
+		error::err_insufficient_arguments("searchseco", 1, 0);
 	}
 
 	// translations from shorthand terms to what the mean
@@ -58,7 +58,7 @@ std::map<std::string, std::string> FlagParser::parse(std::string path, std::stri
 	{
 		if (argc <= currentArg)
 		{
-			error::err_insufficient_arguments(args[currentArg - 1]);
+			error::err_insufficient_arguments(args[currentArg - 1], currentArg, argc); // TODO is this correct?
 		}
 		flagArgs["argument"] = args[currentArg++];
 	}
@@ -108,7 +108,7 @@ std::map<std::string, std::string> FlagParser::getDefaultFlagsForCommand(std::st
 			{"argument", ""},
 		};
 	}
-	error::err_invalid_command(command);
+	error::err_cmd_not_exist(command);
 	return std::map<std::string, std::string>();
 }
 

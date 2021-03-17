@@ -11,7 +11,9 @@ Utrecht University within the Software Project course.
 #include <fstream>
 #include <map>
 #include <stdlib.h>
+#include <functional>
 
+#pragma region Print
 
 void print::printline(std::string str)
 {
@@ -53,6 +55,12 @@ std::string print::text_then_quote(std::string str, std::string q)
 	return encapsulate(str, ' ') + quote(q);
 }
 
+std::string print::plural(std::string singular, int n)
+{
+	if (n == 1) return singular;
+	return singular + 's';
+}
+
 // Versioning
 void print::version_full()
 {
@@ -92,6 +100,8 @@ void print::version_full()
 	}
 }
 
+#pragma endregion Print
+
 // Logging and warning
 
 void error::log(std::string str)
@@ -108,6 +118,7 @@ void error::warn(int code)
 }
 
 // Error handling
+#pragma region Error_handling
 
 int err_code_length = 3;
 
@@ -118,83 +129,127 @@ enum err_code
 	flag_not_exist_cfg,
 	flag_invalid_arg,
 	flag_invalid_arg_cfg,
-	cmd_invalid,
 	cmd_insufficient_args,
 	cmd_not_found,
 	cmd_not_exist,
 	not_implemented,
 };
 
-// Maps an error code to a description.
-std::map <int, std::string> err_msg =
-{
-	{flag_not_exist, "The specified flag does not exist."},
-	{flag_not_exist_cfg, "The specified flag does not exist in the config file."},
-	{flag_invalid_arg, "The specified argument is invalid for its corresponding flag."},
-	{flag_invalid_arg_cfg, "The specified argument is invalid for its corresponding flag in the config file."},
-	{cmd_insufficient_args, "Incorrect number of arguments supplied for a command."},
-	{cmd_invalid, "An invalid command was entered."},
-	{cmd_not_found, "No command was entered."},
-	{cmd_not_exist, "The specified command does not exist."},
-	{not_implemented, "This function is not implemented."},
+// Descriptions of the error messages
+#pragma region Descriptions
 
+// strs: [commandname, expected_num_args, received_num_args]
+std::string desc_cmd_insufficient_arguments(std::string* strs)
+{
+	return strs[1] + print::plural(" argument", std::stoi(strs[1])) + " expected for command " + print::quote(strs[0]) + ", received " + strs[2] + '.';
+}
+
+// strs: [flagname]
+std::string desc_err_flag_not_exist(std::string* strs)
+{
+	return "The flag " + print::quote(strs[0]) + " does not exist.";
+}
+
+// strs: [flagname]
+std::string desc_err_flag_not_exist_cfg(std::string* strs)
+{
+	return "The flag " + print::quote(strs[0]) + " does not exist (configuration file).";
+}
+
+// strs: [flagname, argname]
+std::string desc_err_flag_invalid_arg(std::string* strs)
+{
+	return "Argument " + print::quote(strs[1]) + " is invalid for the flag " + print::quote(strs[0]) + ".\n" + print::tab() + "See --help for valid value ranges.";
+}
+
+// strs: [flagname, argname]
+std::string desc_err_flag_invalid_arg_cfg(std::string* strs)
+{
+	return "Argument " + print::quote(strs[1]) + " is invalid for the flag " + print::quote(strs[0]) + " (configuration file).\n" + print::tab() + "See --help for valid value ranges.";
+}
+
+// no strs
+std::string desc_err_cmd_not_found(std::string* strs)
+{
+	return "No command was entered.";
+}
+
+// strs: [commandname]
+std::string desc_err_cmd_not_exist(std::string* strs)
+{
+	return "Command " + print::quote(strs[0]) + " does not exist.";
+}
+
+// strs: [funcname]
+std::string desc_err_not_implemented(std::string* strs)
+{
+	return "The function " + print::quote(strs[0]) + " is not yet implemented.";
+}
+
+// Maps an error code to a description.
+std::map <int, std::function<std::string(std::string*)>> err_desc =
+{
+	{flag_not_exist, desc_err_flag_not_exist},
+	{flag_not_exist_cfg, desc_err_flag_not_exist_cfg},
+	{flag_invalid_arg, desc_err_flag_invalid_arg},
+	{flag_invalid_arg_cfg, desc_err_flag_invalid_arg_cfg},
+	{cmd_insufficient_args, desc_cmd_insufficient_arguments},
+	{cmd_not_found, desc_err_cmd_not_found},
+	{cmd_not_exist, desc_err_cmd_not_exist},
+	{not_implemented, desc_err_not_implemented},
 };
 
-// Displays the actual error message, defined by its code, and then exits the program..
-void err(err_code code, std::string extra_msg = "")
+#pragma endregion Descriptions
+
+// MAIN ERROR FUNCTION
+// Displays the actual error message, defined by its code, and then exits the program.
+void err(err_code code, std::string* strs, std::string extra_msg = "")
 {
-	print::printline("E" + utils::padLeft(std::to_string(code), '0', err_code_length) + " - " + err_msg[code] + extra_msg);
+	print::printline("E" + utils::padLeft(std::to_string(code), '0', err_code_length) + " - " + err_desc[code](strs));
+	if (extra_msg != "") print::printline(extra_msg);
+	delete[] strs;
+
 	exit(EXIT_FAILURE);
 }
 
-void error::err_insufficient_arguments(std::string command)
-{
-	err(cmd_insufficient_args, print::text_then_quote("Command", command));
-}
+#pragma region Specific_error_handlers
 
-void error::err_invalid_command(std::string command)
+void error::err_insufficient_arguments(std::string command, int expected, int received)
 {
-	err(cmd_invalid, " Command " + print::quote(command));
+	err(cmd_insufficient_args, new std::string[3] {command, std::to_string(expected), std::to_string(received)});
 }
 
 void error::err_flag_not_exist(std::string flag, bool from_config)
 {
-	std::string flag_msg = " Flag: " + print::quote(flag);
-	
-	if(from_config)
-	{
-		err(flag_not_exist_cfg, flag_msg);
-	}
-	else
-	{
-		err(flag_not_exist, flag_msg);
-	}
+	std::string* flagname = new std::string[1] {flag};
+	err_code code = from_config ? flag_not_exist_cfg : flag_not_exist;
+
+	err(code, flagname);
 }
 
 void error::err_flag_invalid_arg(std::string flag, std::string arg, bool from_config)
 {
-	std::string msg = "Flag " + print::quote(flag) + " with argument " + print::quote(arg);
-	if(from_config)
-	{
-		err(flag_invalid_arg_cfg, msg);
-	}
-	else
-	{
-		err(flag_invalid_arg, msg);
-	}
+	std::string* strs = new std::string[2]{ flag, arg };
+	err_code code = from_config ? flag_invalid_arg_cfg : flag_invalid_arg;
+
+	err(code, strs);
 }
 
 void error::err_cmd_not_found()
 {
-	err(cmd_not_exist);
+	err(cmd_not_found, {});
 }
 
 void error::err_cmd_not_exist(std::string command)
 {
-	err(cmd_not_found, print::text_then_quote("Command", command));
+	err(cmd_not_exist, new std::string[1] {command});
 }
 
-void error::err_not_implemented(std::string message)
+void error::err_not_implemented(std::string funcname)
 {
-	err(not_implemented, print::text_then_quote("Function:", message));
+	err(not_implemented, new std::string[1] {funcname});
 }
+
+#pragma endregion Specific_error_handlers
+
+#pragma endregion Error_handling

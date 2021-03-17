@@ -17,7 +17,7 @@ int main(int argc, char* argv[])
 {
 	std::string* args = new std::string[argc]();
 
-	std::cout << argc;
+	// std::cout << argc;
 
 	if (argc == 1) //check pathOrSomething  -s t
 	{
@@ -42,10 +42,10 @@ int main(int argc, char* argv[])
 		}
 	}
 
-	for (int i = 0; i < argc; i++)
-	{
-		print::printline(args[i]);
-	}
+	//for (int i = 0; i < argc; i++)
+	//{
+	//	print::printline(args[i]);
+	//}
 
 
 	// Getting all the flags and arguments out of the config file and command line arguments

@@ -7,7 +7,7 @@ Utrecht University within the Software Project course.
 #include "Commands.h"
 #include <iostream>
 #include "Print.h"
-//#include "spider/SearchSECOSpider/Spider.h"
+#include "spider/SearchSECOSpider/SearchSecoSpider.h"
 #include "Utils.h"
 #include "parser/Parser/Parser.h"
 
@@ -34,7 +34,7 @@ void Commands::start(std::map<std::string, std::string> flags)
 void Commands::check(std::map<std::string, std::string> flags)
 {
 	// depends: spider, db
-	std::string tempLocation = "temp";
+	std::string tempLocation = "spiderDownloads";
 	Commands::downloadRepository(flags["argument"], flags, tempLocation);
 	std::vector<HashData> hashes = Commands::parseRepository(tempLocation, flags);
 	// temporary printing of all the hashes
@@ -72,9 +72,7 @@ void Commands::version(std::map<std::string, std::string> flags)
 
 void Commands::downloadRepository(std::string repository, std::map<std::string, std::string> flags, std::string downloadPath)
 {
-	//TODO: implement
-	std::vector<std::string> url = utils::split(repository, '/');
-	//Spider::run_spider(url[url.size()-2], url[url.size() - 1], "master", downloadPath);
+	RunSpider::runSpider(repository);
 }
 
 std::vector<HashData> Commands::parseRepository(std::string repository, std::map<std::string, std::string> flags)

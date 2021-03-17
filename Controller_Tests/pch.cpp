@@ -10,3 +10,10 @@ Utrecht University within the Software Project course.
 //
 
 #include "pch.h"
+#include "../spider/SearchSECOSpider/SearchSecoSpider.h"
+
+// We don't want to use this in the unit tests, so we just do a empty function so that we don't
+// have to link the spider
+void RunSpider::runSpider(std::string s)
+{
+};

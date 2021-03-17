@@ -8,7 +8,10 @@ Utrecht University within the Software Project course.
 #include "../Print.h"
 #include "../Print.cpp"
 #include "../Utils.cpp"
+#include <regex>
 
+#define GENERIC_STRING "teststring"
+#define GENERIC_INT 1
 
 // testing data
 int test_strc = 5;
@@ -126,37 +129,45 @@ TEST(error_testing, warn)
 	}
 }
 
-TEST(error_testing, err_insufficient_arguments)
+// All error throwing functions should have more or less the same behaviour: print some string to stdout,
+// and then kill the program.
+// It seems to be impossible to test whether this string is in the correct format, since the program terminates
+// before we are able to read stdout, so for now these death tests only assert that all error functions terminate
+// the program with code EXIT_FAILURE.
+
+TEST(error_death_tests, err_insufficient_arguments)
 {
-	SUCCEED();
+	ASSERT_EXIT(error::err_insufficient_arguments(GENERIC_STRING), ::testing::ExitedWithCode(EXIT_FAILURE), ".*");
 }
 
-TEST(error_testing, err_invalid_command)
+TEST(error_death_tests, err_invalid_command)
 {
-	SUCCEED();
+	ASSERT_EXIT(error::err_invalid_command(GENERIC_STRING), ::testing::ExitedWithCode(EXIT_FAILURE), ".*");
 }
 
-TEST(error_testing, err_flag_not_exist)
+TEST(error_death_tests, err_flag_not_exist)
 {
-	SUCCEED();
+	ASSERT_EXIT(error::err_flag_not_exist(GENERIC_STRING, true ), ::testing::ExitedWithCode(EXIT_FAILURE), ".*");
+	ASSERT_EXIT(error::err_flag_not_exist(GENERIC_STRING, false), ::testing::ExitedWithCode(EXIT_FAILURE), ".*");
 }
 
-TEST(error_testing, err_flag_invalid_arg)
+TEST(error_death_tests, err_flag_invalid_arg)
 {
-	SUCCEED();
+	ASSERT_EXIT(error::err_flag_invalid_arg(GENERIC_STRING, GENERIC_STRING, true ), ::testing::ExitedWithCode(EXIT_FAILURE), ".*");
+	ASSERT_EXIT(error::err_flag_invalid_arg(GENERIC_STRING, GENERIC_STRING, false), ::testing::ExitedWithCode(EXIT_FAILURE), ".*");
 }
 
-TEST(error_testing, err_cmd_not_found)
+TEST(error_death_tests, err_cmd_not_found)
 {
-	SUCCEED();
+	ASSERT_EXIT(error::err_cmd_not_found(), ::testing::ExitedWithCode(EXIT_FAILURE), ".*");
 }
 
-TEST(error_testing, err_cmd_not_exist)
+TEST(error_death_tests, err_cmd_not_exist)
 {
-	SUCCEED();
+	ASSERT_EXIT(error::err_cmd_not_exist(GENERIC_STRING), ::testing::ExitedWithCode(EXIT_FAILURE), ".*");
 }
 
-TEST(error_testing, err_not_implemented)
+TEST(error_death_tests, err_not_implemented)
 {
-	SUCCEED();
+	ASSERT_EXIT(error::err_not_implemented(GENERIC_STRING), ::testing::ExitedWithCode(EXIT_FAILURE), ".*");
 }

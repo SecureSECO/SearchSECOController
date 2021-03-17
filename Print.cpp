@@ -147,11 +147,6 @@ void err(err_code code, std::string extra_msg = "")
 	exit(EXIT_FAILURE);
 }
 
-void error::err_not_implemented(std::string message)
-{
-	err(not_implemented, print::text_then_quote("Function:", message));
-}
-
 void error::err_insufficient_arguments(std::string command)
 {
 	err(cmd_insufficient_args, print::text_then_quote("Command", command));
@@ -197,4 +192,9 @@ void error::err_cmd_not_found()
 void error::err_cmd_not_exist(std::string command)
 {
 	err(cmd_not_found, print::text_then_quote("Command", command));
+}
+
+void error::err_not_implemented(std::string message)
+{
+	err(not_implemented, print::text_then_quote("Function:", message));
 }

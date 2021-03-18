@@ -27,12 +27,6 @@ namespace print
 	void help();
 
 	/// <summary>
-	/// Prints the help message to the console, with an additional message.
-	/// </summary>
-	/// <param name="str">An additional message to print before the help message.</param>
-	void help(std::string str);
-
-	/// <summary>
 	/// Encapsulates a string with a single character; so once before the string, and once behind it.
 	/// </summary>
 	/// <param name="str">The base string to be encapsulated.</param>

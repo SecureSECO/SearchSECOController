@@ -24,6 +24,12 @@ std::string* test_strs = new std::string[test_strc]
 	""
 };
 
+// test helper functions
+bool isSubstring(std::string s1, std::string s2)
+{
+	return s2.find(s1) != std::string::npos;
+}
+
 // print helper functions
 TEST(tab_tests, single)
 {
@@ -48,6 +54,7 @@ TEST(encapsulate, succeeding)
 		std::string encapsulated = print::encapsulate(word, c);
 
 		EXPECT_EQ(c + word + c, encapsulated);
+		EXPECT_TRUE(isSubstring(word, encapsulated));
 	}
 }
 
@@ -61,6 +68,7 @@ TEST(encapsulate, failing)
 
 		EXPECT_FALSE(word == encapsulated);
 		EXPECT_FALSE(std::to_string(c) == encapsulated);
+		EXPECT_TRUE(isSubstring(word, encapsulated));
 	}
 }
 
@@ -73,6 +81,7 @@ TEST(quote, succeeding)
 		std::string encapsulated = print::encapsulate(word, c);
 
 		EXPECT_EQ(c + word + c, encapsulated);
+		EXPECT_TRUE(isSubstring(word, encapsulated));
 	}
 }
 
@@ -86,6 +95,7 @@ TEST(quote, failing)
 
 		EXPECT_FALSE(word == encapsulated);
 		EXPECT_FALSE(std::to_string(c) == encapsulated);
+		EXPECT_TRUE(isSubstring(word, encapsulated));
 	}
 }
 
@@ -97,6 +107,7 @@ TEST(plural, singular)
 		std::string pluraled = print::plural(word,1);
 
 		EXPECT_EQ(word, pluraled);
+		EXPECT_TRUE(isSubstring(word, pluraled));
 	}
 }
 
@@ -110,6 +121,7 @@ TEST(plural, plural)
 		std::string pluraled = print::plural(word, n);
 
 		EXPECT_EQ(word + c, pluraled);
+		EXPECT_TRUE(isSubstring(word, pluraled));
 	}
 }
 
@@ -122,6 +134,7 @@ TEST(plural, singular_failing)
 		std::string pluraled = print::plural(word, 1);
 
 		EXPECT_FALSE(word + c == pluraled);
+		EXPECT_TRUE(isSubstring(word, pluraled));
 	}
 }
 
@@ -134,6 +147,7 @@ TEST(plural, plural_failing)
 		std::string pluraled = print::plural(word, n);
 
 		EXPECT_FALSE(word == pluraled);
+		EXPECT_TRUE(isSubstring(word, pluraled));
 	}
 }
 

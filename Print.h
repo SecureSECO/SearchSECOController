@@ -48,14 +48,6 @@ namespace print
 	std::string quote(std::string str);
 
 	/// <summary>
-	/// Encapsulates str with spaces and q with quotation marks, then concatenates them.
-	/// </summary>
-	/// <param name="str">The string to be encapsulated with spaces.</param>
-	/// <param name="q">The string to be put inside quotation marks.</param>
-	/// <returns>A string of the format: { str "q"}</returns>
-	std::string text_then_quote(std::string str, std::string q);
-
-	/// <summary>
 	/// Returns either the singular or the plural form of the string supplied, depending on n.
 	/// </summary>
 	std::string plural(std::string singular, int n);

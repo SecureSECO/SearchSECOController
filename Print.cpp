@@ -102,6 +102,8 @@ void print::version_full()
 
 #pragma endregion Print
 
+#pragma region Logging_Warning
+
 // Logging and warning
 
 void error::log(std::string str)
@@ -117,7 +119,8 @@ void error::warn(int code)
 	print::printline("W" + std::to_string(code) + " - " + generic_warning_msg);
 }
 
-// Error handling
+#pragma endregion Logging_Warning
+
 #pragma region Error_handling
 
 int err_code_length = 3;

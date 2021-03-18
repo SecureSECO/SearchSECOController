@@ -23,10 +23,9 @@ std::map<std::string, std::string> FlagParser::parse(std::string path, std::stri
 	{
 		{"v", "version"},
 		{"V", "verbose"},
-		{"S", "storage"},
-		{"c", "cores"},
-		{"l", "location"},
-		{"r", "report"},
+		{"c", "cpu"},
+		{"r", "ram"},
+		{"o", "output"},
 		{"s", "save"}
 	};
 	int currentArg = 1;
@@ -42,12 +41,15 @@ std::map<std::string, std::string> FlagParser::parse(std::string path, std::stri
 	// handle commands that do not take any flags
 	if (args[currentArg] == "version")
 	{
-		print::version_full();
-		exit(EXIT_SUCCESS);
+		return{ {"command", "version"} };
 	}
 	else if (args[currentArg] == "update")
 	{
 		return{{ "command", "update" }};
+	}
+	else if (args[currentArg] == "help")
+	{
+		return{ {"command", "help"} };
 	}
 
 	// get default hardcoded dict

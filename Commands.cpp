@@ -68,6 +68,11 @@ void Commands::version(std::map<std::string, std::string> flags)
 	print::version_full();
 }
 
+void Commands::help(std::map<std::string, std::string> flags)
+{
+	print::printline("Help section is not yet implemented.");
+}
+
 // helpers
 
 void Commands::downloadRepository(std::string repository, std::map<std::string, std::string> flags, std::string downloadPath)
@@ -97,4 +102,5 @@ std::map<std::string, std::function<void(std::map<std::string, std::string>)>> C
 	{"checkupload", checkupload},
 	{"update", update},
 	{"version", version},
+	{"help", help}
 };

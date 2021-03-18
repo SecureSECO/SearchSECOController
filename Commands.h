@@ -39,4 +39,5 @@ private:
 	static void checkupload(std::map<std::string, std::string> flags);
 	static void update(std::map<std::string, std::string> flags);
 	static void version(std::map<std::string, std::string> flags);
+	static void help(std::map<std::string, std::string> flags);
 };

@@ -50,10 +50,6 @@ std::string print::quote(std::string str)
 {
 	return encapsulate(str, '\"');
 }
-std::string print::text_then_quote(std::string str, std::string q)
-{
-	return encapsulate(str, ' ') + quote(q);
-}
 
 std::string print::plural(std::string singular, int n)
 {

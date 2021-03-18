@@ -1,7 +1,7 @@
 /*
 This program has been developed by students from the bachelor Computer Science at
 Utrecht University within the Software Project course.
-© Copyright Utrecht University (Department of Information and Computing Sciences)
+ï¿½ Copyright Utrecht University (Department of Information and Computing Sciences)
 */
 
 #include "pch.h"
@@ -64,6 +64,81 @@ TEST(encapsulate, failing)
 	}
 }
 
+TEST(quote, succeeding)
+{
+	for (int i = 0; i < test_strc; ++i)
+	{
+		std::string word = test_strs[i];
+		char c = '\"';
+		std::string encapsulated = print::encapsulate(word, c);
+
+		EXPECT_EQ(c + word + c, encapsulated);
+	}
+}
+
+TEST(quote, failing)
+{
+	for (int i = 0; i < test_strc; ++i)
+	{
+		std::string word = test_strs[i];
+		char c = '\'';
+		std::string encapsulated = print::encapsulate(word, c);
+
+		EXPECT_FALSE(word == encapsulated);
+		EXPECT_FALSE(std::to_string(c) == encapsulated);
+	}
+}
+
+TEST(plural, singular)
+{
+	for (int i = 0; i < test_strc; ++i)
+	{
+		std::string word = test_strs[i];
+		std::string pluraled = print::plural(word,1);
+
+		EXPECT_EQ(word, pluraled);
+	}
+}
+
+TEST(plural, plural)
+{
+	for (int i = 0; i < test_strc; ++i)
+	{
+		std::string word = test_strs[i];
+		char c = 's';
+		int n= std::rand() % 200 + 2;
+		std::string pluraled = print::plural(word, n);
+
+		EXPECT_EQ(word + c, pluraled);
+	}
+}
+
+TEST(plural, singular_failing)
+{
+	for (int i = 0; i < test_strc; ++i)
+	{
+		std::string word = test_strs[i];
+		char c = 's';
+		std::string pluraled = print::plural(word, 1);
+
+		EXPECT_FALSE(word + c == pluraled);
+	}
+}
+
+TEST(plural, plural_failing)
+{
+	for (int i = 0; i < test_strc; ++i)
+	{
+		std::string word = test_strs[i];
+		int n = std::rand() % 200 + 2;
+		std::string pluraled = print::plural(word, n);
+
+		EXPECT_FALSE(word == pluraled);
+	}
+}
+
+// printing functions
+
 TEST(Print_line, print_line_test)
 {
 	for (int i = 0; i < test_strc; ++i)
@@ -76,6 +151,13 @@ TEST(Print_line, print_line_test)
 	}
 
 }
+
+/* TO TEST:
+ * help()
+ * help(s)
+ * version_full()????
+ */
+
 
 // ERROR TESTING
 
@@ -137,12 +219,7 @@ TEST(error_testing, warn)
 
 TEST(error_death_tests, err_insufficient_arguments)
 {
-	ASSERT_EXIT(error::err_insufficient_arguments(GENERIC_STRING), ::testing::ExitedWithCode(EXIT_FAILURE), ".*");
-}
-
-TEST(error_death_tests, err_invalid_command)
-{
-	ASSERT_EXIT(error::err_invalid_command(GENERIC_STRING), ::testing::ExitedWithCode(EXIT_FAILURE), ".*");
+	ASSERT_EXIT(error::err_insufficient_arguments(GENERIC_STRING, 1,2), ::testing::ExitedWithCode(EXIT_FAILURE), ".*");
 }
 
 TEST(error_death_tests, err_flag_not_exist)

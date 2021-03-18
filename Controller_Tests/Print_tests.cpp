@@ -166,12 +166,16 @@ TEST(Print_line, print_line_test)
 
 }
 
-/* TO TEST:
- * help()
- * help(s)
- * version_full()????
- */
+TEST(version_test, version_regex)
+{
+	testing::internal::CaptureStdout();
 
+	print::version_full();
+
+	std::string output = testing::internal::GetCapturedStdout();
+
+	ASSERT_TRUE(std::regex_match(output, std::regex("((searchseco|parser|spider|database_api) version \\d*.\\d*.\\d*\\n(\\t)?)*")));
+}
 
 // ERROR TESTING
 

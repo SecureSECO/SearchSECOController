@@ -35,12 +35,6 @@ void print::help()
 	print::printline("help section is yet to be implemented");
 }
 
-void print::help(std::string message)
-{
-	print::printline(message);
-	print::help();
-}
-
 std::string print::encapsulate(std::string str, char c)
 {
 	return c + str + c;

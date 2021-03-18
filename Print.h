@@ -56,6 +56,11 @@ namespace print
 	std::string text_then_quote(std::string str, std::string q);
 
 	/// <summary>
+	/// Returns either the singular or the plural form of the string supplied, depending on n.
+	/// </summary>
+	std::string plural(std::string singular, int n);
+
+	/// <summary>
 	/// Prints the Controller version, and the versions of the subsystems to the console.
 	/// </summary>
 	void version_full();
@@ -79,12 +84,7 @@ namespace error
 	/// Throws the "Insufficient Arguments" error for a flag or command.
 	/// </summary>
 	/// <param name="command">Name of the command which has insufficient arguments.</param>
-	void err_insufficient_arguments(std::string command);
-
-	/// <summary>
-	/// Throws the "Invalid Command" error.
-	/// </summary>
-	void err_invalid_command(std::string command);
+	void err_insufficient_arguments(std::string command, int expected, int received);
 
 	/// <summary>
 	/// Throws the "Flag Does Not Exist" error.

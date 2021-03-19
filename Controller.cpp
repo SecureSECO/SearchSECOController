@@ -17,9 +17,7 @@ int main(int argc, char* argv[])
 {
 	std::string* args = new std::string[argc]();
 
-	// std::cout << argc;
-
-	if (argc == 1) //check pathOrSomething  -s t
+	if (argc == 1) //check pathOrSomething -s t
 	{
 		std::string s;
 		std::getline(std::cin, s);
@@ -41,12 +39,6 @@ int main(int argc, char* argv[])
 			args[i] = argv[i];
 		}
 	}
-
-	//for (int i = 0; i < argc; i++)
-	//{
-	//	print::printline(args[i]);
-	//}
-
 
 	// Getting all the flags and arguments out of the config file and command line arguments
 	std::map<std::string, std::string> flagArgs = FlagParser::parse("config.txt", args, argc);

@@ -1,26 +1,29 @@
 #include "Networking.h"
 #include <boost/array.hpp>
+#include "parser/Parser/Parser.h"
 
 // Made using this tutorial https://www.boost.org/doc/libs/1_75_0/doc/html/boost_asio/tutorial.html
-tcp::socket Networking::openConnection()
+
+NetworkHandler::NetworkHandler() : socket(io_context)
+{
+}
+
+void NetworkHandler::openConnection()
 {
 	std::string serverApi = "TODO: server name and shit";
 
-	boost::asio::io_context io_context;
 	tcp::resolver resolver(io_context);
 	tcp::resolver::results_type endpoints = resolver.resolve(serverApi, "TODO: something here");
 
-	tcp::socket socket(io_context);
 	boost::asio::connect(socket, endpoints);
-	return socket;
 }
 
-void Networking::sendData(byte* data, int dataLength, tcp::socket socket)
+void NetworkHandler::sendData(char* data, int dataLength)
 {
 	boost::asio::write(socket, boost::asio::buffer(data, dataLength));
 }
 
-std::vector<char> Networking::receiveData(tcp::socket socket)
+std::vector<char> NetworkHandler::receiveData()
 {
 	std::vector<char> ret = std::vector<char>();
 	for (;;)
@@ -42,3 +45,4 @@ std::vector<char> Networking::receiveData(tcp::socket socket)
 	}
 	return ret;
 }
+

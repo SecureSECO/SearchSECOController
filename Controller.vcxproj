@@ -161,6 +161,7 @@
     <ClCompile Include="Commands.cpp" />
     <ClCompile Include="Controller.cpp" />
     <ClCompile Include="Networking.cpp" />
+    <ClCompile Include="NetworkUtils.cpp" />
     <ClCompile Include="Parser.cpp" />
     <ClCompile Include="Print.cpp" />
     <ClCompile Include="Utils.cpp" />
@@ -176,6 +177,7 @@
   <ItemGroup>
     <ClInclude Include="Commands.h" />
     <ClInclude Include="Networking.h" />
+    <ClInclude Include="NetworkUtils.h" />
     <ClInclude Include="Parser.h" />
     <ClInclude Include="Print.h" />
     <ClInclude Include="Utils.h" />

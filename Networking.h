@@ -12,7 +12,7 @@ public:
 	NetworkHandler();
 
 	/// <summary>
-	/// Send data to the database
+	/// Send data to the database.
 	/// </summary>
 	/// <param name="data">The data to be send</param>
 	/// <param name="dataSize">The size of the data array in bytes</param>
@@ -22,6 +22,9 @@ public:
 
 	std::vector<char> receiveData();
 private:
+	/// <summary>
+	/// Opens a connection to the database.
+	/// </summary>
 	void openConnection();
 
 	tcp::socket socket;

@@ -1,21 +1,23 @@
 #include "Networking.h"
 #include <boost/array.hpp>
-#include "parser/Parser/Parser.h"
+#include <iostream>
 
 // Made using this tutorial https://www.boost.org/doc/libs/1_75_0/doc/html/boost_asio/tutorial.html
+boost::asio::io_context NetworkHandler::io_context;
 
-NetworkHandler::NetworkHandler() : socket(io_context)
+void NetworkHandler::openConnection(std::string server, std::string port)
 {
-}
-
-void NetworkHandler::openConnection()
-{
-	std::string serverApi = "TODO: server name and shit";
+	std::string serverApi = server;
 
 	tcp::resolver resolver(io_context);
-	tcp::resolver::results_type endpoints = resolver.resolve(serverApi, "TODO: something here");
+	tcp::resolver::results_type endpoints = resolver.resolve(serverApi, port);
 
 	boost::asio::connect(socket, endpoints);
+}
+
+NetworkHandler* NetworkHandler::createHandler()
+{
+	return new NetworkHandler(io_context);
 }
 
 void NetworkHandler::sendData(char* data, int dataLength)
@@ -33,15 +35,18 @@ std::vector<char> NetworkHandler::receiveData()
 
 
 		size_t len = socket.read_some(boost::asio::buffer(buf), error);
-		if (error == boost::asio::error::eof)
+
+		for (int i = 0; i < len; i++)
+		{
+			ret.push_back(buf[i]);
+		}
+
+		if (error == boost::asio::error::eof || error.value() == 0)
 			break; // Connection closed cleanly by peer.
 		else if (error)
-			throw boost::system::system_error(error);
+			std::cout << "Networking error: " << error.message();
+		throw boost::system::system_error(error);
 
-		for (char c : buf)
-		{
-			ret.push_back(c);
-		}
 	}
 	return ret;
 }

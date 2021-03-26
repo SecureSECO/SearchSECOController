@@ -49,14 +49,19 @@ void Commands::upload(std::map<std::string, std::string> flags)
 	std::string tempLocation = "spiderDownloads";
 	Commands::downloadRepository(flags["argument"], flags, tempLocation);
 	std::vector<HashData> hashes = Commands::parseRepository(tempLocation, flags);
+
 	// uploading the hashes
-	print::printline(DatabaseRequests::uploadHashes(hashes));
+	print::printline(DatabaseRequests::uploadHashes(hashes, utils::getProjectMetaDataFromFile(tempLocation + "/project_data.meta")));
 }
 
 void Commands::checkupload(std::map<std::string, std::string> flags)
 {
 	// depends: spider, db
-	error::err_not_implemented("checkupload");
+	std::string tempLocation = "spiderDownloads";
+	Commands::downloadRepository(flags["argument"], flags, tempLocation);
+	std::vector<HashData> hashes = Commands::parseRepository(tempLocation, flags);
+	// uploading the hashes
+	print::printline(DatabaseRequests::checkUploadHashes(hashes, utils::getProjectMetaDataFromFile(tempLocation + "/project_data.meta")));
 }
 
 void Commands::update(std::map<std::string, std::string> flags)

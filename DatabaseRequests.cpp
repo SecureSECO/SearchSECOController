@@ -6,14 +6,15 @@
 #define DATABASE_API_IP "131.211.31.153"
 #define DATABASE_API_PORT "8003"
 
-#define DATABASE_UPLOAD_REQUEST "addp"
-#define DATABASE_FIND_REQUEST "find"
+#define DATABASE_UPLOAD_REQUEST "upld"
+#define DATABASE_CHECK_UPLOAD_REQUEST "chup"
+#define DATABASE_CHECK_REQUEST "chck"
 
-std::string DatabaseRequests::uploadHashes(std::vector<HashData> hashes)
+std::string DatabaseRequests::uploadHashes(std::vector<HashData> hashes, ProjectMetaData metaData)
 {
     int dataSize = 0;
-    std::string header = NetworkUtils::generateHeader({ "3db1a3fc-24d8-4017-8d8b-7a2673625c58", "3", "license", "projectName", "url", "authorName", "authorMail", "5" });
-    char* rawData = NetworkUtils::getAllDataFromHashes(hashes, dataSize, header);
+    //std::string header = NetworkUtils::generateHeader({ "3db1a3fc-24d8-4017-8d8b-7a2673625c58", "3", "license", "projectName", "url", "authorName", "authorMail", "5" });
+    char* rawData = NetworkUtils::getAllDataFromHashes(hashes, dataSize, metaData.getAsHeader());
 
     return execRequest(DATABASE_UPLOAD_REQUEST, rawData, dataSize);
 }
@@ -23,7 +24,15 @@ std::string DatabaseRequests::findMatches(std::vector<HashData> hashes)
     int dataSize = 0;
     char* rawData = NetworkUtils::getHashDataFromHashes(hashes, dataSize);
 
-    return execRequest(DATABASE_FIND_REQUEST, rawData, dataSize);
+    return execRequest(DATABASE_CHECK_REQUEST, rawData, dataSize);
+}
+
+std::string DatabaseRequests::checkUploadHashes(std::vector<HashData> hashes, ProjectMetaData metaData)
+{
+    int dataSize = 0;
+    char* rawData = NetworkUtils::getAllDataFromHashes(hashes, dataSize, metaData.getAsHeader());
+
+    return execRequest(DATABASE_CHECK_UPLOAD_REQUEST, rawData, dataSize);
 }
 
 std::string DatabaseRequests::execRequest(std::string request, char* rawData, int dataSize)

@@ -182,6 +182,7 @@
     <ClInclude Include="NetworkUtils.h" />
     <ClInclude Include="Parser.h" />
     <ClInclude Include="Print.h" />
+    <ClInclude Include="ProjectMetaData.h" />
     <ClInclude Include="Utils.h" />
   </ItemGroup>
   <ItemGroup>

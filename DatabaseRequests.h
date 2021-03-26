@@ -1,6 +1,7 @@
 #pragma once
 #include <string>
 #include <vector>
+#include "ProjectMetaData.h"
 
 struct HashData;
 class NetworkHandler;
@@ -13,7 +14,7 @@ public:
 	/// </summary>
 	/// <param name="hashes">The hashes to be uploaded</param>
 	/// <returns>The string that the database send back</returns>
-	static std::string uploadHashes(std::vector<HashData> hashes);
+	static std::string uploadHashes(std::vector<HashData> hashes, ProjectMetaData metaData);
 
 	/// <summary>
 	/// Sends a request to the database to find matching hashes in the database.
@@ -21,6 +22,13 @@ public:
 	/// <param name="hashes">The hashes you want to find in the database.</param>
 	/// <returns>The matches that the database gives back.</returns>
 	static std::string findMatches(std::vector<HashData> hashes);
+
+	/// <summary>
+	/// Sends a request to the database to upload and check the given hashes.
+	/// </summary>
+	/// <param name="hashes">The hashes to be uploaded</param>
+	/// <returns>The string that the database send back</returns>
+	static std::string checkUploadHashes(std::vector<HashData> hashes, ProjectMetaData metaData);
 private:
 	/// <summary>
 	/// The logic for sending a request to the database.

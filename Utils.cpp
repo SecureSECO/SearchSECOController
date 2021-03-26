@@ -6,7 +6,10 @@ Utrecht University within the Software Project course.
 
 #include "Utils.h"
 #include <algorithm>
-
+#include <map>
+#include <fstream>
+#include <iostream>
+#include "ProjectMetaData.h"
 
 std::vector<std::string> utils::split(std::string str, char delimiter)
 {
@@ -53,4 +56,20 @@ std::string utils::padLeft(std::string src, char pad, int length)
 	}
 
 	return src;
+}
+
+ProjectMetaData utils::getProjectMetaDataFromFile(std::string file)
+{
+	// TODO: handle files that are not what we expect
+	std::map<std::string, std::string> entries;
+
+	std::ifstream configFile(file);
+	std::string line;
+
+	while (std::getline(configFile, line))
+	{
+		std::vector<std::string> splitted = split(line, ':');
+		entries[splitted[0]] = splitted[1];
+	}
+	return ProjectMetaData("3db1a3fc-24d8-4017-8d8b-7a2673625c58", entries["updated at"], entries["license"], split(entries["name"], '/')[1], entries["url"], split(entries["name"], '/')[0], entries["email"], "4");
 }

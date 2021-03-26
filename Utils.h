@@ -8,6 +8,8 @@ Utrecht University within the Software Project course.
 #include <string>
 #include <vector>
 
+struct ProjectMetaData;
+
 class utils
 {
 public:
@@ -57,6 +59,9 @@ public:
 	/// Pads a string with a given char untill the string is the requested length
 	/// </summary>
 	static std::string padLeft(std::string src, char pad_left, int length);
+
+
+	static ProjectMetaData getProjectMetaDataFromFile(std::string file);
 };
 
 

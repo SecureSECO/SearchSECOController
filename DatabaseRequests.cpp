@@ -3,8 +3,8 @@
 #include "Networking.h"
 #include "parser/Parser/Parser.h"
 
-#define DATABASE_API_IP "TODO: database api ip here"
-#define DATABASE_API_PORT "Also TODO"
+#define DATABASE_API_IP "131.211.31.153"
+#define DATABASE_API_PORT "8003"
 
 #define DATABASE_UPLOAD_REQUEST "addp"
 #define DATABASE_FIND_REQUEST "find"
@@ -12,7 +12,7 @@
 std::string DatabaseRequests::uploadHashes(std::vector<HashData> hashes)
 {
     int dataSize = 0;
-    std::string header = NetworkUtils::generateHeader({ "1", "3", "license", "projectName", "url", "authorName", "authorMail", "5" });
+    std::string header = NetworkUtils::generateHeader({ "3db1a3fc-24d8-4017-8d8b-7a2673625c58", "3", "license", "projectName", "url", "authorName", "authorMail", "5" });
     char* rawData = NetworkUtils::getAllDataFromHashes(hashes, dataSize, header);
 
     return execRequest(DATABASE_UPLOAD_REQUEST, rawData, dataSize);

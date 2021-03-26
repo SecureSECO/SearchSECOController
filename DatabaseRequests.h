@@ -1,5 +1,9 @@
 #pragma once
-#include "Networking.h"
+#include <string>
+#include <vector>
+
+struct HashData;
+class NetworkHandler;
 
 class DatabaseRequests
 {

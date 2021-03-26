@@ -1,5 +1,7 @@
 #include "DatabaseRequests.h"
 #include "NetworkUtils.h"
+#include "Networking.h"
+#include "parser/Parser/Parser.h"
 
 #define DATABASE_API_IP "TODO: database api ip here"
 #define DATABASE_API_PORT "Also TODO"

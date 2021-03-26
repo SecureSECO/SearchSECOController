@@ -16,8 +16,8 @@ char* NetworkUtils::getAllDataFromHashes(std::vector<HashData> data, int& size, 
 	size = header.size() + 1;
 	for (HashData hd : data)
 	{
-		size += hd.fileName.length() + hd.functionName.length() + hd.hash.length() + std::to_string(hd.lineNumber).length();
-		size += 7;
+		size += hd.fileName.length() + hd.functionName.length() + hd.hash.length() + std::to_string(hd.lineNumber).length() + 1/*TODO: +1 vervangen voor authors*/;
+		size += 5;
 	}
 
 	// Filling the buffer by first adding the header, and then each entry.

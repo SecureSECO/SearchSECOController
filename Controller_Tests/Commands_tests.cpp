@@ -16,7 +16,6 @@
 #include "../parser/Parser/Node.cpp"
 #include "../parser/Parser/md5.cpp"
 #include "../parser/Parser/AbstractSyntaxToHashable.cpp"
-
 TEST(Commands_tests, check_valid_command)
 {
 	EXPECT_TRUE(Commands::isCommand("start"));

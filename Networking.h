@@ -22,7 +22,7 @@ public:
 	/// </summary>
 	void openConnection(std::string server, std::string port);
 
-	std::vector<char> receiveData();
+	std::string receiveData();
 private:
 	static boost::asio::io_context io_context;
 	NetworkHandler(boost::asio::io_context& io_context)

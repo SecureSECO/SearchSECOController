@@ -10,6 +10,7 @@ Utrecht University within the Software Project course.
 #include "spider/SearchSECOSpider/SearchSecoSpider.h"
 #include "Utils.h"
 #include "parser/Parser/Parser.h"
+#include "DatabaseRequests.h"
 
 // general function
 
@@ -38,17 +39,18 @@ void Commands::check(std::map<std::string, std::string> flags)
 	Commands::downloadRepository(flags["argument"], flags, tempLocation);
 	std::vector<HashData> hashes = Commands::parseRepository(tempLocation, flags);
 	// temporary printing of all the hashes
-	for (int i = 0; i < hashes.size(); i++)
-	{
-		print::printline(hashes[i].hash);
-	}
+	print::printline(DatabaseRequests::findMatches(hashes));
 	//TODO: delete temp folder
 }
 
 void Commands::upload(std::map<std::string, std::string> flags)
 {
 	// depends: spider, db
-	error::err_not_implemented("upload");
+	std::string tempLocation = "spiderDownloads";
+	Commands::downloadRepository(flags["argument"], flags, tempLocation);
+	std::vector<HashData> hashes = Commands::parseRepository(tempLocation, flags);
+	// uploading the hashes
+	print::printline(DatabaseRequests::uploadHashes(hashes));
 }
 
 void Commands::checkupload(std::map<std::string, std::string> flags)

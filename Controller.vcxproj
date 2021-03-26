@@ -160,6 +160,7 @@
   <ItemGroup>
     <ClCompile Include="Commands.cpp" />
     <ClCompile Include="Controller.cpp" />
+    <ClCompile Include="DatabaseRequests.cpp" />
     <ClCompile Include="Networking.cpp" />
     <ClCompile Include="NetworkUtils.cpp" />
     <ClCompile Include="Parser.cpp" />
@@ -176,6 +177,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Commands.h" />
+    <ClInclude Include="DatabaseRequests.h" />
     <ClInclude Include="Networking.h" />
     <ClInclude Include="NetworkUtils.h" />
     <ClInclude Include="Parser.h" />

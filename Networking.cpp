@@ -25,7 +25,7 @@ void NetworkHandler::sendData(char* data, int dataLength)
 	boost::asio::write(socket, boost::asio::buffer(data, dataLength));
 }
 
-std::vector<char> NetworkHandler::receiveData()
+std::string NetworkHandler::receiveData()
 {
 	std::vector<char> ret = std::vector<char>();
 	for (;;)
@@ -52,6 +52,6 @@ std::vector<char> NetworkHandler::receiveData()
 		}
 
 	}
-	return ret;
+	return std::string(ret.begin(), ret.end());
 }
 

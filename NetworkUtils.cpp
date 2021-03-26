@@ -9,7 +9,7 @@ void NetworkUtils::addStringToBuffer(char* buffer, int& pos, std::string adding)
 	}
 }
 
-char* NetworkUtils::getDataFromHashes(std::vector<HashData> data, int& size, std::string header)
+char* NetworkUtils::getAllDataFromHashes(std::vector<HashData> data, int& size, std::string header)
 {
 	// Calcutating the eventual size of the string before hand, 
 	// so that we don't have to increase the size of the buffer.
@@ -17,7 +17,7 @@ char* NetworkUtils::getDataFromHashes(std::vector<HashData> data, int& size, std
 	for (HashData hd : data)
 	{
 		size += hd.fileName.length() + hd.functionName.length() + hd.hash.length() + std::to_string(hd.lineNumber).length();
-		size += 5;
+		size += 7;
 	}
 
 	// Filling the buffer by first adding the header, and then each entry.
@@ -28,15 +28,57 @@ char* NetworkUtils::getDataFromHashes(std::vector<HashData> data, int& size, std
 
 	for (HashData hd : data)
 	{
+		// hash|functionName|fileLocation|lineNumber|number_of_authors|author1_name|author1_mail|...
+		addStringToBuffer(buffer, pos, hd.hash);
+		buffer[pos++] = 0;
+		addStringToBuffer(buffer, pos, hd.functionName);
+		buffer[pos++] = 0;
 		addStringToBuffer(buffer, pos, hd.fileName);
 		buffer[pos++] = 0;
 		addStringToBuffer(buffer, pos, std::to_string(hd.lineNumber));
 		buffer[pos++] = 0;
-		addStringToBuffer(buffer, pos, hd.functionName);
-		buffer[pos++] = 0;
+		addStringToBuffer(buffer, pos, "0");
+		buffer[pos++] = '\n';
+	}
+
+	return buffer;
+}
+
+char* NetworkUtils::getHashDataFromHashes(std::vector<HashData> data, int& size)
+{
+	// Calcutating the eventual size of the string before hand, 
+	// so that we don't have to increase the size of the buffer.
+	size = 0;
+	for (HashData hd : data)
+	{
+		size += hd.hash.length();
+		size += 1;
+	}
+
+	// Filling the buffer by first adding the header, and then each entry.
+	char* buffer = new char[size];
+	int pos = 0;
+
+	for (HashData hd : data)
+	{
+		// hash
 		addStringToBuffer(buffer, pos, hd.hash);
 		buffer[pos++] = '\n';
 	}
 
 	return buffer;
+}
+
+std::string NetworkUtils::generateHeader(std::vector<std::string> components)
+{
+	if (components.size() == 0)
+	{
+		return "";
+	}
+	std::string output = components[0];
+	for (int i = 1; i < components.size(); i++)
+	{
+		output.append('\0' + components[i]);
+	}
+	return output;
 }

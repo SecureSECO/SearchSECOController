@@ -7,7 +7,7 @@ TEST(Networking_get_data_from_hashes_tests, basic_test)
 {
 	std::vector<HashData> hashes = { HashData("HASH", "FUNCTION", "FILENAME", 5) };
 	int size;
-	char* buffer = NetworkUtils::getDataFromHashes(hashes, size, "HEADER");
+	char* buffer = NetworkUtils::getAllDataFromHashes(hashes, size, "HEADER");
 	char* s = "HEADER\nFILENAME\0005\000FUNCTION\000HASH\n";
 	for (int i = 0; i < size; i++)
 	{

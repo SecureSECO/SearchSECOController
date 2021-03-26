@@ -6,6 +6,7 @@ Utrecht University within the Software Project course.
 
 #include "Print.h"
 #include "Utils.h"
+#include "parser/Parser/Parser.h"
 
 #include <iostream>
 #include <fstream>
@@ -87,6 +88,28 @@ void print::version_full()
 		print::printline(print::tab() + system + " version " + version);
 		
 		version_file.close();
+	}
+}
+
+void print::printHashMatches(std::vector<HashData> hashes, std::string databaseOutput)
+{
+	std::map<std::string, HashData*> localHashes = {};
+	for (int i = 0; i < hashes.size(); i++)
+	{
+		localHashes[hashes[i].hash] = &(hashes[i]);
+	}
+
+	std::vector<std::string> dbentries = utils::split(databaseOutput, '\n');
+	for (std::string entry : dbentries)
+	{
+		std::vector<std::string> entrySplitted = utils::split(entry, '?');
+		if (localHashes.count(entrySplitted[0]) > 0)
+		{
+			// method1_hash|method1_projectid|method1_version|method1_name|method1_fileLocation|method1_lineNumber|number_of_authors|method1_authorid1|method1_authorid2|
+			HashData* hash = localHashes[entrySplitted[0]];
+			printline(hash->functionName + " in file " + hash->fileName + " line " + std::to_string(hash->lineNumber) + " was found in our database: ");
+			printline("Function " + entrySplitted[3] + " in project " + entrySplitted[1] + " in file " + entrySplitted[4] + " line " + entrySplitted[5]);
+		}
 	}
 }
 

@@ -39,7 +39,7 @@ void Commands::check(std::map<std::string, std::string> flags)
 	Commands::downloadRepository(flags["argument"], flags, tempLocation);
 	std::vector<HashData> hashes = Commands::parseRepository(tempLocation, flags);
 	// temporary printing of all the hashes
-	print::printline(DatabaseRequests::findMatches(hashes));
+	print::printHashMatches(hashes, DatabaseRequests::findMatches(hashes));
 	//TODO: delete temp folder
 }
 
@@ -61,7 +61,7 @@ void Commands::checkupload(std::map<std::string, std::string> flags)
 	Commands::downloadRepository(flags["argument"], flags, tempLocation);
 	std::vector<HashData> hashes = Commands::parseRepository(tempLocation, flags);
 	// uploading the hashes
-	print::printline(DatabaseRequests::checkUploadHashes(hashes, utils::getProjectMetaDataFromFile(tempLocation + "/project_data.meta")));
+	print::printHashMatches(hashes, DatabaseRequests::checkUploadHashes(hashes, utils::getProjectMetaDataFromFile(tempLocation + "/project_data.meta")));
 }
 
 void Commands::update(std::map<std::string, std::string> flags)

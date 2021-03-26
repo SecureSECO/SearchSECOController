@@ -7,6 +7,7 @@ Utrecht University within the Software Project course.
 #pragma once
 
 #include<string>
+struct HashData;
 
 namespace print
 {
@@ -51,6 +52,10 @@ namespace print
 	/// </summary>
 	void version_full();
 
+	/// <summary>
+	/// Prints information about the hash matches that were found in the database
+	/// </summary>
+	void printHashMatches(std::vector<HashData> hashes, std::string databaseOutput);
 }
 
 namespace error 

@@ -41,11 +41,15 @@ std::vector<char> NetworkHandler::receiveData()
 			ret.push_back(buf[i]);
 		}
 
-		if (error == boost::asio::error::eof || error.value() == 0)
+		if (error == boost::asio::error::eof)
+		{
 			break; // Connection closed cleanly by peer.
+		}
 		else if (error)
+		{
 			std::cout << "Networking error: " << error.message();
-		throw boost::system::system_error(error);
+			throw boost::system::system_error(error);
+		}
 
 	}
 	return ret;

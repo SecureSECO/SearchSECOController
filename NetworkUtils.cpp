@@ -30,13 +30,13 @@ char* NetworkUtils::getAllDataFromHashes(std::vector<HashData> data, int& size, 
 	{
 		// hash|functionName|fileLocation|lineNumber|number_of_authors|author1_name|author1_mail|...
 		addStringToBuffer(buffer, pos, hd.hash);
-		buffer[pos++] = 0;
+		buffer[pos++] = '?';
 		addStringToBuffer(buffer, pos, hd.functionName);
-		buffer[pos++] = 0;
+		buffer[pos++] = '?';
 		addStringToBuffer(buffer, pos, hd.fileName);
-		buffer[pos++] = 0;
+		buffer[pos++] = '?';
 		addStringToBuffer(buffer, pos, std::to_string(hd.lineNumber));
-		buffer[pos++] = 0;
+		buffer[pos++] = '?';
 		addStringToBuffer(buffer, pos, "0");
 		buffer[pos++] = '\n';
 	}
@@ -78,7 +78,7 @@ std::string NetworkUtils::generateHeader(std::vector<std::string> components)
 	std::string output = components[0];
 	for (int i = 1; i < components.size(); i++)
 	{
-		output.append('\0' + components[i]);
+		output.append('?' + components[i]);
 	}
 	return output;
 }

@@ -32,7 +32,7 @@ std::string DatabaseRequests::execRequest(std::string request, char* rawData, in
     NetworkHandler* networkHandler = startConnection();
 
     // Then send the header (what request we are doing and how much data we are sending)
-    std::string requestType = request + std::to_string(dataSize);
+    std::string requestType = request + std::to_string(dataSize) + "\n";
     networkHandler->sendData(requestType);
 
     // After that we send the data

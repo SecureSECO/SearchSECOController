@@ -8,7 +8,7 @@ TEST(Networking_get__all_data_from_hashes_tests, basic_test)
 	std::vector<HashData> hashes = { HashData("HASH", "FUNCTION", "FILENAME", 5) };
 	int size;
 	char* buffer = NetworkUtils::getAllDataFromHashes(hashes, size, "HEADER");
-	char* s = "HEADER\nHASH\000FUNCTION\000FILENAME\0005\0000\n";
+	char* s = "HEADER\nHASH?FUNCTION?FILENAME?5?0\n";
 	for (int i = 0; i < size; i++)
 	{
 		EXPECT_EQ(buffer[i], s[i]);
@@ -34,7 +34,7 @@ TEST(Networking_get__all_data_from_hashes_tests, bigger_test)
 	std::vector<HashData> hashes = { HashData("HASH", "FUNCTION", "FILENAME", 5), HashData("HASH", "FUNCTION", "FILENAME", 2), HashData("HASH", "FUNCTION", "FILENAME", 1) };
 	int size;
 	char* buffer = NetworkUtils::getAllDataFromHashes(hashes, size, "HEADER");
-	char* s = "HEADER\nHASH\000FUNCTION\000FILENAME\0005\0000\nHASH\000FUNCTION\000FILENAME\0002\0000\nHASH\000FUNCTION\000FILENAME\0001\0000\n";
+	char* s = "HEADER\nHASH?FUNCTION?FILENAME?5?0\nHASH?FUNCTION?FILENAME?2?0\nHASH?FUNCTION?FILENAME?1?0\n";
 	for (int i = 0; i < size; i++)
 	{
 		EXPECT_EQ(buffer[i], s[i]);

@@ -1,3 +1,8 @@
+/*
+This program has been developed by students from the bachelor Computer Science at
+Utrecht University within the Software Project course.
+© Copyright Utrecht University (Department of Information and Computing Sciences)
+*/
 #pragma once
 #include <vector>
 #include <string>
@@ -27,7 +32,7 @@ public:
 
 	std::string getAsHeader()
 	{
-		return NetworkUtils::generateHeader({ id, std::to_string(version), license, name, url, authorName, authorMail });
+		return NetworkUtils::generateHeader({ id, version, license, name, url, authorName, authorMail });
 	};
 
 	std::string id;

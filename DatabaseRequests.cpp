@@ -28,14 +28,20 @@ std::string DatabaseRequests::findMatches(std::vector<HashData> hashes)
 
 std::string DatabaseRequests::execRequest(std::string request, char* rawData, int dataSize)
 {
+    // First start the connection
     NetworkHandler* networkHandler = startConnection();
+
+    // Then send the header (what request we are doing and how much data we are sending)
     std::string requestType = request + std::to_string(dataSize);
     networkHandler->sendData(requestType);
 
+    // After that we send the data
     networkHandler->sendData(rawData, dataSize);
 
+    // Then we wait for the output that the API gives us
     std::string output = networkHandler->receiveData();
 
+    // Deleting the data we send and closing the connection
     delete[] rawData;
     delete networkHandler;
 

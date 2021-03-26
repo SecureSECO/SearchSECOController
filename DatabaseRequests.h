@@ -30,7 +30,7 @@ private:
 	///		3: Receiving the data the API returns
 	/// </summary>
 	/// <param name="request">The request we are sending to the API</param>
-	/// <param name="rawData">THIS DATA WILL BE AUTOMATICLY DELETED AFTER IT HAS BEEN SEND.
+	/// <param name="rawData">THIS DATA WILL BE AUTOMATICLY DELETED AFTER IT HAS BEEN SEND BY THIS FUNCTION.
 	/// The data we want to send to the API. 
 	/// This data can most likely be generated with a function in NetworUtils like getAllDataFromHashes.</param>
 	/// <param name="dataSize">How much data we are sending</param>

@@ -22,10 +22,16 @@ void RunSpider::runSpider(std::string s)
 
 
 // Also don't want to include the databaserequest stuff
-std::string DatabaseRequests::uploadHashes(std::vector<HashData> hashes)
+std::string DatabaseRequests::uploadHashes(std::vector<HashData> hashes, ProjectMetaData pmd)
 {
     return "";
 }
+
+std::string DatabaseRequests::checkUploadHashes(std::vector<HashData> hashes, ProjectMetaData pmd)
+{
+    return "";
+}
+
 
 std::string DatabaseRequests::findMatches(std::vector<HashData> hashes)
 {

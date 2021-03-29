@@ -21,13 +21,13 @@ public:
 	/// <param name="args">The command line arguments</param>
 	/// <param name="argc">The number of arguments</param>
 	/// <returns>A map with as key the flag, and as value the corresponding value</returns>
-	std::map<std::string, std::string> parse(std::string configPath, std::string sourcePath, std::string command, std::string mandatoryArguments, std::map<std::string, std::string> optionalArguments);
+	static std::map<std::string, std::string> parse(std::string configPath, std::string sourcePath, std::string command, std::string mandatoryArguments, std::map<std::string, std::string> optionalArguments);
 private:
 	/// <summary>
 	/// Will return a map with all valid flags and their default value for a given command
 	/// </summary>
 	/// <param name="command">The command you want the map for</param>
-	std::map<std::string, std::string> getDefaultFlagsForCommand(std::string sourcePath, std::string command, std::string mandatoryArguments);
+	static std::map<std::string, std::string> getDefaultFlagsForCommand(std::string sourcePath, std::string command, std::string mandatoryArguments);
 
 	/// <summary>
 	/// Will read out the given config file and set the flags and arguments in the map given

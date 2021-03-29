@@ -85,7 +85,6 @@ int main(int argc, char* argv[])
 	std::string location = args[0];
 	// Getting all the flags and arguments out of the config file and command line arguments
 	// TODO make config flexible?
-	// TODO static parse??
 	std::map<std::string, std::string> flagArgs = FlagParser::parse("config.txt", location, command, mandatory_arguments, optional_arguments);
 
 	// Checking if a command was given

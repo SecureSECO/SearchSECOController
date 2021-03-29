@@ -59,7 +59,7 @@ std::map<std::string, std::string> FlagParser::parse(std::string configPath, std
 		error::err_insufficient_arguments("searchseco", 1, 0);
 	}
 	// get default hardcoded dict
-	std::map<std::string, std::string> flagArgs = getDefaultFlagsForCommand(sourcePath, command, mandatoryArguments);
+	std::map<std::string, std::string> flagArgs = FlagParser::getDefaultFlagsForCommand(sourcePath, command, mandatoryArguments);
 
 	// apply user defaults 
 	// TODO we need something to ensure base arguments are not overwritten by the file, maybe remove them from valid options if possible

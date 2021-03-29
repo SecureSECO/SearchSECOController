@@ -10,14 +10,8 @@ Utrecht University within the Software Project course.
 #include "Utils.h"
 #include "Print.h"
 
-std::map<std::string, std::string> FlagParser::parse(std::string path, std::string* args, int argc)
+std::map<std::string, std::string> FlagParser::parse(std::string configPath, std::string sourcePath, std::string command, std::string mandatoryArguments, std::map<std::string, std::string> optionalArguments)
 {
-	// We need at least 2 arguments (first one is the path to the executable, second the command)
-	if (argc <= 1)
-	{
-		error::err_insufficient_arguments("searchseco", 1, 0);
-	}
-
 	// translations from shorthand terms to what the mean
 	std::map<std::string, std::string> shortToLong =
 	{
@@ -28,63 +22,73 @@ std::map<std::string, std::string> FlagParser::parse(std::string path, std::stri
 		{"o", "output"},
 		{"s", "save"}
 	};
-	int currentArg = 1;
-	// translate short flags to full words and remove dashes
-	for (int i = currentArg; i < argc; i++)
+
+	// TODO translate short flags to full words TODO rewrite for optionalArguments
+	/*for (int i = 0; i < argc; i++)
 	{
-		args[i] = utils::trim(args[i], "-");
 		if (shortToLong.count(args[i]) != 0)
 		{
 			args[i] = shortToLong[args[i]];
 		}
-	}
+	}*/
+
 	// handle commands that do not take any flags
-	if (args[currentArg] == "version")
+	if (command == "") // TODO: if searchseco --version --help is called, we simply execute --version. Makes sense right?
 	{
-		return{ {"command", "version"} };
-	}
-	else if (args[currentArg] == "update")
-	{
-		return{{ "command", "update" }};
-	}
-	else if (args[currentArg] == "help")
-	{
-		return{ {"command", "help"} };
-	}
-
-	// get default hardcoded dict
-	std::map<std::string, std::string> flagArgs = getDefaultFlagsForCommand(args[currentArg++]);
-
-	// read direct argument for command, if it is needed
-	if (flagArgs.count("argument") != 0)
-	{
-		if (argc <= currentArg)
+		if (optionalArguments.count("version") != 0)
 		{
-			error::err_insufficient_arguments(args[currentArg - 1], currentArg, argc); 
+			return{ {"command", "version"} };
 		}
-		flagArgs["argument"] = args[currentArg++];
+		else if (optionalArguments.count("update") != 0)
+		{
+			std::map<std::string, std::string> flagArgs = { 
+				{ "command", "update" },
+				{ "version", ""},
+			};
+			std::string version = optionalArguments["update"];
+			// TODO: check if version seems valid?
+			flagArgs["version"] = version;
+			return flagArgs;
+		}
+		else if (optionalArguments.count("help") != 0)
+		{
+			return{ {"command", "help"} };
+		}
+
+		// If the command is not specified, we cannot execute it
+		error::err_insufficient_arguments("searchseco", 1, 0);
 	}
+	// get default hardcoded dict
+	std::map<std::string, std::string> flagArgs = getDefaultFlagsForCommand(sourcePath, command, mandatoryArguments);
 
-
-	// apply user defaults
-	parseFile(flagArgs, path);
+	// apply user defaults 
+	// TODO we need something to ensure base arguments are not overwritten by the file, maybe remove them from valid options if possible
+	parseFile(flagArgs, configPath);
 
 	// apply command values
-	parseFlags(flagArgs, args, argc, currentArg);
+	parseFlags(flagArgs, optionalArguments);
 
 	// return result
 	return flagArgs;
 }
 
-std::map<std::string, std::string> FlagParser::getDefaultFlagsForCommand(std::string command)
+std::map<std::string, std::string> FlagParser::getDefaultFlagsForCommand(std::string sourcePath, std::string command, std::string mandatoryArguments)
 {
 	if (command == "start")
 	{
+		std::vector<std::string> temp = utils::split(mandatoryArguments, ' ');
+		if (temp.size() != 1)
+		{
+			error::err_insufficient_arguments(command, 1, temp.size());
+		}
+		std::string storage = temp[0]; // TODO make sure this is a number >= 50
+		
+		std::string location = sourcePath; //  TODO remove searchseco.exe at the end
 		return
 		{
 			{"command", command},
-			{"argument", ""}, // storage in GB
-			{"location", ""}, 
+			{"storage", storage}, // storage in GB
+			{"location", location}, 
 			{"cores", ""},
 			{"ram", ""},
 			{"verbose", "4"},
@@ -92,10 +96,16 @@ std::map<std::string, std::string> FlagParser::getDefaultFlagsForCommand(std::st
 	}
 	else if(command == "check" || command == "checkupload")
 	{
+		std::vector<std::string> temp = utils::split(mandatoryArguments, ' ');
+		if (temp.size() != 1)
+		{
+			error::err_insufficient_arguments(command, 1, temp.size());
+		}
+		std::string url = temp[0]; //  TODO check if valid url?
 		return
 		{
 			{"command", command},
-			{"argument", ""},
+			{"url", url},
 			{"report", "console"},
 			{"save", "false"},
 			{"verbose", "4"},
@@ -103,10 +113,16 @@ std::map<std::string, std::string> FlagParser::getDefaultFlagsForCommand(std::st
 	}
 	else if (command == "upload")
 	{
+		std::vector<std::string> temp = utils::split(mandatoryArguments, ' ');
+		if (temp.size() != 1)
+		{
+			error::err_insufficient_arguments(command, 1, temp.size());
+		}
+		std::string url = temp[0]; //  TODO check if valid url?
 		return
 		{
 			{"command", command},
-			{"argument", ""},
+			{"url", url},
 			{"save", "false"},
 			{"verbose", "4"},
 		};
@@ -136,13 +152,15 @@ void FlagParser::parseFile(std::map<std::string, std::string>& flagArgs, std::st
 	configFile.close();
 }
 
-void FlagParser::parseFlags(std::map<std::string, std::string>& flagArgs, std::string* args, int argc, int start)
+void FlagParser::parseFlags(std::map<std::string, std::string>& flagArgs, std::map<std::string, std::string> optionalArguments)
 {
-	for (int i = start; i < argc; i++)
+	// TODO implement:
+	//foreach (key in optionals) if (value specified) sanitize(value) otherwise default
+	/*for (int i = start; i < argc; i++)
 	{
 		std::string flag = args[i];
 		sanitize(flagArgs, flag, args[++i], false);
-	}
+	}*/
 }
 
 void FlagParser::sanitize(std::map<std::string, std::string>& flagArgs, std::string flag, std::string argument, bool fromFile)

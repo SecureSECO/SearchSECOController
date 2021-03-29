@@ -21,13 +21,13 @@ public:
 	/// <param name="args">The command line arguments</param>
 	/// <param name="argc">The number of arguments</param>
 	/// <returns>A map with as key the flag, and as value the corresponding value</returns>
-	static std::map<std::string, std::string> parse(std::string path, std::string* args, int argc);
+	std::map<std::string, std::string> parse(std::string configPath, std::string sourcePath, std::string command, std::string mandatoryArguments, std::map<std::string, std::string> optionalArguments);
 private:
 	/// <summary>
 	/// Will return a map with all valid flags and their default value for a given command
 	/// </summary>
 	/// <param name="command">The command you want the map for</param>
-	static std::map<std::string, std::string> getDefaultFlagsForCommand(std::string command);
+	std::map<std::string, std::string> getDefaultFlagsForCommand(std::string sourcePath, std::string command, std::string mandatoryArguments);
 
 	/// <summary>
 	/// Will read out the given config file and set the flags and arguments in the map given
@@ -44,7 +44,7 @@ private:
 	/// <param name="args">The command line arguments to be parsed</param>
 	/// <param name="argc">The amount of arguments</param>
 	/// <param name="start">The start point from where we should start parsing the arguments</param>
-	static void parseFlags(std::map<std::string, std::string>& flagArgs, std::string* args, int argc, int start);
+	static void parseFlags(std::map<std::string, std::string>& flagArgs, std::map<std::string, std::string> optionalArguments);
 
 	/// <summary>
 	/// Will put update a key value pair in the given flagArgs map assuming the given argument and flag

@@ -83,10 +83,11 @@ std::map<std::string, std::string> FlagParser::getDefaultFlagsForCommand(std::st
 		return
 		{
 			{"command", command},
-			{"verbose", "4"},
-			{"storage", ""}, // in GB
+			{"argument", ""}, // storage in GB
+			{"location", ""}, 
 			{"cores", ""},
-			{"location", ""},
+			{"ram", ""},
+			{"verbose", "4"},
 		};
 	}
 	else if(command == "check" || command == "checkupload")
@@ -94,10 +95,10 @@ std::map<std::string, std::string> FlagParser::getDefaultFlagsForCommand(std::st
 		return
 		{
 			{"command", command},
-			{"verbose", "4"},
+			{"argument", ""},
 			{"report", "console"},
 			{"save", "false"},
-			{"argument", ""},
+			{"verbose", "4"},
 		};
 	}
 	else if (command == "upload")
@@ -105,9 +106,9 @@ std::map<std::string, std::string> FlagParser::getDefaultFlagsForCommand(std::st
 		return
 		{
 			{"command", command},
-			{"verbose", "4"},
-			{"save", "false"},
 			{"argument", ""},
+			{"save", "false"},
+			{"verbose", "4"},
 		};
 	}
 	error::err_cmd_not_exist(command);

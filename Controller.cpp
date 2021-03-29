@@ -8,6 +8,7 @@ Utrecht University within the Software Project course.
 #include <string>
 #include <map>
 #include <functional>
+#include <regex>
 #include "Parser.h"
 #include "Commands.h"
 #include "Print.h"
@@ -17,8 +18,7 @@ int main(int argc, char* argv[])
 {
 	std::string* args = new std::string[argc]();
 
-	// std::cout << argc;
-
+	// check if arguments are provided. If not, read them from the console
 	if (argc == 1) //check pathOrSomething  -s t
 	{
 		std::string s;
@@ -42,12 +42,47 @@ int main(int argc, char* argv[])
 		}
 	}
 
-	//for (int i = 0; i < argc; i++)
-	//{
-	//	print::printline(args[i]);
-	//}
+	// make string of all arguments (except for the path)
+	std::string flargs = "";
+	for (int i = 1; i < argc; ++i)
+	{
+		flargs += args[i] + ' ';
+	}
 
 
+	// regex constants
+	std::smatch syntax_match,
+				flarg_match;
+
+	std::regex	syntax_regex("(\\S*)\\s(?:([^-\\s]*)\\s)?(.*)");
+
+	// match base
+	std::regex_match(flargs, syntax_match, syntax_regex);
+
+	std::string command = syntax_match[1],
+				mandatory_arguments = syntax_match[2],
+				rest = syntax_match[3];
+
+	// parse optional flags
+	std::regex flarg_regex("(?:(?:-([^-\\s]+)))\\s?([^-\\s]+)?");
+
+	std::map<std::string, std::string> optional_arguments = {};
+
+	std::string::const_iterator searchStart( rest.cbegin() );
+    while ( regex_search( searchStart, rest.cend(), flarg_match, flarg_regex ) )
+    {
+		std::string flag = flarg_match[1],
+					arg = flarg_match[2];
+
+		optional_arguments[flag] = arg;
+
+		// TODO: error, warning or something upon non matching string
+
+        searchStart = flarg_match.suffix().first;
+    }
+
+
+	std::string location = args[0];
 	// Getting all the flags and arguments out of the config file and command line arguments
 	std::map<std::string, std::string> flagArgs = FlagParser::parse("config.txt", args, argc);
 

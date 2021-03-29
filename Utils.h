@@ -7,6 +7,7 @@ Utrecht University within the Software Project course.
 #pragma once
 #include <string>
 #include <vector>
+#include <map>
 
 class utils
 {
@@ -57,7 +58,22 @@ public:
 	/// Pads a string with a given char untill the string is the requested length
 	/// </summary>
 	static std::string padLeft(std::string src, char pad_left, int length);
+
+	/// <summary>
+	/// Checks if a given flag is a valid flag.
+	/// </summary>
+	static bool isFlag(std::string flag);
+
+	/// <summary>
+	/// Checks if a given flag is represented as its shorthand name.
+	/// </summary>
+	static bool isShortHandFlag(std::string flag);
+
+	/// <summary>
+	/// Checks if a given flag is represented as its long name.
+	/// </summary>
+	/// <param name="flag"></param>
+	/// <returns></returns>
+	static bool isLongFlag(std::string flag);
+
 };
-
-
-

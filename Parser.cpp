@@ -10,54 +10,45 @@ Utrecht University within the Software Project course.
 #include "Utils.h"
 #include "Print.h"
 
+// Parser constants
+
+std::map<std::string, std::string> FlagParser::shorthandFlagToLong =
+{
+	{"v", "version"},
+	{"V", "verbose"},
+	{"c", "cpu"},
+	{"r", "ram"},
+	{"o", "output"},
+	{"s", "save"}
+};
+
+
 std::map<std::string, std::string> FlagParser::parse(std::string configPath, std::string sourcePath, std::string command, std::string mandatoryArguments, std::map<std::string, std::string> optionalArguments)
 {
-	// translations from shorthand terms to what the mean
-	std::map<std::string, std::string> shortToLong =
-	{
-		{"v", "version"},
-		{"V", "verbose"},
-		{"c", "cpu"},
-		{"r", "ram"},
-		{"o", "output"},
-		{"s", "save"}
-	};
-
-	// TODO translate short flags to full words TODO rewrite for optionalArguments
-	/*for (int i = 0; i < argc; i++)
-	{
-		if (shortToLong.count(args[i]) != 0)
-		{
-			args[i] = shortToLong[args[i]];
-		}
-	}*/
+	mapShortFlagToLong(optionalArguments);
 
 	// handle commands that do not take any flags
-	if (command == "") // TODO: if searchseco --version --help is called, we simply execute --version. Makes sense right?
+	if (optionalArguments.count("version") != 0)
 	{
-		if (optionalArguments.count("version") != 0)
-		{
-			return{ {"command", "version"} };
-		}
-		else if (optionalArguments.count("update") != 0)
-		{
-			std::map<std::string, std::string> flagArgs = { 
-				{ "command", "update" },
-				{ "version", ""},
-			};
-			std::string version = optionalArguments["update"];
-			// TODO: check if version seems valid?
-			flagArgs["version"] = version;
-			return flagArgs;
-		}
-		else if (optionalArguments.count("help") != 0)
-		{
-			return{ {"command", "help"} };
-		}
-
-		// If the command is not specified, we cannot execute it
-		error::err_insufficient_arguments("searchseco", 1, 0);
+		return { 
+			{"command", "version"} 
+		};
 	}
+	else if (optionalArguments.count("update") != 0)
+	{
+		return { 
+			{ "command", "update" },
+			{ "version", mandatoryArguments},
+		};
+	}
+	else if (optionalArguments.count("help") != 0)
+	{
+		return { 
+			{"command", "help"},
+			{"with", command}
+		};
+	}
+
 	// get default hardcoded dict
 	std::map<std::string, std::string> flagArgs = FlagParser::getDefaultFlagsForCommand(sourcePath, command, mandatoryArguments);
 
@@ -70,6 +61,27 @@ std::map<std::string, std::string> FlagParser::parse(std::string configPath, std
 
 	// return result
 	return flagArgs;
+}
+
+void FlagParser::mapShortFlagToLong(std::map<std::string, std::string> &flargs)
+{
+	std::map<std::string, std::string>::iterator it;
+
+	for (it = flargs.begin(); it != flargs.end(); ++it)
+	{
+		std::string key = it->first;
+		if (utils::isShortHandFlag(key))
+		{
+			std::map<std::string, std::string>::iterator lookup = flargs.find(key);
+			if (lookup != flargs.end())
+			{
+				std::string value = lookup->second;
+				flargs.erase(lookup);
+
+				flargs[FlagParser::shorthandFlagToLong[key]] = value;
+			}
+		}
+	}
 }
 
 std::map<std::string, std::string> FlagParser::getDefaultFlagsForCommand(std::string sourcePath, std::string command, std::string mandatoryArguments)

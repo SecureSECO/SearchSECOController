@@ -51,10 +51,12 @@ int main(int argc, char* argv[])
 
 
 	// regex constants
+	// TODO throw error when the call is malformed (regex fails)
 	std::smatch syntaxMatch,
 				flargMatch;
 
-	std::regex	syntaxRegex("(\\S*)\\s(?:([^-\\s]*)\\s)?(.*)");
+	std::regex	syntaxRegex("(\\S*)\\s(?:([^-\\s]*)\\s)?(.*)"),
+				flargRegex("(?:(?:-([^-\\s]+)))\\s?([^-\\s]+)?");
 
 	// match base
 	std::regex_match(flargs, syntaxMatch, syntaxRegex);
@@ -64,8 +66,6 @@ int main(int argc, char* argv[])
 				rest = syntaxMatch[3];
 
 	// parse optional flags
-	std::regex flargRegex("(?:(?:-([^-\\s]+)))\\s?([^-\\s]+)?");
-
 	std::map<std::string, std::string> optional_arguments = {};
 
 	std::string::const_iterator searchStart( rest.cbegin() );
@@ -74,31 +74,32 @@ int main(int argc, char* argv[])
 		std::string flag = flargMatch[1],
 					arg = flargMatch[2];
 
-		optional_arguments[flag] = arg;
+		if (!utils::isFlag(flag)) error::err_flag_not_exist(flag, false);
 
-		// TODO: error, warning or something upon non matching string
+		optional_arguments[flag] = arg;
 
         searchStart = flargMatch.suffix().first;
     }
 
-
 	std::string location = args[0];
+
 	// Getting all the flags and arguments out of the config file and command line arguments
 	// TODO make config flexible?
-	std::map<std::string, std::string> flagArgs = FlagParser::parse("config.txt", location, command, mandatory_arguments, optional_arguments);
+	std::map<std::string, std::string> flagArgs 
+		= FlagParser::parse(
+			"config.txt", 
+			location, 
+			command, 
+			mandatory_arguments, 
+			optional_arguments
+		);
 
-	// Checking if a command was given
-	if (flagArgs.count("command") == 0)
+	if (command == "") error::err_cmd_not_found();
+	
+	if (Commands::isCommand(command))
 	{
-		error::err_cmd_not_found();
+		Commands::execute(command, flagArgs);
 	}
-	// Checking if the command is one we actually know, and then execution it
-	if (Commands::isCommand(flagArgs["command"]))
-	{
-		Commands::execute(flagArgs["command"], flagArgs);
-	}
-	else
-	{
-		error::err_cmd_not_exist(flagArgs["command"]);
-	}
+	else error::err_cmd_not_exist(command);
+	
 }

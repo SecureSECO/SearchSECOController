@@ -9,6 +9,7 @@ Utrecht University within the Software Project course.
 #include<string>
 #include<map>
 
+// TODO namespace?
 class FlagParser
 {
 public:
@@ -22,6 +23,16 @@ public:
 	/// <param name="argc">The number of arguments</param>
 	/// <returns>A map with as key the flag, and as value the corresponding value</returns>
 	static std::map<std::string, std::string> parse(std::string configPath, std::string sourcePath, std::string command, std::string mandatoryArguments, std::map<std::string, std::string> optionalArguments);
+
+	/// <summary>
+	/// Maps the shorthand names of the flags to their longer versions. For consistency.
+	/// </summary>
+	static void mapShortFlagToLong(std::map<std::string, std::string> &flargs);
+
+	// Parser constants
+
+	static std::map<std::string, std::string> shorthandFlagToLong;
+
 private:
 	/// <summary>
 	/// Will return a map with all valid flags and their default value for a given command
@@ -55,4 +66,5 @@ private:
 	/// <param name="argument">The argument we want to set the flag to</param>
 	/// <param name="fromFile">If the pair is from a file then we don't want to throw an error if the flag is not found in the flagargs, but instead just want to return</param>
 	static void sanitize(std::map<std::string, std::string>& flagArgs, std::string flag, std::string argument, bool fromFile);
+
 };

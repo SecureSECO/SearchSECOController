@@ -60,7 +60,7 @@ std::map<std::string, std::string> FlagParser::parse(std::string path, std::stri
 	{
 		if (argc <= currentArg)
 		{
-			error::err_insufficient_arguments(args[currentArg - 1], currentArg, argc); // TODO is this correct?
+			error::err_insufficient_arguments(args[currentArg - 1], currentArg, argc); 
 		}
 		flagArgs["argument"] = args[currentArg++];
 	}

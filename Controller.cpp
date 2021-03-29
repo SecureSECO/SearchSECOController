@@ -51,40 +51,41 @@ int main(int argc, char* argv[])
 
 
 	// regex constants
-	std::smatch syntax_match,
-				flarg_match;
+	std::smatch syntaxMatch,
+				flargMatch;
 
-	std::regex	syntax_regex("(\\S*)\\s(?:([^-\\s]*)\\s)?(.*)");
+	std::regex	syntaxRegex("(\\S*)\\s(?:([^-\\s]*)\\s)?(.*)");
 
 	// match base
-	std::regex_match(flargs, syntax_match, syntax_regex);
+	std::regex_match(flargs, syntaxMatch, syntaxRegex);
 
-	std::string command = syntax_match[1],
-				mandatory_arguments = syntax_match[2],
-				rest = syntax_match[3];
+	std::string command = syntaxMatch[1],
+				mandatory_arguments = syntaxMatch[2],
+				rest = syntaxMatch[3];
 
 	// parse optional flags
-	std::regex flarg_regex("(?:(?:-([^-\\s]+)))\\s?([^-\\s]+)?");
+	std::regex flargRegex("(?:(?:-([^-\\s]+)))\\s?([^-\\s]+)?");
 
 	std::map<std::string, std::string> optional_arguments = {};
 
 	std::string::const_iterator searchStart( rest.cbegin() );
-    while ( regex_search( searchStart, rest.cend(), flarg_match, flarg_regex ) )
+    while ( regex_search( searchStart, rest.cend(), flargMatch, flargRegex ) )
     {
-		std::string flag = flarg_match[1],
-					arg = flarg_match[2];
+		std::string flag = flargMatch[1],
+					arg = flargMatch[2];
 
 		optional_arguments[flag] = arg;
 
 		// TODO: error, warning or something upon non matching string
 
-        searchStart = flarg_match.suffix().first;
+        searchStart = flargMatch.suffix().first;
     }
 
 
 	std::string location = args[0];
 	// Getting all the flags and arguments out of the config file and command line arguments
 	// TODO make config flexible?
+	// TODO static parse??
 	std::map<std::string, std::string> flagArgs = FlagParser::parse("config.txt", location, command, mandatory_arguments, optional_arguments);
 
 	// Checking if a command was given

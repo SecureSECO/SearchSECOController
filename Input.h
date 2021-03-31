@@ -35,6 +35,8 @@ private:
 
 	void sanitizeArguments();
 
+	void requireNArguments(int n, std::string flag, std::string argument);
+
 	template <typename Callback, typename Error>
 	void validateInteger(
 		std::string argument, 
@@ -42,13 +44,6 @@ private:
 		Error error,
 		int min = INT_MIN, 
 		int max = INT_MAX);
-
-	template <typename Callback, typename Error>
-	void validateBoolean(
-		std::string argument, 
-		Callback callback,
-		Error error);
-
 	std::map<std::string, std::string> optionalArguments;
 	std::map<std::string, std::string> flagSource;
 };

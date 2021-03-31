@@ -152,13 +152,13 @@ std::string desc_err_flag_not_exist_cfg(std::string* strs)
 // strs: [flagname, argname]
 std::string desc_err_flag_invalid_arg(std::string* strs)
 {
-	return "Argument " + print::quote(strs[1]) + " is invalid for the flag " + print::quote(strs[0]) + ".\n" + print::tab() + "See --help for valid value ranges.";
+	return "Argument " + print::quote(strs[1]) + " is invalid for the flag " + print::quote("--" + strs[0]) + ".\n" + print::tab() + "See --help for valid value ranges.";
 }
 
 // strs: [flagname, argname]
 std::string desc_err_flag_invalid_arg_cfg(std::string* strs)
 {
-	return "Argument " + print::quote(strs[1]) + " is invalid for the flag " + print::quote(strs[0]) + " (configuration file).\n" + print::tab() + "See --help for valid value ranges.";
+	return "Argument " + print::quote(strs[1]) + " is invalid for the flag " + print::quote("--" + strs[0]) + " (configuration file).\n" + print::tab() + "See --help for valid value ranges.";
 }
 
 // no strs

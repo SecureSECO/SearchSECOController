@@ -8,8 +8,20 @@ Utrecht University within the Software Project course.
 
 #include<string>
 
+#include "Utils.h"
+
 namespace print
 {
+	/// <summary>
+	/// Verbosity level used by all printing functions
+	/// </summary>
+	static utils::VerbosityLevel verbosity = utils::VerbosityLevel::All;
+
+	/// <summary>
+	/// Return wether or not the verbosity level is at least the specified argument
+	/// </summary>
+	static bool VerbosityAtLeast(utils::VerbosityLevel atLeast);
+
 	/// <summary>
 	/// Prints a given string to the console, followed by a newline character.
 	/// </summary>

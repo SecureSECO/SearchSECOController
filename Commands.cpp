@@ -12,7 +12,6 @@ Utrecht University within the Software Project course.
 #include "parser/Parser/Parser.h"
 
 #include "Flags.h"
-// general function
 
 void Commands::execute(std::string command, Flags flags) 
 {

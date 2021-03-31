@@ -20,8 +20,8 @@ std::map<std::string, std::string> Flags::shorthandFlagToLong =
 Flags::Flags()
 {
 	this->mandatoryArgument = "";
-	this->flag_cpu = 2;
-	this->flag_ram = 8;
+	this->flag_cpu = 2; // TODO What amount of cpus make sense
+	this->flag_ram = 8; // TODO What amount of ram makes sense
 	this->flag_output = "console";
 	this->flag_save = false;
 	this->flag_verbose = utils::VerbosityLevel::All;

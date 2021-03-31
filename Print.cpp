@@ -122,7 +122,8 @@ enum err_code
 	flag_not_exist_cfg,
 	flag_invalid_arg,
 	flag_invalid_arg_cfg,
-	cmd_insufficient_args,
+	flag_incorrect_args,
+	cmd_incorrect_args,
 	cmd_not_found,
 	cmd_not_exist,
 	not_implemented,
@@ -132,9 +133,15 @@ enum err_code
 #pragma region Descriptions
 
 // strs: [commandname, expected_num_args, received_num_args]
-std::string desc_cmd_insufficient_arguments(std::string* strs)
+std::string desc_cmd_incorrect_arguments(std::string* strs)
 {
 	return strs[1] + print::plural(" argument", std::stoi(strs[1])) + " expected for command " + print::quote(strs[0]) + ", received " + strs[2] + '.';
+}
+
+// strs: [commandname, expected_num_args, received_num_args]
+std::string desc_flag_incorrect_arguments(std::string* strs)
+{
+	return strs[1] + print::plural(" argument", std::stoi(strs[1])) + " expected for flag " + print::quote("--"+strs[0]) + ", received " + strs[2] + '.';
 }
 
 // strs: [flagname]
@@ -186,7 +193,8 @@ std::map <int, std::function<std::string(std::string*)>> err_desc =
 	{flag_not_exist_cfg, desc_err_flag_not_exist_cfg},
 	{flag_invalid_arg, desc_err_flag_invalid_arg},
 	{flag_invalid_arg_cfg, desc_err_flag_invalid_arg_cfg},
-	{cmd_insufficient_args, desc_cmd_insufficient_arguments},
+	{flag_incorrect_args, desc_flag_incorrect_arguments},
+	{cmd_incorrect_args, desc_cmd_incorrect_arguments},
 	{cmd_not_found, desc_err_cmd_not_found},
 	{cmd_not_exist, desc_err_cmd_not_exist},
 	{not_implemented, desc_err_not_implemented},
@@ -207,9 +215,14 @@ void err(err_code code, std::string* strs, std::string extra_msg = "")
 
 #pragma region Specific_error_handlers
 
-void error::err_insufficient_arguments(std::string command, int expected, int received)
+void error::err_cmd_incorrect_arguments(std::string command, int expected, int received)
 {
-	err(cmd_insufficient_args, new std::string[3] {command, std::to_string(expected), std::to_string(received)});
+	err(cmd_incorrect_args, new std::string[3] {command, std::to_string(expected), std::to_string(received)});
+}
+
+void error::err_flag_incorrect_arguments(std::string flag, int expected, int received)
+{
+	err(flag_incorrect_args, new std::string[3]{ flag, std::to_string(expected), std::to_string(received) });
 }
 
 void error::err_flag_not_exist(std::string flag, bool from_config)

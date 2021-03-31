@@ -163,7 +163,7 @@ void Input::sanitizeArguments()
 			Input::validateBoolean(
 				argument,
 				[this]() { this->flags.flag_save = true; },
-				[flag]() { error::err_insufficient_arguments(flag, 0, 1); }
+				[flag]() { error::err_flag_incorrect_arguments(flag, 0, 1); }
 			);
 		else if (flag == "verbose")
 		{
@@ -173,13 +173,13 @@ void Input::sanitizeArguments()
 			Input::validateBoolean(
 				argument,
 				[this]() { this->flags.flag_help = true; },
-				[flag]() { error::err_insufficient_arguments(flag, 0, 1); }
+				[flag]() { error::err_flag_incorrect_arguments(flag, 0, 1); }
 			);
 		else if (flag == "version") 
 			Input::validateBoolean(
 				argument,
 				[this]() { this->flags.flag_version = true; },
-				[flag]() { error::err_insufficient_arguments(flag, 0, 1); }
+				[flag]() { error::err_flag_incorrect_arguments(flag, 0, 1); }
 		);
 	}
 }

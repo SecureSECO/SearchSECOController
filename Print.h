@@ -13,14 +13,9 @@ Utrecht University within the Software Project course.
 namespace print
 {
 	/// <summary>
-	/// Verbosity level used by all printing functions
-	/// </summary>
-	static utils::VerbosityLevel verbosity = utils::VerbosityLevel::All;
-
-	/// <summary>
 	/// Return wether or not the verbosity level is at least the specified argument
 	/// </summary>
-	static bool VerbosityAtLeast(utils::VerbosityLevel atLeast);
+	static bool VerbosityAtLeast(utils::VerbosityLevel verbosity, utils::VerbosityLevel atLeast);
 
 	/// <summary>
 	/// Prints a given string to the console, followed by a newline character.
@@ -70,13 +65,13 @@ namespace error
 	/// <summary>
 	/// Logs a string to the console.
 	/// </summary>
-	void log(std::string str);
+	void log(std::string str, utils::VerbosityLevel verbosity);
 
 	/// <summary>
 	/// Prints the warning message with the supplied warning code to the console.
 	/// </summary>
 	/// <param name="code">The code of the warning which should be displayed.</param>
-	void warn(int code);
+	void warn(int code, utils::VerbosityLevel verbosity);
 
 	/// <summary>
 	/// Throws the "Insufficient Arguments" error for a command.

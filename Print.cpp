@@ -15,9 +15,9 @@ Utrecht University within the Software Project course.
 
 #pragma region Print
 
-bool VerbosityAtLeast(utils::VerbosityLevel atLeast) 
+bool print::VerbosityAtLeast(utils::VerbosityLevel verbosity, utils::VerbosityLevel atLeast) 
 {
-	return (int)atLeast <= (int)print::verbosity;
+	return (int)atLeast <= (int)verbosity;
 }
 
 void print::printline(std::string str)
@@ -101,18 +101,18 @@ void print::version_full()
 
 // Logging and warning
 
-void error::log(std::string str)
+void error::log(std::string str, utils::VerbosityLevel verbosity)
 {
-	if (VerbosityAtLeast(utils::VerbosityLevel::All)) {
+	if (print::VerbosityAtLeast(verbosity, utils::VerbosityLevel::All)) 
 		print::printline("L - " + str);
-	}
 }
 
-void error::warn(int code)
+void error::warn(int code, utils::VerbosityLevel verbosity)
 {
 	if (code <= 0) throw std::out_of_range("Argument \"code\" out of range in warn function.");
 
-	if (VerbosityAtLeast(utils::VerbosityLevel::Warnings)) {
+	if (print::VerbosityAtLeast(verbosity, utils::VerbosityLevel::Warnings)) 
+	{
 		std::string generic_warning_msg = "Generic warning message";
 		print::printline("W" + std::to_string(code) + " - " + generic_warning_msg);
 	}
@@ -213,12 +213,11 @@ std::map <int, std::function<std::string(std::string*)>> err_desc =
 
 // MAIN ERROR FUNCTION
 // Displays the actual error message, defined by its code, and then exits the program.
+// TODO Verbosity level 
 void err(err_code code, std::string* strs, std::string extra_msg = "")
 {
-	if (VerbosityAtLeast(utils::VerbosityLevel::Errors)) {
-		print::printline("E" + utils::padLeft(std::to_string(code), '0', err_code_length) + " - " + err_desc[code](strs));
-		if (extra_msg != "") print::printline(extra_msg);
-	}
+	print::printline("E" + utils::padLeft(std::to_string(code), '0', err_code_length) + " - " + err_desc[code](strs));
+	if (extra_msg != "") print::printline(extra_msg);
 	delete[] strs;
 	exit(EXIT_FAILURE);
 }

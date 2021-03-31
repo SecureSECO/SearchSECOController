@@ -183,7 +183,7 @@ void Input::sanitizeArguments()
 			Input::requireNArguments(1, flag, argument);
 			Input::validateInteger(
 				argument,
-				[](int x) { error::log("Setting the verbosity level..."); },
+				[this](int x) { this->flags.flag_verbose = (utils::VerbosityLevel)x; },
 				[flag, argument, fromConfig]() { error::err_flag_invalid_arg(flag, argument, fromConfig); },
 				1,
 				4

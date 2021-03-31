@@ -100,6 +100,7 @@ void print::printHashMatches(std::vector<HashData> hashes, std::string databaseO
 	}
 
 	std::vector<std::string> dbentries = utils::split(databaseOutput, '\n');
+	printline(std::to_string(hashes.size()) + " " + std::to_string(dbentries.size()));
 	for (std::string entry : dbentries)
 	{
 		std::vector<std::string> entrySplitted = utils::split(entry, '?');
@@ -108,7 +109,7 @@ void print::printHashMatches(std::vector<HashData> hashes, std::string databaseO
 			// method1_hash|method1_projectid|method1_version|method1_name|method1_fileLocation|method1_lineNumber|number_of_authors|method1_authorid1|method1_authorid2|
 			HashData* hash = localHashes[entrySplitted[0]];
 			printline(hash->functionName + " in file " + hash->fileName + " line " + std::to_string(hash->lineNumber) + " was found in our database: ");
-			printline("Function " + entrySplitted[3] + " in project " + entrySplitted[1] + " in file " + entrySplitted[4] + " line " + entrySplitted[5]);
+			printline("Function " + entrySplitted[3] + " in project " + entrySplitted[1] + " in file " + entrySplitted[4] + " line " + entrySplitted[5] + "\n");
 		}
 	}
 }

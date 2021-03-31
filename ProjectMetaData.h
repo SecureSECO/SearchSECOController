@@ -17,8 +17,7 @@ public:
 		std::string name,
 		std::string url,
 		std::string authorName,
-		std::string authorMail,
-		std::string stars)
+		std::string authorMail)
 	{
 		this->id = id;
 		this->version = version;
@@ -26,8 +25,7 @@ public:
 		this->name = name;
 		this->url = url;
 		this->authorName = authorName;
-		this->authorMail = authorMail;
-		this->stars = stars;
+		this->authorMail = authorMail;;
 	}
 
 	std::string getAsHeader()
@@ -42,5 +40,4 @@ public:
 	std::string url;
 	std::string authorName;
 	std::string authorMail;
-	std::string stars;
 };

@@ -35,8 +35,8 @@ void Commands::start(std::map<std::string, std::string> flags)
 void Commands::check(std::map<std::string, std::string> flags)
 {
 	// depends: spider, db
-	std::string tempLocation = "spiderDownloads";
-	Commands::downloadRepository(flags["argument"], flags, tempLocation);
+	std::string tempLocation = "spiderDownloads\\";
+	tempLocation = Commands::downloadRepository(flags["argument"], flags, tempLocation);
 	std::vector<HashData> hashes = Commands::parseRepository(tempLocation, flags);
 	// temporary printing of all the hashes
 	print::printHashMatches(hashes, DatabaseRequests::findMatches(hashes));
@@ -46,19 +46,21 @@ void Commands::check(std::map<std::string, std::string> flags)
 void Commands::upload(std::map<std::string, std::string> flags)
 {
 	// depends: spider, db
-	std::string tempLocation = "spiderDownloads";
-	Commands::downloadRepository(flags["argument"], flags, tempLocation);
+	std::string tempLocation = "spiderDownloads\\";
+	tempLocation = Commands::downloadRepository(flags["argument"], flags, tempLocation);
 	std::vector<HashData> hashes = Commands::parseRepository(tempLocation, flags);
 
 	// uploading the hashes
-	print::printline(DatabaseRequests::uploadHashes(hashes, utils::getProjectMetaDataFromFile(tempLocation + "/project_data.meta")));
+	ProjectMetaData meta = utils::getProjectMetaDataFromFile(tempLocation + "/project_data.meta");
+	//print::printline(meta.getAsHeader());
+	print::printline(DatabaseRequests::uploadHashes(hashes, meta));
 }
 
 void Commands::checkupload(std::map<std::string, std::string> flags)
 {
 	// depends: spider, db
-	std::string tempLocation = "spiderDownloads";
-	Commands::downloadRepository(flags["argument"], flags, tempLocation);
+	std::string tempLocation = "spiderDownloads\\";
+	tempLocation = Commands::downloadRepository(flags["argument"], flags, tempLocation);
 	std::vector<HashData> hashes = Commands::parseRepository(tempLocation, flags);
 	// uploading the hashes
 	print::printHashMatches(hashes, DatabaseRequests::checkUploadHashes(hashes, utils::getProjectMetaDataFromFile(tempLocation + "/project_data.meta")));
@@ -82,9 +84,9 @@ void Commands::help(std::map<std::string, std::string> flags)
 
 // helpers
 
-void Commands::downloadRepository(std::string repository, std::map<std::string, std::string> flags, std::string downloadPath)
+std::string Commands::downloadRepository(std::string repository, std::map<std::string, std::string> flags, std::string downloadPath)
 {
-	RunSpider::runSpider(repository);
+	return RunSpider::runSpider(repository);
 }
 
 std::vector<HashData> Commands::parseRepository(std::string repository, std::map<std::string, std::string> flags)
@@ -97,7 +99,7 @@ std::vector<HashData> Commands::parseRepository(std::string repository, std::map
 		cores = std::stoi(flags["cores"]) - 1;
 	}
 	
-	return Parser::Parse(repository, cores);
+	return Parser::parse(repository, cores);
 }
 
 // init dict

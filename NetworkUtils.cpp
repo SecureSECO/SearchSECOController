@@ -5,6 +5,7 @@ Utrecht University within the Software Project course.
 */
 #include "NetworkUtils.h"
 #include "parser/Parser/Parser.h"
+#include "Print.h"
 
 void NetworkUtils::addStringToBuffer(char* buffer, int& pos, std::string adding)
 {
@@ -45,7 +46,7 @@ char* NetworkUtils::getAllDataFromHashes(std::vector<HashData> data, int& size, 
 		addStringToBuffer(buffer, pos, "0");
 		buffer[pos++] = '\n';
 	}
-
+	//print::printline(std::to_string(pos) + " " + std::to_string(size));
 	return buffer;
 }
 

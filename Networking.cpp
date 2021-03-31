@@ -7,6 +7,8 @@ Utrecht University within the Software Project course.
 #include <boost/array.hpp>
 #include <iostream>
 
+#include "Print.h"
+
 // Made using this tutorial https://www.boost.org/doc/libs/1_75_0/doc/html/boost_asio/tutorial.html
 boost::asio::io_context NetworkHandler::io_context;
 
@@ -27,6 +29,7 @@ NetworkHandler* NetworkHandler::createHandler()
 
 void NetworkHandler::sendData(char* data, int dataLength)
 {
+	print::printline("Sending " + std::to_string(dataLength) + " bytes");
 	boost::asio::write(socket, boost::asio::buffer(data, dataLength));
 }
 

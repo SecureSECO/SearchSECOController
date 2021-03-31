@@ -143,45 +143,64 @@ void Input::sanitizeArguments()
 		bool fromConfig = this->flagSource[flag] == "config";
 
 		if (flag == "cpu")
+		{
+			Input::requireNArguments(1, flag, argument);
 			Input::validateInteger(
 				argument, 
 				[this](int x) { this->flags.flag_cpu = x; },
 				[flag, argument, fromConfig]() { error::err_flag_invalid_arg(flag, argument, fromConfig); },
 				2);
+		}
 		else if (flag == "ram")
+		{
+			Input::requireNArguments(1, flag, argument);
 			Input::validateInteger(
-				argument, 
-				[this](int x) { this->flags.flag_ram = x; }, 
+				argument,
+				[this](int x) { this->flags.flag_ram = x; },
 				[flag, argument, fromConfig]() { error::err_flag_invalid_arg(flag, argument, fromConfig); },
-				4, 
+				4,
 				64);
+		}
 		else if (flag == "output")
 		{
-			// TODO implement flag validation
+			Input::requireNArguments(1, flag, argument);
+
+			std::regex urlRegex("^(http:\\/\\/www\\.|https:\\/\\/www\\.|http:\\/\\/|https:\\/\\/)?[a-z0-9]+([\\-\\.]{1}[a-z0-9]+)*\\.[a-z]{2,5}(:[0-9]{1,5})?(\\/.*)?$");
+		
+			if (argument == "console" || std::regex_match(argument, urlRegex))
+			{
+				this->flags.flag_output = argument;
+				return;
+			}
+			error::err_flag_invalid_arg(flag, argument, fromConfig);
 		}
 		else if (flag == "save")
-			Input::validateBoolean(
-				argument,
-				[this]() { this->flags.flag_save = true; },
-				[flag]() { error::err_flag_incorrect_arguments(flag, 0, 1); }
-			);
+		{
+			Input::requireNArguments(0, flag, argument);
+			this->flags.flag_save = true;
+		}
 		else if (flag == "verbose")
 		{
 			// TODO implement flag validation
 		}
 		else if (flag == "help") 
-			Input::validateBoolean(
-				argument,
-				[this]() { this->flags.flag_help = true; },
-				[flag]() { error::err_flag_incorrect_arguments(flag, 0, 1); }
-			);
-		else if (flag == "version") 
-			Input::validateBoolean(
-				argument,
-				[this]() { this->flags.flag_version = true; },
-				[flag]() { error::err_flag_incorrect_arguments(flag, 0, 1); }
-		);
+		{
+			Input::requireNArguments(0, flag, argument);
+			this->flags.flag_help = true;
+		}
+		else if (flag == "version")
+		{
+			Input::requireNArguments(0, flag, argument);
+			this->flags.flag_version = true;
+		}
 	}
+}
+
+void Input::requireNArguments(int n, std::string flag, std::string argument)
+{
+	if (n == 0 && argument != "") error::err_flag_incorrect_arguments(flag, n, 1);
+	if (n == 1 && argument == "") error::err_flag_incorrect_arguments(flag, n, 0);
+
 }
 
 template <typename Callback, typename Error>
@@ -195,12 +214,4 @@ void Input::validateInteger(std::string argument, Callback callback, Error error
 	}
 	else
 		error();
-}
-
-template <typename Callback, typename Error>
-void Input::validateBoolean(std::string argument, Callback callback, Error error)
-{
-	if (argument != "") error();
-
-	callback();
 }

@@ -59,25 +59,4 @@ std::string utils::padLeft(std::string src, char pad, int length)
 
 	return src;
 }
-
-bool utils::isFlag(std::string flag)
-{
-	return utils::isShortHandFlag(flag) || utils::isLongFlag(flag);
-}
-
-bool utils::isShortHandFlag(std::string flag)
-{
-	return FlagParser::shorthandFlagToLong.count(flag) != 0;
-}
-
-bool utils::isLongFlag(std::string flag)
-{
-	std::map<std::string, std::string> m = FlagParser::shorthandFlagToLong;
-	std::map<std::string, std::string>::iterator it;
-	
-	for (it = m.begin(); it != m.end(); ++it)
-		if (it->second == flag) return true;
-
-	return false;
-}
 #pragma endregion utils

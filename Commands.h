@@ -11,6 +11,8 @@ Utrecht University within the Software Project course.
 #include <functional>
 #include <vector>
 
+#include "Flags.h"
+
 struct HashData;
 
 class Commands
@@ -21,7 +23,7 @@ public:
 	/// </summary>
 	/// <param name="command">The command you want to execute</param>
 	/// <param name="flags">The flags with which you want to execute the command</param>
-	static void execute(std::string command, std::map<std::string, std::string> flags);
+	static void execute(std::string command, Flags flags);
 
 	/// <summary>
 	/// Checks if there is a command with the given name.
@@ -29,15 +31,15 @@ public:
 	/// <param name="command">The command you want to check if it exists</param>
 	static bool isCommand(std::string command);
 private:
-	static void downloadRepository(std::string repository, std::map<std::string, std::string> flags, std::string downloadPath);
-	static std::vector<HashData> parseRepository(std::string repository, std::map<std::string, std::string> flags);
-	static std::map<std::string, std::function<void(std::map<std::string, std::string>)>> perform;
+	static void downloadRepository(std::string repository, Flags flags, std::string downloadPath);
+	static std::vector<HashData> parseRepository(std::string repository, Flags flags);
+	static std::map<std::string, std::function<void(Flags)>> perform;
 
-	static void start(std::map<std::string, std::string> flags);
-	static void check(std::map<std::string, std::string> flags);
-	static void upload(std::map<std::string, std::string> flags);
-	static void checkupload(std::map<std::string, std::string> flags);
-	static void update(std::map<std::string, std::string> flags);
-	static void version(std::map<std::string, std::string> flags);
-	static void help(std::map<std::string, std::string> flags);
+	static void start(Flags flags);
+	static void check(Flags flags);
+	static void upload(Flags flags);
+	static void checkupload(Flags flags);
+	static void update(Flags flags);
+	static void version(Flags flags);
+	static void help(Flags flags);
 };

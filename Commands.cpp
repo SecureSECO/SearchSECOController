@@ -11,11 +11,12 @@ Utrecht University within the Software Project course.
 #include "Utils.h"
 #include "parser/Parser/Parser.h"
 
+#include "Flags.h"
 // general function
 
-void Commands::execute(std::string s, std::map<std::string, std::string> flags) 
+void Commands::execute(std::string command, Flags flags) 
 {
-	perform[s](flags);
+	perform[command](flags);
 }
 
 bool Commands::isCommand(std::string s) 
@@ -25,17 +26,17 @@ bool Commands::isCommand(std::string s)
 
 // Commands
 
-void Commands::start(std::map<std::string, std::string> flags) 
+void Commands::start(Flags flags)
 {
 	// depends: crawler, spider, db, distribution
 	error::err_not_implemented("start");
 }
 
-void Commands::check(std::map<std::string, std::string> flags)
+void Commands::check(Flags flags)
 {
 	// depends: spider, db
 	std::string tempLocation = "spiderDownloads";
-	Commands::downloadRepository(flags["argument"], flags, tempLocation);
+	Commands::downloadRepository(flags.mandatoryArgument, flags, tempLocation);
 	std::vector<HashData> hashes = Commands::parseRepository(tempLocation, flags);
 	// temporary printing of all the hashes
 	for (int i = 0; i < hashes.size(); i++)
@@ -45,56 +46,48 @@ void Commands::check(std::map<std::string, std::string> flags)
 	//TODO: delete temp folder
 }
 
-void Commands::upload(std::map<std::string, std::string> flags)
+void Commands::upload(Flags flags)
 {
 	// depends: spider, db
 	error::err_not_implemented("upload");
 }
 
-void Commands::checkupload(std::map<std::string, std::string> flags)
+void Commands::checkupload(Flags flags)
 {
 	// depends: spider, db
 	error::err_not_implemented("checkupload");
 }
 
-void Commands::update(std::map<std::string, std::string> flags)
+void Commands::update(Flags flags)
 {
 	// depends: a lot
 	error::err_not_implemented("update");
 }
 
-void Commands::version(std::map<std::string, std::string> flags)
+void Commands::version(Flags flags)
 {
 	print::version_full();
 }
 
-void Commands::help(std::map<std::string, std::string> flags)
+void Commands::help(Flags flags)
 {
 	print::printline("Help section is not yet implemented.");
 }
 
 // helpers
 
-void Commands::downloadRepository(std::string repository, std::map<std::string, std::string> flags, std::string downloadPath)
+void Commands::downloadRepository(std::string repository, Flags flags, std::string downloadPath)
 {
 	RunSpider::runSpider(repository);
 }
 
-std::vector<HashData> Commands::parseRepository(std::string repository, std::map<std::string, std::string> flags)
+std::vector<HashData> Commands::parseRepository(std::string repository, Flags flags)
 {
-	// set default value
-	int cores = -1;
-	// try to parse it
-	if (flags["cores"] != "")
-	{
-		cores = std::stoi(flags["cores"]) - 1;
-	}
-	
-	return Parser::Parse(repository, cores);
+	return Parser::Parse(repository, flags.flag_cpu);
 }
 
 // init dict
-std::map<std::string, std::function<void(std::map<std::string, std::string>)>> Commands::perform =
+std::map<std::string, std::function<void(Flags)>> Commands::perform =
 {
 	{"start", start},
 	{"check", check},

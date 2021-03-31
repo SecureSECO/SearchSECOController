@@ -13,93 +13,16 @@ Utrecht University within the Software Project course.
 #include "Commands.h"
 #include "Print.h"
 #include "Utils.h"
+#include "Input.h"
 
 int main(int argc, char* argv[])
 {
-	std::string* args = new std::string[argc]();
+	Input userInput(argc, argv);
 
-	// check if arguments are provided. If not, read them from the console
-	if (argc == 1) //check pathOrSomething  -s t
+	if (Commands::isCommand(userInput.command))
 	{
-		std::string s;
-		std::getline(std::cin, s);
-		std::vector<std::string> temp = utils::split(s, ' ');
-		delete[] args;
-		args = new std::string[1+temp.size()]();
-		args[0] = argv[0];
-		argc = 1 + temp.size();
-		for (int i = 1; i < argc; i++)
-		{
-			args[i] = temp[i-1];
-		}
+		Commands::execute(userInput.command, userInput.flags);
 	}
-	else
-	{
-		// Converting the command line arguments from char* to string
-		for (int i = 0; i < argc; i++)
-		{
-			args[i] = argv[i];
-		}
-	}
-
-	// make string of all arguments (except for the path)
-	std::string flargs = "";
-	for (int i = 1; i < argc; ++i)
-	{
-		flargs += args[i] + ' ';
-	}
-
-
-	// regex constants
-	// TODO throw error when the call is malformed (regex fails)
-	std::smatch syntaxMatch,
-				flargMatch;
-
-	std::regex	syntaxRegex("(\\S*)\\s(?:([^-\\s]*)\\s)?(.*)"),
-				flargRegex("(?:(?:-([^-\\s]+)))\\s?([^-\\s]+)?");
-
-	// match base
-	std::regex_match(flargs, syntaxMatch, syntaxRegex);
-
-	std::string command = syntaxMatch[1],
-				mandatory_arguments = syntaxMatch[2],
-				rest = syntaxMatch[3];
-
-	// parse optional flags
-	std::map<std::string, std::string> optional_arguments = {};
-
-	std::string::const_iterator searchStart( rest.cbegin() );
-    while ( regex_search( searchStart, rest.cend(), flargMatch, flargRegex ) )
-    {
-		std::string flag = flargMatch[1],
-					arg = flargMatch[2];
-
-		if (!utils::isFlag(flag)) error::err_flag_not_exist(flag, false);
-
-		optional_arguments[flag] = arg;
-
-        searchStart = flargMatch.suffix().first;
-    }
-
-	std::string location = args[0];
-
-	// Getting all the flags and arguments out of the config file and command line arguments
-	// TODO make config flexible?
-	std::map<std::string, std::string> flagArgs 
-		= FlagParser::parse(
-			"config.txt", 
-			location, 
-			command, 
-			mandatory_arguments, 
-			optional_arguments
-		);
-
-	if (command == "") error::err_cmd_not_found();
-	
-	if (Commands::isCommand(command))
-	{
-		Commands::execute(command, flagArgs);
-	}
-	else error::err_cmd_not_exist(command);
+	else error::err_cmd_not_exist(userInput.command);
 	
 }

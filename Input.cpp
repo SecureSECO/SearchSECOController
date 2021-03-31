@@ -143,25 +143,10 @@ void Input::sanitizeArguments()
 		bool fromConfig = this->flagSource[flag] == "config";
 
 		if (flag == "cpu")
-		{
-			if (utils::isNumber(argument))
-			{
-				int flag_int = std::stoi(argument);
-				if (flag_int < 2) error::err_flag_invalid_arg(flag, argument, fromConfig);
-				this->flags.flag_cpu = flag_int;
-			}
-			else
-				error::err_flag_invalid_arg(flag, argument, fromConfig);
-		}
+			Input::validateInteger(flag, argument, [this](int x) { this->flags.flag_cpu = x; }, 2);
 		else if (flag == "ram")
-		{
-			// TODO implement flag validation
-		}
+			Input::validateInteger(flag, argument, [this](int x) { this->flags.flag_ram = x; }, 4, 64);
 		else if (flag == "output")
-		{
-			// TODO implement flag validation
-		}
-		else if (flag == "save")
 		{
 			// TODO implement flag validation
 		}
@@ -174,4 +159,17 @@ void Input::sanitizeArguments()
 			// TODO implement flag validation
 		}
 	}
+}
+
+template <typename Callback>
+void Input::validateInteger(std::string flag, std::string argument, Callback callback, bool fromConfig, int min, int max)
+{
+	if (utils::isNumber(argument))
+	{
+		int flag_int = std::stoi(argument);
+		if (flag_int < 2) error::err_flag_invalid_arg(flag, argument, fromConfig);
+		callback(flag_int);
+	}
+	else
+		error::err_flag_invalid_arg(flag, argument, fromConfig);
 }

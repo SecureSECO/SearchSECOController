@@ -15,6 +15,11 @@ Utrecht University within the Software Project course.
 
 #pragma region Print
 
+bool VerbosityAtLeast(utils::VerbosityLevel atLeast) 
+{
+	return (int)atLeast <= (int)print::verbosity;
+}
+
 void print::printline(std::string str)
 {
 	std::cout << str << '\n';
@@ -98,15 +103,19 @@ void print::version_full()
 
 void error::log(std::string str)
 {
-	print::printline("L - " + str);
+	if (VerbosityAtLeast(utils::VerbosityLevel::All)) {
+		print::printline("L - " + str);
+	}
 }
 
 void error::warn(int code)
 {
 	if (code <= 0) throw std::out_of_range("Argument \"code\" out of range in warn function.");
 
-	std::string generic_warning_msg = "Generic warning message";
-	print::printline("W" + std::to_string(code) + " - " + generic_warning_msg);
+	if (VerbosityAtLeast(utils::VerbosityLevel::Warnings)) {
+		std::string generic_warning_msg = "Generic warning message";
+		print::printline("W" + std::to_string(code) + " - " + generic_warning_msg);
+	}
 }
 
 #pragma endregion Logging_Warning
@@ -206,10 +215,11 @@ std::map <int, std::function<std::string(std::string*)>> err_desc =
 // Displays the actual error message, defined by its code, and then exits the program.
 void err(err_code code, std::string* strs, std::string extra_msg = "")
 {
-	print::printline("E" + utils::padLeft(std::to_string(code), '0', err_code_length) + " - " + err_desc[code](strs));
-	if (extra_msg != "") print::printline(extra_msg);
+	if (VerbosityAtLeast(utils::VerbosityLevel::Errors)) {
+		print::printline("E" + utils::padLeft(std::to_string(code), '0', err_code_length) + " - " + err_desc[code](strs));
+		if (extra_msg != "") print::printline(extra_msg);
+	}
 	delete[] strs;
-
 	exit(EXIT_FAILURE);
 }
 

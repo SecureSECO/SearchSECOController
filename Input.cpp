@@ -170,9 +170,8 @@ void Input::sanitizeArguments()
 			if (argument == "console" || std::regex_match(argument, urlRegex))
 			{
 				this->flags.flag_output = argument;
-				return;
 			}
-			error::err_flag_invalid_arg(flag, argument, fromConfig);
+			else error::err_flag_invalid_arg(flag, argument, fromConfig);
 		}
 		else if (flag == "save")
 		{
@@ -181,7 +180,14 @@ void Input::sanitizeArguments()
 		}
 		else if (flag == "verbose")
 		{
-			// TODO implement flag validation
+			Input::requireNArguments(1, flag, argument);
+			Input::validateInteger(
+				argument,
+				[](int x) { error::log("Setting the verbosity level..."); },
+				[flag, argument, fromConfig]() { error::err_flag_invalid_arg(flag, argument, fromConfig); },
+				1,
+				4
+			);
 		}
 		else if (flag == "help") 
 		{
@@ -209,7 +215,7 @@ void Input::validateInteger(std::string argument, Callback callback, Error error
 	if (utils::isNumber(argument))
 	{
 		int flag_int = std::stoi(argument);
-		if (flag_int < 2) error();
+		if (flag_int < min || flag_int > max) error();
 		callback(flag_int);
 	}
 	else

@@ -101,6 +101,7 @@ void Input::parseOptionals(std::string flargs)
 
 		if (!Flags::isFlag(flag)) error::err_flag_not_exist(flag, false);
 
+
 		this->optionalArguments[flag] = arg;
 
 		searchStart = flargMatch.suffix().first;

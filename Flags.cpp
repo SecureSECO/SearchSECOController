@@ -9,6 +9,7 @@ Utrecht University within the Software Project course.
 
 std::map<std::string, std::string> Flags::shorthandFlagToLong =
 {
+	{"h", "help"},
 	{"v", "version"},
 	{"V", "verbose"},
 	{"c", "cpu"},
@@ -25,6 +26,9 @@ Flags::Flags()
 	this->flag_output = "console";
 	this->flag_save = false;
 	this->flag_verbose = utils::VerbosityLevel::All;
+
+	this->help = false;
+	this->version = false;
 }
 
 void Flags::mapShortFlagToLong(std::map<std::string, std::string>& flargs)

@@ -138,7 +138,11 @@ void Input::sanitizeArguments()
 		if (flag == "cpu")
 		{
 			if (utils::isNumber(argument))
-				this->flags.flag_cpu = std::stoi(argument);
+			{
+				int flag_int = std::stoi(argument);
+				if (flag_int < 2) error::err_flag_invalid_arg(flag, argument, fromConfig);
+				this->flags.flag_cpu = flag_int;
+			}
 			else
 				error::err_flag_invalid_arg(flag, argument, fromConfig);
 		}

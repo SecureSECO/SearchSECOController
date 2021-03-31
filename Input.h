@@ -35,8 +35,19 @@ private:
 
 	void sanitizeArguments();
 
-	template<typename Callback>
-	void validateInteger(std::string flag, std::string intStr, Callback callback, bool fromConfig, int min = INT_MIN, int max = INT_MAX);
+	template <typename Callback, typename Error>
+	void validateInteger(
+		std::string argument, 
+		Callback callback, 
+		Error error,
+		int min = INT_MIN, 
+		int max = INT_MAX);
+
+	template <typename Callback, typename Error>
+	void validateBoolean(
+		std::string argument, 
+		Callback callback,
+		Error error);
 
 	std::map<std::string, std::string> optionalArguments;
 	std::map<std::string, std::string> flagSource;

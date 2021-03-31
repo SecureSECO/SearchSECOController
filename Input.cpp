@@ -143,40 +143,64 @@ void Input::sanitizeArguments()
 		bool fromConfig = this->flagSource[flag] == "config";
 
 		if (flag == "cpu")
-			Input::validateInteger(flag, argument, [this](int x) { this->flags.flag_cpu = x; }, 2);
+			Input::validateInteger(
+				argument, 
+				[this](int x) { this->flags.flag_cpu = x; },
+				[flag, argument, fromConfig]() { error::err_flag_invalid_arg(flag, argument, fromConfig); },
+				2);
 		else if (flag == "ram")
-			Input::validateInteger(flag, argument, [this](int x) { this->flags.flag_ram = x; }, 4, 64);
+			Input::validateInteger(
+				argument, 
+				[this](int x) { this->flags.flag_ram = x; }, 
+				[flag, argument, fromConfig]() { error::err_flag_invalid_arg(flag, argument, fromConfig); },
+				4, 
+				64);
 		else if (flag == "output")
 		{
 			// TODO implement flag validation
 		}
 		else if (flag == "save")
-		{
-			// TODO implement flag validation
-		}
+			Input::validateBoolean(
+				argument,
+				[this]() { this->flags.flag_save = true; },
+				[flag]() { error::err_insufficient_arguments(flag, 0, 1); }
+			);
 		else if (flag == "verbose")
 		{
 			// TODO implement flag validation
 		}
-		else if (flag == "help") {
-			this->flags.flag_help = true;
-		}
-		else if (flag == "version") {
-			this->flags.flag_version = true;
-			// TODO: optional specified version needs to be set
-		}
+		else if (flag == "help") 
+			Input::validateBoolean(
+				argument,
+				[this]() { this->flags.flag_help = true; },
+				[flag]() { error::err_insufficient_arguments(flag, 0, 1); }
+			);
+		else if (flag == "version") 
+			Input::validateBoolean(
+				argument,
+				[this]() { this->flags.flag_version = true; },
+				[flag]() { error::err_insufficient_arguments(flag, 0, 1); }
+		);
 	}
 }
 
-template <typename Callback>
-void Input::validateInteger(std::string flag, std::string argument, Callback callback, bool fromConfig, int min, int max)
+template <typename Callback, typename Error>
+void Input::validateInteger(std::string argument, Callback callback, Error error, int min, int max)
 {
 	if (utils::isNumber(argument))
 	{
 		int flag_int = std::stoi(argument);
-		if (flag_int < 2) error::err_flag_invalid_arg(flag, argument, fromConfig);
+		if (flag_int < 2) error();
 		callback(flag_int);
 	}
 	else
-		error::err_flag_invalid_arg(flag, argument, fromConfig);
+		error();
+}
+
+template <typename Callback, typename Error>
+void Input::validateBoolean(std::string argument, Callback callback, Error error)
+{
+	if (argument != "") error();
+
+	callback();
 }

@@ -15,7 +15,16 @@ Utrecht University within the Software Project course.
 
 void Commands::execute(std::string command, Flags flags) 
 {
-	perform[command](flags);
+
+	if (flags.help) {
+		help(flags);
+	}
+	else if (flags.version) {
+		version(flags);
+	}
+	else {
+		perform[command](flags);
+	}
 }
 
 bool Commands::isCommand(std::string s) 

@@ -19,10 +19,5 @@ int main(int argc, char* argv[])
 {
 	Input userInput(argc, argv);
 
-	if (Commands::isCommand(userInput.command))
-	{
-		Commands::execute(userInput.command, userInput.flags);
-	}
-	else error::err_cmd_not_exist(userInput.command);
-	
+	Commands::execute(userInput.command, userInput.flags);	
 }

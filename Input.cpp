@@ -158,6 +158,13 @@ void Input::sanitizeArguments()
 		{
 			// TODO implement flag validation
 		}
+		else if (flag == "help") {
+			this->flags.help = true;
+		}
+		else if (flag == "version") {
+			this->flags.help = true;
+			// TODO: optional specified version needs to be set
+		}
 	}
 }
 

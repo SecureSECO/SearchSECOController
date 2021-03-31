@@ -79,10 +79,16 @@ namespace error
 	void warn(int code);
 
 	/// <summary>
-	/// Throws the "Insufficient Arguments" error for a flag or command.
+	/// Throws the "Insufficient Arguments" error for a command.
 	/// </summary>
 	/// <param name="command">Name of the command which has insufficient arguments.</param>
-	void err_insufficient_arguments(std::string command, int expected, int received);
+	void err_cmd_incorrect_arguments(std::string command, int expected, int received);
+
+	/// <summary>
+	/// Throws the "Insufficient Arguments" error for a flag.
+	/// </summary>
+	/// <param name="command">Name of the flag which has insufficient arguments.</param>
+	void err_flag_incorrect_arguments(std::string flag, int expected, int received);
 
 	/// <summary>
 	/// Throws the "Flag Does Not Exist" error.

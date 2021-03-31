@@ -16,10 +16,10 @@ Utrecht University within the Software Project course.
 void Commands::execute(std::string command, Flags flags) 
 {
 
-	if (flags.help) {
+	if (flags.flag_help) {
 		help(flags);
 	}
-	else if (flags.version) {
+	else if (flags.flag_version) {
 		version(flags);
 	}
 	else {

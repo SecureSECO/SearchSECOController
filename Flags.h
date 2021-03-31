@@ -19,8 +19,8 @@ public:
 	bool flag_save;
 	utils::VerbosityLevel flag_verbose;
 
-	bool help;
-	bool version;
+	bool flag_help;
+	bool flag_version;
 
 	Flags();
 

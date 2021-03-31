@@ -27,8 +27,8 @@ Flags::Flags()
 	this->flag_save = false;
 	this->flag_verbose = utils::VerbosityLevel::All;
 
-	this->help = false;
-	this->version = false;
+	this->flag_help = false;
+	this->flag_version = false;
 }
 
 void Flags::mapShortFlagToLong(std::map<std::string, std::string>& flargs)

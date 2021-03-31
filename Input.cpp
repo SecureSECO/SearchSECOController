@@ -79,7 +79,7 @@ void Input::parseOptionals(std::string flargs)
 		flargMatch;
 
 	std::regex	
-		syntaxRegex("(\\S*)\\s(?:([^-\\s]*)\\s)?(.*)"),
+		syntaxRegex("(?:([^-\\s]*)\\s)?(?:([^-\\s]*)\\s)?(.*)"),
 		flargRegex("(?:(?:-([^-\\s]+)))\\s?([^-\\s]+)?");
 
 	// Validate the syntax of the call
@@ -159,10 +159,10 @@ void Input::sanitizeArguments()
 			// TODO implement flag validation
 		}
 		else if (flag == "help") {
-			this->flags.help = true;
+			this->flags.flag_help = true;
 		}
 		else if (flag == "version") {
-			this->flags.help = true;
+			this->flags.flag_version = true;
 			// TODO: optional specified version needs to be set
 		}
 	}

@@ -160,6 +160,8 @@
   <ItemGroup>
     <ClCompile Include="Commands.cpp" />
     <ClCompile Include="Controller.cpp" />
+    <ClCompile Include="Flags.cpp" />
+    <ClCompile Include="Input.cpp" />
     <ClCompile Include="Parser.cpp" />
     <ClCompile Include="Print.cpp" />
     <ClCompile Include="Utils.cpp" />
@@ -174,6 +176,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Commands.h" />
+    <ClInclude Include="Flags.h" />
+    <ClInclude Include="Input.h" />
     <ClInclude Include="Parser.h" />
     <ClInclude Include="Print.h" />
     <ClInclude Include="Utils.h" />

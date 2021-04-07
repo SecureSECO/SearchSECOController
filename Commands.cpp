@@ -10,8 +10,9 @@ Utrecht University within the Software Project course.
 #include "spider/SearchSECOSpider/SearchSecoSpider.h"
 #include "Utils.h"
 #include "parser/Parser/Parser.h"
+#include "DatabaseRequests.h"
 
-// general function
+// general function.
 
 void Commands::execute(std::string s, std::map<std::string, std::string> flags) 
 {
@@ -23,43 +24,52 @@ bool Commands::isCommand(std::string s)
 	return perform.count(s) >= 1;
 }
 
-// Commands
+// Commands.
 
 void Commands::start(std::map<std::string, std::string> flags) 
 {
-	// depends: crawler, spider, db, distribution
+	// Depends: crawler, spider, db, distribution.
 	error::err_not_implemented("start");
 }
 
 void Commands::check(std::map<std::string, std::string> flags)
 {
-	// depends: spider, db
-	std::string tempLocation = "spiderDownloads";
-	Commands::downloadRepository(flags["argument"], flags, tempLocation);
+	// Depends: spider, db.
+	std::string tempLocation = "spiderDownloads\\";
+	tempLocation = Commands::downloadRepository(flags["argument"], flags, tempLocation);
 	std::vector<HashData> hashes = Commands::parseRepository(tempLocation, flags);
-	// temporary printing of all the hashes
-	for (int i = 0; i < hashes.size(); i++)
-	{
-		print::printline(hashes[i].hash);
-	}
-	//TODO: delete temp folder
+	// Calling the function that will print all the matches for us.
+	print::printHashMatches(hashes, DatabaseRequests::findMatches(hashes));
+	//TODO: delete temp folder.
 }
 
 void Commands::upload(std::map<std::string, std::string> flags)
 {
-	// depends: spider, db
-	error::err_not_implemented("upload");
+	// Depends: spider, db.
+	std::string tempLocation = "spiderDownloads\\";
+	std::string location = Commands::downloadRepository(flags["argument"], flags, tempLocation);
+	std::vector<HashData> hashes = Commands::parseRepository(location, flags);
+
+	// Uploading the hashes.
+	ProjectMetaData meta = utils::getProjectMetaDataFromFile(tempLocation + "project_data.meta");
+	print::printline(DatabaseRequests::uploadHashes(hashes, meta));
 }
 
 void Commands::checkupload(std::map<std::string, std::string> flags)
 {
-	// depends: spider, db
-	error::err_not_implemented("checkupload");
+	// Depends: spider, db.
+	std::string tempLocation = "spiderDownloads\\";
+	std::string location = Commands::downloadRepository(flags["argument"], flags, tempLocation);
+	std::vector<HashData> hashes = Commands::parseRepository(location, flags);
+
+	ProjectMetaData metaData = utils::getProjectMetaDataFromFile(tempLocation + "project_data.meta");
+	// Uploading the hashes.
+	print::printHashMatches(hashes, DatabaseRequests::checkUploadHashes(hashes, metaData));
 }
 
 void Commands::update(std::map<std::string, std::string> flags)
 {
-	// depends: a lot
+	// Depends: a lot.
 	error::err_not_implemented("update");
 }
 
@@ -73,27 +83,27 @@ void Commands::help(std::map<std::string, std::string> flags)
 	print::printline("Help section is not yet implemented.");
 }
 
-// helpers
+// Helpers.
 
-void Commands::downloadRepository(std::string repository, std::map<std::string, std::string> flags, std::string downloadPath)
+std::string Commands::downloadRepository(std::string repository, std::map<std::string, std::string> flags, std::string downloadPath)
 {
-	RunSpider::runSpider(repository);
+	return RunSpider::runSpider(repository);
 }
 
 std::vector<HashData> Commands::parseRepository(std::string repository, std::map<std::string, std::string> flags)
 {
-	// set default value
+	// Set default value.
 	int cores = -1;
-	// try to parse it
+	// Try to parse it.
 	if (flags["cores"] != "")
 	{
 		cores = std::stoi(flags["cores"]) - 1;
 	}
 	
-	return Parser::Parse(repository, cores);
+	return Parser::parse(repository, cores);
 }
 
-// init dict
+// Init dict.
 std::map<std::string, std::function<void(std::map<std::string, std::string>)>> Commands::perform =
 {
 	{"start", start},

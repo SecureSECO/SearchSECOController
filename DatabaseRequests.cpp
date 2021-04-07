@@ -18,7 +18,6 @@ Utrecht University within the Software Project course.
 std::string DatabaseRequests::uploadHashes(std::vector<HashData> hashes, ProjectMetaData metaData)
 {
     int dataSize = 0;
-    //std::string header = NetworkUtils::generateHeader({ "3db1a3fc-24d8-4017-8d8b-7a2673625c58", "3", "license", "projectName", "url", "authorName", "authorMail", "5" });
     char* rawData = NetworkUtils::getAllDataFromHashes(hashes, dataSize, metaData.getAsHeader());
 
     return execRequest(DATABASE_UPLOAD_REQUEST, rawData, dataSize);
@@ -42,20 +41,20 @@ std::string DatabaseRequests::checkUploadHashes(std::vector<HashData> hashes, Pr
 
 std::string DatabaseRequests::execRequest(std::string request, char* rawData, int dataSize)
 {
-    // First start the connection
+    // First start the connection.
     NetworkHandler* networkHandler = startConnection();
 
-    // Then send the header (what request we are doing and how much data we are sending)
+    // Then send the header (what request we are doing and how much data we are sending).
     std::string requestType = request + std::to_string(dataSize) + "\n";
     networkHandler->sendData(requestType);
 
-    // After that we send the data
+    // After that we send the data.
     networkHandler->sendData(rawData, dataSize);
 
-    // Then we wait for the output that the API gives us
+    // Then we wait for the output that the API gives us.
     std::string output = networkHandler->receiveData();
 
-    // Deleting the data we send and closing the connection
+    // Deleting the data we send and closing the connection.
     delete[] rawData;
     delete networkHandler;
 

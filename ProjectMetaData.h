@@ -11,6 +11,9 @@ Utrecht University within the Software Project course.
 struct ProjectMetaData
 {
 public:
+	/// <summary>
+	/// Basic constructor. All things that this constructor asks for should be provided by the spider.
+	/// </summary>
 	ProjectMetaData(std::string id,
 		std::string version,
 		std::string license,
@@ -28,6 +31,9 @@ public:
 		this->authorMail = authorMail;;
 	}
 
+	/// <summary>
+	/// Will call the NetworkUtils::generateHeader function with the data stored in this struct.
+	/// </summary>
 	std::string getAsHeader()
 	{
 		return NetworkUtils::generateHeader({ id, version, license, name, url, authorName, authorMail });

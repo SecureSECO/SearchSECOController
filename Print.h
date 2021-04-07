@@ -54,7 +54,7 @@ namespace print
 	void version_full();
 
 	/// <summary>
-	/// Prints information about the hash matches that were found in the database
+	/// Prints information about the hash matches that were found in the database.
 	/// </summary>
 	void printHashMatches(std::vector<HashData> hashes, std::string databaseOutput);
 }

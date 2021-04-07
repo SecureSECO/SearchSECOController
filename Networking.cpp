@@ -9,7 +9,7 @@ Utrecht University within the Software Project course.
 
 #include "Print.h"
 
-// Made using this tutorial https://www.boost.org/doc/libs/1_75_0/doc/html/boost_asio/tutorial.html
+// https://www.boost.org/doc/libs/1_75_0/doc/html/boost_asio/tutorial.html was used as a base.
 boost::asio::io_context NetworkHandler::io_context;
 
 void NetworkHandler::openConnection(std::string server, std::string port)
@@ -35,15 +35,18 @@ void NetworkHandler::sendData(char* data, int dataLength)
 
 std::string NetworkHandler::receiveData()
 {
+	// The buffer we are going to return as a string.
 	std::vector<char> ret = std::vector<char>();
 	for (;;)
 	{
+
 		boost::array<char, 128> buf;
 		boost::system::error_code error;
 
-
+		// Read incomming data.
 		size_t len = socket.read_some(boost::asio::buffer(buf), error);
 
+		// Add it to out buffer.
 		for (int i = 0; i < len; i++)
 		{
 			ret.push_back(buf[i]);
@@ -55,6 +58,7 @@ std::string NetworkHandler::receiveData()
 		}
 		else if (error)
 		{
+			// If any error occures, we just throw.
 			std::cout << "Networking error: " << error.message();
 			throw boost::system::system_error(error);
 		}

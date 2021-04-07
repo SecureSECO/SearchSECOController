@@ -34,7 +34,7 @@ char* NetworkUtils::getAllDataFromHashes(std::vector<HashData> data, int& size, 
 
 	for (HashData hd : data)
 	{
-		// hash|functionName|fileLocation|lineNumber|number_of_authors|author1_name|author1_mail|...
+		// Hash|functionName|fileLocation|lineNumber|number_of_authors|author1_name|author1_mail|...
 		addStringToBuffer(buffer, pos, hd.hash);
 		buffer[pos++] = '?';
 		addStringToBuffer(buffer, pos, hd.functionName);
@@ -46,7 +46,6 @@ char* NetworkUtils::getAllDataFromHashes(std::vector<HashData> data, int& size, 
 		addStringToBuffer(buffer, pos, "0");
 		buffer[pos++] = '\n';
 	}
-	//print::printline(std::to_string(pos) + " " + std::to_string(size));
 	return buffer;
 }
 

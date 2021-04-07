@@ -17,13 +17,13 @@ public:
 	/// <summary>
 	/// Send data to the database.
 	/// </summary>
-	/// <param name="data">The data to be send</param>
-	/// <param name="dataSize">The size of the data array in bytes</param>
+	/// <param name="data">The data to be send.</param>
+	/// <param name="dataSize">The size of the data array in bytes.</param>
 	void sendData(char* data, int dataSize);
 	/// <summary>
 	/// Send data to the database.
 	/// </summary>
-	/// <param name="data">The data to be send</param>
+	/// <param name="data">The data to be send.</param>
 	void sendData(std::string data) { sendData(&(data[0]), data.length()); };
 
 	/// <summary>
@@ -34,6 +34,9 @@ public:
 	std::string receiveData();
 private:
 	static boost::asio::io_context io_context;
+	/// <summary>
+	/// Basic constructor which initializes the socket with the given context.
+	/// </summary>
 	NetworkHandler(boost::asio::io_context& io_context)
 		: socket(io_context)
 	{

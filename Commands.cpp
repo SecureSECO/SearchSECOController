@@ -12,7 +12,7 @@ Utrecht University within the Software Project course.
 #include "parser/Parser/Parser.h"
 #include "DatabaseRequests.h"
 
-// general function
+// general function.
 
 void Commands::execute(std::string s, std::map<std::string, std::string> flags) 
 {
@@ -24,51 +24,52 @@ bool Commands::isCommand(std::string s)
 	return perform.count(s) >= 1;
 }
 
-// Commands
+// Commands.
 
 void Commands::start(std::map<std::string, std::string> flags) 
 {
-	// depends: crawler, spider, db, distribution
+	// Depends: crawler, spider, db, distribution.
 	error::err_not_implemented("start");
 }
 
 void Commands::check(std::map<std::string, std::string> flags)
 {
-	// depends: spider, db
+	// Depends: spider, db.
 	std::string tempLocation = "spiderDownloads\\";
 	tempLocation = Commands::downloadRepository(flags["argument"], flags, tempLocation);
 	std::vector<HashData> hashes = Commands::parseRepository(tempLocation, flags);
-	// temporary printing of all the hashes
+	// Calling the function that will print all the matches for us.
 	print::printHashMatches(hashes, DatabaseRequests::findMatches(hashes));
-	//TODO: delete temp folder
+	//TODO: delete temp folder.
 }
 
 void Commands::upload(std::map<std::string, std::string> flags)
 {
-	// depends: spider, db
+	// Depends: spider, db.
 	std::string tempLocation = "spiderDownloads\\";
 	std::string location = Commands::downloadRepository(flags["argument"], flags, tempLocation);
 	std::vector<HashData> hashes = Commands::parseRepository(location, flags);
 
-	// uploading the hashes
+	// Uploading the hashes.
 	ProjectMetaData meta = utils::getProjectMetaDataFromFile(tempLocation + "project_data.meta");
-	//print::printline(meta.getAsHeader());
 	print::printline(DatabaseRequests::uploadHashes(hashes, meta));
 }
 
 void Commands::checkupload(std::map<std::string, std::string> flags)
 {
-	// depends: spider, db
+	// Depends: spider, db.
 	std::string tempLocation = "spiderDownloads\\";
 	std::string location = Commands::downloadRepository(flags["argument"], flags, tempLocation);
 	std::vector<HashData> hashes = Commands::parseRepository(location, flags);
-	// uploading the hashes
-	print::printHashMatches(hashes, DatabaseRequests::checkUploadHashes(hashes, utils::getProjectMetaDataFromFile(tempLocation + "project_data.meta")));
+
+	ProjectMetaData metaData = utils::getProjectMetaDataFromFile(tempLocation + "project_data.meta");
+	// Uploading the hashes.
+	print::printHashMatches(hashes, DatabaseRequests::checkUploadHashes(hashes, metaData));
 }
 
 void Commands::update(std::map<std::string, std::string> flags)
 {
-	// depends: a lot
+	// Depends: a lot.
 	error::err_not_implemented("update");
 }
 
@@ -82,7 +83,7 @@ void Commands::help(std::map<std::string, std::string> flags)
 	print::printline("Help section is not yet implemented.");
 }
 
-// helpers
+// Helpers.
 
 std::string Commands::downloadRepository(std::string repository, std::map<std::string, std::string> flags, std::string downloadPath)
 {
@@ -91,9 +92,9 @@ std::string Commands::downloadRepository(std::string repository, std::map<std::s
 
 std::vector<HashData> Commands::parseRepository(std::string repository, std::map<std::string, std::string> flags)
 {
-	// set default value
+	// Set default value.
 	int cores = -1;
-	// try to parse it
+	// Try to parse it.
 	if (flags["cores"] != "")
 	{
 		cores = std::stoi(flags["cores"]) - 1;
@@ -102,7 +103,7 @@ std::vector<HashData> Commands::parseRepository(std::string repository, std::map
 	return Parser::parse(repository, cores);
 }
 
-// init dict
+// Init dict.
 std::map<std::string, std::function<void(std::map<std::string, std::string>)>> Commands::perform =
 {
 	{"start", start},

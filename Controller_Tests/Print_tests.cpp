@@ -12,6 +12,7 @@ Utrecht University within the Software Project course.
 
 #include "../src/loguru/loguru.cpp"
 
+
 #include <regex>
 
 #define GENERIC_STRING "teststring"

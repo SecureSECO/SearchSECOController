@@ -6,6 +6,7 @@ Utrecht University within the Software Project course.
 #include "pch.h"
 #include "../src/Commands.h"
 #include "../src/Commands.cpp"
+
 TEST(Commands_tests, check_valid_command)
 {
 	EXPECT_TRUE(Commands::isCommand("start"));

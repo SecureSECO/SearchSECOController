@@ -7,7 +7,8 @@ Utrecht University within the Software Project course.
 #include "Commands.h"
 #include <iostream>
 #include "Print.h"
-#include "../spider/SearchSECOSpider/SearchSecoSpider.h"
+#include "Parser.h"
+//#include "SearchSecoSpider.h"
 #include "Utils.h"
 #include "../parser/Parser/Parser.h"
 #include "DatabaseRequests.h"
@@ -119,7 +120,15 @@ std::string Commands::downloadRepository(std::string repository, Flags flags, st
 
 std::vector<HashData> Commands::parseRepository(std::string repository, Flags flags)
 {
-	return Parser::parse(repository, flags.flag_cpu);
+	// set default value
+	int cores = -1;
+	// try to parse it
+	if (flags["cores"] != "")
+	{
+		cores = std::stoi(flags["cores"]) - 1;
+	}
+	
+	return Parser::parse(repository, cores);
 }
 
 std::map<std::string, std::function<void(Flags)>> Commands::perform =

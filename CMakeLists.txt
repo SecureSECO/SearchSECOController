@@ -17,7 +17,7 @@ add_executable(
     "src/Commands.cpp"
     "src/Commands.h"
     "src/Parser.cpp"
-    "src/Parser.h"
+    "src/Parser.h"   # Rename to new file
     "src/Print.cpp"
     "src/Print.h"
     "src/Utils.cpp"

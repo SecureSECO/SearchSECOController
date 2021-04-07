@@ -8,7 +8,7 @@ Utrecht University within the Software Project course.
 #include <string>
 #include <map>
 #include <functional>
-#include "Parser.h"
+#include "FlagParser.h"
 #include "Commands.h"
 #include "Print.h"
 #include "Utils.h"

@@ -4,7 +4,7 @@ Utrecht University within the Software Project course.
 © Copyright Utrecht University (Department of Information and Computing Sciences)
 */
 
-#include "Parser.h"
+#include "FlagParser.h"
 #include <fstream>
 #include <iostream>
 #include "Utils.h"

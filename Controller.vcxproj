@@ -180,7 +180,7 @@
     <ClInclude Include="DatabaseRequests.h" />
     <ClInclude Include="Networking.h" />
     <ClInclude Include="NetworkUtils.h" />
-    <ClInclude Include="Parser.h" />
+    <ClInclude Include="FlagParser.h" />
     <ClInclude Include="Print.h" />
     <ClInclude Include="ProjectMetaData.h" />
     <ClInclude Include="Utils.h" />

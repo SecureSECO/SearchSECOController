@@ -56,24 +56,24 @@ std::string print::plural(std::string singular, int n)
 	return singular + 's';
 }
 
-// Versioning
+// Versioning.
 void print::version_full()
 {
 	std::string main_name = "searchseco";
 
-	// Get subsystem versions
+	// Get subsystem versions.
 	int systemc = 2;
 	std::string* subsystems = new std::string[systemc]
 	{
 		"parser",
 		"spider",
-		//"database_api"
+		//"database_api".
 	};
 
 	std::ifstream version_file;
 	std::string version;
 
-	// print version of the main program
+	// print version of the main program.
 	version_file.open("VERSION");
 	std::getline(version_file, version);
 
@@ -81,7 +81,7 @@ void print::version_full()
 	
 	version_file.close();
 
-	// Loop over the subsystems
+	// Loop over the subsystems.
 	for (int i = 0; i < systemc; ++i)
 	{
 		std::string system = subsystems[i];
@@ -99,7 +99,7 @@ void print::version_full()
 
 #pragma region Logging_Warning
 
-// Logging and warning
+// Logging and warning.
 
 void error::log(std::string str, utils::VerbosityLevel verbosity)
 {
@@ -138,58 +138,58 @@ enum err_code
 	not_implemented,
 };
 
-// Descriptions of the error messages
+// Descriptions of the error messages.
 #pragma region Descriptions
 
-// strs: [commandname, expected_num_args, received_num_args]
+// Strs: [commandname, expected_num_args, received_num_args].
 std::string desc_cmd_incorrect_arguments(std::string* strs)
 {
 	return strs[1] + print::plural(" argument", std::stoi(strs[1])) + " expected for command " + print::quote(strs[0]) + ", received " + strs[2] + '.';
 }
 
-// strs: [commandname, expected_num_args, received_num_args]
+// Strs: [commandname, expected_num_args, received_num_args].
 std::string desc_flag_incorrect_arguments(std::string* strs)
 {
 	return strs[1] + print::plural(" argument", std::stoi(strs[1])) + " expected for flag " + print::quote("--"+strs[0]) + ", received " + strs[2] + '.';
 }
 
-// strs: [flagname]
+// Strs: [flagname].
 std::string desc_err_flag_not_exist(std::string* strs)
 {
 	return "The flag " + print::quote(strs[0]) + " does not exist.";
 }
 
-// strs: [flagname]
+// Strs: [flagname].
 std::string desc_err_flag_not_exist_cfg(std::string* strs)
 {
 	return "The flag " + print::quote(strs[0]) + " does not exist (configuration file).";
 }
 
-// strs: [flagname, argname]
+// Strs: [flagname, argname].
 std::string desc_err_flag_invalid_arg(std::string* strs)
 {
 	return "Argument " + print::quote(strs[1]) + " is invalid for the flag " + print::quote("--" + strs[0]) + ".\n" + print::tab() + "See --help for valid value ranges.";
 }
 
-// strs: [flagname, argname]
+// Strs: [flagname, argname].
 std::string desc_err_flag_invalid_arg_cfg(std::string* strs)
 {
 	return "Argument " + print::quote(strs[1]) + " is invalid for the flag " + print::quote("--" + strs[0]) + " (configuration file).\n" + print::tab() + "See --help for valid value ranges.";
 }
 
-// no strs
+// No strs.
 std::string desc_err_cmd_not_found(std::string* strs)
 {
 	return "No command was entered.";
 }
 
-// strs: [commandname]
+// Strs: [commandname].
 std::string desc_err_cmd_not_exist(std::string* strs)
 {
 	return "Command " + print::quote(strs[0]) + " does not exist.";
 }
 
-// strs: [funcname]
+// Strs: [funcname].
 std::string desc_err_not_implemented(std::string* strs)
 {
 	return "The function " + print::quote(strs[0]) + " is not yet implemented.";
@@ -211,9 +211,9 @@ std::map <int, std::function<std::string(std::string*)>> err_desc =
 
 #pragma endregion Descriptions
 
-// MAIN ERROR FUNCTION
+// MAIN ERROR FUNCTION.
 // Displays the actual error message, defined by its code, and then exits the program.
-// TODO Verbosity level 
+// TODO Verbosity level.
 void err(err_code code, std::string* strs, std::string extra_msg = "")
 {
 	print::printline("E" + utils::padLeft(std::to_string(code), '0', err_code_length) + " - " + err_desc[code](strs));

@@ -13,7 +13,7 @@ Utrecht University within the Software Project course.
 namespace print
 {
 	/// <summary>
-	/// Return wether or not the verbosity level is at least the specified argument
+	/// Return wether or not the verbosity level is at least the specified argument.
 	/// </summary>
 	static bool VerbosityAtLeast(utils::VerbosityLevel verbosity, utils::VerbosityLevel atLeast);
 
@@ -45,7 +45,7 @@ namespace print
 	/// Puts a string in quotation marks.
 	/// </summary>
 	/// <param name="str">The string to put inside quotation marks.</param>
-	/// <returns>A quoted string, e.g. "string"</returns>
+	/// <returns>A quoted string, e.g. "string".</returns>
 	std::string quote(std::string str);
 
 	/// <summary>

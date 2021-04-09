@@ -44,12 +44,12 @@ void Input::parseCliInput(int argc, char* argv[])
 	}
 	else
 	{
-		// Convert the arguments from char* to string
+		// Convert the arguments from char* to string.
 		for (int i = 0; i < argc; i++)
 			args[i] = argv[i];
 	}
 
-	// Concatenate the flag/argument pairs, intercalated with spaces
+	// Concatenate the flag/argument pairs, intercalated with spaces.
 	std::string flargs = "";
 	for (int i = 1; i < argc; ++i)
 		flargs += args[i] + ' ';
@@ -73,7 +73,7 @@ void Input::parseExecutablePath(std::string fullPath)
 
 void Input::parseOptionals(std::string flargs)
 {
-	// TODO throw error when the call is malformed (regex fails)
+	// TODO throw error when the call is malformed (regex fails).
 	std::smatch 
 		syntaxMatch,
 		flargMatch;
@@ -82,14 +82,14 @@ void Input::parseOptionals(std::string flargs)
 		syntaxRegex("(?:([^-\\s]*)\\s)?(?:([^-\\s]*)\\s)?(.*)"),
 		flargRegex("(?:(?:-([^-\\s]+)))\\s?([^-\\s]+)?");
 
-	// Validate the syntax of the call
+	// Validate the syntax of the call.
 	std::regex_match(flargs, syntaxMatch, syntaxRegex);
 
 	this->command = syntaxMatch[1];
 	this->flags.mandatoryArgument = syntaxMatch[2];
 	std::string rest = syntaxMatch[3];
 
-	// Parse optional flags
+	// Parse optional flags.
 	this->optionalArguments = {};
 
 	std::string::const_iterator searchStart(rest.cbegin());

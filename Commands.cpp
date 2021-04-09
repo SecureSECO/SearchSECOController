@@ -91,7 +91,7 @@ void Commands::downloadRepository(std::string repository, Flags flags, std::stri
 
 std::vector<HashData> Commands::parseRepository(std::string repository, Flags flags)
 {
-	return Parser::Parse(repository, flags.flag_cpu);
+	return Parser::parse(repository, flags.flag_cpu);
 }
 
 // init dict

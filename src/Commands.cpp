@@ -7,16 +7,25 @@ Utrecht University within the Software Project course.
 #include "Commands.h"
 #include <iostream>
 #include "Print.h"
-#include "spider/SearchSECOSpider/SearchSecoSpider.h"
+#include "../spider/SearchSECOSpider/SearchSecoSpider.h"
 #include "Utils.h"
-#include "parser/Parser/Parser.h"
+#include "../parser/Parser/Parser.h"
 #include "DatabaseRequests.h"
 
-// general function.
+#include "Flags.h"
 
-void Commands::execute(std::string s, std::map<std::string, std::string> flags) 
+void Commands::execute(std::string command, Flags flags) 
 {
-	perform[s](flags);
+
+	if (flags.flag_help) {
+		help(flags);
+	}
+	else if (flags.flag_version) {
+		version(flags);
+	}
+	else {
+		perform[command](flags);
+	}
 }
 
 bool Commands::isCommand(std::string s) 
@@ -26,28 +35,27 @@ bool Commands::isCommand(std::string s)
 
 // Commands.
 
-void Commands::start(std::map<std::string, std::string> flags) 
+void Commands::start(Flags flags)
 {
 	// Depends: crawler, spider, db, distribution.
 	error::err_not_implemented("start");
 }
 
-void Commands::check(std::map<std::string, std::string> flags)
+void Commands::check(Flags flags)
 {
-	// Depends: spider, db.
-	std::string tempLocation = "spiderDownloads\\";
-	tempLocation = Commands::downloadRepository(flags["argument"], flags, tempLocation);
+	std::string tempLocation = "spiderDownloads";
+	Commands::downloadRepository(flags.mandatoryArgument, flags, tempLocation);
 	std::vector<HashData> hashes = Commands::parseRepository(tempLocation, flags);
 	// Calling the function that will print all the matches for us.
 	print::printHashMatches(hashes, DatabaseRequests::findMatches(hashes));
 	//TODO: delete temp folder.
 }
 
-void Commands::upload(std::map<std::string, std::string> flags)
+void Commands::upload(Flags flags)
 {
 	// Depends: spider, db.
 	std::string tempLocation = "spiderDownloads\\";
-	std::string location = Commands::downloadRepository(flags["argument"], flags, tempLocation);
+	std::string location = Commands::downloadRepository(flags.mandatoryArgument, flags, tempLocation);
 	std::vector<HashData> hashes = Commands::parseRepository(location, flags);
 
 	// Uploading the hashes.
@@ -55,11 +63,11 @@ void Commands::upload(std::map<std::string, std::string> flags)
 	print::printline(DatabaseRequests::uploadHashes(hashes, meta));
 }
 
-void Commands::checkupload(std::map<std::string, std::string> flags)
+void Commands::checkupload(Flags flags)
 {
 	// Depends: spider, db.
 	std::string tempLocation = "spiderDownloads\\";
-	std::string location = Commands::downloadRepository(flags["argument"], flags, tempLocation);
+	std::string location = Commands::downloadRepository(flags.mandatoryArgument, flags, tempLocation);
 	std::vector<HashData> hashes = Commands::parseRepository(location, flags);
 
 	ProjectMetaData metaData = utils::getProjectMetaDataFromFile(tempLocation + "project_data.meta");
@@ -67,18 +75,18 @@ void Commands::checkupload(std::map<std::string, std::string> flags)
 	print::printHashMatches(hashes, DatabaseRequests::checkUploadHashes(hashes, metaData));
 }
 
-void Commands::update(std::map<std::string, std::string> flags)
+void Commands::update(Flags flags)
 {
 	// Depends: a lot.
 	error::err_not_implemented("update");
 }
 
-void Commands::version(std::map<std::string, std::string> flags)
+void Commands::version(Flags flags)
 {
 	print::version_full();
 }
 
-void Commands::help(std::map<std::string, std::string> flags)
+void Commands::help(Flags flags)
 {
 	if (flags["argument"] == "" && helpMessagesCommands.count(flags["argument"]) == 0)
 	{
@@ -103,26 +111,17 @@ void Commands::help(std::map<std::string, std::string> flags)
 
 // Helpers.
 
-std::string Commands::downloadRepository(std::string repository, std::map<std::string, std::string> flags, std::string downloadPath)
+std::string Commands::downloadRepository(std::string repository, Flags flags, std::string downloadPath)
 {
 	return RunSpider::runSpider(repository);
 }
 
-std::vector<HashData> Commands::parseRepository(std::string repository, std::map<std::string, std::string> flags)
+std::vector<HashData> Commands::parseRepository(std::string repository, Flags flags)
 {
-	// Set default value.
-	int cores = -1;
-	// Try to parse it.
-	if (flags["cores"] != "")
-	{
-		cores = std::stoi(flags["cores"]) - 1;
-	}
-	
-	return Parser::parse(repository, cores);
+	return Parser::parse(repository, flags.flag_cpu);
 }
 
-// Init dict.
-std::map<std::string, std::function<void(std::map<std::string, std::string>)>> Commands::perform =
+std::map<std::string, std::function<void(Flags)>> Commands::perform =
 {
 	{"start", start},
 	{"check", check},

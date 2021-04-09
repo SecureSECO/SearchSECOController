@@ -6,7 +6,7 @@ Utrecht University within the Software Project course.
 #include "DatabaseRequests.h"
 #include "NetworkUtils.h"
 #include "Networking.h"
-#include "parser/Parser/Parser.h"
+#include "../parser/Parser/Parser.h"
 
 #define DATABASE_API_IP "131.211.31.153"
 #define DATABASE_API_PORT "8003"

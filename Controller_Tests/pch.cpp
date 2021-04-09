@@ -11,7 +11,7 @@ Utrecht University within the Software Project course.
 
 #include "pch.h"
 #include "../spider/SearchSECOSpider/SearchSecoSpider.h"
-#include "../DatabaseRequests.h"
+#include "../src/DatabaseRequests.h"
 #include "../parser/Parser/parser.h"
 
 // We don't want to use this in the unit tests, so we just do a empty function so that we don't

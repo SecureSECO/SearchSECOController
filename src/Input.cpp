@@ -144,63 +144,100 @@ void Input::sanitizeArguments()
 
 		if (flag == "cpu")
 		{
-			Input::requireNArguments(1, flag, argument);
-			Input::validateInteger(
-				argument, 
-				[this](int x) { this->flags.flag_cpu = x; },
-				[flag, argument, fromConfig]() { error::err_flag_invalid_arg(flag, argument, fromConfig); },
-				2);
+			Input::sanitizeCpuFlag(argument, fromConfig);
 		}
 		else if (flag == "ram")
 		{
-			Input::requireNArguments(1, flag, argument);
-			Input::validateInteger(
-				argument,
-				[this](int x) { this->flags.flag_ram = x; },
-				[flag, argument, fromConfig]() { error::err_flag_invalid_arg(flag, argument, fromConfig); },
-				4,
-				64);
+			Input::sanitizeRamFlag(argument, fromConfig);
 		}
 		else if (flag == "output")
 		{
-			Input::requireNArguments(1, flag, argument);
-
-			std::regex urlRegex("^(http:\\/\\/www\\.|https:\\/\\/www\\.|http:\\/\\/|https:\\/\\/)?[a-z0-9]+([\\-\\.]{1}[a-z0-9]+)*\\.[a-z]{2,5}(:[0-9]{1,5})?(\\/.*)?$");
-		
-			if (argument == "console" || std::regex_match(argument, urlRegex))
-			{
-				this->flags.flag_output = argument;
-			}
-			else error::err_flag_invalid_arg(flag, argument, fromConfig);
+			Input::sanitizeOutputFlag(argument, fromConfig);
 		}
 		else if (flag == "save")
 		{
-			Input::requireNArguments(0, flag, argument);
-			this->flags.flag_save = true;
+			Input::sanitizeSaveFlag(argument, fromConfig);
 		}
 		else if (flag == "verbose")
 		{
-			Input::requireNArguments(1, flag, argument);
-			Input::validateInteger(
-				argument,
-				[this](int x) { this->flags.flag_verbose = (utils::VerbosityLevel)x; },
-				[flag, argument, fromConfig]() { error::err_flag_invalid_arg(flag, argument, fromConfig); },
-				1,
-				4
-			);
+			Input::sanitizeVerboseFlag(argument, fromConfig);
 		}
 		else if (flag == "help") 
 		{
-			Input::requireNArguments(0, flag, argument);
-			this->flags.flag_help = true;
+			Input::sanitizeHelpFlag(argument, fromConfig);
 		}
 		else if (flag == "version")
 		{
-			Input::requireNArguments(0, flag, argument);
-			this->flags.flag_version = true;
+			Input::sanitizeVersionFlag(argument, fromConfig);
 		}
 	}
 }
+
+#pragma region Individual flag sanitation
+void Input::sanitizeCpuFlag(std::string arg, bool fromConfig)
+{
+	Input::requireNArguments(1, "cpu", arg);
+	Input::validateInteger(
+		arg,
+		[this](int x) { this->flags.flag_cpu = x; },
+		[arg, fromConfig]() { error::err_flag_invalid_arg("cpu", arg, fromConfig); },
+		2);
+}
+
+void Input::sanitizeRamFlag(std::string arg, bool fromConfig)
+{
+	Input::requireNArguments(1, "ram", arg);
+	Input::validateInteger(
+		arg,
+		[this](int x) { this->flags.flag_ram = x; },
+		[arg, fromConfig]() { error::err_flag_invalid_arg("ram", arg, fromConfig); },
+		4,
+		64);
+}
+
+void Input::sanitizeOutputFlag(std::string arg, bool fromConfig)
+{
+	Input::requireNArguments(1, "output", arg);
+
+	std::regex urlRegex("^(http:\\/\\/www\\.|https:\\/\\/www\\.|http:\\/\\/|https:\\/\\/)?[a-z0-9]+([\\-\\.]{1}[a-z0-9]+)*\\.[a-z]{2,5}(:[0-9]{1,5})?(\\/.*)?$");
+
+	if (arg == "console" || std::regex_match(arg, urlRegex))
+	{
+		this->flags.flag_output = arg;
+	}
+	else error::err_flag_invalid_arg("output", arg, fromConfig);
+}
+
+void Input::sanitizeSaveFlag(std::string arg, bool fromConfig)
+{
+	Input::requireNArguments(0, "save", arg);
+	this->flags.flag_save = true;
+}
+
+void Input::sanitizeVerboseFlag(std::string arg, bool fromConfig)
+{
+	Input::requireNArguments(1, "verbose", arg);
+	Input::validateInteger(
+		arg,
+		[this](int x) { this->flags.flag_verbose = (utils::VerbosityLevel)x; },
+		[arg, fromConfig]() { error::err_flag_invalid_arg("verbose", arg, fromConfig); },
+		1,
+		4
+	);
+}
+
+void Input::sanitizeHelpFlag(std::string arg, bool fromConfig)
+{
+	Input::requireNArguments(0, "help", arg);
+	this->flags.flag_help = true;
+}
+
+void Input::sanitizeVersionFlag(std::string arg, bool fromConfig)
+{
+	Input::requireNArguments(0, "version", arg);
+	this->flags.flag_version = true;
+}
+#pragma endregion
 
 void Input::requireNArguments(int n, std::string flag, std::string argument)
 {

@@ -67,6 +67,35 @@ private:
 	void sanitizeArguments();
 
 	/// <summary>
+	/// Sanitizes the argument of the (--cpu | -c) flag.
+	/// </summary>
+	void sanitizeCpuFlag(std::string arg, bool fromConfig);
+	/// <summary>
+	/// Sanitizes the argument of the (--ram | -r) flag.
+	/// </summary>
+	void sanitizeRamFlag(std::string arg, bool fromConfig);
+	/// <summary>
+	/// Sanitizes the argument of the (--output | -o) flag.
+	/// </summary>
+	void sanitizeOutputFlag(std::string arg, bool fromConfig);
+	/// <summary>
+	/// Sanitizes the argument of the (--save | -s) flag.
+	/// </summary>
+	void sanitizeSaveFlag(std::string arg, bool fromConfig);
+	/// <summary>
+	/// Sanitizes the argument of the (--verbose | -V) flag.
+	/// </summary>
+	void sanitizeVerboseFlag(std::string arg, bool fromConfig);
+	/// <summary>
+	/// Sanitizes the argument of the (--help | -h) flag.
+	/// </summary>
+	void sanitizeHelpFlag(std::string arg, bool fromConfig);
+	/// <summary>
+	/// Sanitizes the argument of the (--version | -v) flag.
+	/// </summary>
+	void sanitizeVersionFlag(std::string arg, bool fromConfig);
+
+	/// <summary>
 	/// Helper function to force a certain amount of arguments for a flag. Throws the correct error when 
 	///		the amount is unexpected.
 	/// </summary>

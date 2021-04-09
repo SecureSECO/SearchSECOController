@@ -88,7 +88,8 @@ void Commands::version(Flags flags)
 
 void Commands::help(Flags flags)
 {
-	if (flags["argument"] == "" && helpMessagesCommands.count(flags["argument"]) == 0)
+	print::printline("For more information about what each command does, check the documentation.");
+	if (flags.mandatoryArgument == "" || helpMessagesCommands.count(flags.mandatoryArgument) == 0)
 	{
 		print::printline("\nCommands: \n");
 		for (std::string command : commandNames)
@@ -99,7 +100,7 @@ void Commands::help(Flags flags)
 	}
 	else
 	{
-		print::printline(helpMessagesCommands[flags["argument"]]);
+		print::printline(helpMessagesCommands[flags.mandatoryArgument]);
 	}
 	print::printline("\nCommon flags: \n");
 	for (std::string commonFlag : commonFlagNames)

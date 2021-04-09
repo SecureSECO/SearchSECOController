@@ -73,5 +73,5 @@ private:
 	/// <summary>
 	/// Prints a help message.
 	/// </summary>
-	static void help(Flags flags);
+	static void help(std::string commandString);
 };

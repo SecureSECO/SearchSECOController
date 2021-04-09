@@ -18,7 +18,7 @@ void Commands::execute(std::string command, Flags flags)
 {
 
 	if (flags.flag_help) {
-		help(flags);
+		help(command);
 	}
 	else if (flags.flag_version) {
 		version(flags);
@@ -86,21 +86,21 @@ void Commands::version(Flags flags)
 	print::version_full();
 }
 
-void Commands::help(Flags flags)
+void Commands::help(std::string command)
 {
 	print::printline("For more information about what each command does, check the documentation.");
-	if (flags.mandatoryArgument == "" || helpMessagesCommands.count(flags.mandatoryArgument) == 0)
+	if (command == "" || helpMessagesCommands.count(command) == 0)
 	{
 		print::printline("\nCommands: \n");
-		for (std::string command : commandNames)
+		for (std::string cmd : commandNames)
 		{
-			print::printline(helpMessagesCommands[command]);
+			print::printline(helpMessagesCommands[cmd]);
 			print::printline("");
 		}
 	}
 	else
 	{
-		print::printline(helpMessagesCommands[flags.mandatoryArgument]);
+		print::printline(helpMessagesCommands[command]);
 	}
 	print::printline("\nCommon flags: \n");
 	for (std::string commonFlag : commonFlagNames)
@@ -129,8 +129,6 @@ std::map<std::string, std::function<void(Flags)>> Commands::perform =
 	{"upload", upload},
 	{"checkupload", checkupload},
 	{"update", update},
-	{"version", version},
-	{"help", help}
 };
 
 std::map<std::string, std::string> Commands::helpMessagesCommands =

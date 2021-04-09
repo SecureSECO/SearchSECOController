@@ -158,13 +158,13 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Commands.cpp" />
-    <ClCompile Include="Controller.cpp" />
-    <ClCompile Include="Flags.cpp" />
-    <ClCompile Include="Input.cpp" />
-    <ClCompile Include="Parser.cpp" />
-    <ClCompile Include="Print.cpp" />
-    <ClCompile Include="Utils.cpp" />
+    <ClCompile Include="src/Commands.cpp" />
+    <ClCompile Include="src/Controller.cpp" />
+    <ClCompile Include="src/Flags.cpp" />
+    <ClCompile Include="src/Input.cpp" />
+    <ClCompile Include="src/Parser.cpp" />
+    <ClCompile Include="src/Print.cpp" />
+    <ClCompile Include="src/Utils.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="parser\Parser\Parser.vcxproj">
@@ -175,15 +175,12 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Commands.h" />
-    <ClInclude Include="Flags.h" />
-    <ClInclude Include="Input.h" />
-    <ClInclude Include="Parser.h" />
-    <ClInclude Include="Print.h" />
-    <ClInclude Include="Utils.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <Text Include="config.txt" />
+    <ClInclude Include="src/Commands.h" />
+    <ClInclude Include="src/Flags.h" />
+    <ClInclude Include="src/Input.h" />
+    <ClInclude Include="src/Parser.h" />
+    <ClInclude Include="src/Print.h" />
+    <ClInclude Include="src/Utils.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

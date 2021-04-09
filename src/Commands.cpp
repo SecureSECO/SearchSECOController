@@ -7,9 +7,9 @@ Utrecht University within the Software Project course.
 #include "Commands.h"
 #include <iostream>
 #include "Print.h"
-#include "spider/SearchSECOSpider/SearchSecoSpider.h"
+#include "../spider/SearchSECOSpider/SearchSecoSpider.h"
 #include "Utils.h"
-#include "parser/Parser/Parser.h"
+#include "../parser/Parser/Parser.h"
 
 #include "Flags.h"
 

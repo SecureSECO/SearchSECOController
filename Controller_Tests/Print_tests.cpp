@@ -5,9 +5,9 @@ Utrecht University within the Software Project course.
 */
 
 #include "pch.h"
-#include "../Print.h"
-#include "../Print.cpp"
-#include "../Utils.cpp"
+#include "../src/Print.h"
+#include "../src/Print.cpp"
+#include "../src/Utils.cpp"
 #include <regex>
 
 #define GENERIC_STRING "teststring"
@@ -197,7 +197,7 @@ TEST(error_testing, log)
 	{
 		testing::internal::CaptureStdout();
 
-		error::log(test_strs[i]);
+		error::log(test_strs[i], utils::VerbosityLevel::All);
 		output = testing::internal::GetCapturedStdout();
 
 		ASSERT_EQ("L - " + test_strs[i] + '\n', output);
@@ -213,13 +213,13 @@ TEST(error_testing, warn)
 
 		if (code <= 0)
 		{
-			ASSERT_THROW(error::warn(code), std::out_of_range);
+			ASSERT_THROW(error::warn(code, utils::VerbosityLevel::All), std::out_of_range);
 		}
 		else
 		{
 			testing::internal::CaptureStdout();
 
-			error::warn(code);
+			error::warn(code, utils::VerbosityLevel::All);
 
 			output = testing::internal::GetCapturedStdout();
 

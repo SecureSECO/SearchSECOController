@@ -166,6 +166,8 @@
     <ClCompile Include="src/Print.cpp" />
     <ClCompile Include="src/Utils.cpp" />
     <ClCompile Include="src/DatabaseRequests.cpp" />
+    <ClCompile Include="src\Networking.cpp" />
+    <ClCompile Include="src\NetworkUtils.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="parser\Parser\Parser.vcxproj">

@@ -36,11 +36,6 @@ std::string print::tab(int n)
 	return result;
 }
 
-void print::help()
-{
-	print::printline("help section is yet to be implemented");
-}
-
 std::string print::encapsulate(std::string str, char c)
 {
 	return c + str + c;

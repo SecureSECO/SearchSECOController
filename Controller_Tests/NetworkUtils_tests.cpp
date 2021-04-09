@@ -5,8 +5,8 @@ Utrecht University within the Software Project course.
 */
 #include "pch.h"
 #include "../parser/Parser/XmlParser.h"
-#include "../NetworkUtils.h"
-#include "../NetworkUtils.cpp"
+#include "../src/NetworkUtils.h"
+#include "../src/NetworkUtils.cpp"
 #include "../parser/Parser/HashData.h"
 
 TEST(Networking_get__all_data_from_hashes_tests, basic_test)

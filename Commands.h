@@ -40,6 +40,10 @@ private:
 	static std::vector<HashData> parseRepository(std::string repository, std::map<std::string, std::string> flags);
 	
 	static std::map<std::string, std::function<void(std::map<std::string, std::string>)>> perform;
+	static std::map<std::string, std::string> helpMessagesCommands;
+	static std::vector<std::string> commandNames;
+	static std::map<std::string, std::string> helpMessagesCommonFlags;
+	static std::vector<std::string> commonFlagNames;
 
 	static void start(std::map<std::string, std::string> flags);
 	static void check(std::map<std::string, std::string> flags);

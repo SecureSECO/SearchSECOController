@@ -24,11 +24,6 @@ namespace print
 	std::string tab(int n = 1);
 
 	/// <summary>
-	/// Prints the help message to the console.
-	/// </summary>
-	void help();
-
-	/// <summary>
 	/// Encapsulates a string with a single character; so once before the string, and once behind it.
 	/// </summary>
 	/// <param name="str">The base string to be encapsulated.</param>

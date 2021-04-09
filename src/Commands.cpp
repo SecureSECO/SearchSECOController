@@ -93,7 +93,7 @@ void Commands::help(Flags flags)
 
 // Helpers.
 
-void Commands::downloadRepository(std::string repository, Flags flags, std::string downloadPath)
+std::string Commands::downloadRepository(std::string repository, Flags flags, std::string downloadPath)
 {
 	return RunSpider::runSpider(repository);
 }

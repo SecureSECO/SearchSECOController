@@ -31,7 +31,7 @@ public:
 	/// <param name="command">The command you want to check if it exists.</param>
 	static bool isCommand(std::string command);
 private:
-	static void downloadRepository(std::string repository, Flags flags, std::string downloadPath);
+	static std::string downloadRepository(std::string repository, Flags flags, std::string downloadPath);
 	static std::vector<HashData> parseRepository(std::string repository, Flags flags);
 	static std::map<std::string, std::function<void(Flags)>> perform;
 

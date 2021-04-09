@@ -4,7 +4,10 @@ Utrecht University within the Software Project course.
 © Copyright Utrecht University (Department of Information and Computing Sciences)
 */
 
+#pragma once
+
 #include "Utils.h"
+#include "Parser.h"
 #include <algorithm>
 #include <map>
 #include <fstream>
@@ -121,3 +124,4 @@ long long utils::getIntegerTimeFromString(std::string time)
 	std::chrono::milliseconds s = std::chrono::duration_cast<std::chrono::milliseconds>(diff);
 	return s.count();
 }
+#pragma endregion utils

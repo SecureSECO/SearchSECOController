@@ -237,7 +237,7 @@ TEST(error_testing, warn)
 
 TEST(error_death_tests, err_insufficient_arguments)
 {
-	ASSERT_EXIT(error::err_insufficient_arguments(GENERIC_STRING, 1,2), ::testing::ExitedWithCode(EXIT_FAILURE), ".*");
+	ASSERT_EXIT(error::err_cmd_incorrect_arguments(GENERIC_STRING, 1,2), ::testing::ExitedWithCode(EXIT_FAILURE), ".*");
 }
 
 TEST(error_death_tests, err_flag_not_exist)

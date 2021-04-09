@@ -10,8 +10,15 @@ Utrecht University within the Software Project course.
 #include <vector>
 struct HashData;
 
+#include "Utils.h"
+
 namespace print
 {
+	/// <summary>
+	/// Return wether or not the verbosity level is at least the specified argument.
+	/// </summary>
+	static bool VerbosityAtLeast(utils::VerbosityLevel verbosity, utils::VerbosityLevel atLeast);
+
 	/// <summary>
 	/// Prints a given string to the console, followed by a newline character.
 	/// </summary>
@@ -40,7 +47,7 @@ namespace print
 	/// Puts a string in quotation marks.
 	/// </summary>
 	/// <param name="str">The string to put inside quotation marks.</param>
-	/// <returns>A quoted string, e.g. "string"</returns>
+	/// <returns>A quoted string, e.g. "string".</returns>
 	std::string quote(std::string str);
 
 	/// <summary>
@@ -64,19 +71,25 @@ namespace error
 	/// <summary>
 	/// Logs a string to the console.
 	/// </summary>
-	void log(std::string str);
+	void log(std::string str, utils::VerbosityLevel verbosity);
 
 	/// <summary>
 	/// Prints the warning message with the supplied warning code to the console.
 	/// </summary>
 	/// <param name="code">The code of the warning which should be displayed.</param>
-	void warn(int code);
+	void warn(int code, utils::VerbosityLevel verbosity);
 
 	/// <summary>
-	/// Throws the "Insufficient Arguments" error for a flag or command.
+	/// Throws the "Insufficient Arguments" error for a command.
 	/// </summary>
 	/// <param name="command">Name of the command which has insufficient arguments.</param>
-	void err_insufficient_arguments(std::string command, int expected, int received);
+	void err_cmd_incorrect_arguments(std::string command, int expected, int received);
+
+	/// <summary>
+	/// Throws the "Insufficient Arguments" error for a flag.
+	/// </summary>
+	/// <param name="command">Name of the flag which has insufficient arguments.</param>
+	void err_flag_incorrect_arguments(std::string flag, int expected, int received);
 
 	/// <summary>
 	/// Throws the "Flag Does Not Exist" error.

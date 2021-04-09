@@ -6,7 +6,7 @@ Utrecht University within the Software Project course.
 
 #include "Print.h"
 #include "Utils.h"
-#include "parser/Parser/Parser.h"
+#include "../parser/Parser/Parser.h"
 
 #include <iostream>
 #include <fstream>
@@ -15,6 +15,11 @@ Utrecht University within the Software Project course.
 #include <functional>
 
 #pragma region Print
+
+bool print::VerbosityAtLeast(utils::VerbosityLevel verbosity, utils::VerbosityLevel atLeast) 
+{
+	return (int)atLeast <= (int)verbosity;
+}
 
 void print::printline(std::string str)
 {
@@ -52,24 +57,24 @@ std::string print::plural(std::string singular, int n)
 	return singular + 's';
 }
 
-// Versioning
+// Versioning.
 void print::version_full()
 {
 	std::string main_name = "searchseco";
 
-	// Get subsystem versions
+	// Get subsystem versions.
 	int systemc = 2;
 	std::string* subsystems = new std::string[systemc]
 	{
 		"parser",
 		"spider",
-		//"database_api"
+		//"database_api".
 	};
 
 	std::ifstream version_file;
 	std::string version;
 
-	// print version of the main program
+	// print version of the main program.
 	version_file.open("VERSION");
 	std::getline(version_file, version);
 
@@ -77,7 +82,7 @@ void print::version_full()
 	
 	version_file.close();
 
-	// Loop over the subsystems
+	// Loop over the subsystems.
 	for (int i = 0; i < systemc; ++i)
 	{
 		std::string system = subsystems[i];
@@ -122,19 +127,23 @@ void print::printHashMatches(std::vector<HashData> hashes, std::string databaseO
 
 #pragma region Logging_Warning
 
-// Logging and warning
+// Logging and warning.
 
-void error::log(std::string str)
+void error::log(std::string str, utils::VerbosityLevel verbosity)
 {
-	print::printline("L - " + str);
+	if (print::VerbosityAtLeast(verbosity, utils::VerbosityLevel::All)) 
+		print::printline("L - " + str);
 }
 
-void error::warn(int code)
+void error::warn(int code, utils::VerbosityLevel verbosity)
 {
 	if (code <= 0) throw std::out_of_range("Argument \"code\" out of range in warn function.");
 
-	std::string generic_warning_msg = "Generic warning message";
-	print::printline("W" + std::to_string(code) + " - " + generic_warning_msg);
+	if (print::VerbosityAtLeast(verbosity, utils::VerbosityLevel::Warnings)) 
+	{
+		std::string generic_warning_msg = "Generic warning message";
+		print::printline("W" + std::to_string(code) + " - " + generic_warning_msg);
+	}
 }
 
 #pragma endregion Logging_Warning
@@ -150,58 +159,65 @@ enum err_code
 	flag_not_exist_cfg,
 	flag_invalid_arg,
 	flag_invalid_arg_cfg,
-	cmd_insufficient_args,
+	flag_incorrect_args,
+	cmd_incorrect_args,
 	cmd_not_found,
 	cmd_not_exist,
 	not_implemented,
 };
 
-// Descriptions of the error messages
+// Descriptions of the error messages.
 #pragma region Descriptions
 
-// strs: [commandname, expected_num_args, received_num_args]
-std::string desc_cmd_insufficient_arguments(std::string* strs)
+// Strs: [commandname, expected_num_args, received_num_args].
+std::string desc_cmd_incorrect_arguments(std::string* strs)
 {
 	return strs[1] + print::plural(" argument", std::stoi(strs[1])) + " expected for command " + print::quote(strs[0]) + ", received " + strs[2] + '.';
 }
 
-// strs: [flagname]
+// Strs: [commandname, expected_num_args, received_num_args].
+std::string desc_flag_incorrect_arguments(std::string* strs)
+{
+	return strs[1] + print::plural(" argument", std::stoi(strs[1])) + " expected for flag " + print::quote("--"+strs[0]) + ", received " + strs[2] + '.';
+}
+
+// Strs: [flagname].
 std::string desc_err_flag_not_exist(std::string* strs)
 {
 	return "The flag " + print::quote(strs[0]) + " does not exist.";
 }
 
-// strs: [flagname]
+// Strs: [flagname].
 std::string desc_err_flag_not_exist_cfg(std::string* strs)
 {
 	return "The flag " + print::quote(strs[0]) + " does not exist (configuration file).";
 }
 
-// strs: [flagname, argname]
+// Strs: [flagname, argname].
 std::string desc_err_flag_invalid_arg(std::string* strs)
 {
-	return "Argument " + print::quote(strs[1]) + " is invalid for the flag " + print::quote(strs[0]) + ".\n" + print::tab() + "See --help for valid value ranges.";
+	return "Argument " + print::quote(strs[1]) + " is invalid for the flag " + print::quote("--" + strs[0]) + ".\n" + print::tab() + "See --help for valid value ranges.";
 }
 
-// strs: [flagname, argname]
+// Strs: [flagname, argname].
 std::string desc_err_flag_invalid_arg_cfg(std::string* strs)
 {
-	return "Argument " + print::quote(strs[1]) + " is invalid for the flag " + print::quote(strs[0]) + " (configuration file).\n" + print::tab() + "See --help for valid value ranges.";
+	return "Argument " + print::quote(strs[1]) + " is invalid for the flag " + print::quote("--" + strs[0]) + " (configuration file).\n" + print::tab() + "See --help for valid value ranges.";
 }
 
-// no strs
+// No strs.
 std::string desc_err_cmd_not_found(std::string* strs)
 {
 	return "No command was entered.";
 }
 
-// strs: [commandname]
+// Strs: [commandname].
 std::string desc_err_cmd_not_exist(std::string* strs)
 {
 	return "Command " + print::quote(strs[0]) + " does not exist.";
 }
 
-// strs: [funcname]
+// Strs: [funcname].
 std::string desc_err_not_implemented(std::string* strs)
 {
 	return "The function " + print::quote(strs[0]) + " is not yet implemented.";
@@ -214,7 +230,8 @@ std::map <int, std::function<std::string(std::string*)>> err_desc =
 	{flag_not_exist_cfg, desc_err_flag_not_exist_cfg},
 	{flag_invalid_arg, desc_err_flag_invalid_arg},
 	{flag_invalid_arg_cfg, desc_err_flag_invalid_arg_cfg},
-	{cmd_insufficient_args, desc_cmd_insufficient_arguments},
+	{flag_incorrect_args, desc_flag_incorrect_arguments},
+	{cmd_incorrect_args, desc_cmd_incorrect_arguments},
 	{cmd_not_found, desc_err_cmd_not_found},
 	{cmd_not_exist, desc_err_cmd_not_exist},
 	{not_implemented, desc_err_not_implemented},
@@ -222,22 +239,27 @@ std::map <int, std::function<std::string(std::string*)>> err_desc =
 
 #pragma endregion Descriptions
 
-// MAIN ERROR FUNCTION
+// MAIN ERROR FUNCTION.
 // Displays the actual error message, defined by its code, and then exits the program.
+// TODO Verbosity level.
 void err(err_code code, std::string* strs, std::string extra_msg = "")
 {
 	print::printline("E" + utils::padLeft(std::to_string(code), '0', err_code_length) + " - " + err_desc[code](strs));
 	if (extra_msg != "") print::printline(extra_msg);
 	delete[] strs;
-
 	exit(EXIT_FAILURE);
 }
 
 #pragma region Specific_error_handlers
 
-void error::err_insufficient_arguments(std::string command, int expected, int received)
+void error::err_cmd_incorrect_arguments(std::string command, int expected, int received)
 {
-	err(cmd_insufficient_args, new std::string[3] {command, std::to_string(expected), std::to_string(received)});
+	err(cmd_incorrect_args, new std::string[3] {command, std::to_string(expected), std::to_string(received)});
+}
+
+void error::err_flag_incorrect_arguments(std::string flag, int expected, int received)
+{
+	err(flag_incorrect_args, new std::string[3]{ flag, std::to_string(expected), std::to_string(received) });
 }
 
 void error::err_flag_not_exist(std::string flag, bool from_config)

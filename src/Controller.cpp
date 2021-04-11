@@ -4,20 +4,29 @@ Utrecht University within the Software Project course.
 © Copyright Utrecht University (Department of Information and Computing Sciences)
 */
 
-#include <iostream>
-#include <string>
-#include <map>
-#include <functional>
-#include <regex>
-#include "Parser.h"
+#include "loguru/loguru.hpp"
+
 #include "Commands.h"
 #include "Print.h"
-#include "Utils.h"
 #include "Input.h"
 
 int main(int argc, char* argv[])
 {
+	loguru::g_stderr_verbosity = loguru::Verbosity_OFF;
+
+	loguru::init(argc, argv, { nullptr, "controller" });
+	loguru::add_file("logs/searchseco_all.log", loguru::Append, loguru::Verbosity_MAX);
+	loguru::add_file("logs/searchseco_low_verbosity.log", loguru::Truncate, loguru::Verbosity_WARNING);
+
+	loguru::g_stderr_verbosity = loguru::Verbosity_WARNING;
+
 	Input userInput(argc, argv);
 
-	Commands::execute(userInput.command, userInput.flags);	
+	loguru::g_stderr_verbosity = loguru::Verbosity_0;
+
+	Commands::execute(userInput.command, userInput.flags);
+
+	// Prevent loguru from logging "atexit" to stderr. This is not nice when we want to display the version for example,
+	//	it is only visual clutter.
+	loguru::g_stderr_verbosity = loguru::Verbosity_OFF;
 }

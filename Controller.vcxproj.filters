@@ -13,7 +13,7 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="cfg">
+    <Filter Include="External Libraries">
       <UniqueIdentifier>{0d91af4e-5059-441a-97f6-343871219c24}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
@@ -21,65 +21,77 @@
     <ClCompile Include="src\NetworkUtils.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src/Controller.cpp">
+    <ClCompile Include="src\Controller.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src/Commands.cpp">
+    <ClCompile Include="src\Commands.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src/DatabaseRequests.cpp">
+    <ClCompile Include="src\DatabaseRequests.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src/Flags.cpp">
+    <ClCompile Include="src\Flags.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src/Input.cpp">
+    <ClCompile Include="src\Input.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src/Parser.cpp">
+    <ClCompile Include="src\Parser.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src/Print.cpp">
+    <ClCompile Include="src\Print.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src/Utils.cpp">
+    <ClCompile Include="src\Utils.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\Networking.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\Error.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src/Commands.h">
+    <ClInclude Include="src\Commands.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src/NetworkUtils.h">
+    <ClInclude Include="src\NetworkUtils.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src/DatabaseRequests.h">
+    <ClInclude Include="src\DatabaseRequests.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src/FlagParser.h">
+    <ClInclude Include="src\FlagParser.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src/Flags.h">
+    <ClInclude Include="src\Flags.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src/Input.h">
+    <ClInclude Include="src\Input.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src/Networking.h">
+    <ClInclude Include="src\Networking.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src/Print.h">
+    <ClInclude Include="src\Print.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src/ProjectMetaData.h">
+    <ClInclude Include="src\ProjectMetaData.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src/Utils.h">
+    <ClInclude Include="src\Utils.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\loguru\loguru.hpp">
+      <Filter>External Libraries</Filter>
+    </ClCompile>
+    <ClCompile Include="src\loguru\loguru.cpp">
+      <Filter>External Libraries</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

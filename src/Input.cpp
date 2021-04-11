@@ -99,7 +99,7 @@ void Input::parseOptionals(std::string flargs)
 			flag = flargMatch[1],
 			arg = flargMatch[2];
 
-		if (!Flags::isFlag(flag)) error::err_flag_not_exist(flag, false);
+		if (!Flags::isFlag(flag)) error::err_flag_not_exist(flag, false, __FILE__, __LINE__);
 
 
 		this->optionalArguments[flag] = arg;
@@ -180,7 +180,7 @@ void Input::sanitizeCpuFlag(std::string arg, bool fromConfig)
 	Input::validateInteger(
 		arg,
 		[this](int x) { this->flags.flag_cpu = x; },
-		[arg, fromConfig]() { error::err_flag_invalid_arg("cpu", arg, fromConfig); },
+		[arg, fromConfig]() { error::err_flag_invalid_arg("cpu", arg, fromConfig, __FILE__, __LINE__); },
 		2);
 }
 
@@ -190,7 +190,7 @@ void Input::sanitizeRamFlag(std::string arg, bool fromConfig)
 	Input::validateInteger(
 		arg,
 		[this](int x) { this->flags.flag_ram = x; },
-		[arg, fromConfig]() { error::err_flag_invalid_arg("ram", arg, fromConfig); },
+		[arg, fromConfig]() { error::err_flag_invalid_arg("ram", arg, fromConfig, __FILE__, __LINE__); },
 		4,
 		64);
 }
@@ -205,7 +205,7 @@ void Input::sanitizeOutputFlag(std::string arg, bool fromConfig)
 	{
 		this->flags.flag_output = arg;
 	}
-	else error::err_flag_invalid_arg("output", arg, fromConfig);
+	else error::err_flag_invalid_arg("output", arg, fromConfig, __FILE__, __LINE__);
 }
 
 void Input::sanitizeSaveFlag(std::string arg, bool fromConfig)
@@ -220,7 +220,7 @@ void Input::sanitizeVerboseFlag(std::string arg, bool fromConfig)
 	Input::validateInteger(
 		arg,
 		[this](int x) { this->flags.flag_verbose = (utils::VerbosityLevel)x; },
-		[arg, fromConfig]() { error::err_flag_invalid_arg("verbose", arg, fromConfig); },
+		[arg, fromConfig]() { error::err_flag_invalid_arg("verbose", arg, fromConfig, __FILE__, __LINE__); },
 		1,
 		4
 	);
@@ -241,8 +241,8 @@ void Input::sanitizeVersionFlag(std::string arg, bool fromConfig)
 
 void Input::requireNArguments(int n, std::string flag, std::string argument)
 {
-	if (n == 0 && argument != "") error::err_flag_incorrect_arguments(flag, n, 1);
-	if (n == 1 && argument == "") error::err_flag_incorrect_arguments(flag, n, 0);
+	if (n == 0 && argument != "") error::err_flag_incorrect_arguments(flag, n, 1, __FILE__, __LINE__);
+	if (n == 1 && argument == "") error::err_flag_incorrect_arguments(flag, n, 0, __FILE__, __LINE__);
 
 }
 

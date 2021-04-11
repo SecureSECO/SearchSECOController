@@ -12,6 +12,7 @@ Utrecht University within the Software Project course.
 
 #include "Print.h"
 #include "Parser.h"
+#include "loguru/loguru.hpp"
 
 Input::Input(int argc, char* argv[]) 
 	: flags()
@@ -217,12 +218,22 @@ void Input::sanitizeSaveFlag(std::string arg, bool fromConfig)
 void Input::sanitizeVerboseFlag(std::string arg, bool fromConfig)
 {
 	Input::requireNArguments(1, "verbose", arg);
+
+	std::map<int, loguru::Verbosity> verbosityMap =
+	{
+		{1, loguru::Verbosity_OFF},			// Quiet
+		{2, loguru::Verbosity_ERROR},		// Only errors
+		{3, loguru::Verbosity_WARNING},		// Errors & Warnings
+		{4, loguru::Verbosity_INFO},		// All user-relevant logs
+		{5, loguru::Verbosity_1},			// Everything, including debug messages
+	};
+
 	Input::validateInteger(
 		arg,
-		[this](int x) { this->flags.flag_verbose = (utils::VerbosityLevel)x; },
+		[this, verbosityMap](int x) { this->flags.flag_verbose = verbosityMap.at(x); },
 		[arg, fromConfig]() { error::err_flag_invalid_arg("verbose", arg, fromConfig, __FILE__, __LINE__); },
 		1,
-		4
+		5
 	);
 }
 

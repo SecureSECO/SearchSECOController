@@ -22,7 +22,7 @@ int main(int argc, char* argv[])
 
 	Input userInput(argc, argv);
 
-	loguru::g_stderr_verbosity = loguru::Verbosity_0;
+	loguru::g_stderr_verbosity = userInput.flags.flag_verbose;
 
 	Commands::execute(userInput.command, userInput.flags);
 

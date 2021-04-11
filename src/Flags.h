@@ -9,6 +9,8 @@ Utrecht University within the Software Project course.
 
 #include "Utils.h"
 
+#include "loguru/loguru.hpp"
+
 class Flags
 {
 public:
@@ -17,7 +19,7 @@ public:
 	int flag_ram;
 	std::string flag_output;
 	bool flag_save;
-	utils::VerbosityLevel flag_verbose;
+	loguru::Verbosity flag_verbose;
 
 	bool flag_help;
 	bool flag_version;

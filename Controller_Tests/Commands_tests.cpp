@@ -13,7 +13,6 @@ TEST(Commands_tests, check_valid_command)
 	EXPECT_TRUE(Commands::isCommand("upload"));
 	EXPECT_TRUE(Commands::isCommand("checkupload"));
 	EXPECT_TRUE(Commands::isCommand("update"));
-	EXPECT_TRUE(Commands::isCommand("version"));
 }
 
 TEST(Commands_tests, check_invalid_command)

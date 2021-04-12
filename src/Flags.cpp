@@ -4,8 +4,9 @@ Utrecht University within the Software Project course.
 © Copyright Utrecht University (Department of Information and Computing Sciences)
 */
 
-
 #include "Flags.h"
+
+#include "loguru/loguru.hpp"
 
 std::map<std::string, std::string> Flags::shorthandFlagToLong =
 {
@@ -25,7 +26,7 @@ Flags::Flags()
 	this->flag_ram = 8; // TODO What amount of ram makes sense
 	this->flag_output = "console";
 	this->flag_save = false;
-	this->flag_verbose = utils::VerbosityLevel::All;
+	this->flag_verbose = loguru::Verbosity_INFO;
 
 	this->flag_help = false;
 	this->flag_version = false;

@@ -15,8 +15,6 @@ class utils
 {
 public:
 
-	static enum class VerbosityLevel {Silent = 1, Errors, Warnings, All };
-
 	/// <summary>
 	/// check if x exists in ts.
 	/// </summary>

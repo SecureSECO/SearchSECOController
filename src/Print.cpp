@@ -4,6 +4,8 @@ Utrecht University within the Software Project course.
 © Copyright Utrecht University (Department of Information and Computing Sciences)
 */
 
+#include "loguru/loguru.hpp"
+
 #include "Print.h"
 #include "Utils.h"
 #include "../parser/Parser/Parser.h"
@@ -14,12 +16,27 @@ Utrecht University within the Software Project course.
 #include <stdlib.h>
 #include <functional>
 
-#pragma region Print
+#pragma region Logging
 
-bool print::VerbosityAtLeast(utils::VerbosityLevel verbosity, utils::VerbosityLevel atLeast) 
+void print::debug(std::string msg, const char* file, int line)
 {
-	return (int)atLeast <= (int)verbosity;
+	loguru::log(loguru::Verbosity_1, file, line, msg.c_str());
 }
+
+void print::log(std::string msg, const char* file, int line)
+{
+	loguru::log(loguru::Verbosity_INFO, file, line, msg.c_str());
+}
+
+void print::warn(std::string msg, const char* file, int line)
+{
+	loguru::log(loguru::Verbosity_WARNING, file, line, msg.c_str());
+}
+
+#pragma endregion
+
+
+#pragma region Print
 
 void print::printline(std::string str)
 {
@@ -52,7 +69,6 @@ std::string print::plural(std::string singular, int n)
 	return singular + 's';
 }
 
-// Versioning.
 void print::version_full()
 {
 	std::string main_name = "searchseco";
@@ -63,7 +79,7 @@ void print::version_full()
 	{
 		"parser",
 		"spider",
-		//"database_api".
+		//"database_api"
 	};
 
 	std::ifstream version_file;
@@ -117,177 +133,4 @@ void print::printHashMatches(std::vector<HashData> hashes, std::string databaseO
 		}
 	}
 }
-
 #pragma endregion Print
-
-#pragma region Logging_Warning
-
-// Logging and warning.
-
-void error::log(std::string str, utils::VerbosityLevel verbosity)
-{
-	if (print::VerbosityAtLeast(verbosity, utils::VerbosityLevel::All)) 
-		print::printline("L - " + str);
-}
-
-void error::warn(int code, utils::VerbosityLevel verbosity)
-{
-	if (code <= 0) throw std::out_of_range("Argument \"code\" out of range in warn function.");
-
-	if (print::VerbosityAtLeast(verbosity, utils::VerbosityLevel::Warnings)) 
-	{
-		std::string generic_warning_msg = "Generic warning message";
-		print::printline("W" + std::to_string(code) + " - " + generic_warning_msg);
-	}
-}
-
-#pragma endregion Logging_Warning
-
-#pragma region Error_handling
-
-int err_code_length = 3;
-
-// Defines the (order of the) error codes for the various errors.
-enum err_code
-{
-	flag_not_exist = 1,
-	flag_not_exist_cfg,
-	flag_invalid_arg,
-	flag_invalid_arg_cfg,
-	flag_incorrect_args,
-	cmd_incorrect_args,
-	cmd_not_found,
-	cmd_not_exist,
-	not_implemented,
-};
-
-// Descriptions of the error messages.
-#pragma region Descriptions
-
-// Strs: [commandname, expected_num_args, received_num_args].
-std::string desc_cmd_incorrect_arguments(std::string* strs)
-{
-	return strs[1] + print::plural(" argument", std::stoi(strs[1])) + " expected for command " + print::quote(strs[0]) + ", received " + strs[2] + '.';
-}
-
-// Strs: [commandname, expected_num_args, received_num_args].
-std::string desc_flag_incorrect_arguments(std::string* strs)
-{
-	return strs[1] + print::plural(" argument", std::stoi(strs[1])) + " expected for flag " + print::quote("--"+strs[0]) + ", received " + strs[2] + '.';
-}
-
-// Strs: [flagname].
-std::string desc_err_flag_not_exist(std::string* strs)
-{
-	return "The flag " + print::quote(strs[0]) + " does not exist.";
-}
-
-// Strs: [flagname].
-std::string desc_err_flag_not_exist_cfg(std::string* strs)
-{
-	return "The flag " + print::quote(strs[0]) + " does not exist (configuration file).";
-}
-
-// Strs: [flagname, argname].
-std::string desc_err_flag_invalid_arg(std::string* strs)
-{
-	return "Argument " + print::quote(strs[1]) + " is invalid for the flag " + print::quote("--" + strs[0]) + ".\n" + print::tab() + "See --help for valid value ranges.";
-}
-
-// Strs: [flagname, argname].
-std::string desc_err_flag_invalid_arg_cfg(std::string* strs)
-{
-	return "Argument " + print::quote(strs[1]) + " is invalid for the flag " + print::quote("--" + strs[0]) + " (configuration file).\n" + print::tab() + "See --help for valid value ranges.";
-}
-
-// No strs.
-std::string desc_err_cmd_not_found(std::string* strs)
-{
-	return "No command was entered.";
-}
-
-// Strs: [commandname].
-std::string desc_err_cmd_not_exist(std::string* strs)
-{
-	return "Command " + print::quote(strs[0]) + " does not exist.";
-}
-
-// Strs: [funcname].
-std::string desc_err_not_implemented(std::string* strs)
-{
-	return "The function " + print::quote(strs[0]) + " is not yet implemented.";
-}
-
-// Maps an error code to a description.
-std::map <int, std::function<std::string(std::string*)>> err_desc =
-{
-	{flag_not_exist, desc_err_flag_not_exist},
-	{flag_not_exist_cfg, desc_err_flag_not_exist_cfg},
-	{flag_invalid_arg, desc_err_flag_invalid_arg},
-	{flag_invalid_arg_cfg, desc_err_flag_invalid_arg_cfg},
-	{flag_incorrect_args, desc_flag_incorrect_arguments},
-	{cmd_incorrect_args, desc_cmd_incorrect_arguments},
-	{cmd_not_found, desc_err_cmd_not_found},
-	{cmd_not_exist, desc_err_cmd_not_exist},
-	{not_implemented, desc_err_not_implemented},
-};
-
-#pragma endregion Descriptions
-
-// MAIN ERROR FUNCTION.
-// Displays the actual error message, defined by its code, and then exits the program.
-// TODO Verbosity level.
-void err(err_code code, std::string* strs, std::string extra_msg = "")
-{
-	print::printline("E" + utils::padLeft(std::to_string(code), '0', err_code_length) + " - " + err_desc[code](strs));
-	if (extra_msg != "") print::printline(extra_msg);
-	delete[] strs;
-	exit(EXIT_FAILURE);
-}
-
-#pragma region Specific_error_handlers
-
-void error::err_cmd_incorrect_arguments(std::string command, int expected, int received)
-{
-	err(cmd_incorrect_args, new std::string[3] {command, std::to_string(expected), std::to_string(received)});
-}
-
-void error::err_flag_incorrect_arguments(std::string flag, int expected, int received)
-{
-	err(flag_incorrect_args, new std::string[3]{ flag, std::to_string(expected), std::to_string(received) });
-}
-
-void error::err_flag_not_exist(std::string flag, bool from_config)
-{
-	std::string* flagname = new std::string[1] {flag};
-	err_code code = from_config ? flag_not_exist_cfg : flag_not_exist;
-
-	err(code, flagname);
-}
-
-void error::err_flag_invalid_arg(std::string flag, std::string arg, bool from_config)
-{
-	std::string* strs = new std::string[2]{ flag, arg };
-	err_code code = from_config ? flag_invalid_arg_cfg : flag_invalid_arg;
-
-	err(code, strs);
-}
-
-void error::err_cmd_not_found()
-{
-	err(cmd_not_found, {});
-}
-
-void error::err_cmd_not_exist(std::string command)
-{
-	err(cmd_not_exist, new std::string[1] {command});
-}
-
-void error::err_not_implemented(std::string funcname)
-{
-	err(not_implemented, new std::string[1] {funcname});
-}
-
-#pragma endregion Specific_error_handlers
-
-#pragma endregion Error_handling

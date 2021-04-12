@@ -38,7 +38,7 @@ bool Commands::isCommand(std::string s)
 void Commands::start(Flags flags)
 {
 	// Depends: crawler, spider, db, distribution.
-	error::err_not_implemented("start");
+	error::err_not_implemented("start", __FILE__, __LINE__);
 }
 
 void Commands::check(Flags flags)
@@ -78,7 +78,7 @@ void Commands::checkupload(Flags flags)
 void Commands::update(Flags flags)
 {
 	// Depends: a lot.
-	error::err_not_implemented("update");
+	error::err_not_implemented("update", __FILE__, __LINE__);
 }
 
 void Commands::version(Flags flags)

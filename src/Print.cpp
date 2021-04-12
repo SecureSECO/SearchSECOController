@@ -109,27 +109,30 @@ void print::version_full()
 
 void print::printHashMatches(std::vector<HashData> hashes, std::string databaseOutput)
 {
-	// Add all hashes we got localy to a map.
-	std::map<std::string, HashData*> localHashes = {};
-	for (int i = 0; i < hashes.size(); i++)
-	{
-		localHashes[hashes[i].hash] = &(hashes[i]);
-	}
-
+	std::map<std::string, std::vector<std::string>> receivedHashes = {};
 	// Seperate the response we got into its individual entries.
 	std::vector<std::string> dbentries = utils::split(databaseOutput, '\n');
 	for (std::string entry : dbentries)
 	{
 		std::vector<std::string> entrySplitted = utils::split(entry, '?');
-		if (localHashes.count(entrySplitted[0]) > 0)
+
+		receivedHashes[entrySplitted[0]] = entrySplitted;
+			
+	}
+
+	// Add all hashes we got localy to a map.
+	for (int i = 0; i < hashes.size(); i++)
+	{
+		if (receivedHashes.count(hashes[i].hash) > 0)
 		{
+
 			// Method1_hash|method1_projectid|method1_version|method1_name|method1_fileLocation
 			// |method1_lineNumber|number_of_authors|method1_authorid1|method1_authorid2|...
-			HashData* hash = localHashes[entrySplitted[0]];
-			printline(hash->functionName + " in file " + hash->fileName + " line "
-				+ std::to_string(hash->lineNumber) + " was found in our database: ");
-			printline("Function " + entrySplitted[3] + " in project " + entrySplitted[1]
-				+ " in file " + entrySplitted[4] + " line " + entrySplitted[5] + "\n");
+			std::vector<std::string> dbEntry = receivedHashes[hashes[i].hash];
+			printline(hashes[i].functionName + " in file " + hashes[i].fileName + " line "
+				+ std::to_string(hashes[i].lineNumber) + " was found in our database: ");
+			printline("Function " + dbEntry[3] + " in project " + dbEntry[1]
+				+ " in file " + dbEntry[4] + " line " + dbEntry[5] + "\n");
 		}
 	}
 }

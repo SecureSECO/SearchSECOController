@@ -5,7 +5,7 @@ Utrecht University within the Software Project course.
 */
 
 #include "pch.h"
-#include "../src/Utils.cpp"
+#include "Utils.h"
 
 
 TEST(contains_tests, is_in_vector)
@@ -17,7 +17,7 @@ TEST(contains_tests, is_in_vector)
 
 TEST(contains_tests, is_in_array)
 {
-	char* c = "string";
+	const char* c = "string";
 	EXPECT_TRUE(utils::contains(c, 's', 6));
 	EXPECT_FALSE(utils::contains(c, 'x', 6));
 }

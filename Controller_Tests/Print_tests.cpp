@@ -5,12 +5,12 @@ Utrecht University within the Software Project course.
 */
 
 #include "pch.h"
-#include "../src/Print.cpp"
-#include "../src/Error.cpp"
-#include "../src/Utils.cpp"
 
 #include "../src/loguru/loguru.cpp"
 
+#include "Print.h"
+#include "Utils.h"
+#include "Error.h"
 
 #include <regex>
 

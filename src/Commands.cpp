@@ -43,7 +43,7 @@ void Commands::start(Flags flags)
 
 void Commands::check(Flags flags)
 {
-	std::string tempLocation = "spiderDownloads\\repo.zip";
+	std::string tempLocation = "spiderDownloads";
 	tempLocation = Commands::downloadRepository(flags.mandatoryArgument, flags, tempLocation);
 	std::vector<HashData> hashes = Commands::parseRepository(tempLocation, flags);
 	// Calling the function that will print all the matches for us.

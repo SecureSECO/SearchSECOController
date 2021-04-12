@@ -4,7 +4,6 @@ Utrecht University within the Software Project course.
 © Copyright Utrecht University (Department of Information and Computing Sciences)
 */
 #include "pch.h"
-#include "../src/Commands.h"
 #include "../src/Commands.cpp"
 
 TEST(Commands_tests, check_valid_command)

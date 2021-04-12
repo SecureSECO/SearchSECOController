@@ -8,6 +8,7 @@ cmake_minimum_required(VERSION 3.10)
 project(SearchSECO)
 
 add_subdirectory(parser/Parser)
+add_subdirectory(spider/SearchSECOSpider)
 
 set(EXECUTABLE_PROCESS SearchSECO)
 
@@ -16,14 +17,14 @@ add_executable(
     "src/Controller.cpp"
     "src/Commands.cpp"
     "src/Commands.h"
-    "src/Parser.cpp"
-    "src/Parser.h"   # Rename to new file
+    "src/Parser2.cpp"
+    "src/Parser2.h"   # Rename to new file
     "src/Print.cpp"
     "src/Print.h"
     "src/Utils.cpp"
     "src/Utils.h"
 )
 
-target_link_libraries(${EXECUTABLE_PROCESS} parser)
-target_include_directories(${EXECUTABLE_PROCESS} PUBLIC "${PROJECT_BINARY_DIR}" parser/Parser)
+target_link_libraries(${EXECUTABLE_PROCESS} parser spider)
+target_include_directories(${EXECUTABLE_PROCESS} PUBLIC "${PROJECT_BINARY_DIR}" parser/Parser spider/SearchSECOSpider)
 

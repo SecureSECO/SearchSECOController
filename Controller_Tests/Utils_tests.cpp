@@ -5,7 +5,7 @@ Utrecht University within the Software Project course.
 */
 
 #include "pch.h"
-#include "../src/Utils.h"
+#include "../src/Utils.cpp"
 
 
 TEST(contains_tests, is_in_vector)

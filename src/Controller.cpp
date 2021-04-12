@@ -4,8 +4,13 @@ Utrecht University within the Software Project course.
 © Copyright Utrecht University (Department of Information and Computing Sciences)
 */
 
-#include "loguru/loguru.hpp"
 
+#include "loguru/loguru.hpp"
+#include <iostream>
+#include <string>
+#include <map>
+#include <functional>
+#include "Parser2.h"
 #include "Commands.h"
 #include "Print.h"
 #include "Input.h"

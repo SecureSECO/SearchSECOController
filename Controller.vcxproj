@@ -97,7 +97,7 @@
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>libs</AdditionalLibraryDirectories>
-      <AdditionalDependencies>curlcpp.lib;curlcppd.lib;libcurl.lib;libcurld.lib;Crypt32.lib;ws2_32.lib;winmm.lib;wldap32.lib;SearchSECOSpider.lib;Parser.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>Crypt32.lib;ws2_32.lib;winmm.lib;wldap32.lib;SearchSECOSpider.lib;Parser.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -116,7 +116,7 @@
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>libs</AdditionalLibraryDirectories>
-      <AdditionalDependencies>curlcpp.lib;curlcppd.lib;libcurl.lib;libcurld.lib;Crypt32.lib;ws2_32.lib;winmm.lib;wldap32.lib;SearchSECOSpider.lib;Parser.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>Crypt32.lib;ws2_32.lib;winmm.lib;wldap32.lib;SearchSECOSpider.lib;Parser.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -125,14 +125,14 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>libs;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\parser\Parser;..\spider\SearchSECOSpider;libs;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpplatest</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>libs</AdditionalLibraryDirectories>
-      <AdditionalDependencies>curlcpp.lib;curlcppd.lib;libcurl.lib;libcurld.lib;Crypt32.lib;ws2_32.lib;winmm.lib;wldap32.lib;SearchSECOSpider.lib;Parser.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>Crypt32.lib;ws2_32.lib;winmm.lib;wldap32.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -152,7 +152,7 @@
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>libs</AdditionalLibraryDirectories>
-      <AdditionalDependencies>curlcpp.lib;curlcppd.lib;libcurl.lib;libcurld.lib;Crypt32.lib;ws2_32.lib;winmm.lib;wldap32.lib;SearchSECOSpider.lib;Parser.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>Crypt32.lib;ws2_32.lib;winmm.lib;wldap32.lib;SearchSECOSpider.lib;Parser.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
       <Command>call copy_versions.bat</Command>
@@ -170,7 +170,7 @@
     <ClCompile Include="src\Input.cpp" />
     <ClCompile Include="src\NetworkUtils.cpp" />
     <ClCompile Include="src\Networking.cpp" />
-    <ClCompile Include="src\Parser.cpp" />
+    <ClCompile Include="src\Parser2.cpp" />
     <ClCompile Include="src\Print.cpp" />
     <ClCompile Include="src\Utils.cpp" />
     <ClCompile Include="src\loguru\loguru.cpp" />
@@ -191,10 +191,10 @@
     <ClInclude Include="src\Input.h" />
     <ClInclude Include="src\NetworkUtils.h" />
     <ClInclude Include="src\Networking.h" />
+    <ClInclude Include="src\Parser2.h" />
     <ClInclude Include="src\Print.h" />
     <ClInclude Include="src\ProjectMetaData.h" />
     <ClInclude Include="src\Utils.h" />
-    <ClInclude Include="src\Parser.h" />
     <ClCompile Include="src\loguru\loguru.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

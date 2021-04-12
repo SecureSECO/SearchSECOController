@@ -8,7 +8,7 @@ Utrecht University within the Software Project course.
 #include <iostream>
 #include "Print.h"
 #include "Parser.h"
-//#include "SearchSecoSpider.h"
+#include "SearchSecoSpider.h"
 #include "Utils.h"
 #include "../parser/Parser/Parser.h"
 #include "DatabaseRequests.h"

@@ -5,7 +5,6 @@ Utrecht University within the Software Project course.
 */
 
 #include "pch.h"
-#include "../src/Print.h"
 #include "../src/Print.cpp"
 #include "../src/Error.cpp"
 #include "../src/Utils.cpp"

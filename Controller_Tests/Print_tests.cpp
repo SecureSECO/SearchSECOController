@@ -231,3 +231,55 @@ TEST(error_death_tests, err_not_implemented)
 {
 	ASSERT_EXIT(error::err_not_implemented(GENERIC_STRING, __FILE__, __LINE__), ::testing::ExitedWithCode(EXIT_FAILURE), ".*");
 }
+
+TEST(print_hash_matches, basic_matches)
+{
+	testing::internal::CaptureStdout();
+
+	std::vector<HashData> hashes = {
+		HashData("hash1", "func1", "file1", 1, 2),
+		HashData("hash2", "func2", "file2", 4, 6),
+	};
+
+	std::string dbout = "hash1?5?0?func10?file10?100?0\n";
+
+	print::printHashMatches(hashes, dbout);
+
+	std::string output = testing::internal::GetCapturedStdout();
+	EXPECT_EQ(output, "func1 in file file1 line 1 was found in our database: \nFunction func10 in project 5 in file file10 line 100\n\n");
+}
+
+TEST(print_hash_matches, basic_double_db_output)
+{
+	testing::internal::CaptureStdout();
+
+	std::vector<HashData> hashes = {
+		HashData("hash1", "func1", "file1", 1, 2),
+		HashData("hash2", "func2", "file2", 4, 6),
+	};
+
+	std::string dbout = "hash1?5?0?func10?file10?100?0\nhash1?5?0?func10?file10?100?0\n";
+
+	print::printHashMatches(hashes, dbout);
+
+	std::string output = testing::internal::GetCapturedStdout();
+	EXPECT_EQ(output, "func1 in file file1 line 1 was found in our database: \nFunction func10 in project 5 in file file10 line 100\n\n");
+}
+
+TEST(print_hash_matches, basic_double_hash_input)
+{
+	testing::internal::CaptureStdout();
+
+	std::vector<HashData> hashes = {
+		HashData("hash1", "func1", "file1", 1, 2),
+		HashData("hash1", "func3", "file1", 1, 2),
+		HashData("hash2", "func2", "file2", 4, 6),
+	};
+
+	std::string dbout = "hash1?5?0?func10?file10?100?0\n";
+
+	print::printHashMatches(hashes, dbout);
+
+	std::string output = testing::internal::GetCapturedStdout();
+	EXPECT_EQ(output, "func1 in file file1 line 1 was found in our database: \nFunction func10 in project 5 in file file10 line 100\n\nfunc3 in file file1 line 1 was found in our database: \nFunction func10 in project 5 in file file10 line 100\n\n");
+}

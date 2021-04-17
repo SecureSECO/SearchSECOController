@@ -10,7 +10,7 @@ Utrecht University within the Software Project course.
 
 #include "Print.h"
 #include "Utils.h"
-#include "Error.h"
+#include "Error.cpp"
 
 #include <regex>
 

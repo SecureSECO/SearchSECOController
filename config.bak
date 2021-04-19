@@ -1,0 +1,5 @@
+cpu : 2
+ram :
+output : console
+save : false
+verbose : 4

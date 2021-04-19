@@ -5,9 +5,13 @@ Utrecht University within the Software Project course.
 */
 
 #include "pch.h"
-#include "../Print.h"
-#include "../Print.cpp"
-#include "../Utils.cpp"
+#include "../src/Print.h"
+#include "../src/Print.cpp"
+#include "../src/Error.cpp"
+#include "../src/Utils.cpp"
+
+#include "../src/loguru/loguru.cpp"
+
 #include <regex>
 
 #define GENERIC_STRING "teststring"
@@ -190,45 +194,6 @@ int* test_ints = new int[test_intc]
 	INT_MAX
 };
 
-TEST(error_testing, log)
-{
-	std::string output;
-	for (int i = 0; i < test_strc; ++i)
-	{
-		testing::internal::CaptureStdout();
-
-		error::log(test_strs[i]);
-		output = testing::internal::GetCapturedStdout();
-
-		ASSERT_EQ("L - " + test_strs[i] + '\n', output);
-	}
-}
-
-TEST(error_testing, warn)
-{
-	std::string output;
-	for (int i = 0; i < test_intc; ++i)
-	{
-		int code = test_ints[i];
-
-		if (code <= 0)
-		{
-			ASSERT_THROW(error::warn(code), std::out_of_range);
-		}
-		else
-		{
-			testing::internal::CaptureStdout();
-
-			error::warn(code);
-
-			output = testing::internal::GetCapturedStdout();
-
-			output = utils::split(output, '-')[0];
-			ASSERT_EQ("W" + std::to_string(test_ints[i]) + ' ', output);
-		}
-	}
-}
-
 // All error throwing functions should have more or less the same behaviour: print some string to stdout,
 // and then kill the program.
 // It seems to be impossible to test whether this string is in the correct format, since the program terminates
@@ -237,32 +202,32 @@ TEST(error_testing, warn)
 
 TEST(error_death_tests, err_insufficient_arguments)
 {
-	ASSERT_EXIT(error::err_insufficient_arguments(GENERIC_STRING, 1,2), ::testing::ExitedWithCode(EXIT_FAILURE), ".*");
+	ASSERT_EXIT(error::err_cmd_incorrect_arguments(GENERIC_STRING, 1,2, __FILE__, __LINE__), ::testing::ExitedWithCode(EXIT_FAILURE), ".*");
 }
 
 TEST(error_death_tests, err_flag_not_exist)
 {
-	ASSERT_EXIT(error::err_flag_not_exist(GENERIC_STRING, true ), ::testing::ExitedWithCode(EXIT_FAILURE), ".*");
-	ASSERT_EXIT(error::err_flag_not_exist(GENERIC_STRING, false), ::testing::ExitedWithCode(EXIT_FAILURE), ".*");
+	ASSERT_EXIT(error::err_flag_not_exist(GENERIC_STRING, true, __FILE__, __LINE__), ::testing::ExitedWithCode(EXIT_FAILURE), ".*");
+	ASSERT_EXIT(error::err_flag_not_exist(GENERIC_STRING, false, __FILE__, __LINE__), ::testing::ExitedWithCode(EXIT_FAILURE), ".*");
 }
 
 TEST(error_death_tests, err_flag_invalid_arg)
 {
-	ASSERT_EXIT(error::err_flag_invalid_arg(GENERIC_STRING, GENERIC_STRING, true ), ::testing::ExitedWithCode(EXIT_FAILURE), ".*");
-	ASSERT_EXIT(error::err_flag_invalid_arg(GENERIC_STRING, GENERIC_STRING, false), ::testing::ExitedWithCode(EXIT_FAILURE), ".*");
+	ASSERT_EXIT(error::err_flag_invalid_arg(GENERIC_STRING, GENERIC_STRING, true, __FILE__, __LINE__), ::testing::ExitedWithCode(EXIT_FAILURE), ".*");
+	ASSERT_EXIT(error::err_flag_invalid_arg(GENERIC_STRING, GENERIC_STRING, false, __FILE__, __LINE__), ::testing::ExitedWithCode(EXIT_FAILURE), ".*");
 }
 
 TEST(error_death_tests, err_cmd_not_found)
 {
-	ASSERT_EXIT(error::err_cmd_not_found(), ::testing::ExitedWithCode(EXIT_FAILURE), ".*");
+	ASSERT_EXIT(error::err_cmd_not_found(__FILE__, __LINE__), ::testing::ExitedWithCode(EXIT_FAILURE), ".*");
 }
 
 TEST(error_death_tests, err_cmd_not_exist)
 {
-	ASSERT_EXIT(error::err_cmd_not_exist(GENERIC_STRING), ::testing::ExitedWithCode(EXIT_FAILURE), ".*");
+	ASSERT_EXIT(error::err_cmd_not_exist(GENERIC_STRING, __FILE__, __LINE__), ::testing::ExitedWithCode(EXIT_FAILURE), ".*");
 }
 
 TEST(error_death_tests, err_not_implemented)
 {
-	ASSERT_EXIT(error::err_not_implemented(GENERIC_STRING), ::testing::ExitedWithCode(EXIT_FAILURE), ".*");
+	ASSERT_EXIT(error::err_not_implemented(GENERIC_STRING, __FILE__, __LINE__), ::testing::ExitedWithCode(EXIT_FAILURE), ".*");
 }

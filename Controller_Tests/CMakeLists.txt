@@ -28,7 +28,7 @@ target_link_libraries(${TEST_NAME} gtest_main controller)
 
 if(CMAKE_DL_LIBS)
     message("dl found!")
-    target_link_libraries(ExtremeCUnit ${CMAKE_DL_LIBS})
+    target_link_libraries(${TEST_NAME} ${CMAKE_DL_LIBS})
 endif()
 
 target_include_directories(${TEST_NAME} PUBLIC "${PROJECT_BINARY_DIR}" ../src)

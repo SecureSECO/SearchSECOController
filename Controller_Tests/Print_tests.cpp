@@ -6,14 +6,14 @@ Utrecht University within the Software Project course.
 
 #include "pch.h"
 
-#include "../src/loguru/loguru.cpp"
+#include <regex>
+#include <climits>
 
 #include "Print.h"
 #include "Utils.h"
 #include "Error.cpp"
 
-#include <regex>
-#include <climits>
+
 
 #define GENERIC_STRING "teststring"
 #define GENERIC_INT 1

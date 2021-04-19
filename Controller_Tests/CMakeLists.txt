@@ -7,7 +7,7 @@ cmake_minimum_required(VERSION 3.13)
 project(controller)
 
 # Fix error from order of libs
-set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -WI --start-group ")
+set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -ldl -Wl")
 
 
 add_subdirectory(../src ./src)

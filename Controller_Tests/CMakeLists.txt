@@ -27,7 +27,6 @@ add_executable(${TEST_NAME} Commands_tests.cpp NetworkUtils_tests.cpp Print_test
 target_link_libraries(${TEST_NAME} gtest_main controller)
 
 if(CMAKE_DL_LIBS)
-    message("dl found!")
     target_link_libraries(${TEST_NAME} ${CMAKE_DL_LIBS})
 endif()
 

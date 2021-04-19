@@ -11,7 +11,7 @@ Utrecht University within the Software Project course.
 #include <regex>
 
 #include "Print.h"
-#include "Parser.h"
+#include "Parser2.h"
 #include "loguru/loguru.hpp"
 
 Input::Input(int argc, char* argv[]) 

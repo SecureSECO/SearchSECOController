@@ -4,7 +4,6 @@ Utrecht University within the Software Project course.
 © Copyright Utrecht University (Department of Information and Computing Sciences)
 */
 #include "NetworkUtils.h"
-#include "../parser/Parser/Parser.h"
 #include "Print.h"
 
 void NetworkUtils::addStringToBuffer(char* buffer, int& pos, std::string adding)

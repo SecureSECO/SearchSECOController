@@ -6,7 +6,8 @@ Utrecht University within the Software Project course.
 #pragma once
 #include <vector>
 #include <string>
-struct HashData;
+
+#include "Parser.h"
 
 class NetworkUtils
 {

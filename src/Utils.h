@@ -18,8 +18,8 @@ public:
 	/// <summary>
 	/// check if x exists in ts.
 	/// </summary>
-	template <typename T>
-	static bool contains(std::vector<T> ts, T x)
+	template <class C, typename T>
+	static bool contains(C&& ts, T x)
 	{
 		return std::find(ts.begin(), ts.end(), x) != ts.end();
 	}
@@ -27,8 +27,8 @@ public:
 	/// <summary>
 	/// check if x exists in ts.
 	/// </summary>
-	template <typename T>
-	static bool contains(T* ts, T x, int cnt)
+	template <class C, typename T>
+	static bool contains(C&& ts, T x, int cnt)
 	{
 		for (int i = 0; i < cnt; ++i)
 		{

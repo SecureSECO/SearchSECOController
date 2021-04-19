@@ -11,6 +11,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Controller_Tests", "Control
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SearchSECOSpider", "spider\SearchSECOSpider\SearchSECOSpider.vcxproj", "{6D103808-9182-4C40-830C-CAA07C5528BD}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Executable", "Executable\Executable.vcxproj", "{A886EC61-40B0-4DA5-8832-8D0528071DB6}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -51,6 +53,14 @@ Global
 		{6D103808-9182-4C40-830C-CAA07C5528BD}.Release|x64.Build.0 = Release|x64
 		{6D103808-9182-4C40-830C-CAA07C5528BD}.Release|x86.ActiveCfg = Release|Win32
 		{6D103808-9182-4C40-830C-CAA07C5528BD}.Release|x86.Build.0 = Release|Win32
+		{A886EC61-40B0-4DA5-8832-8D0528071DB6}.Debug|x64.ActiveCfg = Debug|x64
+		{A886EC61-40B0-4DA5-8832-8D0528071DB6}.Debug|x64.Build.0 = Debug|x64
+		{A886EC61-40B0-4DA5-8832-8D0528071DB6}.Debug|x86.ActiveCfg = Debug|Win32
+		{A886EC61-40B0-4DA5-8832-8D0528071DB6}.Debug|x86.Build.0 = Debug|Win32
+		{A886EC61-40B0-4DA5-8832-8D0528071DB6}.Release|x64.ActiveCfg = Release|x64
+		{A886EC61-40B0-4DA5-8832-8D0528071DB6}.Release|x64.Build.0 = Release|x64
+		{A886EC61-40B0-4DA5-8832-8D0528071DB6}.Release|x86.ActiveCfg = Release|Win32
+		{A886EC61-40B0-4DA5-8832-8D0528071DB6}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -8,8 +8,7 @@ cmake_minimum_required(VERSION 3.10)
 project(SearchSECO)
 
 # Fix error from order of libs
-list(APPEND CMAKE_CXX_FLAGS "-WI ${CMAKE_CXX_FLAGS}")
-list(APPEND CMAKE_CXX_FLAGS "--start-group ${CMAKE_CXX_FLAGS}")
+set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -WI --start-group ")
 
 add_subdirectory(../src ./src)
 

@@ -6,10 +6,6 @@
 cmake_minimum_required(VERSION 3.13)
 project(controller)
 
-# Fix error from order of libs
-set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -ldl")
-
-
 add_subdirectory(../src ./src)
 
 include(FetchContent)
@@ -29,6 +25,11 @@ set(CMAKE_CXX_STANDARD 20)
 set(TEST_NAME controller_tests)
 add_executable(${TEST_NAME} Commands_tests.cpp NetworkUtils_tests.cpp Print_tests.cpp Utils_tests.cpp)
 target_link_libraries(${TEST_NAME} gtest_main controller)
+
+if(CMAKE_DL_LIBS)
+    message("dl found!")
+    target_link_libraries(ExtremeCUnit ${CMAKE_DL_LIBS})
+endif()
 
 target_include_directories(${TEST_NAME} PUBLIC "${PROJECT_BINARY_DIR}" ../src)
 

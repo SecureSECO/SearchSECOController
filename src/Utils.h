@@ -8,6 +8,7 @@ Utrecht University within the Software Project course.
 #include <string>
 #include <vector>
 #include <map>
+#include <algorithm>
 
 struct ProjectMetaData;
 

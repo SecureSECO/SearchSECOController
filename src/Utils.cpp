@@ -8,7 +8,6 @@ Utrecht University within the Software Project course.
 
 #include "Utils.h"
 //#include "Parser.h"
-#include <algorithm>
 #include <map>
 #include <fstream>
 #include <iostream>

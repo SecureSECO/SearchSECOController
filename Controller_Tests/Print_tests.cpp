@@ -13,6 +13,7 @@ Utrecht University within the Software Project course.
 #include "Error.cpp"
 
 #include <regex>
+#include <climits>
 
 #define GENERIC_STRING "teststring"
 #define GENERIC_INT 1

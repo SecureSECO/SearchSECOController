@@ -1,8 +1,8 @@
 [submodule "parser"]
-	path = parser
-	url = https://git.science.uu.nl/searchseco/parser.git
+  path = parser
+  url = ../parser.git
   branch = development
 [submodule "spider"]
-	path = spider
-	url = https://git.science.uu.nl/searchseco/spider.git
+  path = spider
+  url = ../spider.git
   branch = development

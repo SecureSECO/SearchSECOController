@@ -5,11 +5,11 @@ cmake_minimum_required(VERSION 3.10)
 
 
 # set the project name
-project(SearchSECO)
+project(searchseco)
 
 add_subdirectory(../src ./src)
 
-set(EXECUTABLE_PROCESS SearchSECO)
+set(EXECUTABLE_PROCESS searchseco)
 
 add_executable(
     ${EXECUTABLE_PROCESS}
@@ -23,4 +23,3 @@ if(CMAKE_DL_LIBS)
 endif()
 
 target_include_directories(${EXECUTABLE_PROCESS} PUBLIC "${PROJECT_BINARY_DIR}" ../src)
-

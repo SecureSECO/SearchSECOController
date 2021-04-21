@@ -49,3 +49,11 @@ add_library(controller
 
 target_link_libraries(controller spider parser ${Boost_LIBRARIES})
 target_include_directories(spider PUBLIC "${PROJECT_BINARY_DIR}" ../parser/Parser ../spider/SearchSECOSpider ${Boost_INCLUDE_DIRS})
+
+# copy version files
+if (WIN32)
+  execute_process(COMMAND CMD /c cd ../bin && copy_versions.bat && cd ../build)
+endif (WIN32)
+if (UNIX)
+  execute_process(COMMAND bash "../bin/copy_versions.sh")
+endif (UNIX)

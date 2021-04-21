@@ -101,7 +101,7 @@ void print::version_full()
 
 		std::getline(version_file, version);
 
-		print::printline(print::tab() + system + " version " + version);
+		print::printline(">> " + system + " version " + version);
 		
 		version_file.close();
 	}

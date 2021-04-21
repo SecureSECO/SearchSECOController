@@ -7,9 +7,6 @@ cmake_minimum_required(VERSION 3.10)
 # set the project name
 project(SearchSECO)
 
-# Fix error from order of libs
-set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -WI --start-group ")
-
 add_subdirectory(../src ./src)
 
 set(EXECUTABLE_PROCESS SearchSECO)

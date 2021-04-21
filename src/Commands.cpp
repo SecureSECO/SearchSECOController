@@ -44,7 +44,7 @@ void Commands::start(Flags flags)
 void Commands::check(Flags flags)
 {
 	std::string tempLocation = "spiderDownloads";
-	Commands::downloadRepository(flags.mandatoryArgument, flags, tempLocation);
+	tempLocation = Commands::downloadRepository(flags.mandatoryArgument, flags, tempLocation);
 	std::vector<HashData> hashes = Commands::parseRepository(tempLocation, flags);
 	// Calling the function that will print all the matches for us.
 	print::printHashMatches(hashes, DatabaseRequests::findMatches(hashes));

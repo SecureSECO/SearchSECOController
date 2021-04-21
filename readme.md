@@ -1,9 +1,9 @@
 # Scope
-This project is built up out of multiple components that all come together to make a distributed database that stores code fragments and can handle user queries. TThe components are a Spider, a Parser, a distributed Database, an API for that database and a Controller program. The spider is used to fetch repositories from sites like GitHub and the Software Heritage Graph and turns these into individual code fragments and metadata. The parser is used to turn code fragments and metadata into a hash with metadata that can be stored in the database. The distributed database is used to store all of these code fragments and can be queried to return code fragments based on the hashes or the metadata. Finally, the controller program facilitates the communication between these different components and the user and ties everything together.
-To get a better view of the full scope of the project, make sure to also check out the repositories of  the three components.
+This project is a distributed database that stores code fragments and can handle user queries. The project is built up from components: Spider, a Parser, a distributed Database, an API for that database and a Controller program. The spider is used to fetch repositories from GitHub and turns these into individual code fragments and metadata. The parser is used to turn code fragments and metadata into a hash with metadata that can be stored in the database. The distributed database is used to store all of these code fragments and can be queried to return code fragments based on the hashes or the metadata. Finally, the controller program facilitates the communication between these different components and the user and ties everything together.
+To get a better view of the full scope of the project, make sure to also check out the repositories of the other components as linked below.
 
 # Setting up
-Other than pulling the controller, make sure to also pull the submodules using `git submodule update --recursive --remote`. 
+Besides pulling the controller, make sure to also pull the submodules using `git submodule update --recursive --remote`. 
 # Building
 
 ## Visual Studio
@@ -12,12 +12,12 @@ Open the solution file and build the project in Visual Studio. Note that you wil
 ## CMake
 
 ### Instruction
-- start a command prompt in the root folder and run the following commands
-- make sure to have cmake (https://cmake.org/) installed.
+- Start a command prompt in the root folder and run the following commands
+- Make sure to have CMake (https://cmake.org/) installed.
 - `mkdir build && cd build`
 - `cmake ../Executable`
 - `cmake --build .`
-- `cd Debug`
+- The executable can now be found in the Debug folder.
 - To make sure it all works, run `searchseco -v`
 ### Common errors on Linux
 - `Could NOT find Boost`. To install Boost run `sudo apt-get install libboost-all-dev`.
@@ -26,7 +26,7 @@ Open the solution file and build the project in Visual Studio. Note that you wil
 ## Common errors on Windows
 - `Could NOT find Boost`:
    - Download Boost 1.76.0 (https://www.boost.org/users/download/) and extract it. 
-   - Open a command prompt as administrator and navigate to `C:/Program files`.
+   - Open a administrative command prompt and navigate to `C:/Program Files`.
    - Run `mkdir Boost`.
    - Move the unzipped folder to this folder.
    - Navigate the command prompt to `C:/Program Files/Boost/boost_1_76_0`.
@@ -45,4 +45,4 @@ The functionality of this program depends on three other searchseco projects and
 - [Database API](https://git.science.uu.nl/searchseco/database-api)
 
 ## External dependencies
-- Boost 1.76.0 (https://www.boost.org/users/download/). 
+- [Boost 1.76.0] (https://www.boost.org/users/download/). 

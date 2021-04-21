@@ -12,15 +12,17 @@ Utrecht University within the Software Project course.
 
 #include "Print.h"
 #include "Parser2.h"
-#include "loguru/loguru.hpp"
 
 Input::Input(int argc, char* argv[]) 
 	: flags()
 {
+    print::debug("Parsing CLI input", __FILE__, __LINE__);
 	Input::parseCliInput(argc, argv);
 
+	print::debug("Applying default arguments to flags", __FILE__, __LINE__);
 	Input::applyDefaults();
 
+	print::debug("Sanitizing provided arguments", __FILE__, __LINE__);
 	Input::sanitizeArguments();
 }
 
@@ -31,6 +33,7 @@ void Input::parseCliInput(int argc, char* argv[])
 	// For debugging in the IDE. Read another line if only 'searchseco' was entered.
 	if (argc == 1)
 	{
+        print::warn("Local debugging detected", __FILE__, __LINE__);
 		std::string s;
 		std::getline(std::cin, s);
 		std::vector<std::string> temp = utils::split(s, ' ');
@@ -55,21 +58,28 @@ void Input::parseCliInput(int argc, char* argv[])
 	for (int i = 1; i < argc; ++i)
 		flargs += args[i] + ' ';
 
-	Input::parseExecutablePath(args[0]);
+	print::debug("Parsing executable path", __FILE__, __LINE__);
+	Input::parseExecutablePath(argv[0]);
 
+	print::debug("Parsing optionals", __FILE__, __LINE__);
 	Input::parseOptionals(flargs);
 
+	print::debug("Mapping shorthand flags to longer versions", __FILE__, __LINE__);
 	Flags::mapShortFlagToLong(this->optionalArguments);
 }
 
 void Input::parseExecutablePath(std::string fullPath)
 {
+    print::debug("Parsing path " + print::quote(fullPath), __FILE__, __LINE__);
+
 	std::smatch match;
 	std::regex pathRegex("(.+)searchseco.exe");
 
 	std::regex_match(fullPath, match, pathRegex);
 
 	this->executablePath = match[1];
+
+	print::debug("Found executable path as " + print::quote(this->executablePath), __FILE__, __LINE__);
 }
 
 void Input::parseOptionals(std::string flargs)

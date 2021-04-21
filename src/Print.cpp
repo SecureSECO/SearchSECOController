@@ -8,7 +8,7 @@ Utrecht University within the Software Project course.
 
 #include "Print.h"
 #include "Utils.h"
-#include "../parser/Parser/Parser.h"
+#include "Parser.h"
 
 #include <iostream>
 #include <fstream>

@@ -7,7 +7,7 @@ Utrecht University within the Software Project course.
 #pragma once
 
 #include "Utils.h"
-#include "Parser.h"
+//#include "Parser.h"
 #include <algorithm>
 #include <map>
 #include <fstream>
@@ -15,7 +15,6 @@ Utrecht University within the Software Project course.
 #include "ProjectMetaData.h"
 #include <ctime>
 #include <iomanip>
-#include <iostream>
 #include <sstream>
 #include <chrono>
 

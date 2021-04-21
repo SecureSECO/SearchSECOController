@@ -11,7 +11,7 @@ Utrecht University within the Software Project course.
 #include <regex>
 
 #include "Print.h"
-#include "Parser.h"
+#include "Parser2.h"
 #include "loguru/loguru.hpp"
 
 Input::Input(int argc, char* argv[]) 
@@ -80,7 +80,7 @@ void Input::parseOptionals(std::string flargs)
 		flargMatch;
 
 	std::regex	
-		syntaxRegex("(?:([^-\\s]*)\\s)?(?:([^-\\s]*)\\s)?(.*)"),
+		syntaxRegex("(?:([^-][^\\s]*)\\s)?(?:([^-][^\\s]*)\\s?)?(.*)"),
 		flargRegex("(?:(?:-([^-\\s]+)))\\s?([^-\\s]+)?");
 
 	// Validate the syntax of the call.

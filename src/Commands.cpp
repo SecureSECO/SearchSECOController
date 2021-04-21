@@ -7,11 +7,11 @@ Utrecht University within the Software Project course.
 #include "Commands.h"
 #include <iostream>
 #include "Print.h"
-#include "../spider/SearchSECOSpider/SearchSecoSpider.h"
+#include "Parser2.h"
+#include "SearchSecoSpider.h"
 #include "Utils.h"
-#include "../parser/Parser/Parser.h"
+#include "Parser.h"
 #include "DatabaseRequests.h"
-
 #include "Flags.h"
 
 void Commands::execute(std::string command, Flags flags) 

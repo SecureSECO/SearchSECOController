@@ -179,7 +179,7 @@ TEST(version_test, version_regex)
 
 	std::string output = testing::internal::GetCapturedStdout();
 
-	ASSERT_TRUE(std::regex_match(output, std::regex("((searchseco|parser|spider|database_api) version \\d*.\\d*.\\d*\\n(\\t)?)*")));
+	ASSERT_TRUE(std::regex_match(output, std::regex("((>> )?(searchseco|parser|spider|database_api) version\\s?(\\d*.\\d*.\\d*)?\\n)*")));
 }
 
 // ERROR TESTING

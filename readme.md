@@ -9,15 +9,22 @@ Other than pulling the controller, make sure to also pull the submodules using `
 Open the solution file and build the project in Visual Studio. Note that you will not be able to pass on arguments in t
 
 ## CMake
-- start an administrator command prompt in the root folder and run the following commands
+- start a command prompt in the root folder and run the following commands
 - `mkdir build && cd build`
-- `cmake ../Executable`
+- `cmake ../executable`
 - `cmake --build .`
 - `cd Debug`
 - To make sure it all works, run `searchseco -h`
 
 # Dependencies
+
+# searchseco dependencies
 The functionality of this program depends on three other searchseco projects and their dependencies:
 - [Spider](https://git.science.uu.nl/searchseco/spider)
 - [Parser](https://git.science.uu.nl/searchseco/parser)
 - [Database API](https://git.science.uu.nl/searchseco/database-api)
+
+# External dependencies
+boost
+cmake
+

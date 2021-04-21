@@ -17,5 +17,10 @@ add_executable(
 )
 
 target_link_libraries(${EXECUTABLE_PROCESS} controller)
+
+if(CMAKE_DL_LIBS)
+    target_link_libraries(${TEST_NAME} ${CMAKE_DL_LIBS})
+endif()
+
 target_include_directories(${EXECUTABLE_PROCESS} PUBLIC "${PROJECT_BINARY_DIR}" ../src)
 

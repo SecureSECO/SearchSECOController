@@ -9,6 +9,7 @@ Utrecht University within the Software Project course.
 
 #include <string>
 #include <map>
+#include <climits>
 
 #include "Utils.h"
 #include "Flags.h"

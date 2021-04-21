@@ -34,23 +34,34 @@ Flags::Flags()
 
 void Flags::mapShortFlagToLong(std::map<std::string, std::string>& flargs)
 {
+    std::map<std::string, std::string> temp = {}; 
 	std::map<std::string, std::string>::iterator it;
 
 	for (it = flargs.begin(); it != flargs.end(); ++it)
 	{
-		std::string key = it->first;
-		if (Flags::isShortHandFlag(key))
-		{
-			std::map<std::string, std::string>::iterator lookup = flargs.find(key);
-			if (lookup != flargs.end())
-			{
-				std::string value = lookup->second;
-				flargs.erase(lookup);
+        std::string key = it->first;
+		std::string value;
 
-				flargs[Flags::shorthandFlagToLong[key]] = value;
-			}
+        std::map<std::string, std::string>::iterator lookup = flargs.find(key);
+        if (lookup != flargs.end())
+        {
+			value = lookup->second;
+        }
+        else
+        {
+            continue;
+		}
+
+		if (Flags::isShortHandFlag(key))
+        {
+            temp[Flags::shorthandFlagToLong[key]] = value;
+        }
+        else
+        {
+			temp[key] = value;   
 		}
 	}
+    flargs = temp;
 }
 
 bool Flags::isFlag(std::string flag)

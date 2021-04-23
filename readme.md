@@ -11,7 +11,7 @@ Open the solution file and build the project in Visual Studio. Note that you wil
 
 ## CMake
 
-### Instruction
+### Instructions
 - Start a command prompt in the root folder and run the following commands
 - Make sure to have CMake (https://cmake.org/) installed.
 - `mkdir build && cd build`
@@ -32,9 +32,14 @@ Open the solution file and build the project in Visual Studio. Note that you wil
    - Navigate the command prompt to `C:/Program Files/Boost/boost_1_76_0`.
    - Run `bootstrap.bat`.
    - Run `b2.exe`
+- `Could NOT find CURL`.
+   - Install curlcpp (https://github.com/JosephP91/curlcpp).
+   - Register it in your path.
 
 # Using
-After building the program, it can be called using the following syntax: `searchseco command mandatory_argument [-optional_flag flag_argument]`. To see the full list of commands and their functionality see the official documentation. LINK HERE.
+After building the program, it can be called using the following syntax: 
+`searchseco command mandatory_argument [-optional_flag flag_argument]`
+To see the full list of commands and their functionality see the official documentation. LINK HERE.
 
 # Dependencies
 
@@ -46,3 +51,4 @@ The functionality of this program depends on three other searchseco projects and
 
 ## External dependencies
 - [Boost 1.76.0] (https://www.boost.org/users/download/). 
+- [CurlCPP] (https://github.com/JosephP91/curlcpp)

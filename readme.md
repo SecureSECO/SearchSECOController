@@ -7,7 +7,7 @@ Besides pulling the controller, make sure to also pull the submodules using `git
 # Building
 
 ## Visual Studio
-Open the solution file and build the project in Visual Studio. Note that you will not be able to pass on arguments in the local VS debugger
+Open the solution file and build the project in Visual Studio. Note that you will not be able to pass on arguments in the local VS debugger.
 
 ## CMake
 
@@ -20,11 +20,13 @@ Open the solution file and build the project in Visual Studio. Note that you wil
 - The executable can now be found in the Debug folder.
 - To make sure it all works, run `searchseco -v`
 ### Common errors on Linux
-- `Could NOT find Boost`. To install Boost run `sudo apt-get install libboost-all-dev`.
-- `Could NOT find CURL`. To install Curl run `sudo apt-get install libcurl4-openssl-dev`.
+- `Could NOT find Boost` 
+   - To install Boost run `sudo apt-get install libboost-all-dev`.
+- `Could NOT find CURL` 
+   - To install Curl run `sudo apt-get install libcurl4-openssl-dev`.
 
 ## Common errors on Windows
-- `Could NOT find Boost`:
+- `Could NOT find Boost`
    - Download Boost 1.76.0 (https://www.boost.org/users/download/) and extract it. 
    - Open a administrative command prompt and navigate to `C:/Program Files`.
    - Run `mkdir Boost`.
@@ -32,7 +34,7 @@ Open the solution file and build the project in Visual Studio. Note that you wil
    - Navigate the command prompt to `C:/Program Files/Boost/boost_1_76_0`.
    - Run `bootstrap.bat`.
    - Run `b2.exe`
-- `Could NOT find CURL`.
+- `Could NOT find CURL`
    - Install curlcpp (https://github.com/JosephP91/curlcpp).
    - Register it in your path.
 
@@ -50,5 +52,5 @@ The functionality of this program depends on three other searchseco projects and
 - [Database API](https://git.science.uu.nl/searchseco/database-api)
 
 ## External dependencies
-- [Boost 1.76.0](https://www.boost.org/users/download/). 
+- [Boost 1.76.0](https://www.boost.org/users/download/)
 - [CurlCPP](https://github.com/JosephP91/curlcpp)

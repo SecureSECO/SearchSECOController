@@ -50,5 +50,5 @@ The functionality of this program depends on three other searchseco projects and
 - [Database API](https://git.science.uu.nl/searchseco/database-api)
 
 ## External dependencies
-- [Boost 1.76.0] (https://www.boost.org/users/download/). 
-- [CurlCPP] (https://github.com/JosephP91/curlcpp)
+- [Boost 1.76.0](https://www.boost.org/users/download/). 
+- [CurlCPP](https://github.com/JosephP91/curlcpp)

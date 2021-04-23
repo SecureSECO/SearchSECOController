@@ -3,7 +3,7 @@ This project is a distributed database that stores code fragments and can handle
 To get a better view of the full scope of the project, make sure to also check out the repositories of the other components as linked below.
 
 # Setting up
-Besides pulling the controller, make sure to also pull the submodules using `git submodule update --recursive --remote`. 
+Besides pulling the controller, make sure to also pull the submodules using `git submodule update --recursive --remote`
 # Building
 
 ## Visual Studio
@@ -36,11 +36,11 @@ Open the solution file and build the project in Visual Studio. Note that you wil
    - Run `b2.exe`
 - `Could NOT find CURL`
    - Install curlcpp (https://github.com/JosephP91/curlcpp).
-   - Register it in your path.
+   - Register it in your PATH environment variable.
 
 # Using
-After building the program, it can be called using the following syntax: 
-`searchseco command mandatory_argument [-optional_flag flag_argument]`
+After building the program, it can be called using the following syntax:  
+`searchseco command mandatory_argument [-optional_flag flag_argument]`  
 To see the full list of commands and their functionality see the official documentation. LINK HERE.
 
 # Dependencies

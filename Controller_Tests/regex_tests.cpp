@@ -74,6 +74,21 @@ TEST(regex_test, syntax_url_successcase)
         {"command " + validURLs[3] + " -V 3", 
 			std::make_tuple("command", validURLs[3], "-V 3")},
 	};
+
+	// Act
+    for (auto const& testcase : testcases)
+    {
+        auto input = testcase.first;
+        auto expectedOutput = testcase.second;
+
+        std::tuple<std::string, std::string, std::string> output;
+
+        // Assert
+        
+		EXPECT_TRUE(regex::validateSyntax(input, output));
+
+		EXPECT_EQ(output, expectedOutput);
+	}
 }
 
 TEST(regex_test, syntax_nourl_failurecase)

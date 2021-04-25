@@ -5,6 +5,17 @@
 #include <map>
 
 #pragma region Syntax Regex Tests
+
+int validURLc = 4;
+std::string* validURLs = new std::string[validURLc]
+{
+	"http://github.com/UserName/project",
+	"https://www.github.com/AnotherUser/project-with-hyphens", 
+	"www.github.com/username-with-hyphens/CoolProject", 
+	"github.com/short-url/but-long-hyphenated-project-containing-many-potential-files_which-we"
+		"-would-like-to-spider-and-parse"
+};
+
 TEST(regex_test, syntax_nourl_successcase)
 {
 	// Arrange
@@ -54,16 +65,14 @@ TEST(regex_test, syntax_url_successcase)
 			std::string>> 
 		testcases = 
 	{
-        {"command http://github.com/UserName/project --flag argument", 
-			std::make_tuple("command", "http://github.com/UserName/project", "--flag argument")},
-        {"command https://www.github.com/AnotherUser/project-with-hyphens", 
-			std::make_tuple("command", "https://www.github.com/AnotherUser/project-with-hyphens", "")},
-        {"command www.github.com/username-with-hyphens/CoolProject --output console", 
-			std::make_tuple("command", "www.github.com/username-with-hyphens/CoolProject", "--output console")},
-        {"command github.com/short-url/but-long-hyphenated-project-containing-many-potential-files_which-we-would-"
-			"like-to-spider-and-parse",
-			std::make_tuple("command", "github.com/short-url/but-long-hyphenated-project-containing-many-potential"
-				"-files_which-we-would-like-to-spider-and-parse", "")},
+        {"command " + validURLs[0] + " --flag argument", 
+			std::make_tuple("command", validURLs[0], "--flag argument")},
+        {"command " + validURLs[1], 
+			std::make_tuple("command", validURLs[1], "")},
+        {"command " + validURLs[2] + " --output console", 
+			std::make_tuple("command", validURLs[2], "--output console")},
+        {"command " + validURLs[3] + " -V 3", 
+			std::make_tuple("command", validURLs[3], "-V 3")},
 	};
 }
 

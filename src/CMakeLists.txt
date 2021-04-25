@@ -28,7 +28,7 @@ set(CONTROLLER_HEADER_LIST
   NetworkUtils.h
   Parser2.h
   Print.h
-  regex.h
+  regex_wrapper.h
   Utils.h
   loguru/loguru.hpp
 )
@@ -43,7 +43,7 @@ add_library(controller
   NetworkUtils.cpp
   Parser2.cpp
   Print.cpp
-  regex.cpp
+  regex_wrapper.cpp
   Utils.cpp
   loguru/loguru.cpp
   ${CONTROLLER_HEADER_LIST}

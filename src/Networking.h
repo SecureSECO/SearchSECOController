@@ -5,10 +5,9 @@ Utrecht University within the Software Project course.
 */
 #pragma once
 #include <boost/asio.hpp>
+#include "../parser/Parser/HashData.h"
 
 using boost::asio::ip::tcp;
-
-struct HashData;
 
 class NetworkHandler
 {

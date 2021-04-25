@@ -13,7 +13,7 @@ Utrecht University within the Software Project course.
 
 #include "Flags.h"
 
-struct HashData;
+#include "../parser/Parser/HashData.h"
 
 class Commands
 {

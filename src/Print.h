@@ -6,9 +6,10 @@ Utrecht University within the Software Project course.
 
 #pragma once
 
-#include<string>
+#include <string>
 #include <vector>
-struct HashData;
+
+#include "../parser/Parser/HashData.h"
 
 #include "Utils.h"
 

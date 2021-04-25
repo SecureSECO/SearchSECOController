@@ -31,7 +31,7 @@ namespace regex
     /// <returns></returns>
     bool parseFlargPairs(
         std::string flargStr, 
-        std::tuple<std::string, std::string>& flargPairArray, 
+        std::tuple<std::string, std::string> *&flargPairArray, 
         int& pairc
     );
 

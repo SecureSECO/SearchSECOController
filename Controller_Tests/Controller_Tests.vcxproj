@@ -39,6 +39,7 @@
     <ClCompile Include="Commands_tests.cpp" />
     <ClCompile Include="NetworkUtils_tests.cpp" />
     <ClCompile Include="Print_tests.cpp" />
+    <ClCompile Include="regex_tests.cpp" />
     <ClCompile Include="test.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>

@@ -122,7 +122,70 @@ TEST(regex_test, syntax_nourl_failurecase)
 
 TEST(regex_test, parse_flargs_successcase)
 {
+	// Arrange
+    std::map<std::string,                                // Input
+             std::tuple<                                 // Output
+                 std::tuple<std::string, std::string> *, // Array of flag-argument tuples: item1 = flag, item2 =
+                                                         //		argument
+                 int>>                                   // Length of the flag-argument tuple array
+        testcases = 
+	{
+		{
+			"-V 3 --output console", 
+			std::make_tuple(
+				new std::tuple<std::string, std::string>[2] 
+				{
+                    std::make_tuple("V", "3"), 
+					std::make_tuple("output", "console")
+				},
+				2
+			)
+		},
+        {
+			"--cpu 8 --looksLikeAFlagButDoesNotExist itShouldStillBeParsedThough", 
+			std::make_tuple(
+				new std::tuple<std::string, std::string>[2] 
+				{
+                    std::make_tuple("cpu", "8"),
+                    std::make_tuple("looksLikeAFlagButDoesNotExist", "itShouldStillBeParsedThough"), 
+				},
+				2
+			)
+		},
+        {
+			"-v", 
+			std::make_tuple(
+				new std::tuple<std::string, std::string>[1] 
+				{
+					std::make_tuple("v", "")
+				},
+				1
+			)
+		}
+	};
 
+	for (auto const& testcase : testcases)
+    {
+        auto input = testcase.first;
+        
+		auto expected_output_full = testcase.second;
+        auto expected_output  = std::get<0>(expected_output_full);
+        auto expected_outputc = std::get<1>(expected_output_full);
+
+		std::tuple<std::string, std::string> *output;
+        int outputc;
+
+		// Act & Assert
+		
+		EXPECT_TRUE(regex::parseFlargPairs(input, output, outputc));
+
+		EXPECT_EQ(outputc, expected_outputc);
+
+		for (int i = 0; i < expected_outputc; ++i)
+        {
+            EXPECT_EQ(output[i], expected_output[i]);  
+		}
+	}
 }
 
 TEST(regex_test, parse_flargs_failurecase)

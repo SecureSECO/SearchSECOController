@@ -178,7 +178,7 @@ TEST(regex_test, parse_flargs_successcase)
 		
 		EXPECT_TRUE(regex::parseFlargPairs(input, output, outputc));
 
-		EXPECT_EQ(outputc, expected_outputc);
+		ASSERT_EQ(outputc, expected_outputc);
 
 		for (int i = 0; i < expected_outputc; ++i)
         {

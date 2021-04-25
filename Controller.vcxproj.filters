@@ -13,6 +13,7 @@
     <ClCompile Include="src\Utils.cpp" />
     <ClCompile Include="src\loguru\loguru.cpp" />
     <ClCompile Include="src\loguru\loguru.hpp" />
+    <ClCompile Include="src\regex.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Commands.h" />
@@ -25,6 +26,7 @@
     <ClInclude Include="src\Parser2.h" />
     <ClInclude Include="src\Print.h" />
     <ClInclude Include="src\ProjectMetaData.h" />
+    <ClCompile Include="src\regex.h" />
     <ClInclude Include="src\Utils.h" />
   </ItemGroup>
 </Project>

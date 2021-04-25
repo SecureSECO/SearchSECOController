@@ -5,10 +5,29 @@ Utrecht University within the Software Project course.
 */
 
 #include "regex_wrapper.h"
+#include "Utils.h"
+
+#include <regex>
 
 bool regex::validateSyntax(std::string callStr, std::tuple<std::string, std::string, std::string> &result)
 {
-    return false;
+    if (callStr == "") 
+    {
+        return false; // The empty string is by definition a syntactically malformed call string.
+    }
+
+    std::regex expr("(?:([^-][^\\s]*)\\s?)?(?:([^-\\s][^\\s]*)\\s?)?\\s?(.*)");
+    std::smatch match;
+
+    bool valid = std::regex_match(callStr, match, expr);
+
+    if (!valid)
+    {
+        return false;
+    }
+
+    result = std::make_tuple(match[1], match[2], utils::trimWhiteSpaces(match[3]));
+    return true;
 }
 
 bool regex::parseFlargPairs(std::string flargStr, std::tuple<std::string, std::string> *&flargPairArray, int &pairc)

@@ -230,7 +230,23 @@ TEST(regex_test, url_validation_successcase)
 
 TEST(regex_test, url_validation_failurecase)
 {
+	// Arrange
+    int invalidURLc = 5;
+    std::string *invalidURLs = new std::string[invalidURLc]
+	{
+		"notAURL", 
+		"completely wrong string", 
+		"bad.formatted.url/this-should-not-work", 
+		"ptth//:this_is_not_a.valid/url", 
+		"wwww.smallmistake.com/close_but_no_cigar"
+    };
 
+	for (int i = 0; i < invalidURLc; ++i)
+    {
+        auto input = invalidURLs[i];
+
+        EXPECT_FALSE(regex::validateURL(input));
+	}
 }
 
 #pragma endregion

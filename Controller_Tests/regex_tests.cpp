@@ -216,7 +216,16 @@ TEST(regex_test, parse_flargs_failurecase)
 
 TEST(regex_test, url_validation_successcase)
 {
+	// Arrange has been taken care of.
 
+	// Act & Assert 
+
+	for (int i = 0; i < validURLc; ++i)
+    {
+        auto input = validURLs[i];
+
+        EXPECT_TRUE(regex::validateURL(input));    
+	}
 }
 
 TEST(regex_test, url_validation_failurecase)

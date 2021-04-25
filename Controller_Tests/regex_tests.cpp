@@ -4,17 +4,18 @@
 
 #include <map>
 
-#pragma region Syntax Regex Tests
+#pragma region Cross-Test variable declarations
 
 int validURLc = 4;
-std::string* validURLs = new std::string[validURLc]
-{
-	"http://github.com/UserName/project",
-	"https://www.github.com/AnotherUser/project-with-hyphens", 
-	"www.github.com/username-with-hyphens/CoolProject", 
-	"github.com/short-url/but-long-hyphenated-project-containing-many-potential-files_which-we"
-		"-would-like-to-spider-and-parse"
-};
+std::string *validURLs = new std::string[validURLc]{
+    "http://github.com/UserName/project", "https://www.github.com/AnotherUser/project-with-hyphens",
+    "www.github.com/username-with-hyphens/CoolProject",
+    "github.com/short-url/but-long-hyphenated-project-containing-many-potential-files_which-we"
+    "-would-like-to-spider-and-parse"};
+
+#pragma endregion
+
+#pragma region Syntax Regex Tests
 
 TEST(regex_test, syntax_nourl_successcase)
 {
@@ -95,9 +96,13 @@ TEST(regex_test, syntax_nourl_failurecase)
 {
     // Arrange
     int testcasec = 4;
-    std::string *testcases =
-        new std::string[testcasec]{"command argument notAFlag", "", "command -singleHyphenMultiCharFlag argument",
-                                   "command --d oubleHyphenSingleCharFlag"};
+    std::string *testcases = new std::string[testcasec]
+	{
+		"command argument notAFlag", 
+		"", 
+		"command -singleHyphenMultiCharFlag argument",
+		"command --d oubleHyphenSingleCharFlag"
+	};
 
     // Act
     for (int i = 0; i < testcasec; ++i)
@@ -111,4 +116,32 @@ TEST(regex_test, syntax_nourl_failurecase)
         EXPECT_FALSE(regex::validateSyntax(input, output));
     }
 }
+#pragma endregion
+
+#pragma region Flag Argument Pair Regex Tests
+
+TEST(regex_test, parse_flargs_successcase)
+{
+
+}
+
+TEST(regex_test, parse_flargs_failurecase)
+{
+
+}
+
+#pragma endregion
+
+#pragma region URL Validation Tests
+
+TEST(regex_test, url_validation_successcase)
+{
+
+}
+
+TEST(regex_test, url_validation_failurecase)
+{
+
+}
+
 #pragma endregion

@@ -12,7 +12,7 @@ Utrecht University within the Software Project course.
 
 #include "Print.h"
 #include "Parser2.h"
-#include "regex.h"
+#include "regex_wrapper.h"
 
 #include "loguru/loguru.hpp"
 

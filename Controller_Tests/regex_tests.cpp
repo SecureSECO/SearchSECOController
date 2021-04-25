@@ -55,7 +55,7 @@ TEST(regex_test, syntax_nourl_successcase)
 	}
 }
 
-TEST(regex_test, syntax_url_successcase)
+TEST(regex_test, syntax___url_successcase)
 {
     // Arrange
     std::map<

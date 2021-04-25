@@ -8,15 +8,15 @@ Utrecht University within the Software Project course.
 
 bool regex::validateSyntax(std::string callStr, std::tuple<std::string, std::string, std::string> &result)
 {
-
+    return false;
 }
 
 bool regex::parseFlargPairs(std::string flargStr, std::tuple<std::string, std::string> &flargPairArray, int &pairc)
 {
-
+    return false;
 }
 
 bool regex::validateURL(std::string url)
 {
-
+    return false;
 }

@@ -95,29 +95,20 @@ TEST(regex_test, syntax_nourl_failurecase)
 {
     // Arrange
     int testcasec = 4;
-    std::string *testcases = new std::string[testcasec]
-	{
-		"command argument notAFlag", 
-		"", 
-		"command -singleHyphenMultiCharFlag argument",
-		"command --d oubleHyphenSingleCharFlag"
-	};
+    std::string *testcases =
+        new std::string[testcasec]{"command argument notAFlag", "", "command -singleHyphenMultiCharFlag argument",
+                                   "command --d oubleHyphenSingleCharFlag"};
 
-	// Act
-	for (int i = 0; i < testcasec; ++i)
+    // Act
+    for (int i = 0; i < testcasec; ++i)
     {
         auto input = testcases[i];
 
         std::tuple<std::string, std::string, std::string> output;
 
-		// Assert
+        // Assert
 
-		EXPECT_FALSE(regex::validateSyntax(input, output));
-	}
-}
-
-TEST(regex_test, syntax_url_failurecase)
-{
-	
+        EXPECT_FALSE(regex::validateSyntax(input, output));
+    }
 }
 #pragma endregion

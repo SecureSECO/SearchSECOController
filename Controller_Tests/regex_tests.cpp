@@ -50,7 +50,7 @@ TEST(regex_test, syntax_nourl_successcase)
 
 		// Assert
 
-		EXPECT_TRUE(regex::validateSyntax(input, output));
+        ASSERT_TRUE(regex::validateSyntax(input, output));
 
 		EXPECT_EQ(output, expectedOutput);
 	}
@@ -87,7 +87,7 @@ TEST(regex_test, syntax___url_successcase)
 
         // Assert
         
-		EXPECT_TRUE(regex::validateSyntax(input, output));
+		ASSERT_TRUE(regex::validateSyntax(input, output));
 
 		EXPECT_EQ(output, expectedOutput);
 	}
@@ -96,10 +96,9 @@ TEST(regex_test, syntax___url_successcase)
 TEST(regex_test, syntax_nourl_failurecase)
 {
     // Arrange
-    int testcasec = 2;
+    int testcasec = 1;
     std::string *testcases = new std::string[testcasec]
 	{
-		"command argument notAFlag", 
 		""
 	};
 
@@ -176,7 +175,7 @@ TEST(regex_test, parse_flargs_successcase)
 
 		// Act & Assert
 		
-		EXPECT_TRUE(regex::parseFlargPairs(input, output, outputc));
+		ASSERT_TRUE(regex::parseFlargPairs(input, output, outputc));
 
 		ASSERT_EQ(outputc, expected_outputc);
 

@@ -8,10 +8,11 @@
 
 int validURLc = 4;
 std::string *validURLs = new std::string[validURLc]{
-    "http://github.com/UserName/project", "https://www.github.com/AnotherUser/project-with-hyphens",
+    "http://github.com/UserName/project", 
+	"https://www.github.com/AnotherUser/project-with-hyphens",
     "www.github.com/username-with-hyphens/CoolProject",
     "github.com/short-url/but-long-hyphenated-project-containing-many-potential-files_which-we"
-    "-would-like-to-spider-and-parse"};
+		"-would-like-to-spider-and-parse"};
 
 #pragma endregion
 
@@ -95,13 +96,11 @@ TEST(regex_test, syntax___url_successcase)
 TEST(regex_test, syntax_nourl_failurecase)
 {
     // Arrange
-    int testcasec = 4;
+    int testcasec = 2;
     std::string *testcases = new std::string[testcasec]
 	{
 		"command argument notAFlag", 
-		"", 
-		"command -singleHyphenMultiCharFlag argument",
-		"command --d oubleHyphenSingleCharFlag"
+		""
 	};
 
     // Act
@@ -190,7 +189,25 @@ TEST(regex_test, parse_flargs_successcase)
 
 TEST(regex_test, parse_flargs_failurecase)
 {
+    int testcasec = 5;
+    std::string *testcases = new std::string[testcasec]
+	{
+		"-singleHyphenMultiChar", 
+		"--d oubleHyphenSingleChar", 
+		"--flag with twoArguments", 
+		"noHyphenFlag", 
+		"---moreThanTwoHyphens"
+    };
 
+	std::tuple<std::string, std::string> *output;
+    int outputc;
+
+	for (int i = 0; i < testcasec; ++i)
+    {
+        auto input = testcases[i];
+
+        EXPECT_FALSE(regex::parseFlargPairs(input, output, outputc));
+	}
 }
 
 #pragma endregion

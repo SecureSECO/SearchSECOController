@@ -74,40 +74,39 @@ void Input::parseExecutablePath(std::string fullPath)
 	this->executablePath = match[1];
 }
 
-void Input::parseOptionals(std::string flargs)
+void Input::parseOptionals(std::string call)
 {
-	// TODO throw error when the call is malformed (regex fails).
-	std::smatch 
-		syntaxMatch,
-		flargMatch;
-
-	std::regex	
-		syntaxRegex("(?:([^-][^\\s]*)\\s)?(?:([^-][^\\s]*)\\s?)?(.*)"),
-		flargRegex("(?:(?:-([^-\\s]+)))\\s?([^-\\s]+)?");
-
 	// Validate the syntax of the call.
-	std::regex_match(flargs, syntaxMatch, syntaxRegex);
+	std::tuple<std::string, std::string, std::string> result;
+	bool valid = regex::validateSyntax(call, result);
 
-	this->command = syntaxMatch[1];
-	this->flags.mandatoryArgument = syntaxMatch[2];
-	std::string rest = syntaxMatch[3];
+	if (!valid)
+	{
+		error::err_not_implemented("Call syntax error", __FILE__, __LINE__);
+	}
+
+	this->command = std::get<0>(result);
+	this->flags.mandatoryArgument = std::get<1>(result);
+	std::string flargs = std::get<2>(result);
 
 	// Parse optional flags.
 	this->optionalArguments = {};
 
-	std::string::const_iterator searchStart(rest.cbegin());
-	while (regex_search(searchStart, rest.cend(), flargMatch, flargRegex))
+	std::map<std::string, std::string> flagMap;
+	regex::parseFlargPairs(flargs, flagMap);
+
+	for (auto const& pair : flagMap)
 	{
-		std::string 
-			flag = flargMatch[1],
-			arg = flargMatch[2];
+		std::string
+			flag     = pair.first,
+			argument = pair.second;
 
-		if (!Flags::isFlag(flag)) error::err_flag_not_exist(flag, false, __FILE__, __LINE__);
+		if (!Flags::isFlag(flag))
+		{
+			error::err_flag_not_exist(flag, false, __FILE__, __LINE__);
+		}
 
-
-		this->optionalArguments[flag] = arg;
-
-		searchStart = flargMatch.suffix().first;
+		this->optionalArguments[flag] = argument;
 	}
 }
 

@@ -6,8 +6,10 @@ Utrecht University within the Software Project course.
 
 #include "regex_wrapper.h"
 #include "Utils.h"
+#include "Print.h"
 
-#include <regex>
+#include <functional>
+#include <boost/regex.hpp>
 
 bool regex::validateSyntax(std::string callStr, std::tuple<std::string, std::string, std::string> &result)
 {
@@ -16,10 +18,10 @@ bool regex::validateSyntax(std::string callStr, std::tuple<std::string, std::str
         return false; // The empty string is by definition a syntactically malformed call string.
     }
 
-    std::regex expr("(?:([^-][^\\s]*)\\s?)?(?:([^-\\s][^\\s]*)\\s?)?\\s?(.*)");
-    std::smatch match;
+    boost::regex expr("(?:([^-][^\\s]*)\\s?)?(?:([^-\\s][^\\s]*)\\s?)?\\s?(.*)");
+    boost::smatch match;
 
-    bool valid = std::regex_match(callStr, match, expr);
+    bool valid = boost::regex_match(callStr, match, expr);
 
     if (!valid)
     {
@@ -32,7 +34,33 @@ bool regex::validateSyntax(std::string callStr, std::tuple<std::string, std::str
 
 void regex::parseFlargPairs(std::string flargStr, std::map<std::string, std::string> &result)
 {
+    std::map<std::string, std::function<void(std::string, const char* file, int line)>> failureExpressions =
+    {
+        { "(?<!-)-[^\\s-]{2,}", error::err_not_implemented },   // -wrong
+        { "--[^-](?:\\s|$)", error::err_not_implemented },      // --w rong
+        { "-{3,}\\S+", error::err_not_implemented },            // ---wrong
+    };
+
+    // Check if there are any malformed flags present in the string.
+    for (auto const& failureMode : failureExpressions)
+    {
+        boost::regex expr(failureMode.first);
+        auto throwError = failureMode.second;
+
+        std::string::const_iterator
+            start = flargStr.cbegin(),
+            end = flargStr.cend();
+
+        boost::match_results<std::string::const_iterator> what;
+
+        while (boost::regex_search(start, end, what, expr))
+        {
+            throwError(what[0], __FILE__, __LINE__);
+        }
+
+    }
     
+    result = {};
 }
 
 bool regex::validateURL(std::string url)

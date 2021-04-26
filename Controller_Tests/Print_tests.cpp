@@ -228,6 +228,31 @@ TEST(error_death_tests, err_cmd_not_exist)
 	ASSERT_EXIT(error::err_cmd_not_exist(GENERIC_STRING, __FILE__, __LINE__), ::testing::ExitedWithCode(EXIT_FAILURE), ".*");
 }
 
+TEST(error_death_tests, err_parse_call_syntax_error)
+{
+	ASSERT_EXIT(error::err_parse_call_syntax_error(GENERIC_STRING, __FILE__, __LINE__), ::testing::ExitedWithCode(EXIT_FAILURE), ".*");
+}
+
+TEST(error_death_tests, err_parse_incorrect_shorthand_flag)
+{
+	ASSERT_EXIT(error::err_parse_incorrect_shorthand_flag(GENERIC_STRING, __FILE__, __LINE__), ::testing::ExitedWithCode(EXIT_FAILURE), ".*");
+}
+
+TEST(error_death_tests, err_parse_incorrect_longhand_flag)
+{
+	ASSERT_EXIT(error::err_parse_incorrect_longhand_flag(GENERIC_STRING, __FILE__, __LINE__), ::testing::ExitedWithCode(EXIT_FAILURE), ".*");
+}
+
+TEST(error_death_tests, err_parse_could_not_parse_flag)
+{
+	ASSERT_EXIT(error::err_parse_could_not_parse_flag(GENERIC_STRING, __FILE__, __LINE__), ::testing::ExitedWithCode(EXIT_FAILURE), ".*");
+}
+
+TEST(error_death_tests, err_invalid_url)
+{
+	ASSERT_EXIT(error::err_invalid_url(GENERIC_STRING, __FILE__, __LINE__), ::testing::ExitedWithCode(EXIT_FAILURE), ".*");
+}
+
 TEST(error_death_tests, err_not_implemented)
 {
 	ASSERT_EXIT(error::err_not_implemented(GENERIC_STRING, __FILE__, __LINE__), ::testing::ExitedWithCode(EXIT_FAILURE), ".*");

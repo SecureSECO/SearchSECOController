@@ -173,15 +173,14 @@ TEST(regex_test, parse_flargs_successcase)
 	}
 }
 
-TEST(regex_test, parse_flargs_failurecase)
+TEST(regex_test, parse_flargs_failurecase____fatal)
 {
-    int testcasec = 5;
+	// Arrange
+    int testcasec = 3;
     std::string *testcases = new std::string[testcasec]
 	{
 		"-singleHyphenMultiChar", 
 		"--d oubleHyphenSingleChar", 
-		"--flag with twoArguments", 
-		"noHyphenFlag", 
 		"---moreThanTwoHyphens"
     };
 
@@ -191,7 +190,63 @@ TEST(regex_test, parse_flargs_failurecase)
     {
         auto input = testcases[i];
 
+		// Act & Assert
         ASSERT_EXIT(regex::parseFlargPairs(input, output), ::testing::ExitedWithCode(EXIT_FAILURE), ".*");
+	}
+}
+
+TEST(regex_test, parse_flargs_failurecase_nonfatal)
+{
+	// Arrange
+	int testcasec = 3;
+	std::map<
+		std::string,		// Input
+		std::map<			// Expected Output
+			std::string,	//	Expected Flag
+			std::string>	//	Expected Argument
+		> testcases = 
+	{
+		{
+			"--flag with twoArguments",
+			{
+				{"flag", "with"}
+			}
+		},
+		{
+			"flagLessArgument",
+			{
+				{}
+			}
+		},
+		{
+			"--correctFlag withAnArgument --combined with aMultipleArgumentFlag",
+			{
+				{"correctFlag", "withAnArgument"},
+				{"combined", "with"}
+			}
+		}
+		
+	};
+
+	std::map<std::string, std::string> output;
+
+	for (auto const& testcase : testcases)
+	{
+		auto input = testcase.first;
+		auto expected_output = testcase.second;
+
+		// Act
+		regex::parseFlargPairs(input, output);
+
+		// Assert
+		ASSERT_EQ(output.size(), expected_output.size());
+		
+		for (auto const& pair : output)
+		{
+			auto key = pair.first;
+
+			EXPECT_EQ(output[key], expected_output[key]);
+		}
 	}
 }
 

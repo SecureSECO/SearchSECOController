@@ -113,6 +113,38 @@ namespace error
 	void err_cmd_not_exist(std::string command, const char* file, int line);
 
 	/// <summary>
+	/// Throws when the user-entered call string could not be parsed (was syntactically incorrect).
+	/// </summary>
+	/// <param name="callstring">The call string in question.</param>
+	void err_parse_call_syntax_error(std::string callstring, const char* file, int line);
+
+	/// <summary>
+	/// Throws when a single-character flag was entered, preceded by double hyphens (as if it were a full-length
+	///		flag).
+	/// </summary>
+	/// <param name="flag">The incorrect flag.</param>
+	void err_parse_incorrect_shorthand_flag(std::string flag, const char* file, int line);
+
+	/// <summary>
+	/// Throws when a multi-character flag was entered, preceded by a single hyphen (as if it were a shorthand
+	///		flag).
+	/// </summary>
+	/// <param name="flag">The incorrect flag.</param>
+	void err_parse_incorrect_longhand_flag(std::string flag, const char* file, int line);
+
+	/// <summary>
+	/// Throws when a flag was entered that could not be parsed (too many hyphens, for example).
+	/// </summary>
+	/// <param name="flag">The incorrect flag.</param>
+	void err_parse_could_not_parse_flag(std::string flag, const char* file, int line);
+
+	/// <summary>
+	/// Throws when the URL entered by the user was incorrect.
+	/// </summary>
+	/// <param name="url">The 'URL' in question.</param>
+	void err_invalid_url(std::string url, const char* file, int line);
+
+	/// <summary>
 	/// Throws the "Not Implemented" error.
 	/// </summary>
 	void err_not_implemented(std::string message, const char* file, int line);

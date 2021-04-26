@@ -170,6 +170,7 @@
     <ClCompile Include="src\Networking.cpp" />
     <ClCompile Include="src\Parser2.cpp" />
     <ClCompile Include="src\Print.cpp" />
+    <ClCompile Include="src\regex_wrapper.cpp" />
     <ClCompile Include="src\Utils.cpp" />
     <ClCompile Include="src\loguru\loguru.cpp" />
   </ItemGroup>
@@ -192,6 +193,7 @@
     <ClInclude Include="src\Parser2.h" />
     <ClInclude Include="src\Print.h" />
     <ClInclude Include="src\ProjectMetaData.h" />
+    <ClCompile Include="src\regex_wrapper.h" />
     <ClInclude Include="src\Utils.h" />
     <ClCompile Include="src\loguru\loguru.hpp" />
   </ItemGroup>

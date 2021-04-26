@@ -30,6 +30,11 @@ enum err_code
 	cmd_incorrect_args,
 	cmd_not_found,
 	cmd_not_exist,
+	parse_call_syntax_error,
+	parse_incorrect_shorthand_flag,
+	parse_incorrect_longhand_flag,
+	parse_could_not_parse_flag,
+	invalid_url,
 	not_implemented,
 };
 
@@ -90,6 +95,38 @@ std::string desc_err_not_implemented(std::string* strs)
 	return "The function " + print::quote(strs[0]) + " is not yet implemented.";
 }
 
+// strs: [callstring]
+std::string desc_parse_call_syntax_error(std::string* strs)
+{
+	return "Error while parsing call string " + print::quote(strs[0]);
+}
+
+// strs: [flagname]
+std::string desc_parse_incorrect_shorthand_flag(std::string* strs)
+{
+	return "Flag " + print::quote("--" + strs[0]) + " was incorrectly entered as if it were a full-length flag (" 
+		"suggestion: " + print::quote("-" + strs[0]) + ")";
+}
+
+// strs: [flagname]
+std::string desc_parse_incorrect_longhand_flag(std::string* strs)
+{
+	return "Flag " + print::quote("-" + strs[0]) + " was incorrectly entered as if it were a shorthand flag ("
+		"suggestion: " + print::quote("--" + strs[0]) + ")";
+}
+
+// strs: [url]
+std::string desc_invalid_url(std::string* strs)
+{
+	return print::quote(strs[0]) + " is not a valid URL";
+}
+
+// strs: [flagname]
+std::string desc_parse_could_not_parse_flag(std::string* strs)
+{
+	return strs[0] + " could not be parsed";
+}
+
 // Maps an error code to a description.
 std::map <int, std::function<std::string(std::string*)>> err_desc =
 {
@@ -101,6 +138,11 @@ std::map <int, std::function<std::string(std::string*)>> err_desc =
 	{cmd_incorrect_args, desc_cmd_incorrect_arguments},
 	{cmd_not_found, desc_err_cmd_not_found},
 	{cmd_not_exist, desc_err_cmd_not_exist},
+	{parse_call_syntax_error, desc_parse_call_syntax_error},
+	{parse_incorrect_shorthand_flag, desc_parse_incorrect_shorthand_flag},
+	{parse_incorrect_longhand_flag, desc_parse_incorrect_longhand_flag},
+	{parse_could_not_parse_flag, desc_parse_could_not_parse_flag},
+	{invalid_url, desc_invalid_url},
 	{not_implemented, desc_err_not_implemented},
 };
 
@@ -116,6 +158,9 @@ void err(err_code code, std::string* strs, const char* file, int line, std::stri
 
 	if (extra_msg != "") print::log(extra_msg, file, line);
 	delete[] strs;
+
+	loguru::g_stderr_verbosity = loguru::Verbosity_OFF;
+
 	exit(EXIT_FAILURE);
 }
 
@@ -168,6 +213,46 @@ void error::err_cmd_not_exist(std::string command, const char* file, int line)
 {
 	err(cmd_not_exist,
 		new std::string[1]{ command },
+		file, line
+	);
+}
+
+void error::err_parse_call_syntax_error(std::string callstring, const char* file, int line)
+{
+	err(parse_call_syntax_error,
+		new std::string[1]{ callstring },
+		file, line
+	);
+}
+
+void error::err_parse_incorrect_shorthand_flag(std::string flag, const char* file, int line)
+{
+	err(parse_incorrect_shorthand_flag,
+		new std::string[1] { flag },
+		file, line
+	);
+}
+
+void error::err_parse_incorrect_longhand_flag(std::string flag, const char* file, int line)
+{
+	err(parse_incorrect_longhand_flag,
+		new std::string[1] { flag },
+		file, line
+	);
+}
+
+void error::err_parse_could_not_parse_flag(std::string flag, const char* file, int line)
+{
+	err(parse_could_not_parse_flag,
+		new std::string[1] { flag },
+		file, line
+	);
+}
+
+void error::err_invalid_url(std::string url, const char* file, int line)
+{
+	err(invalid_url,
+		new std::string[1] { url },
 		file, line
 	);
 }

@@ -36,9 +36,9 @@ void regex::parseFlargPairs(std::string flargStr, std::map<std::string, std::str
 {
     std::map<std::string, std::function<void(std::string, const char* file, int line)>> failureExpressions =
     {
-        { "(?<!-)-[^\\s-]{2,}", error::err_not_implemented },   // -wrong
-        { "--[^-](?:\\s|$)", error::err_not_implemented },      // --w rong
-        { "-{3,}\\S+", error::err_not_implemented },            // ---wrong
+        { "(?<!-)-([^\\s-]{2,})", error::err_not_implemented }, // -wrong
+        { "--([^-])(?:\\s|$)", error::err_not_implemented },    // --w rong
+        { "(-{3,}\\S+)", error::err_not_implemented },          // ---wrong
     };
 
     std::string::const_iterator
@@ -55,7 +55,7 @@ void regex::parseFlargPairs(std::string flargStr, std::map<std::string, std::str
 
         while (boost::regex_search(start, end, what, expr))
         {
-            throwError(what[0], __FILE__, __LINE__);
+            throwError(what[1], __FILE__, __LINE__);
         }
     }
 

@@ -121,44 +121,32 @@ TEST(regex_test, syntax_nourl_failurecase)
 TEST(regex_test, parse_flargs_successcase)
 {
 	// Arrange
-    std::map<std::string,                                // Input
-             std::tuple<                                 // Output
-                 std::tuple<std::string, std::string> *, // Array of flag-argument tuples: item1 = flag, item2 =
-                                                         //		argument
-                 int>>                                   // Length of the flag-argument tuple array
+    std::map<std::string,       // Input
+             std::map<          // Map of flag-argument pairs:
+                std::string,	//	key   = flag
+				std::string>	//	value = argument
+             >
         testcases = 
 	{
 		{
 			"-V 3 --output console", 
-			std::make_tuple(
-				new std::tuple<std::string, std::string>[2] 
-				{
-                    std::make_tuple("V", "3"), 
-					std::make_tuple("output", "console")
-				},
-				2
-			)
+			{
+				{"V", "3"},
+				{"output", "console"}
+			}
 		},
         {
 			"--cpu 8 --looksLikeAFlagButDoesNotExist itShouldStillBeParsedThough", 
-			std::make_tuple(
-				new std::tuple<std::string, std::string>[2] 
-				{
-                    std::make_tuple("cpu", "8"),
-                    std::make_tuple("looksLikeAFlagButDoesNotExist", "itShouldStillBeParsedThough"), 
-				},
-				2
-			)
+			{
+				{"cpu", "8"},
+				{"looksLikeAFlagButDoesNotExist", "itShouldStillBeParsedThough"},
+			}
 		},
         {
 			"-v", 
-			std::make_tuple(
-				new std::tuple<std::string, std::string>[1] 
-				{
-					std::make_tuple("v", "")
-				},
-				1
-			)
+			{
+				{"v", ""}
+			}
 		}
 	};
 
@@ -166,22 +154,21 @@ TEST(regex_test, parse_flargs_successcase)
     {
         auto input = testcase.first;
         
-		auto expected_output_full = testcase.second;
-        auto expected_output  = std::get<0>(expected_output_full);
-        auto expected_outputc = std::get<1>(expected_output_full);
+		auto expected_output = testcase.second;
 
-		std::tuple<std::string, std::string> *output;
-        int outputc;
+		std::map<std::string, std::string> output;
 
 		// Act & Assert
 		
-		ASSERT_TRUE(regex::parseFlargPairs(input, output, outputc));
+		ASSERT_TRUE(regex::parseFlargPairs(input, output));
 
-		ASSERT_EQ(outputc, expected_outputc);
+		ASSERT_EQ(output.size(), expected_output.size());
 
-		for (int i = 0; i < expected_outputc; ++i)
+		for (auto const& pair : output)
         {
-            EXPECT_EQ(output[i], expected_output[i]);  
+			auto key = pair.first;
+
+            EXPECT_EQ(output[key], expected_output[key]);  
 		}
 	}
 }
@@ -198,14 +185,13 @@ TEST(regex_test, parse_flargs_failurecase)
 		"---moreThanTwoHyphens"
     };
 
-	std::tuple<std::string, std::string> *output;
-    int outputc;
+	std::map<std::string, std::string> output;
 
 	for (int i = 0; i < testcasec; ++i)
     {
         auto input = testcases[i];
 
-        EXPECT_FALSE(regex::parseFlargPairs(input, output, outputc));
+        EXPECT_FALSE(regex::parseFlargPairs(input, output));
 	}
 }
 

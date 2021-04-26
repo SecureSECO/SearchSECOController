@@ -30,7 +30,7 @@ bool regex::validateSyntax(std::string callStr, std::tuple<std::string, std::str
     return true;
 }
 
-bool regex::parseFlargPairs(std::string flargStr, std::tuple<std::string, std::string> *&flargPairArray, int &pairc)
+bool regex::parseFlargPairs(std::string flargStr, std::map<std::string, std::string> &flargPairArray)
 {
     return false;
 }

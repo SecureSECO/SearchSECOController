@@ -8,6 +8,7 @@ Utrecht University within the Software Project course.
 
 #include <string>
 #include <tuple>
+#include <map>
 
 namespace regex
 {
@@ -31,8 +32,7 @@ namespace regex
     /// <returns></returns>
     bool parseFlargPairs(
         std::string flargStr, 
-        std::tuple<std::string, std::string> *&flargPairArray, 
-        int& pairc
+        std::map<std::string, std::string> &flargPairArray
     );
 
     /// <summary>

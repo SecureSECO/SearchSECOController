@@ -30,9 +30,9 @@ bool regex::validateSyntax(std::string callStr, std::tuple<std::string, std::str
     return true;
 }
 
-bool regex::parseFlargPairs(std::string flargStr, std::map<std::string, std::string> &flargPairArray)
+void regex::parseFlargPairs(std::string flargStr, std::map<std::string, std::string> &result)
 {
-    return false;
+    
 }
 
 bool regex::validateURL(std::string url)

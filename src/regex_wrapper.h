@@ -23,16 +23,12 @@ namespace regex
     );
 
     /// <summary>
-    /// Parses the flag-argument pairs from the user-entered "call string". If correct, it returns an array containing 
-    /// tuples representing the flags (item 1) and arguments (item 2). It also 
+    /// Parses the flag-argument pairs from the user-entered "call string". If correct, it returns a map containing 
+    /// pairs representing the flags (key) and arguments (value). If a flag is malformed, it should throw an error.
     /// </summary>
-    /// <param name="flargStr"></param>
-    /// <param name="flargPairArray"></param>
-    /// <param name="pairc"></param>
-    /// <returns></returns>
-    bool parseFlargPairs(
+    void parseFlargPairs(
         std::string flargStr, 
-        std::map<std::string, std::string> &flargPairArray
+        std::map<std::string, std::string> &result
     );
 
     /// <summary>

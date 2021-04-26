@@ -160,7 +160,7 @@ TEST(regex_test, parse_flargs_successcase)
 
 		// Act & Assert
 		
-		ASSERT_TRUE(regex::parseFlargPairs(input, output));
+		ASSERT_NO_FATAL_FAILURE(regex::parseFlargPairs(input, output));
 
 		ASSERT_EQ(output.size(), expected_output.size());
 
@@ -191,7 +191,7 @@ TEST(regex_test, parse_flargs_failurecase)
     {
         auto input = testcases[i];
 
-        EXPECT_FALSE(regex::parseFlargPairs(input, output));
+        ASSERT_EXIT(regex::parseFlargPairs(input, output), ::testing::ExitedWithCode(EXIT_FAILURE), ".*");
 	}
 }
 

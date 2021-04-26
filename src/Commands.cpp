@@ -8,7 +8,7 @@ Utrecht University within the Software Project course.
 #include <iostream>
 #include "Print.h"
 #include "Parser2.h"
-#include "SearchSecoSpider.h"
+#include "RunSpider.h"
 #include "Utils.h"
 #include "Parser.h"
 #include "DatabaseRequests.h"
@@ -44,7 +44,7 @@ void Commands::start(Flags flags)
 void Commands::check(Flags flags)
 {
 	std::string tempLocation = "spiderDownloads";
-	tempLocation = Commands::downloadRepository(flags.mandatoryArgument, flags, tempLocation);
+	Commands::downloadRepository(flags.mandatoryArgument, flags, tempLocation);
 	std::vector<HashData> hashes = Commands::parseRepository(tempLocation, flags);
 	// Calling the function that will print all the matches for us.
 	print::printHashMatches(hashes, DatabaseRequests::findMatches(hashes));
@@ -54,9 +54,9 @@ void Commands::check(Flags flags)
 void Commands::upload(Flags flags)
 {
 	// Depends: spider, db.
-	std::string tempLocation = "spiderDownloads\\";
-	std::string location = Commands::downloadRepository(flags.mandatoryArgument, flags, tempLocation);
-	std::vector<HashData> hashes = Commands::parseRepository(location, flags);
+	std::string tempLocation = "spiderDownloads";
+	Commands::downloadRepository(flags.mandatoryArgument, flags, tempLocation);
+	std::vector<HashData> hashes = Commands::parseRepository(tempLocation, flags);
 
 	// Uploading the hashes.
 	ProjectMetaData meta = utils::getProjectMetaDataFromFile(tempLocation + "project_data.meta");
@@ -66,9 +66,9 @@ void Commands::upload(Flags flags)
 void Commands::checkupload(Flags flags)
 {
 	// Depends: spider, db.
-	std::string tempLocation = "spiderDownloads\\";
-	std::string location = Commands::downloadRepository(flags.mandatoryArgument, flags, tempLocation);
-	std::vector<HashData> hashes = Commands::parseRepository(location, flags);
+	std::string tempLocation = "spiderDownloads";
+	Commands::downloadRepository(flags.mandatoryArgument, flags, tempLocation);
+	std::vector<HashData> hashes = Commands::parseRepository(tempLocation, flags);
 
 	ProjectMetaData metaData = utils::getProjectMetaDataFromFile(tempLocation + "project_data.meta");
 	// Uploading the hashes.
@@ -112,9 +112,9 @@ void Commands::help(std::string command)
 
 // Helpers.
 
-std::string Commands::downloadRepository(std::string repository, Flags flags, std::string downloadPath)
+void Commands::downloadRepository(std::string repository, Flags flags, std::string downloadPath)
 {
-	return RunSpider::runSpider(repository);
+	int exitCode = RunSpider::runSpider(repository, downloadPath);
 }
 
 std::vector<HashData> Commands::parseRepository(std::string repository, Flags flags)

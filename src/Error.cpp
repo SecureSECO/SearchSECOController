@@ -146,6 +146,9 @@ void err(err_code code, std::string* strs, const char* file, int line, std::stri
 
 	if (extra_msg != "") print::log(extra_msg, file, line);
 	delete[] strs;
+
+	loguru::g_stderr_verbosity = loguru::Verbosity_OFF;
+
 	exit(EXIT_FAILURE);
 }
 

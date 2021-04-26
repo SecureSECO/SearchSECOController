@@ -82,7 +82,7 @@ void Input::parseOptionals(std::string call)
 
 	if (!valid)
 	{
-		error::err_not_implemented("Call syntax error", __FILE__, __LINE__);
+		error::err_parse_call_syntax_error(call, __FILE__, __LINE__);
 	}
 
 	this->command = std::get<0>(result);

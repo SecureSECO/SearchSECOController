@@ -131,6 +131,10 @@ std::map <int, std::function<std::string(std::string*)>> err_desc =
 	{cmd_incorrect_args, desc_cmd_incorrect_arguments},
 	{cmd_not_found, desc_err_cmd_not_found},
 	{cmd_not_exist, desc_err_cmd_not_exist},
+	{parse_call_syntax_error, desc_parse_call_syntax_error},
+	{parse_incorrect_shorthand_flag, desc_parse_incorrect_shorthand_flag},
+	{parse_incorrect_longhand_flag, desc_parse_incorrect_longhand_flag},
+	{parse_could_not_parse_flag, desc_parse_could_not_parse_flag},
 	{not_implemented, desc_err_not_implemented},
 };
 

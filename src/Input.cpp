@@ -89,6 +89,11 @@ void Input::parseOptionals(std::string call)
 	this->flags.mandatoryArgument = std::get<1>(result);
 	std::string flargs = std::get<2>(result);
 
+	if (flags.mandatoryArgument != "" && !regex::validateURL(flags.mandatoryArgument))
+	{
+		error::err_invalid_url(flags.mandatoryArgument, __FILE__, __LINE__);
+	}
+
 	// Parse optional flags.
 	this->optionalArguments = {};
 

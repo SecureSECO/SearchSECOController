@@ -139,6 +139,12 @@ namespace error
 	void err_parse_could_not_parse_flag(std::string flag, const char* file, int line);
 
 	/// <summary>
+	/// Throws when the URL entered by the user was incorrect.
+	/// </summary>
+	/// <param name="url">The 'URL' in question.</param>
+	void err_invalid_url(std::string url, const char* file, int line);
+
+	/// <summary>
 	/// Throws the "Not Implemented" error.
 	/// </summary>
 	void err_not_implemented(std::string message, const char* file, int line);

@@ -34,6 +34,7 @@ enum err_code
 	parse_incorrect_shorthand_flag,
 	parse_incorrect_longhand_flag,
 	parse_could_not_parse_flag,
+	invalid_url,
 	not_implemented,
 };
 
@@ -114,6 +115,12 @@ std::string desc_parse_incorrect_longhand_flag(std::string* strs)
 		"suggestion: " + print::quote("--" + strs[0]) + ")";
 }
 
+// strs: [url]
+std::string desc_invalid_url(std::string* strs)
+{
+	return print::quote(strs[0]) + " is not a valid URL";
+}
+
 // strs: [flagname]
 std::string desc_parse_could_not_parse_flag(std::string* strs)
 {
@@ -135,6 +142,7 @@ std::map <int, std::function<std::string(std::string*)>> err_desc =
 	{parse_incorrect_shorthand_flag, desc_parse_incorrect_shorthand_flag},
 	{parse_incorrect_longhand_flag, desc_parse_incorrect_longhand_flag},
 	{parse_could_not_parse_flag, desc_parse_could_not_parse_flag},
+	{invalid_url, desc_invalid_url},
 	{not_implemented, desc_err_not_implemented},
 };
 
@@ -237,6 +245,14 @@ void error::err_parse_could_not_parse_flag(std::string flag, const char* file, i
 {
 	err(parse_could_not_parse_flag,
 		new std::string[1] { flag },
+		file, line
+	);
+}
+
+void error::err_invalid_url(std::string url, const char* file, int line)
+{
+	err(invalid_url,
+		new std::string[1] { url },
 		file, line
 	);
 }

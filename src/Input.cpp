@@ -201,9 +201,8 @@ void Input::sanitizeOutputFlag(std::string arg, bool fromConfig)
 {
 	Input::requireNArguments(1, "output", arg);
 
-	std::regex urlRegex("^(http:\\/\\/www\\.|https:\\/\\/www\\.|http:\\/\\/|https:\\/\\/)?[a-z0-9]+([\\-\\.]{1}[a-z0-9]+)*\\.[a-z]{2,5}(:[0-9]{1,5})?(\\/.*)?$");
-
-	if (arg == "console" || std::regex_match(arg, urlRegex))
+	// TODO 'arg' needs to either be "console" or a valid file path.
+	if (arg == "console" || true)
 	{
 		this->flags.flag_output = arg;
 	}

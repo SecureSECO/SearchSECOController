@@ -103,15 +103,15 @@ std::string desc_parse_call_syntax_error(std::string* strs)
 // strs: [flagname]
 std::string desc_parse_incorrect_shorthand_flag(std::string* strs)
 {
-	return "Flag " + print::quote("--" + strs[0]) + " was incorrectly entered as if it were a shorthand flag (" 
-		+ print::quote("-" + strs[0]) + ")";
+	return "Flag " + print::quote("--" + strs[0]) + " was incorrectly entered as if it were a full-length flag (" 
+		"suggestion: " + print::quote("-" + strs[0]) + ")";
 }
 
 // strs: [flagname]
 std::string desc_parse_incorrect_longhand_flag(std::string* strs)
 {
-	return "Flag " + print::quote("-" + strs[0]) + " was incorrectly entered as if it were a full-length flag ("
-		+ print::quote("--" + strs[0]) + ")";
+	return "Flag " + print::quote("-" + strs[0]) + " was incorrectly entered as if it were a shorthand flag ("
+		"suggestion: " + print::quote("--" + strs[0]) + ")";
 }
 
 // strs: [flagname]

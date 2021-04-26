@@ -8,7 +8,8 @@ Utrecht University within the Software Project course.
 #include <vector>
 #include "ProjectMetaData.h"
 
-struct HashData;
+#include "../parser/Parser/HashData.h"
+
 class NetworkHandler;
 
 class DatabaseRequests

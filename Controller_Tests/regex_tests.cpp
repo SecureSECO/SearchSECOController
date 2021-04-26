@@ -274,9 +274,9 @@ TEST(regex_test, url_validation_failurecase)
 	{
 		"notAURL", 
 		"completely wrong string", 
-		"bad.formatted.url/this-should-not-work", 
 		"ptth//:this_is_not_a.valid/url", 
-		"wwww.smallmistake.com/close_but_no_cigar"
+		"www.-github.com/no-hyphens-in-front",
+		"www.github"
     };
 
 	// Act & Assert 

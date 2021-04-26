@@ -41,15 +41,15 @@ void regex::parseFlargPairs(std::string flargStr, std::map<std::string, std::str
         { "-{3,}\\S+", error::err_not_implemented },            // ---wrong
     };
 
+    std::string::const_iterator
+        start = flargStr.cbegin(),
+        end = flargStr.cend();
+
     // Check if there are any malformed flags present in the string.
     for (auto const& failureMode : failureExpressions)
     {
         boost::regex expr(failureMode.first);
         auto throwError = failureMode.second;
-
-        std::string::const_iterator
-            start = flargStr.cbegin(),
-            end = flargStr.cend();
 
         boost::match_results<std::string::const_iterator> what;
 
@@ -57,10 +57,25 @@ void regex::parseFlargPairs(std::string flargStr, std::map<std::string, std::str
         {
             throwError(what[0], __FILE__, __LINE__);
         }
-
     }
-    
+
+    // Parse the well-formed flag-argument pairs
     result = {};
+    
+    boost::regex expr("(?:(?:-([^-\\s]+)))\\s?([^-\\s]+)?");
+    boost::match_results<std::string::const_iterator> what;
+
+    while (boost::regex_search(start, end, what, expr))
+    {
+        std::string
+            flag     = what[1],
+            argument = what[2];
+
+        result[flag] = argument;
+
+        start = what[0].second;
+    }
+
 }
 
 bool regex::validateURL(std::string url)

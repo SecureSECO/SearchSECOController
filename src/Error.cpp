@@ -30,6 +30,10 @@ enum err_code
 	cmd_incorrect_args,
 	cmd_not_found,
 	cmd_not_exist,
+	parse_call_syntax_error,
+	parse_incorrect_shorthand_flag,
+	parse_incorrect_longhand_flag,
+	parse_could_not_parse_flag,
 	not_implemented,
 };
 
@@ -88,6 +92,32 @@ std::string desc_err_cmd_not_exist(std::string* strs)
 std::string desc_err_not_implemented(std::string* strs)
 {
 	return "The function " + print::quote(strs[0]) + " is not yet implemented.";
+}
+
+// strs: [callstring]
+std::string desc_parse_call_syntax_error(std::string* strs)
+{
+	return "Error while parsing call string " + print::quote(strs[0]);
+}
+
+// strs: [flagname]
+std::string desc_parse_incorrect_shorthand_flag(std::string* strs)
+{
+	return "Flag " + print::quote("--" + strs[0]) + " was incorrectly entered as if it were a shorthand flag (" 
+		+ print::quote("-" + strs[0]) + ")";
+}
+
+// strs: [flagname]
+std::string desc_parse_incorrect_longhand_flag(std::string* strs)
+{
+	return "Flag " + print::quote("-" + strs[0]) + " was incorrectly entered as if it were a full-length flag ("
+		+ print::quote("--" + strs[0]) + ")";
+}
+
+// strs: [flagname]
+std::string desc_parse_could_not_parse_flag(std::string* strs)
+{
+	return strs[0] + " could not be parsed";
 }
 
 // Maps an error code to a description.
@@ -168,6 +198,38 @@ void error::err_cmd_not_exist(std::string command, const char* file, int line)
 {
 	err(cmd_not_exist,
 		new std::string[1]{ command },
+		file, line
+	);
+}
+
+void error::err_parse_call_syntax_error(std::string callstring, const char* file, int line)
+{
+	err(parse_call_syntax_error,
+		new std::string[1]{ callstring },
+		file, line
+	);
+}
+
+void error::err_parse_incorrect_shorthand_flag(std::string flag, const char* file, int line)
+{
+	err(parse_incorrect_shorthand_flag,
+		new std::string[1] { flag },
+		file, line
+	);
+}
+
+void error::err_parse_incorrect_longhand_flag(std::string flag, const char* file, int line)
+{
+	err(parse_incorrect_longhand_flag,
+		new std::string[1] { flag },
+		file, line
+	);
+}
+
+void error::err_parse_could_not_parse_flag(std::string flag, const char* file, int line)
+{
+	err(parse_could_not_parse_flag,
+		new std::string[1] { flag },
 		file, line
 	);
 }

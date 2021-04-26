@@ -80,5 +80,9 @@ void regex::parseFlargPairs(std::string flargStr, std::map<std::string, std::str
 
 bool regex::validateURL(std::string url)
 {
-    return false;
+    // Regular expression borrowed from StackOverflow: https://stackoverflow.com/a/17773849
+    boost::regex expr("^(http:\\/\\/www\\.|https:\\/\\/www\\.|http:\\/\\/|https:\\/\\/)?[a-z0-9]+([\\-\\.]{1}[a-z0-9]+)*\\.[a-z]{2,5}(:[0-9]{1,5})?(\\/.*)?$");
+    boost::smatch match;
+    
+    return boost::regex_match(url, match, expr);
 }

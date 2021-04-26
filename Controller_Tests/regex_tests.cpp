@@ -214,9 +214,7 @@ TEST(regex_test, parse_flargs_failurecase_nonfatal)
 		},
 		{
 			"flagLessArgument",
-			{
-				{}
-			}
+			{}
 		},
 		{
 			"--correctFlag withAnArgument --combined with aMultipleArgumentFlag",

@@ -41,7 +41,7 @@ Open the solution file and build the project in Visual Studio. Note that you wil
 # Using
 After building the program, it can be called using the following syntax:  
 `searchseco command mandatory_argument [-optional_flag flag_argument]`  
-To see the full list of commands and their functionality see the official documentation. LINK HERE.
+To see the full list of commands and their functionality see the official [documentation](LINK HERE) or use the `-h` flag.
 
 # Dependencies
 

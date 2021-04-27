@@ -3,7 +3,7 @@ This project is a distributed database that stores code fragments and can handle
 To get a better view of the full scope of the project, make sure to also check out the repositories of the other components as linked below.
 
 # Setting up
-Besides pulling the controller, make sure to also pull the submodules using `git submodule update --recursive --remote`
+Besides pulling the controller, make sure to also pull the submodules using `git submodule update`
 # Building
 
 ## Visual Studio

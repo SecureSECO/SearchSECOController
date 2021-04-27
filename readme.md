@@ -13,7 +13,7 @@ Open the solution file and build the project in Visual Studio. Note that you wil
 
 ### Instructions
 - Start a command prompt in the root folder and run the following commands
-- Make sure to have CMake (https://cmake.org/) installed.
+- Make sure to have CMake [https://cmake.org/](https://cmake.org/) installed.
 - `mkdir build && cd build`
 - `cmake ../Executable`
 - `cmake --build .`
@@ -27,7 +27,7 @@ Open the solution file and build the project in Visual Studio. Note that you wil
 
 ## Common errors on Windows
 - `Could NOT find Boost`
-   - Download Boost 1.76.0 (https://www.boost.org/users/download/) and extract it. 
+   - Download Boost 1.76.0 [https://www.boost.org/users/download/](https://www.boost.org/users/download/) and extract it. 
    - Open a administrative command prompt and navigate to `C:/Program Files`.
    - Run `mkdir Boost`.
    - Move the unzipped folder to this folder.
@@ -35,7 +35,7 @@ Open the solution file and build the project in Visual Studio. Note that you wil
    - Run `bootstrap.bat`.
    - Run `b2.exe`
 - `Could NOT find CURL`
-   - Install curlcpp (https://github.com/JosephP91/curlcpp).
+   - Install curlcpp [https://github.com/JosephP91/curlcpp](https://github.com/JosephP91/curlcpp).
    - Register it in your PATH environment variable.
 
 # Using

@@ -48,7 +48,7 @@ add_library(controller
 )
 
 target_link_libraries(controller spider-revisited parser crawler ${Boost_LIBRARIES})
-target_include_directories(controller PUBLIC "${PROJECT_BINARY_DIR}" ../parser/Parser ../spider-revisited/Spider-Revisited ../crawler/Crawler ${Boost_INCLUDE_DIRS})
+target_include_directories(spider PUBLIC "${PROJECT_BINARY_DIR}" ../parser/Parser ../spider-revisited/Spider-Revisited ../crawler/Crawler ${Boost_INCLUDE_DIRS})
 
 # copy version files
 if (WIN32)

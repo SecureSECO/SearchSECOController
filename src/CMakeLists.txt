@@ -3,8 +3,8 @@
 # © Copyright Utrecht University (Department of Information and Computing Sciences)
 
 add_subdirectory(../parser/Parser ./Parser)
-add_subdirectory(../spider-revisited ./spider-revisited)
-add_subdirectory(../crawler ./crawler)
+add_subdirectory(../spider-revisited/Spider-Revisited ./spider-revisited)
+add_subdirectory(../crawler/Crawler ./crawler)
 
 if (WIN32)
   set(Boost_USE_STATIC_LIBS ON) 

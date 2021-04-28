@@ -3,7 +3,8 @@
 # © Copyright Utrecht University (Department of Information and Computing Sciences)
 
 add_subdirectory(../parser/Parser ./Parser)
-add_subdirectory(../spider/SearchSECOSpider ./SearchSECOSpider)
+add_subdirectory(../spider-revisited ./spider-revisited)
+add_subdirectory(../crawler ./crawler)
 
 if (WIN32)
   set(Boost_USE_STATIC_LIBS ON) 
@@ -12,7 +13,6 @@ if (WIN32)
 
   set(BOOST_ROOT "C:/Program Files/Boost/boost_1_76_0") 
 endif()
-
 
 
 find_package(Boost REQUIRED COMPONENTS regex date_time)

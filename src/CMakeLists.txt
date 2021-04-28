@@ -3,7 +3,7 @@
 # © Copyright Utrecht University (Department of Information and Computing Sciences)
 
 add_subdirectory(../parser/Parser ./Parser)
-add_subdirectory(../spider-revisited/Spider-Revisited ./spider-revisited)
+add_subdirectory(../spider-revisited/Spider-Revisited ./Spider-Revisited)
 add_subdirectory(../crawler/Crawler ./crawler)
 
 if (WIN32)

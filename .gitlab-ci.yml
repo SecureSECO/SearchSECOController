@@ -13,7 +13,7 @@ google-tests:
     DEBIAN_FRONTEND: "noninteractive"
   before_script:
     - apt-get -y update && apt-get -y dist-upgrade
-    - apt-get -y install gcc g++ cmake autoconf curl libcurl4-openssl-dev git libboost-date-time-dev libboost-regex-dev
+    - apt-get -y install gcc g++ cmake autoconf curl libcurl4-openssl-dev git libboost-date-time-dev libboost-regex-dev nlohmann-json3-dev
   script:
     - mkdir controller_test_build
     - cd controller_test_build
@@ -29,8 +29,8 @@ linting:
   before_script:
     - apt-get -y update && apt-get -y dist-upgrade
     - apt-get -y install gcc g++ cmake autoconf
-    - apt-get -y install clang clang-tidy clang-format curl libcurl4-openssl-dev libboost-date-time-dev libboost-regex-dev
+    - apt-get -y install clang clang-tidy clang-format curl libcurl4-openssl-dev libboost-date-time-dev libboost-regex-dev nlohmann-json3-dev
   script:
     - cd src
-    - clang-tidy *.cpp --extra-arg=-std=c++20 -- -I../parser/Parser/ -I../spider/SearchSECOSpider/
-    - clang *.cpp -I../parser/Parser/ -I../spider/SearchSECOSpider/ -fsyntax-only -std=c++20
+    - clang-tidy *.cpp --extra-arg=-std=c++20 -- -I../parser/Parser/ -I../spider-revisited/Spider-Revisited/ -I../crawler/Crawler/
+    - clang *.cpp -I../parser/Parser/ -I../spider-revisited/Spider-Revisited/ -I../crawler/Crawler/ -fsyntax-only -std=c++20

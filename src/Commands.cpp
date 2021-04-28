@@ -55,7 +55,7 @@ void Commands::upload(Flags flags)
 {
 	// Depends: spider, db.
 	std::string tempLocation = "spiderDownloads";
-	Commands::downloadRepository(flags.mandatoryArgument, flags, tempLocation);
+	AuthorData authorData = Commands::downloadRepository(flags.mandatoryArgument, flags, tempLocation);
 	std::vector<HashData> hashes = Commands::parseRepository(tempLocation, flags);
 
 	// Uploading the hashes.
@@ -112,7 +112,7 @@ void Commands::help(std::string command)
 
 // Helpers.
 
-void Commands::downloadRepository(std::string repository, Flags flags, std::string downloadPath)
+AuthorData Commands::downloadRepository(std::string repository, Flags flags, std::string downloadPath)
 {
 	RunSpider::runSpider(repository, downloadPath);
 }

@@ -14,8 +14,41 @@ void NetworkUtils::addStringToBuffer(char* buffer, int& pos, std::string adding)
 	}
 }
 
-char* NetworkUtils::getAllDataFromHashes(std::vector<HashData> data, int& size, std::string header)
+std::map<std::string, std::vector<HashData*>>* NetworkUtils::transformHashList(std::vector<HashData>& hashes)
 {
+	std::map<std::string, std::vector<HashData*>>* list = new std::map<std::string, std::vector<HashData*>>();
+	for (int i = 0; i < hashes.size(); i++)
+	{
+
+		list->at(hashes[i].fileName).push_back(&(hashes[i]));
+		if (list->at(hashes[i].fileName).size() > 1 &&
+			list->at(hashes[i].fileName)[list->at(hashes[i].fileName).size() - 1]->lineNumber <
+			list->at(hashes[i].fileName)[list->at(hashes[i].fileName).size() - 2]->lineNumber)
+		{
+			// Do sort or something.
+		}
+	}
+	return list;
+}
+
+int NetworkUtils::getAuthors(std::map<HashData, std::vector<std::string>>& authors, std::map<std::string, std::vector<HashData*>>* hashes, AuthorData& rawData)
+{
+	int authorSize = 0;
+	for (auto const& key : rawData)
+	{
+		int currentEnd = 0;
+		int hashesIndex = 0;
+		int authorIndex = 0;
+		while (hashes->size() < hashesIndex && rawData.size() < authorIndex)
+		{
+
+		}
+	}
+}
+
+char* NetworkUtils::getAllDataFromHashes(std::vector<HashData> data, int& size, std::string header, AuthorData& authors)
+{
+	auto transformedData = transformHashList(data);
 	// Calcutating the eventual size of the string before hand, 
 	// so that we don't have to increase the size of the buffer.
 	size = header.size() + 1;

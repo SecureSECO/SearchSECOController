@@ -8,6 +8,7 @@ Utrecht University within the Software Project course.
 #include <string>
 
 #include "Parser.h"
+#include "CodeBlock.h"
 
 class NetworkUtils
 {
@@ -29,7 +30,7 @@ public:
 	/// Even if the header is empty, it will still put an end line in the beginning.</param>
 	/// 
 	/// <returns>A char pointer to string with all the data in it.</returns>
-	static char* getAllDataFromHashes(std::vector<HashData> data, int& size, std::string header);
+	static char* getAllDataFromHashes(std::vector<HashData> data, int& size, std::string header, AuthorData& authors);
 
 	/// <summary>
 	/// This function will only copy the actual hash into a string.
@@ -54,6 +55,11 @@ private:
 	/// Adds a string to a char* buffer.
 	/// </summary>
 	static void addStringToBuffer(char* buffer, int& pos, std::string adding);
+
+	static std::map<std::string, std::vector<HashData*>>* transformHashList(std::vector<HashData>& hashes);
+
+	static int getAuthors(std::map<HashData, std::vector<std::string>>& authors, 
+		std::map<std::string, std::vector<HashData*>>* hashes, AuthorData& rawData);
 
 };
 

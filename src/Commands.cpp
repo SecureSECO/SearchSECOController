@@ -59,7 +59,7 @@ void Commands::upload(Flags flags)
 	std::vector<HashData> hashes = Commands::parseRepository(tempLocation, flags);
 
 	// Uploading the hashes.
-	ProjectMetaData meta = utils::getProjectMetaDataFromFile(tempLocation + "project_data.meta");
+	ProjectMetaData meta = utils::getProjectMetadata(flags.mandatoryArgument);
 	print::printline(DatabaseRequests::uploadHashes(hashes, meta));
 }
 
@@ -70,7 +70,7 @@ void Commands::checkupload(Flags flags)
 	Commands::downloadRepository(flags.mandatoryArgument, flags, tempLocation);
 	std::vector<HashData> hashes = Commands::parseRepository(tempLocation, flags);
 
-	ProjectMetaData metaData = utils::getProjectMetaDataFromFile(tempLocation + "project_data.meta");
+	ProjectMetaData metaData = utils::getProjectMetadata(flags.mandatoryArgument);
 	// Uploading the hashes.
 	print::printHashMatches(hashes, DatabaseRequests::checkUploadHashes(hashes, metaData));
 }

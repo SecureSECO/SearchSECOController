@@ -27,4 +27,7 @@
     <ClInclude Include="src\ProjectMetaData.h" />
     <ClInclude Include="src\Utils.h" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
 </Project>

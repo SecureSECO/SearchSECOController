@@ -63,10 +63,7 @@ public:
 	/// </summary>
 	static std::string padLeft(std::string src, char pad_left, int length);
 
-	/// <summary>
-	/// Retrieves the project meta data from the file you give it.
-	/// </summary>
-	static ProjectMetaData getProjectMetaDataFromFile(std::string file);
+	static ProjectMetaData getProjectMetadata(std::string url);
 
 	static long long getIntegerTimeFromString(std::string time);
 };

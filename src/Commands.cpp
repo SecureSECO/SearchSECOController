@@ -114,7 +114,7 @@ void Commands::help(std::string command)
 
 void Commands::downloadRepository(std::string repository, Flags flags, std::string downloadPath)
 {
-	int exitCode = RunSpider::runSpider(repository, downloadPath);
+	RunSpider::runSpider(repository, downloadPath);
 }
 
 std::vector<HashData> Commands::parseRepository(std::string repository, Flags flags)

@@ -3,7 +3,8 @@
 # © Copyright Utrecht University (Department of Information and Computing Sciences)
 
 add_subdirectory(../parser/Parser ./Parser)
-add_subdirectory(../spider/SearchSECOSpider ./SearchSECOSpider)
+add_subdirectory(../spider-revisited/Spider-Revisited ./Spider-Revisited)
+add_subdirectory(../crawler/Crawler ./Crawler)
 
 if (WIN32)
   set(Boost_USE_STATIC_LIBS ON) 
@@ -12,7 +13,6 @@ if (WIN32)
 
   set(BOOST_ROOT "C:/Program Files/Boost/boost_1_76_0") 
 endif()
-
 
 
 find_package(Boost REQUIRED COMPONENTS regex date_time)
@@ -49,8 +49,8 @@ add_library(controller
   ${CONTROLLER_HEADER_LIST}
 )
 
-target_link_libraries(controller spider parser ${Boost_LIBRARIES})
-target_include_directories(spider PUBLIC "${PROJECT_BINARY_DIR}" ../parser/Parser ../spider/SearchSECOSpider ${Boost_INCLUDE_DIRS})
+target_link_libraries(controller spider parser crawler ${Boost_LIBRARIES})
+target_include_directories(controller PUBLIC "${PROJECT_BINARY_DIR}" ../parser/Parser ../spider-revisited/Spider-Revisited ../crawler/Crawler ${Boost_INCLUDE_DIRS})
 
 # copy version files
 if (WIN32)

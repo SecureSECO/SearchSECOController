@@ -6,6 +6,36 @@ Utrecht University within the Software Project course.
 #include "NetworkUtils.h"
 #include "Print.h"
 
+bool operator==(HashData const& lhs, HashData const& rhs)
+{
+	return lhs.hash == rhs.hash && 
+		lhs.fileName == rhs.fileName && 
+		lhs.functionName == rhs.functionName
+		&& lhs.lineNumber == rhs.lineNumber
+		&& lhs.lineNumberEnd == rhs.lineNumberEnd;
+}
+
+bool operator<(HashData const& lhs, HashData const& rhs)
+{
+	if (lhs.hash != rhs.hash)
+	{
+		return lhs.hash < rhs.hash;
+	}
+	if (lhs.fileName != rhs.fileName)
+	{
+		return lhs.fileName < rhs.fileName;
+	}
+	if (lhs.functionName != rhs.functionName)
+	{
+		return lhs.functionName < rhs.functionName;
+	}
+	if (lhs.lineNumber != rhs.lineNumber)
+	{
+		return lhs.lineNumber < rhs.lineNumber;
+	}
+	return lhs.lineNumberEnd < rhs.lineNumberEnd;
+}
+
 void NetworkUtils::addStringToBuffer(char* buffer, int& pos, std::string adding)
 {
 	for (char c : adding)

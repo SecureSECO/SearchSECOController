@@ -3,6 +3,7 @@ This program has been developed by students from the bachelor Computer Science a
 Utrecht University within the Software Project course.
 © Copyright Utrecht University (Department of Information and Computing Sciences)
 */
+
 #include "DatabaseRequests.h"
 #include "NetworkUtils.h"
 #include "Networking.h"
@@ -15,10 +16,10 @@ Utrecht University within the Software Project course.
 #define DATABASE_CHECK_UPLOAD_REQUEST "chup"
 #define DATABASE_CHECK_REQUEST "chck"
 
-std::string DatabaseRequests::uploadHashes(std::vector<HashData> hashes, ProjectMetaData metaData)
+std::string DatabaseRequests::uploadHashes(std::vector<HashData> hashes, ProjectMetaData metaData, AuthorData authorData)
 {
     int dataSize = 0;
-    char* rawData = NetworkUtils::getAllDataFromHashes(hashes, dataSize, metaData.getAsHeader());
+    char* rawData = NetworkUtils::getAllDataFromHashes(hashes, dataSize, metaData.getAsHeader(), authorData);
 
     return execRequest(DATABASE_UPLOAD_REQUEST, rawData, dataSize);
 }
@@ -31,10 +32,10 @@ std::string DatabaseRequests::findMatches(std::vector<HashData> hashes)
     return execRequest(DATABASE_CHECK_REQUEST, rawData, dataSize);
 }
 
-std::string DatabaseRequests::checkUploadHashes(std::vector<HashData> hashes, ProjectMetaData metaData)
+std::string DatabaseRequests::checkUploadHashes(std::vector<HashData> hashes, ProjectMetaData metaData, AuthorData authorData)
 {
     int dataSize = 0;
-    char* rawData = NetworkUtils::getAllDataFromHashes(hashes, dataSize, metaData.getAsHeader());
+    char* rawData = NetworkUtils::getAllDataFromHashes(hashes, dataSize, metaData.getAsHeader(), authorData);
 
     return execRequest(DATABASE_CHECK_UPLOAD_REQUEST, rawData, dataSize);
 }

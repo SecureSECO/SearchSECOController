@@ -8,7 +8,8 @@ Utrecht University within the Software Project course.
 #include <vector>
 #include "ProjectMetaData.h"
 
-#include "../parser/Parser/HashData.h"
+#include "HashData.h"
+#include "CodeBlock.h"
 
 class NetworkHandler;
 
@@ -20,7 +21,7 @@ public:
 	/// </summary>
 	/// <param name="hashes">The hashes to be uploaded.</param>
 	/// <returns>The string that the database send back.</returns>
-	static std::string uploadHashes(std::vector<HashData> hashes, ProjectMetaData metaData);
+	static std::string uploadHashes(std::vector<HashData> hashes, ProjectMetaData metaData, AuthorData authorData);
 
 	/// <summary>
 	/// Sends a request to the database to find matching hashes in the database.
@@ -34,7 +35,7 @@ public:
 	/// </summary>
 	/// <param name="hashes">The hashes to be uploaded.</param>
 	/// <returns>The string that the database send back.</returns>
-	static std::string checkUploadHashes(std::vector<HashData> hashes, ProjectMetaData metaData);
+	static std::string checkUploadHashes(std::vector<HashData> hashes, ProjectMetaData metaData, AuthorData authorData);
 private:
 	/// <summary>
 	/// The logic for sending a request to the database.

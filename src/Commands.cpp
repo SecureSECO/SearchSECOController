@@ -60,19 +60,19 @@ void Commands::upload(Flags flags)
 
 	// Uploading the hashes.
 	ProjectMetaData meta = utils::getProjectMetadata(flags.mandatoryArgument);
-	print::printline(DatabaseRequests::uploadHashes(hashes, meta));
+	print::printline(DatabaseRequests::uploadHashes(hashes, meta, authorData));
 }
 
 void Commands::checkupload(Flags flags)
 {
 	// Depends: spider, db.
 	std::string tempLocation = "spiderDownloads";
-	Commands::downloadRepository(flags.mandatoryArgument, flags, tempLocation);
+	AuthorData authorData = Commands::downloadRepository(flags.mandatoryArgument, flags, tempLocation);
 	std::vector<HashData> hashes = Commands::parseRepository(tempLocation, flags);
 
 	ProjectMetaData metaData = utils::getProjectMetadata(flags.mandatoryArgument);
 	// Uploading the hashes.
-	print::printHashMatches(hashes, DatabaseRequests::checkUploadHashes(hashes, metaData));
+	print::printHashMatches(hashes, DatabaseRequests::checkUploadHashes(hashes, metaData, authorData));
 }
 
 void Commands::update(Flags flags)
@@ -114,7 +114,7 @@ void Commands::help(std::string command)
 
 AuthorData Commands::downloadRepository(std::string repository, Flags flags, std::string downloadPath)
 {
-	RunSpider::runSpider(repository, downloadPath);
+	return RunSpider::runSpider(repository, downloadPath);
 }
 
 std::vector<HashData> Commands::parseRepository(std::string repository, Flags flags)

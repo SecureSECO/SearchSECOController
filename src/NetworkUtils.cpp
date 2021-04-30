@@ -14,47 +14,78 @@ void NetworkUtils::addStringToBuffer(char* buffer, int& pos, std::string adding)
 	}
 }
 
-std::map<std::string, std::vector<HashData*>>* NetworkUtils::transformHashList(std::vector<HashData>& hashes)
+void NetworkUtils::addStringsToBuffer(char* buffer, int& pos, std::vector<std::string> adding)
 {
-	std::map<std::string, std::vector<HashData*>>* list = new std::map<std::string, std::vector<HashData*>>();
+	for (std::string s : adding)
+	{
+		addStringToBuffer(buffer, pos, s);
+	}
+}
+
+void NetworkUtils::transformHashList(std::vector<HashData>& hashes, std::map<std::string, std::vector<HashData*>> &output)
+{
 	for (int i = 0; i < hashes.size(); i++)
 	{
 
-		list->at(hashes[i].fileName).push_back(&(hashes[i]));
-		if (list->at(hashes[i].fileName).size() > 1 &&
-			list->at(hashes[i].fileName)[list->at(hashes[i].fileName).size() - 1]->lineNumber <
-			list->at(hashes[i].fileName)[list->at(hashes[i].fileName).size() - 2]->lineNumber)
+		output[hashes[i].fileName].push_back(&(hashes[i]));
+		if (output[hashes[i].fileName].size() > 1 &&
+			output[hashes[i].fileName][output[hashes[i].fileName].size() - 1]->lineNumber <
+			output[hashes[i].fileName][output[hashes[i].fileName].size() - 2]->lineNumber)
 		{
 			// Do sort or something.
 		}
 	}
-	return list;
 }
 
-int NetworkUtils::getAuthors(std::map<HashData, std::vector<std::string>>& authors, std::map<std::string, std::vector<HashData*>>* hashes, AuthorData& rawData)
+int NetworkUtils::getAuthors(std::map<HashData, std::vector<std::string>>& authors, std::map<std::string, std::vector<HashData*>>& hashes, AuthorData& rawData)
 {
 	int authorSize = 0;
 	for (auto const& key : rawData)
 	{
-		int currentEnd = 0;
-		int hashesIndex = 0;
+		int currentEnd = -1;
+		int hashesIndex = -1;
 		int authorIndex = 0;
-		while (hashes->size() < hashesIndex && rawData.size() < authorIndex)
+		while (hashesIndex < hashes[key.first].size() && authorIndex < rawData[key.first].size())
 		{
-
+			if (currentEnd < rawData[key.first][authorIndex].line)
+			{
+				hashesIndex++;
+				if (hashesIndex >= hashes[key.first].size())
+				{
+					break;
+				}
+				currentEnd = hashes[key.first][hashesIndex]->lineNumberEnd;
+				continue;
+			}
+			if (hashes[key.first][hashesIndex]->lineNumber < 
+				rawData[key.first][authorIndex].line + rawData[key.first][authorIndex].numLines)
+			{
+				CodeBlock cd = rawData[key.first][authorIndex];
+				std::string toAdd = "?" + cd.commit->author + "?" + cd.commit->authorMail;
+				authorSize += toAdd.length();
+				authors[*hashes[key.first][hashesIndex]].push_back(toAdd);
+			}
+			authorIndex++;
 		}
 	}
 }
 
 char* NetworkUtils::getAllDataFromHashes(std::vector<HashData> data, int& size, std::string header, AuthorData& authors)
 {
-	auto transformedData = transformHashList(data);
+	std::map<std::string, std::vector<HashData*>> transformedHashes;
+	transformHashList(data, transformedHashes);
+	std::map<HashData, std::vector<std::string>> authorSendData;
 	// Calcutating the eventual size of the string before hand, 
 	// so that we don't have to increase the size of the buffer.
-	size = header.size() + 1;
+	size = header.size() + 1 + getAuthors(authorSendData, transformedHashes, authors);
 	for (HashData hd : data)
 	{
-		size += hd.fileName.length() + hd.functionName.length() + hd.hash.length() + std::to_string(hd.lineNumber).length() + 1/*TODO: +1 vervangen voor authors*/;
+		size += hd.fileName.length() + 
+			hd.functionName.length() + 
+			hd.hash.length() + 
+			std::to_string(hd.lineNumber).length() + 
+			std::to_string(authorSendData[hd].size()).length();
+		// Plus 5 for the seperators.
 		size += 5;
 	}
 
@@ -75,7 +106,8 @@ char* NetworkUtils::getAllDataFromHashes(std::vector<HashData> data, int& size, 
 		buffer[pos++] = '?';
 		addStringToBuffer(buffer, pos, std::to_string(hd.lineNumber));
 		buffer[pos++] = '?';
-		addStringToBuffer(buffer, pos, "0");
+		addStringToBuffer(buffer, pos, std::to_string(authorSendData[hd].size()));
+		addStringsToBuffer(buffer, pos, authorSendData[hd]);
 		buffer[pos++] = '\n';
 	}
 	return buffer;

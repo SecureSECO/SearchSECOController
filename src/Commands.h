@@ -12,8 +12,9 @@ Utrecht University within the Software Project course.
 #include <vector>
 
 #include "Flags.h"
+#include "RunSpider.h"
 
-#include "../parser/Parser/HashData.h"
+struct HashData;
 
 class Commands
 {

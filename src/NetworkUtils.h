@@ -56,10 +56,15 @@ private:
 	/// </summary>
 	static void addStringToBuffer(char* buffer, int& pos, std::string adding);
 
-	static std::map<std::string, std::vector<HashData*>>* transformHashList(std::vector<HashData>& hashes);
+	/// <summary>
+	/// Adds multiple strings to a char* buffer.
+	/// </summary>
+	static void addStringsToBuffer(char* buffer, int& pos, std::vector<std::string> adding);
+
+	static void transformHashList(std::vector<HashData>& hashes, std::map<std::string, std::vector<HashData*>>& output);
 
 	static int getAuthors(std::map<HashData, std::vector<std::string>>& authors, 
-		std::map<std::string, std::vector<HashData*>>* hashes, AuthorData& rawData);
+		std::map<std::string, std::vector<HashData*>>& hashes, AuthorData& rawData);
 
 };
 

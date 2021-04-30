@@ -3,8 +3,13 @@ This program has been developed by students from the bachelor Computer Science a
 Utrecht University within the Software Project course.
 � Copyright Utrecht University (Department of Information and Computing Sciences)
 */
-
 #include "pch.h"
+
+#include "Flags.h"
+#include "Commands.h"
+
+
+
 
 TEST(IntegrationTest, Crawler)
 {
@@ -18,6 +23,10 @@ TEST(IntegrationTest, Spider)
 
 TEST(IntegrationTest, Parser)
 {
+    // Dummy variables.
+    Flags flags;
+
+    Commands::parseRepository("https://github.com/zavg/linux-0.01.git", flags);
     EXPECT_TRUE(true);
 }
 

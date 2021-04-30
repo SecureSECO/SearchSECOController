@@ -78,15 +78,15 @@ void NetworkUtils::transformHashList(std::vector<HashData>& hashes, std::map<std
 			output[hashes[i].fileName][((int)output[hashes[i].fileName].size()) - 1]->lineNumber <
 			output[hashes[i].fileName][((int)output[hashes[i].fileName].size()) - 2]->lineNumber)
 		{
-			int i = ((int)output[hashes[i].fileName].size()) - 1;
-			while (i > 0 &&
-				output[hashes[i].fileName][i]->lineNumber <
-				output[hashes[i].fileName][i - 1]->lineNumber)
+			int j = ((int)output[hashes[i].fileName].size()) - 1;
+			while (j > 0 &&
+				output[hashes[i].fileName][j]->lineNumber <
+				output[hashes[i].fileName][j - 1]->lineNumber)
 			{
-				HashData* temp = output[hashes[i].fileName][i];
-				output[hashes[i].fileName][i] = output[hashes[i].fileName][i - 1];
-				output[hashes[i].fileName][i - 1] = temp;
-				i--;
+				HashData* temp = output[hashes[i].fileName][j];
+				output[hashes[i].fileName][j] = output[hashes[i].fileName][j - 1];
+				output[hashes[i].fileName][j - 1] = temp;
+				j--;
 			}
 		}
 	}

@@ -75,10 +75,10 @@ void NetworkUtils::transformHashList(std::vector<HashData>& hashes, std::map<std
 		output[hashes[i].fileName].push_back(&(hashes[i]));
 		// Sort if they are out of order.
 		if (output[hashes[i].fileName].size() > 1 &&
-			output[hashes[i].fileName][output[hashes[i].fileName].size() - 1]->lineNumber <
-			output[hashes[i].fileName][output[hashes[i].fileName].size() - 2]->lineNumber)
+			output[hashes[i].fileName][((int)output[hashes[i].fileName].size()) - 1]->lineNumber <
+			output[hashes[i].fileName][((int)output[hashes[i].fileName].size()) - 2]->lineNumber)
 		{
-			int i = output[hashes[i].fileName].size() - 1;
+			int i = ((int)output[hashes[i].fileName].size()) - 1;
 			while (i > 0 &&
 				output[hashes[i].fileName][i]->lineNumber <
 				output[hashes[i].fileName][i - 1]->lineNumber)

@@ -16,6 +16,7 @@ Utrecht University within the Software Project course.
 #include <iomanip>
 #include <sstream>
 #include <chrono>
+#include "RunCrawler.h"
 
 std::vector<std::string> utils::split(std::string str, char delimiter)
 {
@@ -63,37 +64,25 @@ std::string utils::padLeft(std::string src, char pad, int length)
 	return src;
 }
 
-ProjectMetaData utils::getProjectMetaDataFromFile(std::string file)
+ProjectMetaData utils::getProjectMetadata(std::string url)
 {
-	// TODO: handle files that are not what we expect.
-	std::map<std::string, std::string> entries;
+	ProjectMetadata pmd = RunCrawler::findMetadata(url);
 
-	std::ifstream configFile(file);
-	std::string line;
-
-	// Read out the meta data file.
-	while (std::getline(configFile, line))
+	// TODO: very temporary hashing.
+	std::string id = pmd.authorMail + pmd.authorName + pmd.version;
+	long long hash = 0;
+	for (int i = 0; i < id.size(); i++)
 	{
-		std::vector<std::string> splitted = split(line, ':');
-		std::string temp = utils::trim(splitted[1], "\" \t\n\r");
-		for (int i = 2; i < splitted.size(); i++)
-		{
-			temp.append(':' + utils::trim(splitted[i], "\" \t\n\r"));
-		}
-
-		if (temp == "")
-		{
-			temp = "-";
-		}
-		entries[splitted[0]] = temp;
+		hash += id[i] *(i+1);
 	}
-	return ProjectMetaData(entries["id"], 
-		std::to_string(getIntegerTimeFromString(entries["updated at"])), 
-		entries["license"], 
-		split(entries["name"], '/')[1], 
-		entries["url"], 
-		split(entries["name"], '/')[0], 
-		entries["email"]);
+
+	return ProjectMetaData(std::to_string(hash),
+		std::to_string(getIntegerTimeFromString(pmd.version)), 
+		pmd.license, 
+		pmd.name, 
+		pmd.url, 
+		pmd.authorName, 
+		pmd.authorMail);
 }
 
 long long utils::getIntegerTimeFromString(std::string time)

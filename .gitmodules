@@ -2,7 +2,11 @@
   path = parser
   url = ../parser.git
   branch = development
-[submodule "spider"]
-  path = spider
-  url = ../spider.git
+[submodule "spider-revisited"]
+  path = spider-revisited
+  url = ../spider-revisited
+  branch = development
+[submodule "crawler"]
+  path = crawler
+  url = ../crawler
   branch = development

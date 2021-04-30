@@ -34,7 +34,7 @@ private:
 	/// <summary>
 	/// Will call the spider to download a given repository.
 	/// </summary>
-	static std::string downloadRepository(std::string repository, Flags flags, std::string downloadPath);
+	static void downloadRepository(std::string repository, Flags flags, std::string downloadPath);
 	/// <summary>
 	/// Will call the parser to parse the given repository.
 	/// </summary>

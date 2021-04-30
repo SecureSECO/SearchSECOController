@@ -64,10 +64,13 @@ public:
 	static std::string padLeft(std::string src, char pad_left, int length);
 
 	/// <summary>
-	/// Retrieves the project meta data from the file you give it.
+	/// Calls the crawler to get the metadata from the given url.
 	/// </summary>
-	static ProjectMetaData getProjectMetaDataFromFile(std::string file);
+	static ProjectMetaData getProjectMetadata(std::string url);
 
+	/// <summary>
+	/// Converts a yyyy:mm::dd hh:mm:ss format to a long long.
+	/// </summary>
 	static long long getIntegerTimeFromString(std::string time);
 };
 

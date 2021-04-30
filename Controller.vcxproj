@@ -91,7 +91,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>parser\Parser;spider\SearchSECOSpider;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>parser\Parser;spider-revisited\Spider-Revisited;crawler\Crawler;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -108,7 +108,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>parser\Parser;spider\SearchSECOSpider;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>parser\Parser;spider-revisited\Spider-Revisited;crawler\Crawler;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -125,7 +125,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>parser\Parser;spider\SearchSECOSpider;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>parser\Parser;spider-revisited\Spider-Revisited;crawler\Crawler;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
@@ -143,7 +143,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>parser\Parser;spider\SearchSECOSpider;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>parser\Parser;spider-revisited\Spider-Revisited;crawler\Crawler;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -175,11 +175,14 @@
     <ClCompile Include="src\loguru\loguru.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="crawler\Crawler\Crawler.vcxproj">
+      <Project>{5cd94da9-b893-4439-8f37-55df86cd1399}</Project>
+    </ProjectReference>
     <ProjectReference Include="parser\Parser\Parser.vcxproj">
       <Project>{0b2abd3c-f7b7-4bf9-acde-ba39c1d9ef30}</Project>
     </ProjectReference>
-    <ProjectReference Include="spider\SearchSECOSpider\SearchSECOSpider.vcxproj">
-      <Project>{6d103808-9182-4c40-830c-caa07c5528bd}</Project>
+    <ProjectReference Include="spider-revisited\Spider-Revisited\Spider-Revisited.vcxproj">
+      <Project>{1ca7580e-b483-4c24-ac1c-00327d39cdc9}</Project>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
@@ -196,6 +199,9 @@
     <ClCompile Include="src\regex_wrapper.h" />
     <ClInclude Include="src\Utils.h" />
     <ClCompile Include="src\loguru\loguru.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

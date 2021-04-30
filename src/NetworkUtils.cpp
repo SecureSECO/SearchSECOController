@@ -44,11 +44,16 @@ void NetworkUtils::addStringToBuffer(char* buffer, int& pos, std::string adding)
 	}
 }
 
-void NetworkUtils::addStringsToBuffer(char* buffer, int& pos, std::vector<std::string> adding)
+void NetworkUtils::addStringsToBufferNoDupes(char* buffer, int& pos, std::vector<std::string> adding)
 {
+	std::map<std::string, int> dupes;
 	for (std::string s : adding)
 	{
-		addStringToBuffer(buffer, pos, s);
+		if (dupes[s] == 0)
+		{
+			addStringToBuffer(buffer, pos, s);
+			dupes[s] = 1;
+		}
 	}
 }
 
@@ -64,7 +69,7 @@ void NetworkUtils::addHashDataToBuffer(char* buffer, int& pos, HashData& hd, std
 	addStringToBuffer(buffer, pos, std::to_string(hd.lineNumber));
 	buffer[pos++] = '?';
 	addStringToBuffer(buffer, pos, std::to_string(authors[hd].size()));
-	addStringsToBuffer(buffer, pos, authors[hd]);
+	addStringsToBufferNoDupes(buffer, pos, authors[hd]);
 	buffer[pos++] = '\n';
 }
 
@@ -72,7 +77,6 @@ void NetworkUtils::transformHashList(std::vector<HashData>& hashes, std::map<std
 {
 	for (int i = 0; i < hashes.size(); i++)
 	{
-
 		output[hashes[i].fileName].push_back(&(hashes[i]));
 		// Sort if they are out of order.
 		if (output[hashes[i].fileName].size() > 1 &&

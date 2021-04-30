@@ -114,12 +114,19 @@ void Commands::help(std::string command)
 
 AuthorData Commands::downloadRepository(std::string repository, Flags flags, std::string downloadPath)
 {
+	AuthorData ad = RunSpider::runSpider(repository, downloadPath);
 	return RunSpider::runSpider(repository, downloadPath);
 }
 
 std::vector<HashData> Commands::parseRepository(std::string repository, Flags flags)
 {
-	return Parser::parse(repository, flags.flag_cpu);
+	// TODO: fix this somewhere else.
+	auto hashes = Parser::parse(repository, flags.flag_cpu);
+	for (int i = 0; i < hashes.size(); i++)
+	{
+		utils::replace(hashes[i].fileName, '/', '\\');
+	}
+	return hashes;
 }
 
 std::map<std::string, std::function<void(Flags)>> Commands::perform =

@@ -61,7 +61,7 @@ private:
 	/// <summary>
 	/// Adds multiple strings to a char* buffer.
 	/// </summary>
-	static void addStringsToBuffer(char* buffer, int& pos, std::vector<std::string> adding);
+	static void addStringsToBufferNoDupes(char* buffer, int& pos, std::vector<std::string> adding);
 
 	/// <summary>
 	/// Adds a hash and its authors to a buffer.

@@ -72,5 +72,14 @@ public:
 	/// Converts a yyyy:mm::dd hh:mm:ss format to a long long.
 	/// </summary>
 	static long long getIntegerTimeFromString(std::string time);
+
+	/// <summary>
+	/// Replaces each occurence of the replace char with the with char
+	/// in the given string.
+	/// </summary>
+	/// <param name="string"></param>
+	/// <param name="replace"></param>
+	/// <param name="with"></param>
+	static void replace(std::string& string, char replace, char with);
 };
 

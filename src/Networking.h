@@ -18,7 +18,7 @@ public:
 	/// </summary>
 	/// <param name="data">The data to be send.</param>
 	/// <param name="dataSize">The size of the data array in bytes.</param>
-	void sendData(char* data, int dataSize);
+	void sendData(const char* data, int dataSize);
 	/// <summary>
 	/// Send data to the database.
 	/// </summary>

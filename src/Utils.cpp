@@ -111,4 +111,15 @@ long long utils::getIntegerTimeFromString(std::string time)
 	std::chrono::milliseconds s = std::chrono::duration_cast<std::chrono::milliseconds>(diff);
 	return s.count();
 }
+void utils::replace(std::string& string, char replace, char with)
+{
+	for (int i = 0; i < string.size(); i++)
+	{
+		if (string[i] == replace)
+		{
+			string[i] = with;
+		}
+	}
+
+}
 #pragma endregion utils

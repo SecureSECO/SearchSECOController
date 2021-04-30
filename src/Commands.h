@@ -12,8 +12,8 @@ Utrecht University within the Software Project course.
 #include <vector>
 
 #include "Flags.h"
-
 #include "../parser/Parser/HashData.h"
+#include "../spider-revisited/Spider-Revisited/CodeBlock.h"
 
 class Commands
 {
@@ -34,7 +34,7 @@ private:
 	/// <summary>
 	/// Will call the spider to download a given repository.
 	/// </summary>
-	static void downloadRepository(std::string repository, Flags flags, std::string downloadPath);
+	static AuthorData downloadRepository(std::string repository, Flags flags, std::string downloadPath);
 	/// <summary>
 	/// Will call the parser to parse the given repository.
 	/// </summary>

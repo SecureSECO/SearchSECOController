@@ -8,7 +8,7 @@ Utrecht University within the Software Project course.
 #include <string>
 
 #include "Parser.h"
-#include "CodeBlock.h"
+#include "../spider-revisited/Spider-Revisited/CodeBlock.h"
 
 
 class NetworkUtils

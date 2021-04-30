@@ -75,12 +75,13 @@ int NetworkUtils::getAuthors(std::map<HashData, std::vector<std::string>>& autho
 		int currentEnd = -1;
 		int hashesIndex = -1;
 		int authorIndex = 0;
-		while (hashesIndex < hashes[key.first].size() && authorIndex < rawData[key.first].size())
+		
+		while (hashesIndex < (int)hashes[key.first].size() && authorIndex < (int)rawData[key.first].size())
 		{
 			if (currentEnd < rawData[key.first][authorIndex].line)
 			{
 				hashesIndex++;
-				if (hashesIndex >= hashes[key.first].size())
+				if (hashesIndex >= (int)hashes[key.first].size())
 				{
 					break;
 				}
@@ -103,6 +104,7 @@ int NetworkUtils::getAuthors(std::map<HashData, std::vector<std::string>>& autho
 
 char* NetworkUtils::getAllDataFromHashes(std::vector<HashData> data, int& size, std::string header, AuthorData& authors)
 {
+	print::printline("Getting data");
 	std::map<std::string, std::vector<HashData*>> transformedHashes;
 	transformHashList(data, transformedHashes);
 	std::map<HashData, std::vector<std::string>> authorSendData;

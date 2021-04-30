@@ -18,15 +18,20 @@ TEST(IntegrationTest, Crawler)
 
 TEST(IntegrationTest, Spider)
 {
+    // Dummy variables.
+    Flags flags;
+
+    Commands::downloadRepository("https://github.com/zavg/linux-0.01.git", flags, "spiderDownloads");
+
     EXPECT_TRUE(true);
 }
 
 TEST(IntegrationTest, Parser)
 {
     // Dummy variables.
-    Flags flags;
+    //Flags flags;
 
-    Commands::parseRepository("https://github.com/zavg/linux-0.01.git", flags);
+    //Commands::parseRepository("https://github.com/zavg/linux-0.01.git", flags);
     EXPECT_TRUE(true);
 }
 

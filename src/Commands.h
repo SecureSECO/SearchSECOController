@@ -12,7 +12,8 @@ Utrecht University within the Software Project course.
 #include <vector>
 
 #include "Flags.h"
-#include "RunSpider.h"
+#include "../parser/Parser/HashData.h"
+#include "../spider-revisited/Spider-Revisited/CodeBlock.h"
 
 struct HashData;
 

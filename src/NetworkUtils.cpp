@@ -57,7 +57,7 @@ int NetworkUtils::getAuthors(std::map<HashData, std::vector<std::string>>& autho
 				currentEnd = hashes[key.first][hashesIndex]->lineNumberEnd;
 				continue;
 			}
-			if (hashes[key.first][hashesIndex]->lineNumber < 
+			if (hashes[key.first][hashesIndex]->lineNumber <
 				rawData[key.first][authorIndex].line + rawData[key.first][authorIndex].numLines)
 			{
 				CodeBlock cd = rawData[key.first][authorIndex];
@@ -68,6 +68,7 @@ int NetworkUtils::getAuthors(std::map<HashData, std::vector<std::string>>& autho
 			authorIndex++;
 		}
 	}
+	return authorSize;
 }
 
 char* NetworkUtils::getAllDataFromHashes(std::vector<HashData> data, int& size, std::string header, AuthorData& authors)

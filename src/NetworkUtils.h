@@ -62,8 +62,31 @@ private:
 	/// </summary>
 	static void addStringsToBuffer(char* buffer, int& pos, std::vector<std::string> adding);
 
+	/// <summary>
+	/// Adds a hash and its authors to a buffer.
+	/// </summary>
+	static void addHashDataToBuffer(char* buffer, int& pos, HashData& hd, std::map<HashData, std::vector<std::string>>& authors);
+
+	/// <summary>
+	/// Transforms a list of hashes into a map. This map has as key a string
+	/// corresponding to the filename that is found in hashdata.
+	/// The value is a list of all hashes that are in that file.
+	/// This list will be sorted by linenumber.
+	/// </summary>
+	/// <param name="hashes">The original hashes.</param>
+	/// <param name="output">The new map.</param>
 	static void transformHashList(std::vector<HashData>& hashes, std::map<std::string, std::vector<HashData*>>& output);
 
+	/// <summary>
+	/// Will match the inputlist rawData with inputlist hashes to give where they overlap.
+	/// The output of this function is both the size that the author data will take up
+	/// in when send to the database and the actuall strings that we are going to send.
+	/// </summary>
+	/// <param name="authors">The output map. Will give for each Hash in hashes a list of strings
+	///		which contain who worked on the given function.</param>
+	/// <param name="hashes">The function we want to find the corresponding authors for.</param>
+	/// <param name="rawData">The raw author data which we are going to match with the hashes.</param>
+	/// <returns>The size of all the author strings.</returns>
 	static int getAuthors(std::map<HashData, std::vector<std::string>>& authors, 
 		std::map<std::string, std::vector<HashData*>>& hashes, AuthorData& rawData);
 

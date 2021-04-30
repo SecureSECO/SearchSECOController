@@ -52,6 +52,22 @@ void NetworkUtils::addStringsToBuffer(char* buffer, int& pos, std::vector<std::s
 	}
 }
 
+void NetworkUtils::addHashDataToBuffer(char* buffer, int& pos, HashData& hd, std::map<HashData, std::vector<std::string>>& authors)
+{
+	// Hash|functionName|fileLocation|lineNumber|number_of_authors|author1_name|author1_mail|...
+	addStringToBuffer(buffer, pos, hd.hash);
+	buffer[pos++] = '?';
+	addStringToBuffer(buffer, pos, hd.functionName);
+	buffer[pos++] = '?';
+	addStringToBuffer(buffer, pos, hd.fileName);
+	buffer[pos++] = '?';
+	addStringToBuffer(buffer, pos, std::to_string(hd.lineNumber));
+	buffer[pos++] = '?';
+	addStringToBuffer(buffer, pos, std::to_string(authors[hd].size()));
+	addStringsToBuffer(buffer, pos, authors[hd]);
+	buffer[pos++] = '\n';
+}
+
 void NetworkUtils::transformHashList(std::vector<HashData>& hashes, std::map<std::string, std::vector<HashData*>> &output)
 {
 	for (int i = 0; i < hashes.size(); i++)
@@ -85,10 +101,14 @@ int NetworkUtils::getAuthors(std::map<HashData, std::vector<std::string>>& autho
 				{
 					break;
 				}
+				if (authorIndex > 0)
+				{
+					authorIndex--;
+				}
 				currentEnd = hashes[key.first][hashesIndex]->lineNumberEnd;
 				continue;
 			}
-			if (hashes[key.first][hashesIndex]->lineNumber <
+			if (hashes[key.first][hashesIndex]->lineNumber <=
 				rawData[key.first][authorIndex].line + rawData[key.first][authorIndex].numLines)
 			{
 				CodeBlock cd = rawData[key.first][authorIndex];
@@ -104,7 +124,8 @@ int NetworkUtils::getAuthors(std::map<HashData, std::vector<std::string>>& autho
 
 char* NetworkUtils::getAllDataFromHashes(std::vector<HashData> data, int& size, std::string header, AuthorData& authors)
 {
-	print::printline("Getting data");
+	// For getting the corresponding authors for each method,
+	// we first need to transform the list of hashes a bit.
 	std::map<std::string, std::vector<HashData*>> transformedHashes;
 	transformHashList(data, transformedHashes);
 	std::map<HashData, std::vector<std::string>> authorSendData;
@@ -130,18 +151,7 @@ char* NetworkUtils::getAllDataFromHashes(std::vector<HashData> data, int& size, 
 
 	for (HashData hd : data)
 	{
-		// Hash|functionName|fileLocation|lineNumber|number_of_authors|author1_name|author1_mail|...
-		addStringToBuffer(buffer, pos, hd.hash);
-		buffer[pos++] = '?';
-		addStringToBuffer(buffer, pos, hd.functionName);
-		buffer[pos++] = '?';
-		addStringToBuffer(buffer, pos, hd.fileName);
-		buffer[pos++] = '?';
-		addStringToBuffer(buffer, pos, std::to_string(hd.lineNumber));
-		buffer[pos++] = '?';
-		addStringToBuffer(buffer, pos, std::to_string(authorSendData[hd].size()));
-		addStringsToBuffer(buffer, pos, authorSendData[hd]);
-		buffer[pos++] = '\n';
+		addHashDataToBuffer(buffer, pos, hd, authorSendData);
 	}
 	return buffer;
 }

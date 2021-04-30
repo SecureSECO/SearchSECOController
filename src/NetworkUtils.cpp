@@ -74,11 +74,21 @@ void NetworkUtils::transformHashList(std::vector<HashData>& hashes, std::map<std
 	{
 
 		output[hashes[i].fileName].push_back(&(hashes[i]));
+		// Sort if they are out of order.
 		if (output[hashes[i].fileName].size() > 1 &&
 			output[hashes[i].fileName][output[hashes[i].fileName].size() - 1]->lineNumber <
 			output[hashes[i].fileName][output[hashes[i].fileName].size() - 2]->lineNumber)
 		{
-			// Do sort or something.
+			int i = output[hashes[i].fileName].size() - 1;
+			while (i > 0 &&
+				output[hashes[i].fileName][i]->lineNumber <
+				output[hashes[i].fileName][i - 1]->lineNumber)
+			{
+				HashData* temp = output[hashes[i].fileName][i];
+				output[hashes[i].fileName][i] = output[hashes[i].fileName][i - 1];
+				output[hashes[i].fileName][i - 1] = temp;
+				i--;
+			}
 		}
 	}
 }
@@ -190,6 +200,11 @@ std::string NetworkUtils::generateHeader(std::vector<std::string> components)
 	std::string output = components[0];
 	for (int i = 1; i < components.size(); i++)
 	{
+		if (components[i] == "")
+		{
+			// TODO: we might want to change this later, dependent on what the database wants.
+			components[i] = "-";
+		}
 		output.append('?' + components[i]);
 	}
 	return output;

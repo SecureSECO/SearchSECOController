@@ -31,7 +31,8 @@ public:
 	/// Even if the header is empty, it will still put an end line in the beginning.</param>
 	/// 
 	/// <returns>A char pointer to string with all the data in it.</returns>
-	static char* getAllDataFromHashes(std::vector<HashData> data, int& size, std::string header, AuthorData& authors);
+	static char* getAllDataFromHashes(std::vector<HashData> data, int& size, 
+		std::string header, AuthorData& authors);
 
 	/// <summary>
 	/// This function will only copy the actual hash into a string.
@@ -65,7 +66,8 @@ private:
 	/// <summary>
 	/// Adds a hash and its authors to a buffer.
 	/// </summary>
-	static void addHashDataToBuffer(char* buffer, int& pos, HashData& hd, std::map<HashData, std::vector<std::string>>& authors);
+	static void addHashDataToBuffer(char* buffer, int& pos, HashData& hd, 
+		std::map<HashData, std::vector<std::string>>& authors);
 
 	/// <summary>
 	/// Transforms a list of hashes into a map. This map has as key a string
@@ -75,7 +77,8 @@ private:
 	/// </summary>
 	/// <param name="hashes">The original hashes.</param>
 	/// <param name="output">The new map.</param>
-	static void transformHashList(std::vector<HashData>& hashes, std::map<std::string, std::vector<HashData*>>& output);
+	static void transformHashList(std::vector<HashData>& hashes, 
+		std::map<std::string, std::vector<HashData*>>& output);
 
 	/// <summary>
 	/// Will match the inputlist rawData with inputlist hashes to give where they overlap.

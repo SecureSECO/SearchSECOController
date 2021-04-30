@@ -50,7 +50,7 @@ private:
 	/// This data can most likely be generated with a function in NetworkUtils like getAllDataFromHashes.</param>
 	/// <param name="dataSize">How much data we are sending.</param>
 	/// <returns>The string that the database send back.</returns>
-	static std::string execRequest(std::string request, char* rawData, int dataSize);
+	static std::string execRequest(std::string request, const char* rawData, int dataSize);
 
 	/// <summary>
 	/// Will open a connection with the database API. 

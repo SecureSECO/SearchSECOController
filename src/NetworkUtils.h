@@ -31,7 +31,7 @@ public:
 	/// Even if the header is empty, it will still put an end line in the beginning.</param>
 	/// 
 	/// <returns>A char pointer to string with all the data in it.</returns>
-	static char* getAllDataFromHashes(std::vector<HashData> data, int& size, 
+	static const char* getAllDataFromHashes(std::vector<HashData> data, int& size,
 		std::string header, AuthorData& authors);
 
 	/// <summary>
@@ -46,7 +46,7 @@ public:
 	/// The initial value that you give it will be ignored.</param>
 	/// 
 	/// <returns>A char pointer to string with all the data in it.</returns>
-	static char* getHashDataFromHashes(std::vector<HashData> data, int& size);
+	static const char* getHashDataFromHashes(std::vector<HashData> data, int& size);
 
 	/// <summary>
 	/// Will put all the strings that you pass it into a single string seperated by null chars.
@@ -66,7 +66,7 @@ private:
 	/// <summary>
 	/// Adds a hash and its authors to a buffer.
 	/// </summary>
-	static void addHashDataToBuffer(char* buffer, int& pos, HashData& hd, 
+	static void addHashDataToBuffer(char* buffer, int& pos, HashData& hd,
 		std::map<HashData, std::vector<std::string>>& authors);
 
 	/// <summary>

@@ -27,7 +27,7 @@ NetworkHandler* NetworkHandler::createHandler()
 	return new NetworkHandler(io_context);
 }
 
-void NetworkHandler::sendData(char* data, int dataLength)
+void NetworkHandler::sendData(const char* data, int dataLength)
 {
 	print::printline("Sending " + std::to_string(dataLength) + " bytes");
 	boost::asio::write(socket, boost::asio::buffer(data, dataLength));

@@ -137,7 +137,7 @@ int NetworkUtils::getAuthors(std::map<HashData, std::vector<std::string>>& autho
 	return authorSize;
 }
 
-char* NetworkUtils::getAllDataFromHashes(std::vector<HashData> data, int& size, std::string header, AuthorData& authors)
+const char* NetworkUtils::getAllDataFromHashes(std::vector<HashData> data, int& size, std::string header, AuthorData& authors)
 {
 	// For getting the corresponding authors for each method,
 	// we first need to transform the list of hashes a bit.
@@ -171,7 +171,7 @@ char* NetworkUtils::getAllDataFromHashes(std::vector<HashData> data, int& size, 
 	return buffer;
 }
 
-char* NetworkUtils::getHashDataFromHashes(std::vector<HashData> data, int& size)
+const char* NetworkUtils::getHashDataFromHashes(std::vector<HashData> data, int& size)
 {
 	// Calcutating the eventual size of the string before hand, 
 	// so that we don't have to increase the size of the buffer.

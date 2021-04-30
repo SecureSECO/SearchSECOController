@@ -19,7 +19,7 @@ Utrecht University within the Software Project course.
 std::string DatabaseRequests::uploadHashes(std::vector<HashData> hashes, ProjectMetaData metaData, AuthorData authorData)
 {
 	int dataSize = 0;
-	char* rawData = NetworkUtils::getAllDataFromHashes(hashes, dataSize, metaData.getAsHeader(), authorData);
+	const char* rawData = NetworkUtils::getAllDataFromHashes(hashes, dataSize, metaData.getAsHeader(), authorData);
 
 	return execRequest(DATABASE_UPLOAD_REQUEST, rawData, dataSize);
 }
@@ -27,7 +27,7 @@ std::string DatabaseRequests::uploadHashes(std::vector<HashData> hashes, Project
 std::string DatabaseRequests::findMatches(std::vector<HashData> hashes)
 {
 	int dataSize = 0;
-	char* rawData = NetworkUtils::getHashDataFromHashes(hashes, dataSize);
+	const char* rawData = NetworkUtils::getHashDataFromHashes(hashes, dataSize);
 
 	return execRequest(DATABASE_CHECK_REQUEST, rawData, dataSize);
 }
@@ -35,12 +35,12 @@ std::string DatabaseRequests::findMatches(std::vector<HashData> hashes)
 std::string DatabaseRequests::checkUploadHashes(std::vector<HashData> hashes, ProjectMetaData metaData, AuthorData authorData)
 {
 	int dataSize = 0;
-	char* rawData = NetworkUtils::getAllDataFromHashes(hashes, dataSize, metaData.getAsHeader(), authorData);
+	const char* rawData = NetworkUtils::getAllDataFromHashes(hashes, dataSize, metaData.getAsHeader(), authorData);
 
 	return execRequest(DATABASE_CHECK_UPLOAD_REQUEST, rawData, dataSize);
 }
 
-std::string DatabaseRequests::execRequest(std::string request, char* rawData, int dataSize)
+std::string DatabaseRequests::execRequest(std::string request, const char* rawData, int dataSize)
 {
 	// First start the connection.
 	NetworkHandler* networkHandler = startConnection();

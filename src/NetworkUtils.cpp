@@ -44,16 +44,11 @@ void NetworkUtils::addStringToBuffer(char* buffer, int& pos, std::string adding)
 	}
 }
 
-void NetworkUtils::addStringsToBufferNoDupes(char* buffer, int& pos, std::vector<std::string> adding)
+void NetworkUtils::addStringsToBuffer(char* buffer, int& pos, std::vector<std::string> adding)
 {
-	std::map<std::string, int> dupes;
 	for (std::string s : adding)
 	{
-		if (dupes[s] == 0)
-		{
-			addStringToBuffer(buffer, pos, s);
-			dupes[s] = 1;
-		}
+		addStringToBuffer(buffer, pos, s);
 	}
 }
 
@@ -69,7 +64,7 @@ void NetworkUtils::addHashDataToBuffer(char* buffer, int& pos, HashData& hd, std
 	addStringToBuffer(buffer, pos, std::to_string(hd.lineNumber));
 	buffer[pos++] = '?';
 	addStringToBuffer(buffer, pos, std::to_string(authors[hd].size()));
-	addStringsToBufferNoDupes(buffer, pos, authors[hd]);
+	addStringsToBuffer(buffer, pos, authors[hd]);
 	buffer[pos++] = '\n';
 }
 
@@ -105,6 +100,7 @@ int NetworkUtils::getAuthors(std::map<HashData, std::vector<std::string>>& autho
 		int currentEnd = -1;
 		int hashesIndex = -1;
 		int authorIndex = 0;
+		std::map<std::string, int> dupes;
 		
 		while (hashesIndex < (int)hashes[key.first].size() && authorIndex < (int)rawData[key.first].size())
 		{
@@ -120,6 +116,7 @@ int NetworkUtils::getAuthors(std::map<HashData, std::vector<std::string>>& autho
 					authorIndex--;
 				}
 				currentEnd = hashes[key.first][hashesIndex]->lineNumberEnd;
+				dupes = std::map<std::string, int>();
 				continue;
 			}
 			if (hashes[key.first][hashesIndex]->lineNumber <=
@@ -127,8 +124,12 @@ int NetworkUtils::getAuthors(std::map<HashData, std::vector<std::string>>& autho
 			{
 				CodeBlock cd = rawData[key.first][authorIndex];
 				std::string toAdd = "?" + cd.commit->author + "?" + cd.commit->authorMail;
-				authorSize += toAdd.length();
-				authors[*hashes[key.first][hashesIndex]].push_back(toAdd);
+				if (dupes[toAdd] == 0)
+				{
+					authorSize += toAdd.length();
+					authors[*hashes[key.first][hashesIndex]].push_back(toAdd);
+					dupes[toAdd] = 1;
+				}
 			}
 			authorIndex++;
 		}

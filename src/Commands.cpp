@@ -57,7 +57,6 @@ void Commands::upload(Flags flags)
 	std::string tempLocation = "spiderDownloads";
 	AuthorData authorData = Commands::downloadRepository(flags.mandatoryArgument, flags, tempLocation);
 	std::vector<HashData> hashes = Commands::parseRepository(tempLocation, flags);
-	return;
 	// Uploading the hashes.
 	ProjectMetaData meta = utils::getProjectMetadata(flags.mandatoryArgument);
 	print::printline(DatabaseRequests::uploadHashes(hashes, meta, authorData));

@@ -65,13 +65,16 @@ std::string print::quote(std::string str)
 
 std::string print::plural(std::string singular, int n)
 {
-	if (n == 1) return singular;
+	if (n == 1)
+	{
+		return singular;
+	}
 	return singular + 's';
 }
 
-void print::version_full()
+void print::versionFull()
 {
-	std::string main_name = "searchseco";
+	std::string mainName = "searchseco";
 
 	// Get subsystem versions.
 	int systemc = 2;
@@ -82,28 +85,28 @@ void print::version_full()
 		//"database_api"
 	};
 
-	std::ifstream version_file;
+	std::ifstream versionFile;
 	std::string version;
 
 	// print version of the main program.
-	version_file.open("VERSION");
-	std::getline(version_file, version);
+	versionFile.open("VERSION");
+	std::getline(versionFile, version);
 
-	print::printline(main_name + " version " + version);
+	print::printline(mainName + " version " + version);
 	
-	version_file.close();
+	versionFile.close();
 
 	// Loop over the subsystems.
 	for (int i = 0; i < systemc; ++i)
 	{
 		std::string system = subsystems[i];
-		version_file.open(system + "/VERSION");
+		versionFile.open(system + "/VERSION");
 
-		std::getline(version_file, version);
+		std::getline(versionFile, version);
 
 		print::printline(">> " + system + " version " + version);
 		
-		version_file.close();
+		versionFile.close();
 	}
 }
 

@@ -10,13 +10,13 @@ Utrecht University within the Software Project course.
 #include "Print.h"
 
 // https://www.boost.org/doc/libs/1_75_0/doc/html/boost_asio/tutorial.html was used as a base.
-boost::asio::io_context NetworkHandler::io_context;
+boost::asio::io_context NetworkHandler::ioContext;
 
 void NetworkHandler::openConnection(std::string server, std::string port)
 {
 	std::string serverApi = server;
 
-	tcp::resolver resolver(io_context);
+	tcp::resolver resolver(ioContext);
 	tcp::resolver::results_type endpoints = resolver.resolve(serverApi, port);
 
 	boost::asio::connect(socket, endpoints);
@@ -24,10 +24,10 @@ void NetworkHandler::openConnection(std::string server, std::string port)
 
 NetworkHandler* NetworkHandler::createHandler()
 {
-	return new NetworkHandler(io_context);
+	return new NetworkHandler(ioContext);
 }
 
-void NetworkHandler::sendData(char* data, int dataLength)
+void NetworkHandler::sendData(const char* data, int dataLength)
 {
 	print::printline("Sending " + std::to_string(dataLength) + " bytes");
 	boost::asio::write(socket, boost::asio::buffer(data, dataLength));

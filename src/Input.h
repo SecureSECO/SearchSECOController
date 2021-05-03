@@ -112,11 +112,11 @@ private:
 	/// <param name="error">The error callback.</param>
 	/// <param name="min">The minimum value for the integer to be parsed.</param>
 	/// <param name="max">The maximum value for the integer to be parsed.</param>
-	template <typename Callback, typename Error>
+	template <typename callbackFunction, typename errorFunction>
 	void validateInteger(
 		std::string argument, 
-		Callback callback, 
-		Error error,
+		callbackFunction callback, 
+		errorFunction error,
 		int min = INT_MIN, 
 		int max = INT_MAX);
 

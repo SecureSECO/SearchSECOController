@@ -8,6 +8,9 @@ Utrecht University within the Software Project course.
 
 #include "loguru/loguru.hpp"
 
+#define CPU_DEFAULT 2 // TODO What amount of cpus make sense
+#define RAM_DEFAULT 8 // TODO What amount of ram makes sense
+
 std::map<std::string, std::string> Flags::shorthandFlagToLong =
 {
 	{"h", "help"},
@@ -22,8 +25,8 @@ std::map<std::string, std::string> Flags::shorthandFlagToLong =
 Flags::Flags()
 {
 	this->mandatoryArgument = "";
-	this->flag_cpu = 2; // TODO What amount of cpus make sense
-	this->flag_ram = 8; // TODO What amount of ram makes sense
+	this->flag_cpu = CPU_DEFAULT;
+	this->flag_ram = RAM_DEFAULT;
 	this->flag_output = "console";
 	this->flag_save = false;
 	this->flag_verbose = loguru::Verbosity_INFO;
@@ -34,34 +37,34 @@ Flags::Flags()
 
 void Flags::mapShortFlagToLong(std::map<std::string, std::string>& flargs)
 {
-    std::map<std::string, std::string> temp = {}; 
+	std::map<std::string, std::string> temp = {}; 
 	std::map<std::string, std::string>::iterator it;
 
 	for (it = flargs.begin(); it != flargs.end(); ++it)
 	{
-        std::string key = it->first;
+		std::string key = it->first;
 		std::string value;
 
-        std::map<std::string, std::string>::iterator lookup = flargs.find(key);
-        if (lookup != flargs.end())
-        {
+		std::map<std::string, std::string>::iterator lookup = flargs.find(key);
+		if (lookup != flargs.end())
+		{
 			value = lookup->second;
-        }
-        else
-        {
-            continue;
+		}
+		else
+		{
+			continue;
 		}
 
 		if (Flags::isShortHandFlag(key))
-        {
-            temp[Flags::shorthandFlagToLong[key]] = value;
-        }
-        else
-        {
+		{
+			temp[Flags::shorthandFlagToLong[key]] = value;
+		}
+		else
+		{
 			temp[key] = value;   
 		}
 	}
-    flargs = temp;
+	flargs = temp;
 }
 
 bool Flags::isFlag(std::string flag)
@@ -80,7 +83,12 @@ bool Flags::isLongFlag(std::string flag)
 	std::map<std::string, std::string>::iterator it;
 
 	for (it = m.begin(); it != m.end(); ++it)
-		if (it->second == flag) return true;
+	{
+		if (it->second == flag)
+		{
+			return true;
+		}
+	}
 
 	return false;
 }

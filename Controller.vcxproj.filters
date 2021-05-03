@@ -9,42 +9,44 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\Commands.cpp"> 
+    <ClCompile Include="src\Commands.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\DatabaseRequests.cpp"> 
+    <ClCompile Include="src\DatabaseRequests.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\Error.cpp"> 
+    <ClCompile Include="src\Error.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\Flags.cpp"> 
+    <ClCompile Include="src\Flags.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\Input.cpp"> 
+    <ClCompile Include="src\Input.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\NetworkUtils.cpp"> 
+    <ClCompile Include="src\NetworkUtils.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\Networking.cpp"> 
+    <ClCompile Include="src\Networking.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\Parser2.cpp"> 
+    <ClCompile Include="src\Parser2.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\Print.cpp"> 
+    <ClCompile Include="src\Print.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\Utils.cpp"> 
+    <ClCompile Include="src\Utils.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\loguru\loguru.cpp"> 
+    <ClCompile Include="src\loguru\loguru.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\regex_wrapper.cpp"> 
+    <ClCompile Include="src\regex_wrapper.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\regex_wrapper.h" />
+    <ClCompile Include="src\loguru\loguru.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Commands.h">
@@ -62,9 +64,6 @@
     <ClInclude Include="src\Input.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\loguru\loguru.hpp"> 
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="src\NetworkUtils.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -78,9 +77,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\ProjectMetaData.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\regex_wrapper.h"> 
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\Utils.h">

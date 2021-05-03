@@ -4,10 +4,8 @@ Utrecht University within the Software Project course.
 © Copyright Utrecht University (Department of Information and Computing Sciences)
 */
 
-#pragma once
 
 #include "Utils.h"
-//#include "Parser.h"
 #include <map>
 #include <fstream>
 #include <iostream>
@@ -49,7 +47,10 @@ std::string utils::trimWhiteSpaces(std::string str)
 bool utils::isNumber(std::string str)
 {
 	std::string::const_iterator it = str.begin();
-	while (it != str.end() && std::isdigit(*it)) ++it;
+	while (it != str.end() && std::isdigit(*it))
+	{
+		++it;
+	}
 	return !str.empty() && it == str.end();
 }
 
@@ -95,20 +96,31 @@ long long utils::getIntegerTimeFromString(std::string time)
 	std::time_t version = std::mktime(&dt);
 
 	// Used https://stackoverflow.com/questions/9483974/converting-time-t-to-int for this part.
-	std::tm epoch_start = {};
-	epoch_start.tm_sec = 0;
-	epoch_start.tm_min = 0;
-	epoch_start.tm_hour = 0;
-	epoch_start.tm_mday = 1;
-	epoch_start.tm_mon = 0;
-	epoch_start.tm_year = 70;
-	epoch_start.tm_wday = 4;
-	epoch_start.tm_yday = 0;
-	epoch_start.tm_isdst = -1;
+	std::tm epochStart = {};
+	epochStart.tm_sec = 0;
+	epochStart.tm_min = 0;
+	epochStart.tm_hour = 0;
+	epochStart.tm_mday = 1;
+	epochStart.tm_mon = 0;
+	epochStart.tm_year = 70;
+	epochStart.tm_wday = 4;
+	epochStart.tm_yday = 0;
+	epochStart.tm_isdst = -1;
 
-	std::time_t base = std::mktime(&epoch_start);
+	std::time_t base = std::mktime(&epochStart);
 	auto diff = std::chrono::system_clock::from_time_t(version) - std::chrono::system_clock::from_time_t(base);
 	std::chrono::milliseconds s = std::chrono::duration_cast<std::chrono::milliseconds>(diff);
 	return s.count();
+}
+void utils::replace(std::string& string, char replace, char with)
+{
+	for (int i = 0; i < string.size(); i++)
+	{
+		if (string[i] == replace)
+		{
+			string[i] = with;
+		}
+	}
+
 }
 #pragma endregion utils

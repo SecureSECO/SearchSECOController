@@ -38,7 +38,7 @@ bool Commands::isCommand(std::string s)
 void Commands::start(Flags flags)
 {
 	// Depends: crawler, spider, db, distribution.
-	error::err_not_implemented("start", __FILE__, __LINE__);
+	error::errNotImplemented("start", __FILE__, __LINE__);
 }
 
 void Commands::check(Flags flags)
@@ -55,35 +55,34 @@ void Commands::upload(Flags flags)
 {
 	// Depends: spider, db.
 	std::string tempLocation = "spiderDownloads";
-	Commands::downloadRepository(flags.mandatoryArgument, flags, tempLocation);
+	AuthorData authorData = Commands::downloadRepository(flags.mandatoryArgument, flags, tempLocation);
 	std::vector<HashData> hashes = Commands::parseRepository(tempLocation, flags);
-
 	// Uploading the hashes.
 	ProjectMetaData meta = utils::getProjectMetadata(flags.mandatoryArgument);
-	print::printline(DatabaseRequests::uploadHashes(hashes, meta));
+	print::printline(DatabaseRequests::uploadHashes(hashes, meta, authorData));
 }
 
 void Commands::checkupload(Flags flags)
 {
 	// Depends: spider, db.
 	std::string tempLocation = "spiderDownloads";
-	Commands::downloadRepository(flags.mandatoryArgument, flags, tempLocation);
+	AuthorData authorData = Commands::downloadRepository(flags.mandatoryArgument, flags, tempLocation);
 	std::vector<HashData> hashes = Commands::parseRepository(tempLocation, flags);
 
 	ProjectMetaData metaData = utils::getProjectMetadata(flags.mandatoryArgument);
 	// Uploading the hashes.
-	print::printHashMatches(hashes, DatabaseRequests::checkUploadHashes(hashes, metaData));
+	print::printHashMatches(hashes, DatabaseRequests::checkUploadHashes(hashes, metaData, authorData));
 }
 
 void Commands::update(Flags flags)
 {
 	// Depends: a lot.
-	error::err_not_implemented("update", __FILE__, __LINE__);
+	error::errNotImplemented("update", __FILE__, __LINE__);
 }
 
 void Commands::version(Flags flags)
 {
-	print::version_full();
+	print::versionFull();
 }
 
 void Commands::help(std::string command)
@@ -112,14 +111,20 @@ void Commands::help(std::string command)
 
 // Helpers.
 
-void Commands::downloadRepository(std::string repository, Flags flags, std::string downloadPath)
+AuthorData Commands::downloadRepository(std::string repository, Flags flags, std::string downloadPath)
 {
-	RunSpider::runSpider(repository, downloadPath);
+	return RunSpider::runSpider(repository, downloadPath);
 }
 
 std::vector<HashData> Commands::parseRepository(std::string repository, Flags flags)
 {
-	return Parser::parse(repository, flags.flag_cpu);
+	// TODO: fix this somewhere else.
+	auto hashes = Parser::parse(repository, flags.flag_cpu);
+	for (int i = 0; i < hashes.size(); i++)
+	{
+		utils::replace(hashes[i].fileName, '/', '\\');
+	}
+	return hashes;
 }
 
 std::map<std::string, std::function<void(Flags)>> Commands::perform =

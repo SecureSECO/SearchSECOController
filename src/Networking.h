@@ -18,7 +18,7 @@ public:
 	/// </summary>
 	/// <param name="data">The data to be send.</param>
 	/// <param name="dataSize">The size of the data array in bytes.</param>
-	void sendData(char* data, int dataSize);
+	void sendData(const char* data, int dataSize);
 	/// <summary>
 	/// Send data to the database.
 	/// </summary>
@@ -32,7 +32,7 @@ public:
 
 	std::string receiveData();
 private:
-	static boost::asio::io_context io_context;
+	static boost::asio::io_context ioContext;
 	/// <summary>
 	/// Basic constructor which initializes the socket with the given context.
 	/// </summary>

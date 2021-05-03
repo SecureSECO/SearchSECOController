@@ -79,3 +79,17 @@ TEST(pad_left_tests, basic_pad_left)
 {
 	EXPECT_EQ("   test", utils::padLeft("test", ' ', 7));
 }
+
+TEST(replace_tests, basic_replace)
+{
+	std::string str = "hallo";
+	utils::replace(str, 'a', 'e');
+	EXPECT_EQ(str, "hello");
+}
+
+TEST(replace_tests, nothing_to_replace)
+{
+	std::string str = "hallo";
+	utils::replace(str, 'w', 'e');
+	EXPECT_EQ(str, "hallo");
+}

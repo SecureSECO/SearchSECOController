@@ -5,10 +5,9 @@ Utrecht University within the Software Project course.
 */
 #pragma once
 #include <boost/asio.hpp>
+#include "../parser/Parser/HashData.h"
 
 using boost::asio::ip::tcp;
-
-struct HashData;
 
 class NetworkHandler
 {
@@ -19,7 +18,7 @@ public:
 	/// </summary>
 	/// <param name="data">The data to be send.</param>
 	/// <param name="dataSize">The size of the data array in bytes.</param>
-	void sendData(char* data, int dataSize);
+	void sendData(const char* data, int dataSize);
 	/// <summary>
 	/// Send data to the database.
 	/// </summary>

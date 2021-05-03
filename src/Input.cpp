@@ -1,7 +1,7 @@
 /*
 This program has been developed by students from the bachelor Computer Science at
 Utrecht University within the Software Project course.
-© Copyright Utrecht University (Department of Information and Computing Sciences)
+ï¿½ Copyright Utrecht University (Department of Information and Computing Sciences)
 */
 
 #include "Input.h"
@@ -12,6 +12,9 @@ Utrecht University within the Software Project course.
 
 #include "Print.h"
 #include "Parser2.h"
+#include "regex_wrapper.h"
+
+#include "loguru/loguru.hpp"
 
 Input::Input(int argc, char* argv[]) 
 	: flags()
@@ -82,40 +85,44 @@ void Input::parseExecutablePath(std::string fullPath)
 	print::debug("Found executable path as " + print::quote(this->executablePath), __FILE__, __LINE__);
 }
 
-void Input::parseOptionals(std::string flargs)
+void Input::parseOptionals(std::string call)
 {
-	// TODO throw error when the call is malformed (regex fails).
-	std::smatch 
-		syntaxMatch,
-		flargMatch;
-
-	std::regex	
-		syntaxRegex("(?:([^-][^\\s]*)\\s)?(?:([^-][^\\s]*)\\s?)?(.*)"),
-		flargRegex("(?:(?:-([^-\\s]+)))\\s?([^-\\s]+)?");
-
 	// Validate the syntax of the call.
-	std::regex_match(flargs, syntaxMatch, syntaxRegex);
+	std::tuple<std::string, std::string, std::string> result;
+	bool valid = regex::validateSyntax(call, result);
 
-	this->command = syntaxMatch[1];
-	this->flags.mandatoryArgument = syntaxMatch[2];
-	std::string rest = syntaxMatch[3];
+	if (!valid)
+	{
+		error::err_parse_call_syntax_error(call, __FILE__, __LINE__);
+	}
+
+	this->command = std::get<0>(result);
+	this->flags.mandatoryArgument = std::get<1>(result);
+	std::string flargs = std::get<2>(result);
+
+	if (flags.mandatoryArgument != "" && !regex::validateURL(flags.mandatoryArgument))
+	{
+		error::err_invalid_url(flags.mandatoryArgument, __FILE__, __LINE__);
+	}
 
 	// Parse optional flags.
 	this->optionalArguments = {};
 
-	std::string::const_iterator searchStart(rest.cbegin());
-	while (regex_search(searchStart, rest.cend(), flargMatch, flargRegex))
+	std::map<std::string, std::string> flagMap;
+	regex::parseFlargPairs(flargs, flagMap);
+
+	for (auto const& pair : flagMap)
 	{
-		std::string 
-			flag = flargMatch[1],
-			arg = flargMatch[2];
+		std::string
+			flag     = pair.first,
+			argument = pair.second;
 
-		if (!Flags::isFlag(flag)) error::err_flag_not_exist(flag, false, __FILE__, __LINE__);
+		if (!Flags::isFlag(flag))
+		{
+			error::err_flag_not_exist(flag, false, __FILE__, __LINE__);
+		}
 
-
-		this->optionalArguments[flag] = arg;
-
-		searchStart = flargMatch.suffix().first;
+		this->optionalArguments[flag] = argument;
 	}
 }
 
@@ -210,9 +217,8 @@ void Input::sanitizeOutputFlag(std::string arg, bool fromConfig)
 {
 	Input::requireNArguments(1, "output", arg);
 
-	std::regex urlRegex("^(http:\\/\\/www\\.|https:\\/\\/www\\.|http:\\/\\/|https:\\/\\/)?[a-z0-9]+([\\-\\.]{1}[a-z0-9]+)*\\.[a-z]{2,5}(:[0-9]{1,5})?(\\/.*)?$");
-
-	if (arg == "console" || std::regex_match(arg, urlRegex))
+	// TODO 'arg' needs to either be "console" or a valid file path.
+	if (arg == "console" || true)
 	{
 		this->flags.flag_output = arg;
 	}

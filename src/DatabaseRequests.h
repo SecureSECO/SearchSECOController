@@ -8,7 +8,9 @@ Utrecht University within the Software Project course.
 #include <vector>
 #include "ProjectMetaData.h"
 
-struct HashData;
+#include "HashData.h"
+#include "CodeBlock.h"
+
 class NetworkHandler;
 
 class DatabaseRequests
@@ -19,7 +21,7 @@ public:
 	/// </summary>
 	/// <param name="hashes">The hashes to be uploaded.</param>
 	/// <returns>The string that the database send back.</returns>
-	static std::string uploadHashes(std::vector<HashData> hashes, ProjectMetaData metaData);
+	static std::string uploadHashes(std::vector<HashData> hashes, ProjectMetaData metaData, AuthorData authorData);
 
 	/// <summary>
 	/// Sends a request to the database to find matching hashes in the database.
@@ -33,7 +35,7 @@ public:
 	/// </summary>
 	/// <param name="hashes">The hashes to be uploaded.</param>
 	/// <returns>The string that the database send back.</returns>
-	static std::string checkUploadHashes(std::vector<HashData> hashes, ProjectMetaData metaData);
+	static std::string checkUploadHashes(std::vector<HashData> hashes, ProjectMetaData metaData, AuthorData authorData);
 private:
 	/// <summary>
 	/// The logic for sending a request to the database.
@@ -48,7 +50,7 @@ private:
 	/// This data can most likely be generated with a function in NetworkUtils like getAllDataFromHashes.</param>
 	/// <param name="dataSize">How much data we are sending.</param>
 	/// <returns>The string that the database send back.</returns>
-	static std::string execRequest(std::string request, char* rawData, int dataSize);
+	static std::string execRequest(std::string request, const char* rawData, int dataSize);
 
 	/// <summary>
 	/// Will open a connection with the database API. 

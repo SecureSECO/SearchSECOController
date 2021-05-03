@@ -1,30 +1,89 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ClCompile Include="src\Commands.cpp" />
-    <ClCompile Include="src\DatabaseRequests.cpp" />
-    <ClCompile Include="src\Error.cpp" />
-    <ClCompile Include="src\Flags.cpp" />
-    <ClCompile Include="src\Input.cpp" />
-    <ClCompile Include="src\NetworkUtils.cpp" />
-    <ClCompile Include="src\Networking.cpp" />
-    <ClCompile Include="src\Parser2.cpp" />
-    <ClCompile Include="src\Print.cpp" />
-    <ClCompile Include="src\Utils.cpp" />
-    <ClCompile Include="src\loguru\loguru.cpp" />
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{9f3cfd51-b28b-4ce3-a526-a916b4bdf8e6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{c954a095-792e-4d2a-b27d-cf6a719399f5}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\Commands.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\DatabaseRequests.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Error.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Flags.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Input.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\NetworkUtils.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Networking.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Parser2.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Print.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Utils.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\loguru\loguru.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\regex_wrapper.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\regex_wrapper.h" />
     <ClCompile Include="src\loguru\loguru.hpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\Commands.h" />
-    <ClInclude Include="src\DatabaseRequests.h" />
-    <ClInclude Include="src\FlagParser.h" />
-    <ClInclude Include="src\Flags.h" />
-    <ClInclude Include="src\Input.h" />
-    <ClInclude Include="src\NetworkUtils.h" />
-    <ClInclude Include="src\Networking.h" />
-    <ClInclude Include="src\Parser2.h" />
-    <ClInclude Include="src\Print.h" />
-    <ClInclude Include="src\ProjectMetaData.h" />
-    <ClInclude Include="src\Utils.h" />
+    <ClInclude Include="src\Commands.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\DatabaseRequests.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\FlagParser.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Flags.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Input.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\NetworkUtils.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Networking.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Parser2.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Print.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ProjectMetaData.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Utils.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
 </Project>

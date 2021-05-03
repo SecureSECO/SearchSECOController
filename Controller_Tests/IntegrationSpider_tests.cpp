@@ -4,6 +4,10 @@ Utrecht University within the Software Project course.
 � Copyright Utrecht University (Department of Information and Computing Sciences)
 */
 
+/*
+NOTE: These tests depend on the used GitHub repositories. If a test fails, make sure the repository is not changed in an unexpected way.
+*/
+
 #include "pch.h"
 
 #include "Flags.h"
@@ -19,8 +23,8 @@ using recursive_directory_iterator = std::filesystem::recursive_directory_iterat
 // Constants.
 #define TEMPPATH "temp"
 #define LINUX0DOT01_FILECOUNT 162
-#define PYTHON_FILECOUNT 0
 #define CPP_FILECOUNT 76
+#define PYTHON_FILECOUNT 0
 #define JS_FILECOUNT 0
 
 // Dummy variables.

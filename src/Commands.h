@@ -30,16 +30,16 @@ public:
 	/// </summary>
 	/// <param name="command">The command you want to check if it exists.</param>
 	static bool isCommand(std::string command);
-private:
-	/// <summary>
-	/// Will call the spider to download a given repository.
-	/// </summary>
-	static void downloadRepository(std::string repository, Flags flags, std::string downloadPath);
-	/// <summary>
-	/// Will call the parser to parse the given repository.
-	/// </summary>
-	static std::vector<HashData> parseRepository(std::string repository, Flags flags);
+    /// <summary>
+    /// Will call the spider to download a given repository.
+    /// </summary>
+    static void downloadRepository(std::string repository, Flags flags, std::string downloadPath);
+    /// <summary>
+    /// Will call the parser to parse the given repository.
+    /// </summary>
+    static std::vector<HashData> parseRepository(std::string repository, Flags flags);
 
+private:
 	static std::map<std::string, std::function<void(Flags)>> perform;
 	static std::map<std::string, std::string> helpMessagesCommands;
 	static std::vector<std::string> commandNames;

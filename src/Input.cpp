@@ -272,8 +272,8 @@ void Input::requireNArguments(int n, std::string flag, std::string argument)
 	}
 }
 
-template <typename callback, typename error>
-void Input::validateInteger(std::string argument, callback callback, error error, int min, int max)
+template <typename callbackFunction, typename errorFunction>
+void Input::validateInteger(std::string argument, callbackFunction callback, errorFunction error, int min, int max)
 {
 	if (utils::isNumber(argument))
 	{

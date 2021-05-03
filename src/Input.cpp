@@ -215,7 +215,10 @@ void Input::sanitizeOutputFlag(std::string arg, bool fromConfig)
 	{
 		this->flags.flag_output = arg;
 	}
-	else error::errFlagInvalidArg("output", arg, fromConfig, __FILE__, __LINE__);
+	else
+	{
+		error::errFlagInvalidArg("output", arg, fromConfig, __FILE__, __LINE__);
+	}
 }
 
 void Input::sanitizeSaveFlag(std::string arg, bool fromConfig)
@@ -277,13 +280,13 @@ void Input::validateInteger(std::string argument, callbackFunction callback, err
 {
 	if (utils::isNumber(argument))
 	{
-		int flag_int = std::stoi(argument);
-		if (flag_int < min || flag_int > max) 
+		int flagInt = std::stoi(argument);
+		if (flagInt < min || flagInt > max) 
 		{ 
 			error(); 
 		}
 
-		callback(flag_int);
+		callback(flagInt);
 	}
 	else
 	{

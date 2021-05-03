@@ -22,20 +22,20 @@ int errCodeLength = 3;
 // Defines the (order of the) error codes for the various errors.
 enum errCode
 {
-	flag_not_exist = 1,
-	flag_not_exist_cfg,
-	flag_invalid_arg,
-	flag_invalid_arg_cfg,
-	flag_incorrect_args,
-	cmd_incorrect_args,
-	cmd_not_found,
-	cmd_not_exist,
-	parse_call_syntax_error,
-	parse_incorrect_shorthand_flag,
-	parse_incorrect_longhand_flag,
-	parse_could_not_parse_flag,
-	invalid_url,
-	not_implemented,
+	flagNotExist = 1,
+	flagNotExistCfg,
+	flagInvalidArg,
+	flagInvalidArgCfg,
+	flagIncorrectArgs,
+	cmdIncorrectArgs,
+	cmdNotFound,
+	cmdNotExist,
+	parseCallSyntaxError,
+	parseIncorrectShorthandFlag,
+	parseIncorrectLonghandFlag,
+	parseCouldNotParseFlag,
+	invalidUrl,
+	notImplemented,
 };
 
 // Descriptions of the error messages.
@@ -130,20 +130,20 @@ std::string descParseCouldNotParseFlag(std::string* strs)
 // Maps an error code to a description.
 std::map <int, std::function<std::string(std::string*)>> errDesc =
 {
-	{flag_not_exist, descErrFlagNotExist},
-	{flag_not_exist_cfg, descErrFlagNotExistCfg},
-	{flag_invalid_arg, descErrFlagInvalidArg},
-	{flag_invalid_arg_cfg, descErrFlagInvalidArgCfg},
-	{flag_incorrect_args, descFlagIncorrectArguments},
-	{cmd_incorrect_args, descCmdIncorrectArguments},
-	{cmd_not_found, descErrCmdNotFound},
-	{cmd_not_exist, descErrCmdNotExist},
-	{parse_call_syntax_error, descParseCallSyntaxError},
-	{parse_incorrect_shorthand_flag, descParseIncorrectShorthandFlag},
-	{parse_incorrect_longhand_flag, descParseIncorrectLonghandFlag},
-	{parse_could_not_parse_flag, descParseCouldNotParseFlag},
-	{invalid_url, descInvalidUrl},
-	{not_implemented, descErrNotImplemented},
+	{flagNotExist, descErrFlagNotExist},
+	{flagNotExistCfg, descErrFlagNotExistCfg},
+	{flagInvalidArg, descErrFlagInvalidArg},
+	{flagInvalidArgCfg, descErrFlagInvalidArgCfg},
+	{flagIncorrectArgs, descFlagIncorrectArguments},
+	{cmdIncorrectArgs, descCmdIncorrectArguments},
+	{cmdNotFound, descErrCmdNotFound},
+	{cmdNotExist, descErrCmdNotExist},
+	{parseCallSyntaxError, descParseCallSyntaxError},
+	{parseIncorrectShorthandFlag, descParseIncorrectShorthandFlag},
+	{parseIncorrectLonghandFlag, descParseIncorrectLonghandFlag},
+	{parseCouldNotParseFlag, descParseCouldNotParseFlag},
+	{invalidUrl, descInvalidUrl},
+	{notImplemented, descErrNotImplemented},
 };
 
 #pragma endregion Descriptions
@@ -172,7 +172,7 @@ void err(errCode code, std::string* strs, const char* file, int line, std::strin
 
 void error::errCmdIncorrectArguments(std::string command, int expected, int received, const char* file, int line)
 {
-	err(cmd_incorrect_args,
+	err(cmdIncorrectArgs,
 		new std::string[3]{
 			command,
 			std::to_string(expected),
@@ -183,7 +183,7 @@ void error::errCmdIncorrectArguments(std::string command, int expected, int rece
 
 void error::errFlagIncorrectArguments(std::string flag, int expected, int received, const char* file, int line)
 {
-	err(flag_incorrect_args,
+	err(flagIncorrectArgs,
 		new std::string[3]{
 			flag,
 			std::to_string(expected),
@@ -192,30 +192,30 @@ void error::errFlagIncorrectArguments(std::string flag, int expected, int receiv
 			);
 }
 
-void error::errFlagNotExist(std::string flag, bool from_config, const char* file, int line)
+void error::errFlagNotExist(std::string flag, bool fromConfig, const char* file, int line)
 {
 	std::string* flagname = new std::string[1]{ flag };
-	errCode code = from_config ? flag_not_exist_cfg : flag_not_exist;
+	errCode code = fromConfig ? flagNotExistCfg : flagNotExist;
 
 	err(code, flagname, file, line);
 }
 
-void error::errFlagInvalidArg(std::string flag, std::string arg, bool from_config, const char* file, int line)
+void error::errFlagInvalidArg(std::string flag, std::string arg, bool fromConfig, const char* file, int line)
 {
 	std::string* strs = new std::string[2]{ flag, arg };
-	errCode code = from_config ? flag_invalid_arg_cfg : flag_invalid_arg;
+	errCode code = fromConfig ? flagInvalidArgCfg : flagInvalidArg;
 
 	err(code, strs, file, line);
 }
 
 void error::errCmdNotFound(const char* file, int line)
 {
-	err(cmd_not_found, {}, file, line);
+	err(cmdNotFound, {}, file, line);
 }
 
 void error::errCmdNotExist(std::string command, const char* file, int line)
 {
-	err(cmd_not_exist,
+	err(cmdNotExist,
 		new std::string[1]{ command },
 		file, line
 	);
@@ -223,7 +223,7 @@ void error::errCmdNotExist(std::string command, const char* file, int line)
 
 void error::errParseCallSyntaxError(std::string callstring, const char* file, int line)
 {
-	err(parse_call_syntax_error,
+	err(parseCallSyntaxError,
 		new std::string[1]{ callstring },
 		file, line
 	);
@@ -231,7 +231,7 @@ void error::errParseCallSyntaxError(std::string callstring, const char* file, in
 
 void error::errParseIncorrectShorthandFlag(std::string flag, const char* file, int line)
 {
-	err(parse_incorrect_shorthand_flag,
+	err(parseIncorrectShorthandFlag,
 		new std::string[1] { flag },
 		file, line
 	);
@@ -239,7 +239,7 @@ void error::errParseIncorrectShorthandFlag(std::string flag, const char* file, i
 
 void error::errParseIncorrectLonghandFlag(std::string flag, const char* file, int line)
 {
-	err(parse_incorrect_longhand_flag,
+	err(parseIncorrectLonghandFlag,
 		new std::string[1] { flag },
 		file, line
 	);
@@ -247,7 +247,7 @@ void error::errParseIncorrectLonghandFlag(std::string flag, const char* file, in
 
 void error::errParseCouldNotParseFlag(std::string flag, const char* file, int line)
 {
-	err(parse_could_not_parse_flag,
+	err(parseCouldNotParseFlag,
 		new std::string[1] { flag },
 		file, line
 	);
@@ -255,7 +255,7 @@ void error::errParseCouldNotParseFlag(std::string flag, const char* file, int li
 
 void error::errInvalidUrl(std::string url, const char* file, int line)
 {
-	err(invalid_url,
+	err(invalidUrl,
 		new std::string[1] { url },
 		file, line
 	);
@@ -263,7 +263,7 @@ void error::errInvalidUrl(std::string url, const char* file, int line)
 
 void error::errNotImplemented(std::string funcname, const char* file, int line)
 {
-	err(not_implemented,
+	err(notImplemented,
 		new std::string[1]{ funcname },
 		file, line
 	);

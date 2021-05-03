@@ -8,6 +8,9 @@ Utrecht University within the Software Project course.
 
 #include "loguru/loguru.hpp"
 
+#define CPU_DEFAULT 2 // TODO What amount of cpus make sense
+#define RAM_DEFAULT 8 // TODO What amount of ram makes sense
+
 std::map<std::string, std::string> Flags::shorthandFlagToLong =
 {
 	{"h", "help"},
@@ -22,8 +25,8 @@ std::map<std::string, std::string> Flags::shorthandFlagToLong =
 Flags::Flags()
 {
 	this->mandatoryArgument = "";
-	this->flag_cpu = 2; // TODO What amount of cpus make sense
-	this->flag_ram = 8; // TODO What amount of ram makes sense
+	this->flag_cpu = CPU_DEFAULT;
+	this->flag_ram = RAM_DEFAULT;
 	this->flag_output = "console";
 	this->flag_save = false;
 	this->flag_verbose = loguru::Verbosity_INFO;

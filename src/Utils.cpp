@@ -4,10 +4,8 @@ Utrecht University within the Software Project course.
 © Copyright Utrecht University (Department of Information and Computing Sciences)
 */
 
-#pragma once
 
 #include "Utils.h"
-//#include "Parser.h"
 #include <map>
 #include <fstream>
 #include <iostream>

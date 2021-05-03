@@ -31,9 +31,19 @@
     <ClCompile Include="IntegrationParser_tests.cpp">
       <Filter>Tests</Filter>
     </ClCompile>
+    <ClCompile Include="IntegrationCrawler_tests.cpp">
+      <Filter>Tests</Filter>
+    </ClCompile>
+    <ClCompile Include="IntegrationDatabaseAPI_tests.cpp">
+      <Filter>Tests</Filter>
+    </ClCompile>
+    <ClCompile Include="DatabaseAPIMock.cpp">
+      <Filter>Tests</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />
+    <ClInclude Include="DatabaseAPIMock.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

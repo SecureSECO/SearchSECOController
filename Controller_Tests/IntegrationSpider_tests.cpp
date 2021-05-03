@@ -27,13 +27,13 @@ using recursive_directory_iterator = std::filesystem::recursive_directory_iterat
 #define PYTHON_FILECOUNT 0
 #define JS_FILECOUNT 0
 
-// Dummy variables.
-Flags flags;
-
 
 int cloneAndCheck(std::map<std::string, bool> &dict, std::string url)
 {
-    Commands::downloadRepository(url, flags, TEMPPATH);
+    // Dummy variables.
+    Flags spiderFlags;
+
+    Commands::downloadRepository(url, spiderFlags, TEMPPATH);
     int count = 0;
     for (const auto &dirEntry : recursive_directory_iterator(TEMPPATH))
     {
@@ -55,14 +55,14 @@ TEST(IntegrationTestSpider, Linux0dot01)
 {
     std::map<std::string, bool> files = 
     {
-        {"temp\\fs\\bitmap.c", 0},
-        {"temp\\fs\\bitmap.c.meta", 0},
-        {"temp\\include\\linux\\head.h", 0},
-        {"temp\\include\\linux\\head.h.meta", 0},
-        {"temp\\kernel\\exit.c", 0},        
-        {"temp\\kernel\\exit.c.meta", 0},
-        {"temp\\lib\\close.c", 0},          
-        {"temp\\lib\\close.c.meta", 0}
+        {TEMPPATH + std::string("\\fs\\bitmap.c"), 0},    
+        {TEMPPATH + std::string("\\fs\\bitmap.c.meta"), 0},
+        {TEMPPATH + std::string("\\include\\linux\\head.h"), 0},
+        {TEMPPATH + std::string("\\include\\linux\\head.h.meta"), 0},
+        {TEMPPATH + std::string("\\kernel\\exit.c"), 0},        
+        {TEMPPATH + std::string("\\kernel\\exit.c.meta"), 0},
+        {TEMPPATH + std::string("\\lib\\close.c"), 0},          
+        {TEMPPATH + std::string("\\lib\\close.c.meta"), 0}
     };
 
     int count = cloneAndCheck(files, "https://github.com/zavg/linux-0.01");
@@ -80,14 +80,14 @@ TEST(IntegrationTestSpider, Cpp)
 {
     std::map<std::string, bool> files = 
     {
-        {"temp\\src\\endgame.cpp", 0},
-        {"temp\\src\\endgame.cpp.meta", 0},
-        {"temp\\src\\pawns.h", 0},
-        {"temp\\src\\pawns.h.meta", 0},
-        {"temp\\src\\syzygy\\tbprobe.h", 0}, 
-        {"temp\\src\\syzygy\\tbprobe.h.meta", 0},
-        {"temp\\src\\syzygy\\tbprobe.cpp", 0},
-        {"temp\\src\\syzygy\\tbprobe.cpp.meta", 0},
+        {TEMPPATH + std::string("\\src\\endgame.cpp"), 0},
+        {TEMPPATH + std::string("\\src\\endgame.cpp.meta"), 0},
+        {TEMPPATH + std::string("\\src\\pawns.h"), 0},
+        {TEMPPATH + std::string("\\src\\pawns.h.meta"), 0},
+        {TEMPPATH + std::string("\\src\\syzygy\\tbprobe.h"), 0}, 
+        {TEMPPATH + std::string("\\src\\syzygy\\tbprobe.h.meta"), 0},
+        {TEMPPATH + std::string("\\src\\syzygy\\tbprobe.cpp"), 0},
+        {TEMPPATH + std::string("\\src\\syzygy\\tbprobe.cpp.meta"), 0},
     };
 
     int count = cloneAndCheck(files, "https://github.com/mcostalba/Stockfish");

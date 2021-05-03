@@ -37,6 +37,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Commands_tests.cpp" />
+    <ClCompile Include="IntegrationParser_tests.cpp" />
     <ClCompile Include="IntegrationSpider_tests.cpp" />
     <ClCompile Include="NetworkUtils_tests.cpp" />
     <ClCompile Include="Print_tests.cpp" />

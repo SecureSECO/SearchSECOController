@@ -49,13 +49,17 @@ void Input::parseCliInput(int argc, char* argv[])
 	{
 		// Convert the arguments from char* to string.
 		for (int i = 0; i < argc; i++)
+		{
 			args[i] = argv[i];
+		}
 	}
 
 	// Concatenate the flag/argument pairs, intercalated with spaces.
 	std::string flargs = "";
 	for (int i = 1; i < argc; ++i)
+	{
 		flargs += args[i] + ' ';
+	}
 
 	Input::parseExecutablePath(args[0]);
 
@@ -82,7 +86,7 @@ void Input::parseOptionals(std::string call)
 
 	if (!valid)
 	{
-		error::err_parse_call_syntax_error(call, __FILE__, __LINE__);
+		error::errParseCallSyntaxError(call, __FILE__, __LINE__);
 	}
 
 	this->command = std::get<0>(result);
@@ -91,7 +95,7 @@ void Input::parseOptionals(std::string call)
 
 	if (flags.mandatoryArgument != "" && !regex::validateURL(flags.mandatoryArgument))
 	{
-		error::err_invalid_url(flags.mandatoryArgument, __FILE__, __LINE__);
+		error::errInvalidUrl(flags.mandatoryArgument, __FILE__, __LINE__);
 	}
 
 	// Parse optional flags.
@@ -108,7 +112,7 @@ void Input::parseOptionals(std::string call)
 
 		if (!Flags::isFlag(flag))
 		{
-			error::err_flag_not_exist(flag, false, __FILE__, __LINE__);
+			error::errFlagNotExist(flag, false, __FILE__, __LINE__);
 		}
 
 		this->optionalArguments[flag] = argument;
@@ -187,7 +191,7 @@ void Input::sanitizeCpuFlag(std::string arg, bool fromConfig)
 	Input::validateInteger(
 		arg,
 		[this](int x) { this->flags.flag_cpu = x; },
-		[arg, fromConfig]() { error::err_flag_invalid_arg("cpu", arg, fromConfig, __FILE__, __LINE__); },
+		[arg, fromConfig]() { error::errFlagInvalidArg("cpu", arg, fromConfig, __FILE__, __LINE__); },
 		2);
 }
 
@@ -197,7 +201,7 @@ void Input::sanitizeRamFlag(std::string arg, bool fromConfig)
 	Input::validateInteger(
 		arg,
 		[this](int x) { this->flags.flag_ram = x; },
-		[arg, fromConfig]() { error::err_flag_invalid_arg("ram", arg, fromConfig, __FILE__, __LINE__); },
+		[arg, fromConfig]() { error::errFlagInvalidArg("ram", arg, fromConfig, __FILE__, __LINE__); },
 		4,
 		64);
 }
@@ -211,7 +215,7 @@ void Input::sanitizeOutputFlag(std::string arg, bool fromConfig)
 	{
 		this->flags.flag_output = arg;
 	}
-	else error::err_flag_invalid_arg("output", arg, fromConfig, __FILE__, __LINE__);
+	else error::errFlagInvalidArg("output", arg, fromConfig, __FILE__, __LINE__);
 }
 
 void Input::sanitizeSaveFlag(std::string arg, bool fromConfig)
@@ -236,7 +240,7 @@ void Input::sanitizeVerboseFlag(std::string arg, bool fromConfig)
 	Input::validateInteger(
 		arg,
 		[this, verbosityMap](int x) { this->flags.flag_verbose = verbosityMap.at(x); },
-		[arg, fromConfig]() { error::err_flag_invalid_arg("verbose", arg, fromConfig, __FILE__, __LINE__); },
+		[arg, fromConfig]() { error::errFlagInvalidArg("verbose", arg, fromConfig, __FILE__, __LINE__); },
 		1,
 		5
 	);
@@ -257,20 +261,32 @@ void Input::sanitizeVersionFlag(std::string arg, bool fromConfig)
 
 void Input::requireNArguments(int n, std::string flag, std::string argument)
 {
-	if (n == 0 && argument != "") error::err_flag_incorrect_arguments(flag, n, 1, __FILE__, __LINE__);
-	if (n == 1 && argument == "") error::err_flag_incorrect_arguments(flag, n, 0, __FILE__, __LINE__);
+	if (n == 0 && argument != "")
+	{
+		error::errFlagIncorrectArguments(flag, n, 1, __FILE__, __LINE__);
+	}
 
+	if (n == 1 && argument == "")
+	{
+		error::errFlagIncorrectArguments(flag, n, 0, __FILE__, __LINE__);
+	}
 }
 
-template <typename Callback, typename Error>
-void Input::validateInteger(std::string argument, Callback callback, Error error, int min, int max)
+template <typename callback, typename error>
+void Input::validateInteger(std::string argument, callback callback, error error, int min, int max)
 {
 	if (utils::isNumber(argument))
 	{
 		int flag_int = std::stoi(argument);
-		if (flag_int < min || flag_int > max) error();
+		if (flag_int < min || flag_int > max) 
+		{ 
+			error(); 
+		}
+
 		callback(flag_int);
 	}
 	else
+	{
 		error();
+	}
 }

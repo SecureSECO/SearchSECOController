@@ -80,7 +80,12 @@ bool Flags::isLongFlag(std::string flag)
 	std::map<std::string, std::string>::iterator it;
 
 	for (it = m.begin(); it != m.end(); ++it)
-		if (it->second == flag) return true;
+	{
+		if (it->second == flag)
+		{
+			return true;
+		}
+	}
 
 	return false;
 }

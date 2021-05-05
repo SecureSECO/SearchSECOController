@@ -5,6 +5,7 @@ Utrecht University within the Software Project course.
 */
 
 #include "Flags.h"
+#include "Print.h"
 
 #include "loguru/loguru.hpp"
 
@@ -57,7 +58,10 @@ void Flags::mapShortFlagToLong(std::map<std::string, std::string>& flargs)
 
 		if (Flags::isShortHandFlag(key))
 		{
-			temp[Flags::shorthandFlagToLong[key]] = value;
+			std::string fullLength = Flags::shorthandFlagToLong[key];
+
+			print::debug(print::quote("-" + key) + " -> " + print::quote("--" + fullLength), __FILE__, __LINE__);
+			temp[fullLength] = value;
 		}
 		else
 		{

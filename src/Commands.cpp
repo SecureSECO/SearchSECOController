@@ -1,7 +1,7 @@
 /*
 This program has been developed by students from the bachelor Computer Science at
 Utrecht University within the Software Project course.
-© Copyright Utrecht University (Department of Information and Computing Sciences)
+ï¿½ Copyright Utrecht University (Department of Information and Computing Sciences)
 */
 
 #include "Commands.h"
@@ -47,12 +47,20 @@ bool Commands::isCommand(std::string s)
 
 void Commands::start(Flags flags)
 {
-	// Depends: crawler, spider, db, distribution.
+	auto msg = "Starting a worker node with "
+		+ std::to_string(flags.flag_cpu) + " cpu cores and "
+		+ std::to_string(flags.flag_ram) + "GB RAM";
+	print::log(msg, __FILE__, __LINE__);
+
 	error::errNotImplemented("start", __FILE__, __LINE__);
 }
 
 void Commands::check(Flags flags)
 {
+	auto msg = "Checking the code from the project at "
+		+ flags.mandatoryArgument + " against the SearchSECO database";
+	print::log(msg, __FILE__, __LINE__);
+
 	std::string tempLocation = "spiderDownloads";
 	Commands::downloadRepository(flags.mandatoryArgument, flags, tempLocation);
 	std::vector<HashData> hashes = Commands::parseRepository(tempLocation, flags);
@@ -63,7 +71,10 @@ void Commands::check(Flags flags)
 
 void Commands::upload(Flags flags)
 {
-	// Depends: spider, db.
+	auto msg = "Uploading the code from the project at "
+		+ flags.mandatoryArgument + " to the SearchSECO database";
+	print::log(msg, __FILE__, __LINE__);
+
 	std::string tempLocation = "spiderDownloads";
 	AuthorData authorData = Commands::downloadRepository(flags.mandatoryArgument, flags, tempLocation);
 	std::vector<HashData> hashes = Commands::parseRepository(tempLocation, flags);
@@ -74,19 +85,29 @@ void Commands::upload(Flags flags)
 
 void Commands::checkupload(Flags flags)
 {
-	// Depends: spider, db.
+	auto msg = "Checking the code from the project at "
+		+ flags.mandatoryArgument + " against the SearchSECO database";
+	print::log(msg, __FILE__, __LINE__);
+
 	std::string tempLocation = "spiderDownloads";
 	AuthorData authorData = Commands::downloadRepository(flags.mandatoryArgument, flags, tempLocation);
 	std::vector<HashData> hashes = Commands::parseRepository(tempLocation, flags);
 
 	ProjectMetaData metaData = utils::getProjectMetadata(flags.mandatoryArgument);
 	// Uploading the hashes.
+	msg = "Uploading the code from the project at "
+		+ flags.mandatoryArgument + " to the SearchSECO database";
+	print::log(msg, __FILE__, __LINE__);
+
 	print::printHashMatches(hashes, DatabaseRequests::checkUploadHashes(hashes, metaData, authorData));
 }
 
 void Commands::update(Flags flags)
 {
-	// Depends: a lot.
+	auto msg = "Attempting to update searchseco to version "
+		+ flags.mandatoryArgument;
+	print::log(msg, __FILE__, __LINE__);
+
 	error::errNotImplemented("update", __FILE__, __LINE__);
 }
 
@@ -123,11 +144,13 @@ void Commands::help(std::string command)
 
 AuthorData Commands::downloadRepository(std::string repository, Flags flags, std::string downloadPath)
 {
+	print::debug("Calling the spider to download a repository", __FILE__, __LINE__);
 	return RunSpider::runSpider(repository, downloadPath);
 }
 
 std::vector<HashData> Commands::parseRepository(std::string repository, Flags flags)
 {
+	print::debug("Calling the parser to parse a repository", __FILE__, __LINE__);
 	// TODO: fix this somewhere else.
 	auto hashes = Parser::parse(repository, flags.flag_cpu);
 	for (int i = 0; i < hashes.size(); i++)

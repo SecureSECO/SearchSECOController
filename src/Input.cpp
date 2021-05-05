@@ -1,7 +1,7 @@
 /*
 This program has been developed by students from the bachelor Computer Science at
 Utrecht University within the Software Project course.
-© Copyright Utrecht University (Department of Information and Computing Sciences)
+ï¿½ Copyright Utrecht University (Department of Information and Computing Sciences)
 */
 
 #include "Input.h"
@@ -14,15 +14,16 @@ Utrecht University within the Software Project course.
 #include "Parser2.h"
 #include "regex_wrapper.h"
 
-#include "loguru/loguru.hpp"
-
 Input::Input(int argc, char* argv[]) 
 	: flags()
 {
+    print::debug("Parsing CLI input", __FILE__, __LINE__);
 	Input::parseCliInput(argc, argv);
 
+	print::debug("Applying default arguments to flags", __FILE__, __LINE__);
 	Input::applyDefaults();
 
+	print::debug("Sanitizing provided arguments", __FILE__, __LINE__);
 	Input::sanitizeArguments();
 }
 
@@ -33,6 +34,7 @@ void Input::parseCliInput(int argc, char* argv[])
 	// For debugging in the IDE. Read another line if only 'searchseco' was entered.
 	if (argc == 1)
 	{
+        print::warn("Local debugging detected", __FILE__, __LINE__);
 		std::string s;
 		std::getline(std::cin, s);
 		std::vector<std::string> temp = utils::split(s, ' ');
@@ -61,21 +63,28 @@ void Input::parseCliInput(int argc, char* argv[])
 		flargs += args[i] + ' ';
 	}
 
-	Input::parseExecutablePath(args[0]);
+	print::debug("Parsing executable path", __FILE__, __LINE__);
+	Input::parseExecutablePath(argv[0]);
 
+	print::debug("Parsing optionals", __FILE__, __LINE__);
 	Input::parseOptionals(flargs);
 
+	print::debug("Mapping shorthand flags to longer versions", __FILE__, __LINE__);
 	Flags::mapShortFlagToLong(this->optionalArguments);
 }
 
 void Input::parseExecutablePath(std::string fullPath)
 {
+    print::debug("Parsing path " + print::quote(fullPath), __FILE__, __LINE__);
+
 	std::smatch match;
 	std::regex pathRegex("(.+)searchseco.exe");
 
 	std::regex_match(fullPath, match, pathRegex);
 
 	this->executablePath = match[1];
+
+	print::debug("Found executable path as " + print::quote(this->executablePath), __FILE__, __LINE__);
 }
 
 void Input::parseOptionals(std::string call)
@@ -90,7 +99,17 @@ void Input::parseOptionals(std::string call)
 	}
 
 	this->command = std::get<0>(result);
+	print::debug("Parsed command as " + print::quote(this->command), __FILE__, __LINE__);
 	this->flags.mandatoryArgument = std::get<1>(result);
+	if (flags.mandatoryArgument == "")
+	{
+		print::debug("No mandatory argument was entered", __FILE__, __LINE__);
+	}
+	else 
+	{
+		print::debug("Parsed mandatory argument as " + print::quote(this->flags.mandatoryArgument), __FILE__, __LINE__);
+	}
+	
 	std::string flargs = std::get<2>(result);
 
 	if (flags.mandatoryArgument != "" && !regex::validateURL(flags.mandatoryArgument))
@@ -115,6 +134,8 @@ void Input::parseOptionals(std::string call)
 			error::errFlagNotExist(flag, false, __FILE__, __LINE__);
 		}
 
+		print::debug("Detected flag " + print::quote(flag) + " with argument " + print::quote(argument), __FILE__, __LINE__);
+
 		this->optionalArguments[flag] = argument;
 	}
 }
@@ -124,7 +145,10 @@ void Input::applyDefaults()
 	std::map<std::string, std::string> fullArgs = {};
 	this->flagSource = {};
 
-	std::map<std::string, std::string> configDefaults = FlagParser::parseConfig(this->executablePath + "/cfg/config.txt");
+	auto configpath = this->executablePath + "/cfg/config.txt";
+
+	print::debug("Reading config file at " + configpath, __FILE__, __LINE__);
+	std::map<std::string, std::string> configDefaults = FlagParser::parseConfig(configpath);
 
 	std::map<std::string, std::string>::iterator it;
 	for (it = configDefaults.begin(); it != configDefaults.end(); ++it)
@@ -142,6 +166,7 @@ void Input::applyDefaults()
 	}
 
 	this->optionalArguments = fullArgs;
+	print::debug("Default argument values applied successfully", __FILE__, __LINE__);
 }
 
 void Input::sanitizeArguments()
@@ -187,6 +212,10 @@ void Input::sanitizeArguments()
 #pragma region Individual flag sanitation
 void Input::sanitizeCpuFlag(std::string arg, bool fromConfig)
 {
+	auto msg = "Sanitizing --cpu flag with argument " + arg 
+		+ (fromConfig ? " from the config file" : "");
+
+	print::debug(msg, __FILE__, __LINE__);
 	Input::requireNArguments(1, "cpu", arg);
 	Input::validateInteger(
 		arg,
@@ -197,6 +226,10 @@ void Input::sanitizeCpuFlag(std::string arg, bool fromConfig)
 
 void Input::sanitizeRamFlag(std::string arg, bool fromConfig)
 {
+	auto msg = "Sanitizing --ram flag with argument " + arg
+		+ (fromConfig ? " from the config file" : "");
+
+	print::debug(msg, __FILE__, __LINE__);
 	Input::requireNArguments(1, "ram", arg);
 	Input::validateInteger(
 		arg,
@@ -208,6 +241,10 @@ void Input::sanitizeRamFlag(std::string arg, bool fromConfig)
 
 void Input::sanitizeOutputFlag(std::string arg, bool fromConfig)
 {
+	auto msg = "Sanitizing --output flag with argument " + arg
+		+ (fromConfig ? " from the config file" : "");
+
+	print::debug(msg, __FILE__, __LINE__);
 	Input::requireNArguments(1, "output", arg);
 
 	// TODO 'arg' needs to either be "console" or a valid file path.
@@ -223,12 +260,19 @@ void Input::sanitizeOutputFlag(std::string arg, bool fromConfig)
 
 void Input::sanitizeSaveFlag(std::string arg, bool fromConfig)
 {
+	auto msg = "Sanitizing --save flag";
+
+	print::debug(msg, __FILE__, __LINE__);
 	Input::requireNArguments(0, "save", arg);
 	this->flags.flag_save = true;
 }
 
 void Input::sanitizeVerboseFlag(std::string arg, bool fromConfig)
 {
+	auto msg = "Sanitizing --verbose flag with argument " + arg
+		+ (fromConfig ? " from the config file" : "");
+
+	print::debug(msg, __FILE__, __LINE__);
 	Input::requireNArguments(1, "verbose", arg);
 
 	std::map<int, loguru::Verbosity> verbosityMap =
@@ -251,12 +295,18 @@ void Input::sanitizeVerboseFlag(std::string arg, bool fromConfig)
 
 void Input::sanitizeHelpFlag(std::string arg, bool fromConfig)
 {
+	auto msg = "Sanitizing --help flag";
+
+	print::debug(msg, __FILE__, __LINE__);
 	Input::requireNArguments(0, "help", arg);
 	this->flags.flag_help = true;
 }
 
 void Input::sanitizeVersionFlag(std::string arg, bool fromConfig)
 {
+	auto msg = "Sanitizing --version flag";
+
+	print::debug(msg, __FILE__, __LINE__);
 	Input::requireNArguments(0, "version", arg);
 	this->flags.flag_version = true;
 }

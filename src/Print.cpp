@@ -77,10 +77,11 @@ void print::versionFull()
 	std::string mainName = "searchseco";
 
 	// Get subsystem versions.
-	int systemc = 2;
+	int systemc = 3;
 	std::string* subsystems = new std::string[systemc]
 	{
 		"parser",
+		"crawler",
 		"spider",
 		//"database_api"
 	};

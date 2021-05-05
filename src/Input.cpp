@@ -208,6 +208,10 @@ void Input::sanitizeArguments()
 #pragma region Individual flag sanitation
 void Input::sanitizeCpuFlag(std::string arg, bool fromConfig)
 {
+	auto msg = "Sanitizing --cpu flag with argument " + arg 
+		+ (fromConfig ? " from the config file" : "");
+
+	print::debug(msg, __FILE__, __LINE__);
 	Input::requireNArguments(1, "cpu", arg);
 	Input::validateInteger(
 		arg,
@@ -218,6 +222,10 @@ void Input::sanitizeCpuFlag(std::string arg, bool fromConfig)
 
 void Input::sanitizeRamFlag(std::string arg, bool fromConfig)
 {
+	auto msg = "Sanitizing --ram flag with argument " + arg
+		+ (fromConfig ? " from the config file" : "");
+
+	print::debug(msg, __FILE__, __LINE__);
 	Input::requireNArguments(1, "ram", arg);
 	Input::validateInteger(
 		arg,
@@ -229,6 +237,10 @@ void Input::sanitizeRamFlag(std::string arg, bool fromConfig)
 
 void Input::sanitizeOutputFlag(std::string arg, bool fromConfig)
 {
+	auto msg = "Sanitizing --output flag with argument " + arg
+		+ (fromConfig ? " from the config file" : "");
+
+	print::debug(msg, __FILE__, __LINE__);
 	Input::requireNArguments(1, "output", arg);
 
 	// TODO 'arg' needs to either be "console" or a valid file path.
@@ -241,12 +253,19 @@ void Input::sanitizeOutputFlag(std::string arg, bool fromConfig)
 
 void Input::sanitizeSaveFlag(std::string arg, bool fromConfig)
 {
+	auto msg = "Sanitizing --save flag";
+
+	print::debug(msg, __FILE__, __LINE__);
 	Input::requireNArguments(0, "save", arg);
 	this->flags.flag_save = true;
 }
 
 void Input::sanitizeVerboseFlag(std::string arg, bool fromConfig)
 {
+	auto msg = "Sanitizing --verbose flag with argument " + arg
+		+ (fromConfig ? " from the config file" : "");
+
+	print::debug(msg, __FILE__, __LINE__);
 	Input::requireNArguments(1, "verbose", arg);
 
 	std::map<int, loguru::Verbosity> verbosityMap =
@@ -269,12 +288,18 @@ void Input::sanitizeVerboseFlag(std::string arg, bool fromConfig)
 
 void Input::sanitizeHelpFlag(std::string arg, bool fromConfig)
 {
+	auto msg = "Sanitizing --help flag";
+
+	print::debug(msg, __FILE__, __LINE__);
 	Input::requireNArguments(0, "help", arg);
 	this->flags.flag_help = true;
 }
 
 void Input::sanitizeVersionFlag(std::string arg, bool fromConfig)
 {
+	auto msg = "Sanitizing --version flag";
+
+	print::debug(msg, __FILE__, __LINE__);
 	Input::requireNArguments(0, "version", arg);
 	this->flags.flag_version = true;
 }

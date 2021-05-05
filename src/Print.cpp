@@ -20,17 +20,17 @@ Utrecht University within the Software Project course.
 
 void print::debug(std::string msg, const char* file, int line)
 {
-	loguru::log(loguru::Verbosity_1, file, line, msg.c_str());
+	loguru::log(loguru::Verbosity_1, file, line, "%s", msg.c_str());
 }
 
 void print::log(std::string msg, const char* file, int line)
 {
-	loguru::log(loguru::Verbosity_INFO, file, line, msg.c_str());
+	loguru::log(loguru::Verbosity_INFO, file, line, "%s", msg.c_str());
 }
 
 void print::warn(std::string msg, const char* file, int line)
 {
-	loguru::log(loguru::Verbosity_WARNING, file, line, msg.c_str());
+	loguru::log(loguru::Verbosity_WARNING, file, line, "%s", msg.c_str());
 }
 
 #pragma endregion
@@ -77,10 +77,11 @@ void print::versionFull()
 	std::string mainName = "searchseco";
 
 	// Get subsystem versions.
-	int systemc = 2;
+	int systemc = 3;
 	std::string* subsystems = new std::string[systemc]
 	{
 		"parser",
+		"crawler",
 		"spider",
 		//"database_api"
 	};

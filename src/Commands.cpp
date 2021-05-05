@@ -27,12 +27,12 @@ void Commands::execute(std::string command, Flags flags)
 	{
 		if (command == "")
 		{
-			error::err_cmd_not_found(__FILE__, __LINE__);
+			error::errCmdNotFound(__FILE__, __LINE__);
 		}
 
 		if (!Commands::isCommand(command))
 		{
-			error::err_cmd_not_exist(command, __FILE__, __LINE__);
+			error::errCmdNotExist(command, __FILE__, __LINE__);
 		}
 		perform[command](flags);
 	}

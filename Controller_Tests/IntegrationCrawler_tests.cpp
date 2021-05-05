@@ -24,13 +24,6 @@ TEST(IntegrationTestCrawler, BasicTest)
     EXPECT_EQ(pmd.version, "1380815862000");
 }
 
-TEST(IntegrationTestCrawler, BasicFailureTest)
-{
-    std::string url = "";
-    //ProjectMetaData pmd = 
-    ASSERT_EXIT(utils::getProjectMetadata(url), ::testing::ExitedWithCode(EXIT_FAILURE),".*");
-}
-
 TEST(IntegrationTestCrawler, IncorrectURLFailureTest)
 {
     std::string url = "https://secureseco.org";

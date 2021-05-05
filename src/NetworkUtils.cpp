@@ -6,15 +6,17 @@ Utrecht University within the Software Project course.
 #include "NetworkUtils.h"
 #include "Print.h"
 
+inline
 bool operator==(HashData const& lhs, HashData const& rhs)
 {
-	return lhs.hash == rhs.hash && 
-		lhs.fileName == rhs.fileName && 
+	return lhs.hash == rhs.hash &&
+		lhs.fileName == rhs.fileName &&
 		lhs.functionName == rhs.functionName
 		&& lhs.lineNumber == rhs.lineNumber
 		&& lhs.lineNumberEnd == rhs.lineNumberEnd;
 }
 
+inline
 bool operator<(HashData const& lhs, HashData const& rhs)
 {
 	if (lhs.hash != rhs.hash)
@@ -35,6 +37,7 @@ bool operator<(HashData const& lhs, HashData const& rhs)
 	}
 	return lhs.lineNumberEnd < rhs.lineNumberEnd;
 }
+
 
 void NetworkUtils::addStringToBuffer(char* buffer, int& pos, std::string adding)
 {

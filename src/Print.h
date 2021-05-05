@@ -10,6 +10,7 @@ Utrecht University within the Software Project course.
 #include <vector>
 
 #include "../parser/Parser/HashData.h"
+#include "../spider-revisited/Spider-Revisited/CodeBlock.h"
 
 #include "Utils.h"
 
@@ -69,7 +70,7 @@ namespace print
 	/// <summary>
 	/// Prints information about the hash matches that were found in the database.
 	/// </summary>
-	void printHashMatches(std::vector<HashData> hashes, std::string databaseOutput);
+	void printHashMatches(std::vector<HashData> hashes, std::string databaseOutput, AuthorData authordata);
 }
 
 namespace error

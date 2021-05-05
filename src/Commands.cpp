@@ -14,6 +14,8 @@ Utrecht University within the Software Project course.
 #include "DatabaseRequests.h"
 #include "Flags.h"
 
+
+
 void Commands::execute(std::string command, Flags flags) 
 {
 
@@ -44,10 +46,10 @@ void Commands::start(Flags flags)
 void Commands::check(Flags flags)
 {
 	std::string tempLocation = "spiderDownloads";
-	Commands::downloadRepository(flags.mandatoryArgument, flags, tempLocation);
+	AuthorData authorData = Commands::downloadRepository(flags.mandatoryArgument, flags, tempLocation);
 	std::vector<HashData> hashes = Commands::parseRepository(tempLocation, flags);
 	// Calling the function that will print all the matches for us.
-	print::printHashMatches(hashes, DatabaseRequests::findMatches(hashes));
+	print::printHashMatches(hashes, DatabaseRequests::findMatches(hashes), authorData);
 	//TODO: delete temp folder.
 }
 
@@ -71,7 +73,7 @@ void Commands::checkupload(Flags flags)
 
 	ProjectMetaData metaData = utils::getProjectMetadata(flags.mandatoryArgument);
 	// Uploading the hashes.
-	print::printHashMatches(hashes, DatabaseRequests::checkUploadHashes(hashes, metaData, authorData));
+	print::printHashMatches(hashes, DatabaseRequests::checkUploadHashes(hashes, metaData, authorData), authorData);
 }
 
 void Commands::update(Flags flags)

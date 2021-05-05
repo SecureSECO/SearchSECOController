@@ -182,8 +182,73 @@ TEST(version_test, version_regex)
 	ASSERT_TRUE(std::regex_match(output, std::regex("((>> )?(searchseco|parser|spider|database_api) version\\s?(\\d*.\\d*.\\d*)?\\n)*")));
 }
 
-// ERROR TESTING
+// Matches Printing.
 
+// Dummy variables.
+std::vector<HashData> dummyHashes = { HashData("hash1", "func1", "file1", 4, 20), HashData("hash2", "func2", "file2", 6, 9) };
+std::string dummyDatabaseOutput = "hash2?1?2?func3?file3?10?1?5\n";
+
+AuthorData getDummyAuthorData() 
+{
+	AuthorData authordata;
+	CommitData cd1 = CommitData();
+	cd1.author = "Author";
+	cd1.authorMail = "author@mail.com";
+	CommitData cd2 = CommitData();
+	cd2.author = "Author2";
+	cd2.authorMail = "author2@mail.com";
+	CommitData cd3 = CommitData();
+	cd3.author = "Author3";
+	cd3.authorMail = "author3@mail.com";
+
+	CodeBlock cb1 = CodeBlock();
+	cb1.commit = std::make_shared<CommitData>(cd1);
+	cb1.line = 0;
+	cb1.numLines = 2;
+	authordata["file1"].push_back(cb1);
+
+	CodeBlock cb2 = CodeBlock();
+	cb2.commit = std::make_shared<CommitData>(cd2);
+	cb2.line = 5;
+	cb2.numLines = 8;
+	authordata["file2"].push_back(cb2);
+
+	CodeBlock cb3 = CodeBlock();
+	cb3.commit = std::make_shared<CommitData>(cd3);
+	cb3.line = 11;
+	cb3.numLines = 20;
+	authordata["file2"].push_back(cb3);
+
+	return authordata;
+}
+
+
+TEST(print_matches_test, base_test) 
+{
+	testing::internal::CaptureStdout();
+
+	printMatches::printHashMatches(dummyHashes, dummyDatabaseOutput, getDummyAuthorData());
+	
+	std::string output = testing::internal::GetCapturedStdout();
+
+	EXPECT_EQ(output, R"(
+func2 in file file2 line 6 was found in our database: 
+Function func3 in project 1 in file file3 line 10
+Authors of local function: 
+	Author2	author2@mail.com
+Authors of function found in database: 
+	5
+
+Summary:
+	Matches: 1
+Local authors present in matches: 
+	Author2	author2@mail.com: 1
+Authors present in database matches: 
+	5: 1
+)");
+}
+
+// ERROR TESTING
 int test_intc = 6;
 int* test_ints = new int[test_intc]
 {
@@ -258,54 +323,3 @@ TEST(error_death_tests, err_not_implemented)
 	ASSERT_EXIT(error::err_not_implemented(GENERIC_STRING, __FILE__, __LINE__), ::testing::ExitedWithCode(EXIT_FAILURE), ".*");
 }
 
-TEST(print_hash_matches, basic_matches)
-{
-	testing::internal::CaptureStdout();
-
-	std::vector<HashData> hashes = {
-		HashData("hash1", "func1", "file1", 1, 2),
-		HashData("hash2", "func2", "file2", 4, 6),
-	};
-
-	std::string dbout = "hash1?5?0?func10?file10?100?0\n";
-
-	print::printHashMatches(hashes, dbout);
-
-	std::string output = testing::internal::GetCapturedStdout();
-	EXPECT_EQ(output, "func1 in file file1 line 1 was found in our database: \nFunction func10 in project 5 in file file10 line 100\n\n");
-}
-
-TEST(print_hash_matches, basic_double_db_output)
-{
-	testing::internal::CaptureStdout();
-
-	std::vector<HashData> hashes = {
-		HashData("hash1", "func1", "file1", 1, 2),
-		HashData("hash2", "func2", "file2", 4, 6),
-	};
-
-	std::string dbout = "hash1?5?0?func10?file10?100?0\nhash1?5?0?func10?file10?100?0\n";
-
-	print::printHashMatches(hashes, dbout);
-
-	std::string output = testing::internal::GetCapturedStdout();
-	EXPECT_EQ(output, "func1 in file file1 line 1 was found in our database: \nFunction func10 in project 5 in file file10 line 100\n\n");
-}
-
-TEST(print_hash_matches, basic_double_hash_input)
-{
-	testing::internal::CaptureStdout();
-
-	std::vector<HashData> hashes = {
-		HashData("hash1", "func1", "file1", 1, 2),
-		HashData("hash1", "func3", "file1", 1, 2),
-		HashData("hash2", "func2", "file2", 4, 6),
-	};
-
-	std::string dbout = "hash1?5?0?func10?file10?100?0\n";
-
-	print::printHashMatches(hashes, dbout);
-
-	std::string output = testing::internal::GetCapturedStdout();
-	EXPECT_EQ(output, "func1 in file file1 line 1 was found in our database: \nFunction func10 in project 5 in file file10 line 100\n\nfunc3 in file file1 line 1 was found in our database: \nFunction func10 in project 5 in file file10 line 100\n\n");
-}

@@ -28,6 +28,7 @@ int main(int argc, char* argv[])
 	Input userInput(argc, argv);
 
 	loguru::g_stderr_verbosity = userInput.flags.flag_verbose;
+	print::debug("Parsed and sanitized the user input", __FILE__, __LINE__);
 
 	Commands::execute(userInput.command, userInput.flags);
 

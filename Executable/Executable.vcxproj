@@ -145,7 +145,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Controller.cpp" />
+    <ClCompile Include="controller.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Controller.vcxproj">

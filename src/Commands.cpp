@@ -49,7 +49,7 @@ void Commands::check(Flags flags)
 	AuthorData authorData = Commands::downloadRepository(flags.mandatoryArgument, flags, tempLocation);
 	std::vector<HashData> hashes = Commands::parseRepository(tempLocation, flags);
 	// Calling the function that will print all the matches for us.
-	print::printHashMatches(hashes, DatabaseRequests::findMatches(hashes), authorData);
+	printMatches::printHashMatches(hashes, DatabaseRequests::findMatches(hashes), authorData);
 	//TODO: delete temp folder.
 }
 
@@ -73,7 +73,7 @@ void Commands::checkupload(Flags flags)
 
 	ProjectMetaData metaData = utils::getProjectMetadata(flags.mandatoryArgument);
 	// Uploading the hashes.
-	print::printHashMatches(hashes, DatabaseRequests::checkUploadHashes(hashes, metaData, authorData), authorData);
+	printMatches::printHashMatches(hashes, DatabaseRequests::checkUploadHashes(hashes, metaData, authorData), authorData);
 }
 
 void Commands::update(Flags flags)

@@ -67,11 +67,27 @@ namespace print
 	/// </summary>
 	void version_full();
 
+}
+
+static class printMatches
+{
+public:
 	/// <summary>
 	/// Prints information about the hash matches that were found in the database.
 	/// </summary>
-	void printHashMatches(std::vector<HashData> hashes, std::string databaseOutput, AuthorData authordata);
-}
+	static void printHashMatches(std::vector<HashData> hashes, std::string databaseOutput, AuthorData authordata);
+
+private:
+	static void printMatch(
+		HashData hash,
+		std::map<std::string, std::vector<std::string>>& receivedHashes,
+		std::map<HashData, std::vector<std::string>>& authors, 
+		std::map<std::string, int>& authorCopiedForm,
+		std::map<std::string, int>& authorsCopied
+	);
+	static void printSummary(std::map<std::string, int> authorCopiedForm, std::map<std::string, int> authorsCopied, int matches);
+
+};
 
 namespace error
 {

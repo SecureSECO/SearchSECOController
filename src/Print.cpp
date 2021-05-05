@@ -29,7 +29,7 @@ bool operator==(HashData const& lhs, HashData const& rhs)
 
 inline
 bool operator<(HashData const& lhs, HashData const& rhs)
-{
+{ 
 	if (lhs.hash != rhs.hash)
 	{
 		return lhs.hash < rhs.hash;
@@ -139,8 +139,11 @@ void print::version_full()
 		version_file.close();
 	}
 }
+#pragma endregion Print
 
-void print::printHashMatches(std::vector<HashData> hashes, std::string databaseOutput, AuthorData authordata)
+#pragma region Matches
+
+void printMatches::printHashMatches(std::vector<HashData> hashes, std::string databaseOutput, AuthorData authordata)
 {
 	std::map<std::string, std::vector<std::string>> receivedHashes = {};
 	// Seperate the response we got into its individual entries.
@@ -168,43 +171,57 @@ void print::printHashMatches(std::vector<HashData> hashes, std::string databaseO
 	{
 		if (receivedHashes.count(hashes[i].hash) > 0)
 		{
-
-			// Method1_hash|method1_projectid|method1_version|method1_name|method1_fileLocation
-			// |method1_lineNumber|number_of_authors|method1_authorid1|method1_authorid2|...
-			std::vector<std::string> dbEntry = receivedHashes[hashes[i].hash];
-			printline("\n" + hashes[i].functionName + " in file " + hashes[i].fileName + " line "
-				+ std::to_string(hashes[i].lineNumber) + " was found in our database: ");
-			printline("Function " + dbEntry[3] + " in project " + dbEntry[1]
-				+ " in file " + dbEntry[4] + " line " + dbEntry[5]);
-			printline("Authors of local function: ");
-			for (std::string s : authors[hashes[i]])
-			{
-				utils::replace(s, '?', '\t');
-				printline(s);
-				authorsCopied[s]++;
-			}
-			printline("Authors of function found in database: ");
-
 			matches++;
-			for (int i = 7; i < 7 + std::stoi(dbEntry[6]); i++)
-			{
-				authorCopiedForm[dbEntry[i]]++;
-				printline("\t" + dbEntry[i]);
-			}
+			printMatch(hashes[i], receivedHashes, authors, authorCopiedForm, authorsCopied);
 		}
 	}
-	
-	printline("\nSummary:");
-	printline("\tMatches: " + std::to_string(matches));
-	printline("Local authors present in matches: ");
-	for (auto const& x : authorsCopied)
+	printSummary(authorCopiedForm, authorsCopied, matches);
+}
+
+void printMatches::printMatch(
+	HashData hash, 
+	std::map<std::string, std::vector<std::string>>& receivedHashes, 
+	std::map<HashData, std::vector<std::string>>& authors, 
+	std::map<std::string, int>& authorCopiedForm, 
+	std::map<std::string, int>& authorsCopied
+) 
+{
+	std::vector<std::string> dbEntry = receivedHashes[hash.hash];
+	print::printline("\n" + hash.functionName + " in file " + hash.fileName + " line "
+		+ std::to_string(hash.lineNumber) + " was found in our database: ");
+	print::printline("Function " + dbEntry[3] + " in project " + dbEntry[1]
+		+ " in file " + dbEntry[4] + " line " + dbEntry[5]);
+	print::printline("Authors of local function: ");
+	for (std::string s : authors[hash])
 	{
-		printline(x.first + ": " + std::to_string(x.second));
+		utils::replace(s, '?', '\t');
+		print::printline(s);
+		authorsCopied[s]++;
 	}
-	printline("Authors present in database matches: ");
-	for (auto const& x : authorCopiedForm)
+	print::printline("Authors of function found in database: ");
+
+	for (int i = 7; i < 7 + std::stoi(dbEntry[6]); i++)
 	{
-		printline("\t" + x.first + ": " + std::to_string(x.second));
+		authorCopiedForm[dbEntry[i]]++;
+		print::printline("\t" + dbEntry[i]);
 	}
 }
-#pragma endregion Print
+
+void printMatches::printSummary(std::map<std::string, int> authorCopiedForm, std::map<std::string, int> authorsCopied, int matches) 
+{
+	
+	print::printline("\nSummary:");
+	print::printline("\tMatches: " + std::to_string(matches));
+	print::printline("Local authors present in matches: ");
+	for (auto const& x : authorsCopied)
+	{
+		print::printline(x.first + ": " + std::to_string(x.second));
+	}
+	print::printline("Authors present in database matches: ");
+	for (auto const& x : authorCopiedForm)
+	{
+		print::printline("\t" + x.first + ": " + std::to_string(x.second));
+	}
+}
+
+#pragma endregion Matches

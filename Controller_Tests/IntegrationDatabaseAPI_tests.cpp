@@ -22,9 +22,8 @@ Utrecht University within the Software Project course.
 
 TEST(IntegrationDatabaseAPITest, uploadTest)
 {
-    ConnectionHandler* connectionHandler = new ConnectionHandler();
-    std::thread* t1 = new std::thread(&ConnectionHandler::StartListen, connectionHandler);
-    
+    ConnectionHandler *connectionHandler = new ConnectionHandler();
+    std::thread *t1 = new std::thread(&ConnectionHandler::StartListen, connectionHandler);
 
     std::string result = DatabaseRequests::uploadHashes(
         DUMMYHASHES, 
@@ -38,10 +37,9 @@ TEST(IntegrationDatabaseAPITest, uploadTest)
 
 TEST(IntegrationDatabaseAPITest, checkTest)
 {
-    ConnectionHandler* connectionHandler = new ConnectionHandler();
-    std::thread* t1 = new std::thread(&ConnectionHandler::StartListen, connectionHandler);
-    
-    
+    ConnectionHandler *connectionHandler = new ConnectionHandler();
+    std::thread *t1 = new std::thread(&ConnectionHandler::StartListen, connectionHandler);
+
     std::string result = DatabaseRequests::findMatches(
         DUMMYHASHES, 
         LOCALHOST, 

@@ -33,27 +33,26 @@
   <ImportGroup Label="PropertySheets" />
   <PropertyGroup Label="UserMacros" />
   <ItemGroup>
-    <ClInclude Include="DatabaseAPIMock.h" />
+    <ClInclude Include="database_api_mock.h" />
     <ClInclude Include="pch.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Commands_tests.cpp" />
-    <ClCompile Include="DatabaseAPIMock.cpp" />
-    <ClCompile Include="IntegrationCrawler_tests.cpp" />
-    <ClCompile Include="IntegrationDatabaseAPI_tests.cpp" />
-    <ClCompile Include="IntegrationParser_tests.cpp" />
-    <ClCompile Include="IntegrationSpider_tests.cpp" />
-    <ClCompile Include="NetworkUtils_tests.cpp" />
-    <ClCompile Include="Print_tests.cpp" />
+    <ClCompile Include="commands_tests.cpp" />
+    <ClCompile Include="database_api_mock.cpp" />
+    <ClCompile Include="integration_tests_crawler.cpp" />
+    <ClCompile Include="integration_tests_database_api.cpp" />
+    <ClCompile Include="integration_tests_parser.cpp" />
+    <ClCompile Include="integration_tests_spider.cpp" />
+    <ClCompile Include="network_utils_tests.cpp" />
+    <ClCompile Include="print_tests.cpp" />
     <ClCompile Include="regex_tests.cpp" />
-    <ClCompile Include="test.cpp" />
+    <ClCompile Include="utils_tests.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="Utils_tests.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

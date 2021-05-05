@@ -5,7 +5,7 @@ Utrecht University within the Software Project course.
 */
 
 // Controller includes
-#include "project_metadata.h"
+#include "projectMetadata.h"
 #include "utils.h"
 
 // Crawler includes

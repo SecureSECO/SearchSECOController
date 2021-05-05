@@ -8,7 +8,7 @@ Utrecht University within the Software Project course.
 #include "pch.h"
 
 // Controller includes
-#include "network_utils.h"
+#include "networkUtils.h"
 
 // Parser includes
 #include "HashData.h"

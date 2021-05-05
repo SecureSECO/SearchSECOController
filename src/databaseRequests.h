@@ -7,7 +7,7 @@ Utrecht University within the Software Project course.
 #pragma once
 
 // Controller includes
-#include "project_metadata.h"
+#include "projectMetadata.h"
 
 // Parser includes
 #include "HashData.h"

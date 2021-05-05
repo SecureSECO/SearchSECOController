@@ -13,7 +13,7 @@ NOTE: These tests depend on the used GitHub repositories. If a test fails, make 
 
 // Controller includes
 #include "utils.h"
-#include "project_metadata.h"
+#include "projectMetadata.h"
 
 
 TEST(IntegrationTestCrawler, BasicTest)

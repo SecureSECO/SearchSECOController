@@ -6,7 +6,7 @@ Utrecht University within the Software Project course.
 
 // Controller includes
 #include "print.h"
-#include "regex_wrapper.h"
+#include "regexWrapper.h"
 #include "utils.h"
 
 // External includes

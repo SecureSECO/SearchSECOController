@@ -12,7 +12,7 @@
     <ClCompile Include="src\commands.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\database_requests.cpp">
+    <ClCompile Include="src\databaseRequests.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\error.cpp">
@@ -24,7 +24,7 @@
     <ClCompile Include="src\input.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\network_utils.cpp">
+    <ClCompile Include="src\networkUtils.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\networking.cpp">
@@ -36,7 +36,7 @@
     <ClCompile Include="src\print.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\regex_wrapper.cpp">
+    <ClCompile Include="src\regexWrapper.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\utils.cpp">
@@ -50,10 +50,10 @@
     <ClInclude Include="src\commands.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\database_requests.h">
+    <ClInclude Include="src\databaseRequests.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\flag_parser.h">
+    <ClInclude Include="src\flagParser.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\flags.h">
@@ -62,7 +62,7 @@
     <ClInclude Include="src\input.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\network_utils.h">
+    <ClInclude Include="src\networkUtils.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\networking.h">
@@ -74,10 +74,10 @@
     <ClInclude Include="src\print.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\project_metadata.h">
+    <ClInclude Include="src\projectMetadata.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\regex_wrapper.h">
+    <ClInclude Include="src\regexWrapper.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\utils.h">

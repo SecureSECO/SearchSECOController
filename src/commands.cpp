@@ -6,7 +6,7 @@ Utrecht University within the Software Project course.
 
 // Controller includes
 #include "commands.h"
-#include "database_requests.h"
+#include "databaseRequests.h"
 #include "flags.h"
 #include "parser2.h"
 #include "print.h"

@@ -9,34 +9,34 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="commands_tests.cpp">
+    <ClCompile Include="commandsTests.cpp">
       <Filter>Tests</Filter>
     </ClCompile>
-    <ClCompile Include="database_api_mock.cpp">
+    <ClCompile Include="databaseAPIMock.cpp">
       <Filter>Tests</Filter>
     </ClCompile>
-    <ClCompile Include="integration_tests_crawler.cpp">
+    <ClCompile Include="integrationTestsCrawler.cpp">
       <Filter>Tests</Filter>
     </ClCompile>
-    <ClCompile Include="integration_tests_database_api.cpp">
+    <ClCompile Include="integrationTestsDatabaseAPI.cpp">
       <Filter>Tests</Filter>
     </ClCompile>
-    <ClCompile Include="integration_tests_parser.cpp">
+    <ClCompile Include="integrationTestsParser.cpp">
       <Filter>Tests</Filter>
     </ClCompile>
-    <ClCompile Include="integration_tests_spider.cpp">
+    <ClCompile Include="integrationTestsSpider.cpp">
       <Filter>Tests</Filter>
     </ClCompile>
-    <ClCompile Include="network_utils_tests.cpp">
+    <ClCompile Include="networkUtilsTests.cpp">
       <Filter>Tests</Filter>
     </ClCompile>
-    <ClCompile Include="print_tests.cpp">
+    <ClCompile Include="printTests.cpp">
       <Filter>Tests</Filter>
     </ClCompile>
-    <ClCompile Include="regex_tests.cpp">
+    <ClCompile Include="regexTests.cpp">
       <Filter>Tests</Filter>
     </ClCompile>
-    <ClCompile Include="utils_tests.cpp">
+    <ClCompile Include="utilsTests.cpp">
       <Filter>Tests</Filter>
     </ClCompile>
     <ClCompile Include="pch.cpp" />

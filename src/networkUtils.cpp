@@ -5,7 +5,7 @@ Utrecht University within the Software Project course.
 */
 
 // Controller includes
-#include "network_utils.h"
+#include "networkUtils.h"
 #include "print.h"
 
 

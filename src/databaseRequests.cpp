@@ -5,8 +5,8 @@ Utrecht University within the Software Project course.
 */
 
 // Controller includes
-#include "database_requests.h"
-#include "network_utils.h"
+#include "databaseRequests.h"
+#include "networkUtils.h"
 #include "networking.h"
 
 // Parser includes

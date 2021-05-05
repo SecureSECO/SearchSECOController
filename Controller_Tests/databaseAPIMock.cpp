@@ -8,7 +8,7 @@ Utrecht University within the Software Project course.
 #include "pch.h"
 
 // Controller includes
-#include "database_api_mock.h"
+#include "databaseAPIMock.h"
 
 
 // Connection Handler Methods

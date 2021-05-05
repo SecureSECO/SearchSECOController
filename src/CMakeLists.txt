@@ -19,31 +19,31 @@ find_package(Boost REQUIRED COMPONENTS regex date_time)
 
 set(CONTROLLER_HEADER_LIST
   commands.h
-  database_requests.h
-  flag_parser.h
+  databaseRequests.h
+  flagParser.h
   flags.h
   input.h
-  network_utils.h
+  networkUtils.h
   networking.h
   parser2.h
   print.h
-  project_metadata.h
-  regex_wrapper.h
+  projectMetadata.h
+  regexWrapper.h
   utils.h
   loguru/loguru.hpp
 )
 
 add_library(controller
   commands.cpp  
-  database_requests.cpp
+  databaseRequests.cpp
   error.cpp
   flags.cpp
   input.cpp
-  network_utils.cpp
+  networkUtils.cpp
   networking.cpp
   parser2.cpp
   print.cpp
-  regex_wrapper.cpp
+  regexWrapper.cpp
   utils.cpp
   loguru/loguru.cpp
   ${CONTROLLER_HEADER_LIST}

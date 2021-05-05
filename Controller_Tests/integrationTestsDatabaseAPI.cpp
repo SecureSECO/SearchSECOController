@@ -8,8 +8,8 @@ Utrecht University within the Software Project course.
 #include "pch.h"
 
 // Controller includes
-#include "database_api_mock.h"
-#include "database_requests.h"
+#include "databaseAPIMock.h"
+#include "databaseRequests.h"
 
 // External includes
 #include <thread>

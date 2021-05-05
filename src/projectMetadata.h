@@ -7,7 +7,7 @@ Utrecht University within the Software Project course.
 #pragma once
 
 // Controller includes
-#include "network_utils.h"
+#include "networkUtils.h"
 
 // External includes
 #include <string>

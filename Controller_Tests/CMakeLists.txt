@@ -24,11 +24,11 @@ endif()
 set(CMAKE_CXX_STANDARD 20)
 set(TEST_NAME controller_tests)
 add_executable(${TEST_NAME} 
-  commands_tests.cpp 
-  network_utils_tests.cpp 
-  print_tests.cpp 
-  utils_tests.cpp
-  regex_tests.cpp
+  commandsTests.cpp 
+  networkUtilsTests.cpp 
+  printTests.cpp 
+  utilsTests.cpp
+  regexTests.cpp
 )
 target_link_libraries(${TEST_NAME} gtest_main controller)
 

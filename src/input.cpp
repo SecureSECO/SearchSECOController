@@ -8,7 +8,7 @@ Utrecht University within the Software Project course.
 #include "input.h"
 #include "parser2.h"
 #include "print.h"
-#include "regex_wrapper.h"
+#include "regexWrapper.h"
 
 // External includes
 #include <iostream>

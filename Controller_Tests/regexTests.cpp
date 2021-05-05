@@ -8,7 +8,7 @@ Utrecht University within the Software Project course.
 #include "pch.h"
 
 // Controller includes
-#include "regex_wrapper.h"
+#include "regexWrapper.h"
 
 // External includes
 #include <map>

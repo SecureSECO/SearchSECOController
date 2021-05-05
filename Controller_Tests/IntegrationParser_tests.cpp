@@ -46,3 +46,27 @@ TEST(IntegrationTestParser, basicTest)
     }
     EXPECT_EQ(count, expected.size());
 }
+
+TEST(IntegrationTestParser, failingTest)
+{
+    std::vector<HashData> expected = {
+    };
+
+    Commands::downloadRepository("https://github.com/zavg/linux-0.01", parserFlags, TEMPPATH);
+    auto hashes = Commands::parseRepository("wrongpath", parserFlags);
+
+    int count = 0;
+    for (HashData hd : hashes)
+    {
+        for (HashData expectedHd : expected)
+        {
+            if (expectedHd.fileName == hd.fileName && expectedHd.functionName == hd.functionName)
+            {
+                count++;
+            }
+        }
+    }
+    
+    EXPECT_EQ(hashes.size(), expected.size());
+    EXPECT_EQ(count, expected.size());
+}

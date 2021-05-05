@@ -1,18 +1,20 @@
 /*
 This program has been developed by students from the bachelor Computer Science at
 Utrecht University within the Software Project course.
-� Copyright Utrecht University (Department of Information and Computing Sciences)
+© Copyright Utrecht University (Department of Information and Computing Sciences)
 */
 
-#include "Input.h"
-
-#include <iostream>
-#include <vector>
-#include <regex>
-
-#include "Print.h"
-#include "Parser2.h"
+// Controller includes
+#include "input.h"
+#include "parser2.h"
+#include "print.h"
 #include "regex_wrapper.h"
+
+// External includes
+#include <iostream>
+#include <regex>
+#include <vector>
+
 
 Input::Input(int argc, char* argv[]) 
 	: flags()

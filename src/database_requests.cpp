@@ -4,10 +4,14 @@ Utrecht University within the Software Project course.
 © Copyright Utrecht University (Department of Information and Computing Sciences)
 */
 
-#include "DatabaseRequests.h"
-#include "NetworkUtils.h"
-#include "Networking.h"
+// Controller includes
+#include "database_requests.h"
+#include "network_utils.h"
+#include "networking.h"
+
+// Parser includes
 #include "Parser.h"
+
 
 std::string DatabaseRequests::uploadHashes(std::vector<HashData> hashes, ProjectMetaData metaData, AuthorData authorData, std::string apiIP, std::string apiPort)
 {

@@ -6,8 +6,10 @@ Utrecht University within the Software Project course.
 
 #pragma once
 
-#include<string>
+// External includes
 #include<map>
+#include<string>
+
 
 class FlagParser
 {

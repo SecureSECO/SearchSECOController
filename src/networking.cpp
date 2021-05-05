@@ -3,11 +3,15 @@ This program has been developed by students from the bachelor Computer Science a
 Utrecht University within the Software Project course.
 © Copyright Utrecht University (Department of Information and Computing Sciences)
 */
-#include "Networking.h"
+
+// Controller includes
+#include "networking.h"
+#include "print.h"
+
+// External includes
 #include <boost/array.hpp>
 #include <iostream>
 
-#include "Print.h"
 
 // https://www.boost.org/doc/libs/1_75_0/doc/html/boost_asio/tutorial.html was used as a base.
 boost::asio::io_context NetworkHandler::ioContext;
@@ -66,4 +70,3 @@ std::string NetworkHandler::receiveData()
 	}
 	return std::string(ret.begin(), ret.end());
 }
-

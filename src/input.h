@@ -4,15 +4,17 @@ Utrecht University within the Software Project course.
 © Copyright Utrecht University (Department of Information and Computing Sciences)
 */
 
-
 #pragma once
 
-#include <string>
-#include <map>
-#include <climits>
+// Controller includes
+#include "flags.h"
+#include "utils.h"
 
-#include "Utils.h"
-#include "Flags.h"
+// External includes
+#include <climits>
+#include <map>
+#include <string>
+
 
 class Input
 {

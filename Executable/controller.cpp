@@ -4,16 +4,19 @@ Utrecht University within the Software Project course.
 © Copyright Utrecht University (Department of Information and Computing Sciences)
 */
 
-
-#include "loguru/loguru.hpp"
-#include <iostream>
-#include <string>
-#include <map>
-#include <functional>
-#include "Parser2.h"
+// Controller includes
 #include "Commands.h"
-#include "Print.h"
 #include "Input.h"
+#include "Parser2.h"
+#include "Print.h"
+
+// External includes
+#include "loguru/loguru.hpp"
+#include <functional>
+#include <iostream>
+#include <map>
+#include <string>
+
 
 int main(int argc, char* argv[])
 {

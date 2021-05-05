@@ -4,17 +4,22 @@ Utrecht University within the Software Project course.
 © Copyright Utrecht University (Department of Information and Computing Sciences)
 */
 
+// Controller includes
+#include "project_metadata.h"
+#include "utils.h"
 
-#include "Utils.h"
-#include <map>
-#include <fstream>
-#include <iostream>
-#include "ProjectMetaData.h"
-#include <ctime>
-#include <iomanip>
-#include <sstream>
-#include <chrono>
+// Crawler includes
 #include "RunCrawler.h"
+
+// External includes
+#include <chrono>
+#include <ctime>
+#include <fstream>
+#include <iomanip>
+#include <iostream>
+#include <map>
+#include <sstream>
+
 
 std::vector<std::string> utils::split(std::string str, char delimiter)
 {

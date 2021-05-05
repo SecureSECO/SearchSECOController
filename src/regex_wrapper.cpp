@@ -4,12 +4,15 @@ Utrecht University within the Software Project course.
 © Copyright Utrecht University (Department of Information and Computing Sciences)
 */
 
+// Controller includes
+#include "print.h"
 #include "regex_wrapper.h"
-#include "Utils.h"
-#include "Print.h"
+#include "utils.h"
 
-#include <functional>
+// External includes
 #include <boost/regex.hpp>
+#include <functional>
+
 
 bool regex::validateSyntax(std::string callStr, std::tuple<std::string, std::string, std::string> &result)
 {

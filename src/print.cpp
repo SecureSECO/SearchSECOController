@@ -4,17 +4,21 @@ Utrecht University within the Software Project course.
 © Copyright Utrecht University (Department of Information and Computing Sciences)
 */
 
-#include "loguru/loguru.hpp"
+// Controller includes
+#include "print.h"
+#include "utils.h"
 
-#include "Print.h"
-#include "Utils.h"
+// Parser includes
 #include "Parser.h"
 
-#include <iostream>
+// External includes
+#include "loguru/loguru.hpp"
 #include <fstream>
+#include <functional>
+#include <iostream>
 #include <map>
 #include <stdlib.h>
-#include <functional>
+
 
 #pragma region Logging
 

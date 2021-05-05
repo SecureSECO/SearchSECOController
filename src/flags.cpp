@@ -4,10 +4,13 @@ Utrecht University within the Software Project course.
 © Copyright Utrecht University (Department of Information and Computing Sciences)
 */
 
-#include "Flags.h"
-#include "Print.h"
+// Controller includes
+#include "flags.h"
+#include "print.h"
 
+// External includes
 #include "loguru/loguru.hpp"
+
 
 #define CPU_DEFAULT 2 // TODO What amount of cpus make sense
 #define RAM_DEFAULT 8 // TODO What amount of ram makes sense

@@ -4,10 +4,13 @@ Utrecht University within the Software Project course.
 © Copyright Utrecht University (Department of Information and Computing Sciences)
 */
 
-#include "Parser2.h"
-#include "Print.h"
+// Controller includes
+#include "parser2.h"
+#include "print.h"
+#include "utils.h"
+
+// External includes
 #include <fstream>
-#include "Utils.h"
 
 
 std::map<std::string, std::string> FlagParser::parseConfig(std::string configPath)
@@ -34,4 +37,3 @@ std::map<std::string, std::string> FlagParser::parseConfig(std::string configPat
 
 	return configFlagArgs;
 }
-

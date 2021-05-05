@@ -6,12 +6,16 @@ Utrecht University within the Software Project course.
 
 #pragma once
 
+// Controller includes
+#include "utils.h"
+
+// Parser includes
+#include "HashData.h"
+
+// External includes
 #include <string>
 #include <vector>
 
-#include "../parser/Parser/HashData.h"
-
-#include "Utils.h"
 
 namespace print
 {

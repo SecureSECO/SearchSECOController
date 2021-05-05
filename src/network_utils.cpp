@@ -4,8 +4,10 @@ Utrecht University within the Software Project course.
 © Copyright Utrecht University (Department of Information and Computing Sciences)
 */
 
-#include "NetworkUtils.h"
-#include "Print.h"
+// Controller includes
+#include "network_utils.h"
+#include "print.h"
+
 
 bool operator==(HashData const& lhs, HashData const& rhs)
 {

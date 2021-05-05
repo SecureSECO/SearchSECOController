@@ -3,13 +3,22 @@ This program has been developed by students from the bachelor Computer Science a
 Utrecht University within the Software Project course.
 © Copyright Utrecht University (Department of Information and Computing Sciences)
 */
+
 #pragma once
+
+// Controller includes
+#include "project_metadata.h"
+
+// Parser includes
+#include "HashData.h"
+
+// Spider includes
+#include "CodeBlock.h"
+
+// External includes
 #include <string>
 #include <vector>
-#include "ProjectMetaData.h"
 
-#include "HashData.h"
-#include "CodeBlock.h"
 
 #define DATABASE_API_IP "131.211.31.153"
 #define DATABASE_API_PORT "8003"
@@ -65,4 +74,3 @@ private:
 	/// </summary>
 	static NetworkHandler* startConnection(std::string apiIP, std::string apiPort);
 };
-

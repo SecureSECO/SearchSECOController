@@ -4,12 +4,14 @@ Utrecht University within the Software Project course.
 © Copyright Utrecht University (Department of Information and Computing Sciences)
 */
 
-
 #pragma once
 
-#include "Utils.h"
+// Controller includes
+#include "utils.h"
 
+// External includes
 #include "loguru/loguru.hpp"
+
 
 class Flags
 {
@@ -50,4 +52,3 @@ public:
 	/// <returns></returns>
 	static bool isLongFlag(std::string flag);
 };
-

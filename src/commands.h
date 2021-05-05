@@ -6,14 +6,21 @@ Utrecht University within the Software Project course.
 
 #pragma once
 
+// Controller includes
+#include "flags.h"
+
+// Parser includes
+#include "HashData.h"
+
+// Spider includes
+#include "CodeBlock.h"
+
+// External includes
+#include <functional>
 #include <map>
 #include <string>
-#include <functional>
 #include <vector>
 
-#include "Flags.h"
-#include "../parser/Parser/HashData.h"
-#include "../spider-revisited/Spider-Revisited/CodeBlock.h"
 
 class Commands
 {

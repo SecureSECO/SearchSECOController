@@ -1,18 +1,26 @@
 /*
 This program has been developed by students from the bachelor Computer Science at
 Utrecht University within the Software Project course.
-� Copyright Utrecht University (Department of Information and Computing Sciences)
+© Copyright Utrecht University (Department of Information and Computing Sciences)
 */
 
-#include "Commands.h"
-#include <iostream>
-#include "Print.h"
-#include "Parser2.h"
-#include "RunSpider.h"
-#include "Utils.h"
+// Controller includes
+#include "commands.h"
+#include "database_requests.h"
+#include "flags.h"
+#include "parser2.h"
+#include "print.h"
+#include "utils.h"
+
+// Parser includes
 #include "Parser.h"
-#include "DatabaseRequests.h"
-#include "Flags.h"
+
+// Spider includes
+#include "RunSpider.h"
+
+// External includes
+#include <iostream>
+
 
 void Commands::execute(std::string command, Flags flags) 
 {

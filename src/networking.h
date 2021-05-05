@@ -3,9 +3,15 @@ This program has been developed by students from the bachelor Computer Science a
 Utrecht University within the Software Project course.
 © Copyright Utrecht University (Department of Information and Computing Sciences)
 */
+
 #pragma once
+
+// Parser includes
+#include "HashData.h"
+
+// External includes
 #include <boost/asio.hpp>
-#include "../parser/Parser/HashData.h"
+
 
 using boost::asio::ip::tcp;
 

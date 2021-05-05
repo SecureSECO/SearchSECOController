@@ -5,10 +5,13 @@ Utrecht University within the Software Project course.
 */
 
 #pragma once
+
+// External includes
+#include <algorithm>
+#include <map>
 #include <string>
 #include <vector>
-#include <map>
-#include <algorithm>
+
 
 struct ProjectMetaData;
 
@@ -82,4 +85,3 @@ public:
 	/// <param name="with"></param>
 	static void replace(std::string& string, char replace, char with);
 };
-

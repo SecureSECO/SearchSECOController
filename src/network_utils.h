@@ -3,12 +3,18 @@ This program has been developed by students from the bachelor Computer Science a
 Utrecht University within the Software Project course.
 © Copyright Utrecht University (Department of Information and Computing Sciences)
 */
-#pragma once
-#include <vector>
-#include <string>
 
+#pragma once
+
+// Parser includes
 #include "Parser.h"
-#include "../spider-revisited/Spider-Revisited/CodeBlock.h"
+
+// Spider includes
+#include "CodeBlock.h"
+
+// External includes
+#include <string>
+#include <vector>
 
 
 class NetworkUtils
@@ -94,4 +100,3 @@ private:
 		std::map<std::string, std::vector<HashData*>>& hashes, AuthorData& rawData);
 
 };
-

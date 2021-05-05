@@ -24,6 +24,11 @@ void ConnectionHandler::StartListen()
 	}
 }
 
+std::string RequestHandler::HandleRequest(std::string sender, std::string request)
+{
+    return "Request received from " + sender;
+}	
+
 
 // TCP Connection Methods 
 tcp_connection::pointer tcp_connection::create(boost::asio::io_context& io_context)
@@ -89,3 +94,4 @@ void tcp_server::handle_accept(tcp_connection::pointer new_connection,
 	}
 
 }
+

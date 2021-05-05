@@ -4,7 +4,7 @@ Utrecht University within the Software Project course.
 ? Copyright Utrecht University (Department of Information and Computing Sciences)
 */
 
-// TODO ILAN: schrijf test
+
 #include "pch.h"
 #include "DatabaseAPIMock.h"
 
@@ -12,18 +12,55 @@ Utrecht University within the Software Project course.
 
 #include <thread>
 
-TEST(IntegrationDatabaseAPITest, BasicTest)
+// Constants.
+#define LOCALHOST "127.0.0.1"
+#define PORT "6969"
+
+// Dummies
+#define DUMMYHASHES { HashData("hash", "functionname", "filename", 5, 420) }
+
+
+TEST(IntegrationDatabaseAPITest, uploadTest)
 {
     ConnectionHandler* connectionHandler = new ConnectionHandler();
     std::thread* t1 = new std::thread(&ConnectionHandler::StartListen, connectionHandler);
-    // requestHandler.StartListen();
     
-    std::vector<HashData> hashes = {HashData("hash", "functionname", "filename", 5, 420) };
-    //Sleep(1000);
+
     std::string result = DatabaseRequests::uploadHashes(
-        hashes, ProjectMetaData("5", "2", "Lyzenze", "ProjectName", "url.com", "authorName", "author@mail.com"), {},
-        "127.0.0.1", "6969");
-    EXPECT_EQ(result, "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.");
+        DUMMYHASHES, 
+        ProjectMetaData("5", "2", "Lyzenze", "ProjectName", "url.com", "authorName", "author@mail.com"), 
+        {},
+        LOCALHOST,
+        PORT
+    );
+    EXPECT_EQ(result, "Request received from upld");
+}
 
+TEST(IntegrationDatabaseAPITest, checkTest)
+{
+    ConnectionHandler* connectionHandler = new ConnectionHandler();
+    std::thread* t1 = new std::thread(&ConnectionHandler::StartListen, connectionHandler);
+    
+    
+    std::string result = DatabaseRequests::findMatches(
+        DUMMYHASHES, 
+        LOCALHOST, 
+        PORT
+    );
+    EXPECT_EQ(result, "Request received from chck");
+}
 
+TEST(IntegrationDatabaseAPITest, checkUploadTest)
+{
+    ConnectionHandler* connectionHandler = new ConnectionHandler();
+    std::thread* t1 = new std::thread(&ConnectionHandler::StartListen, connectionHandler);
+    
+    std::string result = DatabaseRequests::checkUploadHashes(
+        DUMMYHASHES, 
+        ProjectMetaData("5", "2", "Lyzenze", "ProjectName", "url.com", "authorName", "author@mail.com"), 
+        {},
+        LOCALHOST, 
+        PORT
+    );
+    EXPECT_EQ(result, "Request received from chup");
 }

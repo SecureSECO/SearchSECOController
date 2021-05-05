@@ -33,6 +33,8 @@ add_executable(${TEST_NAME}
   IntegrationSpider_tests.cpp
   IntegrationParser_tests.cpp
   IntegrationDatabaseAPI_tests.cpp
+  DatabaseAPIMock.h
+  DatabaseAPIMock.cpp
 )
 target_link_libraries(${TEST_NAME} gtest_main controller)
 

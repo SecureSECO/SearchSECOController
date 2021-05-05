@@ -154,7 +154,7 @@ void err(errCode code, std::string* strs, const char* file, int line, std::strin
 {
 	std::string msg = "E" + utils::padLeft(std::to_string(code), '0', errCodeLength) + " - " + errDesc[code](strs);
 
-	loguru::log(loguru::Verbosity_ERROR, file, line, msg.c_str());
+	loguru::log(loguru::Verbosity_ERROR, file, line, "%s", msg.c_str());
 
 	if (extraMsg != "") 
 	{ 

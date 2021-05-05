@@ -17,7 +17,7 @@ Utrecht University within the Software Project course.
 #include "CodeBlock.h"
 
 
-TEST(Networking_get__all_data_from_hashes_tests, basic_test)
+TEST(networkingGet_AllDataFromHashesTests, basic)
 {
 	std::vector<HashData> hashes = { HashData("HASH", "FUNCTION", "FILENAME", 5, 7) };
 	AuthorData authordata;
@@ -28,7 +28,7 @@ TEST(Networking_get__all_data_from_hashes_tests, basic_test)
 	EXPECT_EQ(size, target.size());
 }
 
-TEST(Networking_get__all_data_from_hashes_tests, basic_author_test)
+TEST(networkingGet_AllDataFromHashesTests, basicAuthor)
 {
 	std::vector<HashData> hashes = { HashData("HASH", "FUNCTION", "FILENAME", 5, 7) };
 	AuthorData authordata;
@@ -67,7 +67,7 @@ TEST(Networking_get__all_data_from_hashes_tests, basic_author_test)
 	EXPECT_EQ(size, target.size());
 }
 
-TEST(Networking_get__all_data_from_hashes_tests, multiple_author_test)
+TEST(networkingGet_AllDataFromHashesTests, multipleAuthor)
 {
 	std::vector<HashData> hashes = { HashData("HASH", "FUNCTION", "FILENAME", 2, 7) };
 	AuthorData authordata;
@@ -106,7 +106,7 @@ TEST(Networking_get__all_data_from_hashes_tests, multiple_author_test)
 	EXPECT_EQ(size, target.size());
 }
 
-TEST(Networking_get__all_data_from_hashes_tests, big_commit_test)
+TEST(networkingGet_AllDataFromHashesTests, bigCommit)
 {
 	std::vector<HashData> hashes = { HashData("HASH", "FUNCTION", "FILENAME", 5, 7) };
 	AuthorData authordata;
@@ -145,7 +145,7 @@ TEST(Networking_get__all_data_from_hashes_tests, big_commit_test)
 	EXPECT_EQ(size, target.size());
 }
 
-TEST(Networking_get__all_data_from_hashes_tests, empty_test)
+TEST(networkingGet_AllDataFromHashesTests, empty)
 {
 	std::vector<HashData> hashes = { };
 	AuthorData authordata;
@@ -156,7 +156,7 @@ TEST(Networking_get__all_data_from_hashes_tests, empty_test)
 	EXPECT_EQ(size, target.size());
 }
 
-TEST(Networking_get__all_data_from_hashes_tests, bigger_test)
+TEST(networkingGet_AllDataFromHashesTests, bigger)
 {
 	std::vector<HashData> hashes = { HashData("HASH", "FUNCTION", "FILENAME", 5, 7), HashData("HASH", "FUNCTION", "FILENAME", 2, 7), HashData("HASH", "FUNCTION", "FILENAME", 1, 7) };
 	AuthorData authordata;
@@ -167,7 +167,7 @@ TEST(Networking_get__all_data_from_hashes_tests, bigger_test)
 	EXPECT_EQ(size, target.size());
 }
 
-TEST(Networking_get__all_data_from_hashes_tests, bigger_author_test)
+TEST(networkingGet_AllDataFromHashesTests, biggerAuthor)
 {
 	std::vector<HashData> hashes = { HashData("HASH", "FUNCTION", "FILENAME", 1, 3), HashData("HASH", "FUNCTION", "FILENAME", 5, 7), HashData("HASH", "FUNCTION", "FILENAME", 10, 12) };
 
@@ -208,7 +208,7 @@ TEST(Networking_get__all_data_from_hashes_tests, bigger_author_test)
 	EXPECT_EQ(size, target.size());
 }
 
-TEST(Networking_get__all_data_from_hashes_tests, bigger_author_wrong_order_test)
+TEST(networkingGet_AllDataFromHashesTests, biggerAuthorWrongOrder)
 {
 	std::vector<HashData> hashes = { HashData("HASH", "FUNCTION", "FILENAME", 5, 7), HashData("HASH", "FUNCTION", "FILENAME", 1, 3), HashData("HASH", "FUNCTION", "FILENAME", 10, 12) };
 
@@ -250,7 +250,7 @@ TEST(Networking_get__all_data_from_hashes_tests, bigger_author_wrong_order_test)
 }
 
 
-TEST(Networking_get_hash_data_from_hashes_tests, basic_test)
+TEST(networkingGetHashDataFromHashesTests, basic)
 {
 	std::vector<HashData> hashes = { HashData("HASH0", "", "", 0, 7) };
 	int size;
@@ -260,7 +260,7 @@ TEST(Networking_get_hash_data_from_hashes_tests, basic_test)
 	EXPECT_EQ(size, target.size());
 }
 
-TEST(Networking_get_hash_data_from_hashes_tests, empty_test)
+TEST(networkingGetHashDataFromHashesTests, empty)
 {
 	std::vector<HashData> hashes = { };
 	int size;
@@ -270,7 +270,7 @@ TEST(Networking_get_hash_data_from_hashes_tests, empty_test)
 	EXPECT_EQ(size, target.size());
 }
 
-TEST(Networking_get_hash_data_from_hashes_tests, bigger_test)
+TEST(networkingGetHashDataFromHashesTests, bigger)
 {
 	std::vector<HashData> hashes = { HashData("HASH0", "", "", 0, 7), HashData("HASH1", "", "", 0, 7), HashData("HASH2", "", "", 0, 7), HashData("HASH3", "", "", 0, 7) };
 	int size;

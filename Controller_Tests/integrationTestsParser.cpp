@@ -21,7 +21,7 @@ NOTE: These tests depend on the Linux0dot01 integration test of the spider.
 //Dummy variables.
 Flags parserFlags;
 
-TEST(IntegrationTestParser, basicTest) 
+TEST(integrationParser, basic)
 {
     std::vector<HashData> expected = 
     {
@@ -50,7 +50,7 @@ TEST(IntegrationTestParser, basicTest)
     EXPECT_EQ(count, expected.size());
 }
 
-TEST(IntegrationTestParser, failingTest)
+TEST(integrationParser, failurecase)
 {
     std::vector<HashData> expected = {
     };

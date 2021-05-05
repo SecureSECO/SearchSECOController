@@ -16,7 +16,7 @@ NOTE: These tests depend on the used GitHub repositories. If a test fails, make 
 #include "projectMetadata.h"
 
 
-TEST(IntegrationTestCrawler, BasicTest)
+TEST(integrationCrawler, basic)
 {
     std::string url = "https://github.com/zavg/linux-0.01";
     ProjectMetaData pmd = utils::getProjectMetadata(url);
@@ -28,7 +28,7 @@ TEST(IntegrationTestCrawler, BasicTest)
     EXPECT_EQ(pmd.version, "1380815862000");
 }
 
-TEST(IntegrationTestCrawler, IncorrectURLFailureTest)
+TEST(integrationCrawler, incorrectURLFailurecase)
 {
     std::string url = "https://secureseco.org";
 

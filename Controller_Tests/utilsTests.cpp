@@ -11,21 +11,21 @@ Utrecht University within the Software Project course.
 #include "utils.h"
 
 
-TEST(contains_tests, is_in_vector)
+TEST(contains, isInVector)
 {
 	std::vector<int> v = { 1, 2, 3, 4 };
 	EXPECT_TRUE(utils::contains(v, 1));
 	EXPECT_FALSE(utils::contains(v, 5));
 }
 
-TEST(contains_tests, is_in_array)
+TEST(contains, isInArray)
 {
 	const char* c = "string";
 	EXPECT_TRUE(utils::contains(c, 's', 6));
 	EXPECT_FALSE(utils::contains(c, 'x', 6));
 }
 
-TEST(split_tests, basic_split)
+TEST(split, basicSplit)
 {
 	std::string s = "Hello World!";
 	std::vector<std::string> splitted = utils::split(s, ' ');
@@ -33,14 +33,14 @@ TEST(split_tests, basic_split)
 	EXPECT_EQ("World!", splitted[1]);
 }
 
-TEST(split_tests, wrong_split)
+TEST(split, wrongSplit)
 {
 	std::string s = "Hello World!";
 	std::vector<std::string> splitted = utils::split(s, 'x');
 	EXPECT_EQ("Hello World!", splitted[0]);
 }
 
-TEST(split_tests, multiple_split)
+TEST(split, multipleSplit)
 {
 	std::string s = "Hello World!";
 	std::vector<std::string> splitted = utils::split(s, 'l');
@@ -50,47 +50,47 @@ TEST(split_tests, multiple_split)
 	EXPECT_EQ("d!", splitted[3]);
 }
 
-TEST(trim_tests, basic_trim)
+TEST(trim, basicTrim)
 {
 	std::string s = "  spaces  ";
 	EXPECT_EQ("spaces", utils::trim(s, " "));
 }
 
-TEST(trim_tests, delimiter_in_middle_trim)
+TEST(trim, delimiterInMiddleTrim)
 {
 	std::string s = "spa ces  ";
 	EXPECT_EQ("spa ces", utils::trim(s, " "));
 }
 
-TEST(trim_tests, whitespace_trim)
+TEST(trim, whitespaceTrim)
 {
 	std::string s = " \n\r\ttest \n\t";
 	EXPECT_EQ("test", utils::trimWhiteSpaces(s));
 }
 
-TEST(is_number_tests, number)
+TEST(isNumber, successcase)
 {
 	EXPECT_TRUE(utils::isNumber("123"));
 }
 
-TEST(is_number_tests, not_number)
+TEST(isNumber, failurecase)
 {
 	EXPECT_FALSE(utils::isNumber("1d3"));
 }
 
-TEST(pad_left_tests, basic_pad_left)
+TEST(padLeft, basicPadLeft)
 {
 	EXPECT_EQ("   test", utils::padLeft("test", ' ', 7));
 }
 
-TEST(replace_tests, basic_replace)
+TEST(replace, basicReplace)
 {
 	std::string str = "hallo";
 	utils::replace(str, 'a', 'e');
 	EXPECT_EQ(str, "hello");
 }
 
-TEST(replace_tests, nothing_to_replace)
+TEST(replace, nothingToReplace)
 {
 	std::string str = "hallo";
 	utils::replace(str, 'w', 'e');

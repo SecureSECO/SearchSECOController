@@ -23,7 +23,7 @@ Utrecht University within the Software Project course.
 #define DUMMYHASHES { HashData("hash", "functionname", "filename", 5, 420) }
 
 
-TEST(IntegrationDatabaseAPITest, uploadTest)
+TEST(integrationDatabaseAPI, upload)
 {
     ConnectionHandler *connectionHandler = new ConnectionHandler();
     std::thread *t1 = new std::thread(&ConnectionHandler::StartListen, connectionHandler);
@@ -38,7 +38,7 @@ TEST(IntegrationDatabaseAPITest, uploadTest)
     EXPECT_EQ(result, "Request received from upld");
 }
 
-TEST(IntegrationDatabaseAPITest, checkTest)
+TEST(integrationDatabaseAPI, check)
 {
     ConnectionHandler *connectionHandler = new ConnectionHandler();
     std::thread *t1 = new std::thread(&ConnectionHandler::StartListen, connectionHandler);
@@ -51,7 +51,7 @@ TEST(IntegrationDatabaseAPITest, checkTest)
     EXPECT_EQ(result, "Request received from chck");
 }
 
-TEST(IntegrationDatabaseAPITest, checkUploadTest)
+TEST(integrationDatabaseAPI, checkUpload)
 {
     ConnectionHandler* connectionHandler = new ConnectionHandler();
     std::thread* t1 = new std::thread(&ConnectionHandler::StartListen, connectionHandler);
@@ -66,7 +66,7 @@ TEST(IntegrationDatabaseAPITest, checkUploadTest)
     EXPECT_EQ(result, "Request received from chup");
 }
 
-TEST(IntegrationDatabaseAPITest, wrongPortCheckTest)
+TEST(integrationDatabaseAPI, wrongPortCheck)
 {
     ConnectionHandler* connectionHandler = new ConnectionHandler();
     std::thread* t1 = new std::thread(&ConnectionHandler::StartListen, connectionHandler);

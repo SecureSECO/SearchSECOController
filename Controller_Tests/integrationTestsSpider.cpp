@@ -55,7 +55,7 @@ int cloneAndCheck(std::map<std::string, bool> &dict, std::string url)
     return count;
 }
 
-TEST(IntegrationTestSpider, Linux0dot01)
+TEST(integrationSpider, linux0dot01)
 {
     std::map<std::string, bool> files = 
     {
@@ -80,7 +80,7 @@ TEST(IntegrationTestSpider, Linux0dot01)
     EXPECT_EQ(count, (int)LINUX0DOT01_FILECOUNT);
 }
 
-TEST(IntegrationTestSpider, Cpp)
+TEST(integrationSpider, cpp)
 {
     std::map<std::string, bool> files = 
     {
@@ -105,7 +105,7 @@ TEST(IntegrationTestSpider, Cpp)
     EXPECT_EQ(count, (int)CPP_FILECOUNT);
 }
 
-TEST(IntegrationTestSpider, Python)
+TEST(integrationSpider, python)
 {
     std::map<std::string, bool> files = 
     {
@@ -122,7 +122,7 @@ TEST(IntegrationTestSpider, Python)
     EXPECT_EQ(count, (int)PYTHON_FILECOUNT);
 }
 
-TEST(IntegrationTestSpider, JavaScript)
+TEST(integrationSpider, JavaScript)
 {
     std::map<std::string, bool> files = 
     {
@@ -139,7 +139,7 @@ TEST(IntegrationTestSpider, JavaScript)
     EXPECT_EQ(count, (int)JS_FILECOUNT);
 }
 
-TEST(IntegrationTestSpider, WrongURLFailure)
+TEST(integrationSpider, wrongURLFailurecase)
 {
     // Dummy variables.
     Flags spiderFlags;

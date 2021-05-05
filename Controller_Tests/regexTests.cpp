@@ -28,7 +28,7 @@ std::string *validURLs = new std::string[validURLc]{
 
 #pragma region Syntax Regex Tests
 
-TEST(regex_test, syntax_nourl_successcase)
+TEST(regex, syntaxNoURLSuccesscase)
 {
 	// Arrange
 	std::map<
@@ -66,7 +66,7 @@ TEST(regex_test, syntax_nourl_successcase)
 	}
 }
 
-TEST(regex_test, syntax___url_successcase)
+TEST(regex, syntax__URLSuccesscase)
 {
 	// Arrange
 	std::map<
@@ -103,7 +103,7 @@ TEST(regex_test, syntax___url_successcase)
 	}
 }
 
-TEST(regex_test, syntax_nourl_failurecase)
+TEST(regex, syntaxNoURLFailurecase)
 {
 	// Arrange
 	int testcasec = 1;
@@ -128,7 +128,7 @@ TEST(regex_test, syntax_nourl_failurecase)
 
 #pragma region Flag Argument Pair Regex Tests
 
-TEST(regex_test, parse_flargs_successcase)
+TEST(regex, parseFlargsSuccesscase)
 {
 	// Arrange
 	std::map<std::string,       // Input
@@ -183,7 +183,7 @@ TEST(regex_test, parse_flargs_successcase)
 	}
 }
 
-TEST(regex_test, parse_flargs_failurecase____fatal)
+TEST(regex, parseFlargsFailurecase___fatal)
 {
 	// Arrange
 	int testcasec = 3;
@@ -205,7 +205,7 @@ TEST(regex_test, parse_flargs_failurecase____fatal)
 	}
 }
 
-TEST(regex_test, parse_flargs_failurecase_nonfatal)
+TEST(regex, parseFlargsFailurecaseNonfatal)
 {
 	// Arrange
 	int testcasec = 3;
@@ -262,7 +262,7 @@ TEST(regex_test, parse_flargs_failurecase_nonfatal)
 
 #pragma region URL Validation Tests
 
-TEST(regex_test, url_validation_successcase)
+TEST(regex, urlValidationSuccesscase)
 {
 	// Arrange has been taken care of.
 
@@ -276,7 +276,7 @@ TEST(regex_test, url_validation_successcase)
 	}
 }
 
-TEST(regex_test, url_validation_failurecase)
+TEST(regex, urlValidationFailurecase)
 {
 	// Arrange
 	int invalidURLc = 5;

@@ -11,7 +11,7 @@ Utrecht University within the Software Project course.
 #include "commands.h"
 
 
-TEST(Commands_tests, check_valid_command)
+TEST(commands, isCommandSuccesscase)
 {
 	EXPECT_TRUE(Commands::isCommand("start"));
 	EXPECT_TRUE(Commands::isCommand("check"));
@@ -20,7 +20,7 @@ TEST(Commands_tests, check_valid_command)
 	EXPECT_TRUE(Commands::isCommand("update"));
 }
 
-TEST(Commands_tests, check_invalid_command)
+TEST(commands, isCommandFailurecase)
 {
 	EXPECT_FALSE(Commands::isCommand("s"));
 	EXPECT_FALSE(Commands::isCommand("v"));

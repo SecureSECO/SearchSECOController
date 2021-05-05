@@ -38,21 +38,21 @@ bool isSubstring(std::string s1, std::string s2)
 }
 
 // print helper functions
-TEST(tab_tests, single)
+TEST(tab, single)
 {
 	std::string s = "\t";
 	std::string tabstring = print::tab(1);
 	EXPECT_EQ(s, tabstring);
 }
 
-TEST(tab_tests, multiple)
+TEST(tab, multiple)
 {
 	std::string s = "\t\t\t";
 	std::string tabstring = print::tab(3);
 	EXPECT_EQ(s, tabstring);
 }
 
-TEST(encapsulate, succeeding)
+TEST(encapsulate, successcase)
 {
 	for (int i = 0; i < test_strc; ++i)
 	{
@@ -65,7 +65,7 @@ TEST(encapsulate, succeeding)
 	}
 }
 
-TEST(encapsulate, failing)
+TEST(encapsulate, failurecase)
 {
 	for (int i = 0; i < test_strc; ++i)
 	{
@@ -79,7 +79,7 @@ TEST(encapsulate, failing)
 	}
 }
 
-TEST(quote, succeeding)
+TEST(quote, successcase)
 {
 	for (int i = 0; i < test_strc; ++i)
 	{
@@ -92,7 +92,7 @@ TEST(quote, succeeding)
 	}
 }
 
-TEST(quote, failing)
+TEST(quote, failurecase)
 {
 	for (int i = 0; i < test_strc; ++i)
 	{
@@ -132,7 +132,7 @@ TEST(plural, plural)
 	}
 }
 
-TEST(plural, singular_failing)
+TEST(plural, singuilarFailurecase)
 {
 	for (int i = 0; i < test_strc; ++i)
 	{
@@ -145,7 +145,7 @@ TEST(plural, singular_failing)
 	}
 }
 
-TEST(plural, plural_failing)
+TEST(plural, pluralFailurecase)
 {
 	for (int i = 0; i < test_strc; ++i)
 	{
@@ -160,7 +160,7 @@ TEST(plural, plural_failing)
 
 // printing functions
 
-TEST(Print_line, print_line_test)
+TEST(printline, successcase)
 {
 	for (int i = 0; i < test_strc; ++i)
 	{
@@ -173,7 +173,7 @@ TEST(Print_line, print_line_test)
 
 }
 
-TEST(version_test, version_regex)
+TEST(version, versionRegex)
 {
 	testing::internal::CaptureStdout();
 
@@ -203,64 +203,64 @@ int* test_ints = new int[test_intc]
 // before we are able to read stdout, so for now these death tests only assert that all error functions terminate
 // the program with code EXIT_FAILURE.
 
-TEST(error_death_tests, err_insufficient_arguments)
+TEST(errorDeathTests, errCmdIncorrectArguments)
 {
 	ASSERT_EXIT(error::errCmdIncorrectArguments(GENERIC_STRING, 1,2, __FILE__, __LINE__), ::testing::ExitedWithCode(EXIT_FAILURE), ".*");
 }
 
-TEST(error_death_tests, err_flag_not_exist)
+TEST(errorDeathTests, errFlagNotExist)
 {
 	ASSERT_EXIT(error::errFlagNotExist(GENERIC_STRING, true, __FILE__, __LINE__), ::testing::ExitedWithCode(EXIT_FAILURE), ".*");
 	ASSERT_EXIT(error::errFlagNotExist(GENERIC_STRING, false, __FILE__, __LINE__), ::testing::ExitedWithCode(EXIT_FAILURE), ".*");
 }
 
-TEST(error_death_tests, err_flag_invalid_arg)
+TEST(errorDeathTests, errFlagInvalidArg)
 {
 	ASSERT_EXIT(error::errFlagInvalidArg(GENERIC_STRING, GENERIC_STRING, true, __FILE__, __LINE__), ::testing::ExitedWithCode(EXIT_FAILURE), ".*");
 	ASSERT_EXIT(error::errFlagInvalidArg(GENERIC_STRING, GENERIC_STRING, false, __FILE__, __LINE__), ::testing::ExitedWithCode(EXIT_FAILURE), ".*");
 }
 
-TEST(error_death_tests, err_cmd_not_found)
+TEST(errorDeathTests, errCmdNotFound)
 {
 	ASSERT_EXIT(error::errCmdNotFound(__FILE__, __LINE__), ::testing::ExitedWithCode(EXIT_FAILURE), ".*");
 }
 
-TEST(error_death_tests, err_cmd_not_exist)
+TEST(errorDeathTests, errCmdNotExist)
 {
 	ASSERT_EXIT(error::errCmdNotExist(GENERIC_STRING, __FILE__, __LINE__), ::testing::ExitedWithCode(EXIT_FAILURE), ".*");
 }
 
-TEST(error_death_tests, err_parse_call_syntax_error)
+TEST(errorDeathTests, errParseCallSyntaxError)
 {
 	ASSERT_EXIT(error::errParseCallSyntaxError(GENERIC_STRING, __FILE__, __LINE__), ::testing::ExitedWithCode(EXIT_FAILURE), ".*");
 }
 
-TEST(error_death_tests, err_parse_incorrect_shorthand_flag)
+TEST(errorDeathTests, errParseIncorrectShorthandFlag)
 {
 	ASSERT_EXIT(error::errParseIncorrectShorthandFlag(GENERIC_STRING, __FILE__, __LINE__), ::testing::ExitedWithCode(EXIT_FAILURE), ".*");
 }
 
-TEST(error_death_tests, err_parse_incorrect_longhand_flag)
+TEST(errorDeathTests, errParseIncorrectLonghandFlag)
 {
 	ASSERT_EXIT(error::errParseIncorrectLonghandFlag(GENERIC_STRING, __FILE__, __LINE__), ::testing::ExitedWithCode(EXIT_FAILURE), ".*");
 }
 
-TEST(error_death_tests, err_parse_could_not_parse_flag)
+TEST(errorDeathTests, errParseCouldNotParseFlag)
 {
 	ASSERT_EXIT(error::errParseCouldNotParseFlag(GENERIC_STRING, __FILE__, __LINE__), ::testing::ExitedWithCode(EXIT_FAILURE), ".*");
 }
 
-TEST(error_death_tests, err_invalid_url)
+TEST(errorDeathTests, errInvalidUrl)
 {
 	ASSERT_EXIT(error::errInvalidUrl(GENERIC_STRING, __FILE__, __LINE__), ::testing::ExitedWithCode(EXIT_FAILURE), ".*");
 }
 
-TEST(error_death_tests, err_not_implemented)
+TEST(errorDeathTests, errNotImplemented)
 {
 	ASSERT_EXIT(error::errNotImplemented(GENERIC_STRING, __FILE__, __LINE__), ::testing::ExitedWithCode(EXIT_FAILURE), ".*");
 }
 
-TEST(print_hash_matches, basic_matches)
+TEST(printHashMatches, basicMatches)
 {
 	testing::internal::CaptureStdout();
 
@@ -277,7 +277,7 @@ TEST(print_hash_matches, basic_matches)
 	EXPECT_EQ(output, "func1 in file file1 line 1 was found in our database: \nFunction func10 in project 5 in file file10 line 100\n\n");
 }
 
-TEST(print_hash_matches, basic_double_db_output)
+TEST(printHashMatches, basicDoubleDBOutput)
 {
 	testing::internal::CaptureStdout();
 
@@ -294,7 +294,7 @@ TEST(print_hash_matches, basic_double_db_output)
 	EXPECT_EQ(output, "func1 in file file1 line 1 was found in our database: \nFunction func10 in project 5 in file file10 line 100\n\n");
 }
 
-TEST(print_hash_matches, basic_double_hash_input)
+TEST(printHashMatches, basicDoubleHashInput)
 {
 	testing::internal::CaptureStdout();
 

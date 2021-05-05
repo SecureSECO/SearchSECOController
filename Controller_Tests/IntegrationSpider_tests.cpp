@@ -135,3 +135,14 @@ TEST(IntegrationTestSpider, JavaScript)
     EXPECT_EQ(count, (int)JS_FILECOUNT);
 }
 
+TEST(IntegrationTestSpider, WrongURLFailure)
+{
+    // Dummy variables.
+    Flags spiderFlags;
+    std::string url = "https://secureseco.org";
+
+    AuthorData result = Commands::downloadRepository(url, spiderFlags, TEMPPATH);
+
+    EXPECT_EQ(result.size(), 0);
+}
+

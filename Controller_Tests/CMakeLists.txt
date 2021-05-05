@@ -29,6 +29,9 @@ add_executable(${TEST_NAME}
   Print_tests.cpp 
   Utils_tests.cpp
   regex_tests.cpp
+  IntegrationDatabaseAPI_tests.cpp
+  DatabaseAPIMock.h
+  DatabaseAPIMock.cpp
 )
 target_link_libraries(${TEST_NAME} gtest_main controller)
 

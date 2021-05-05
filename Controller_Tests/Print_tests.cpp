@@ -175,7 +175,7 @@ TEST(version_test, version_regex)
 {
 	testing::internal::CaptureStdout();
 
-	print::version_full();
+	print::versionFull();
 
 	std::string output = testing::internal::GetCapturedStdout();
 
@@ -203,59 +203,59 @@ int* test_ints = new int[test_intc]
 
 TEST(error_death_tests, err_insufficient_arguments)
 {
-	ASSERT_EXIT(error::err_cmd_incorrect_arguments(GENERIC_STRING, 1,2, __FILE__, __LINE__), ::testing::ExitedWithCode(EXIT_FAILURE), ".*");
+	ASSERT_EXIT(error::errCmdIncorrectArguments(GENERIC_STRING, 1,2, __FILE__, __LINE__), ::testing::ExitedWithCode(EXIT_FAILURE), ".*");
 }
 
 TEST(error_death_tests, err_flag_not_exist)
 {
-	ASSERT_EXIT(error::err_flag_not_exist(GENERIC_STRING, true, __FILE__, __LINE__), ::testing::ExitedWithCode(EXIT_FAILURE), ".*");
-	ASSERT_EXIT(error::err_flag_not_exist(GENERIC_STRING, false, __FILE__, __LINE__), ::testing::ExitedWithCode(EXIT_FAILURE), ".*");
+	ASSERT_EXIT(error::errFlagNotExist(GENERIC_STRING, true, __FILE__, __LINE__), ::testing::ExitedWithCode(EXIT_FAILURE), ".*");
+	ASSERT_EXIT(error::errFlagNotExist(GENERIC_STRING, false, __FILE__, __LINE__), ::testing::ExitedWithCode(EXIT_FAILURE), ".*");
 }
 
 TEST(error_death_tests, err_flag_invalid_arg)
 {
-	ASSERT_EXIT(error::err_flag_invalid_arg(GENERIC_STRING, GENERIC_STRING, true, __FILE__, __LINE__), ::testing::ExitedWithCode(EXIT_FAILURE), ".*");
-	ASSERT_EXIT(error::err_flag_invalid_arg(GENERIC_STRING, GENERIC_STRING, false, __FILE__, __LINE__), ::testing::ExitedWithCode(EXIT_FAILURE), ".*");
+	ASSERT_EXIT(error::errFlagInvalidArg(GENERIC_STRING, GENERIC_STRING, true, __FILE__, __LINE__), ::testing::ExitedWithCode(EXIT_FAILURE), ".*");
+	ASSERT_EXIT(error::errFlagInvalidArg(GENERIC_STRING, GENERIC_STRING, false, __FILE__, __LINE__), ::testing::ExitedWithCode(EXIT_FAILURE), ".*");
 }
 
 TEST(error_death_tests, err_cmd_not_found)
 {
-	ASSERT_EXIT(error::err_cmd_not_found(__FILE__, __LINE__), ::testing::ExitedWithCode(EXIT_FAILURE), ".*");
+	ASSERT_EXIT(error::errCmdNotFound(__FILE__, __LINE__), ::testing::ExitedWithCode(EXIT_FAILURE), ".*");
 }
 
 TEST(error_death_tests, err_cmd_not_exist)
 {
-	ASSERT_EXIT(error::err_cmd_not_exist(GENERIC_STRING, __FILE__, __LINE__), ::testing::ExitedWithCode(EXIT_FAILURE), ".*");
+	ASSERT_EXIT(error::errCmdNotExist(GENERIC_STRING, __FILE__, __LINE__), ::testing::ExitedWithCode(EXIT_FAILURE), ".*");
 }
 
 TEST(error_death_tests, err_parse_call_syntax_error)
 {
-	ASSERT_EXIT(error::err_parse_call_syntax_error(GENERIC_STRING, __FILE__, __LINE__), ::testing::ExitedWithCode(EXIT_FAILURE), ".*");
+	ASSERT_EXIT(error::errParseCallSyntaxError(GENERIC_STRING, __FILE__, __LINE__), ::testing::ExitedWithCode(EXIT_FAILURE), ".*");
 }
 
 TEST(error_death_tests, err_parse_incorrect_shorthand_flag)
 {
-	ASSERT_EXIT(error::err_parse_incorrect_shorthand_flag(GENERIC_STRING, __FILE__, __LINE__), ::testing::ExitedWithCode(EXIT_FAILURE), ".*");
+	ASSERT_EXIT(error::errParseIncorrectShorthandFlag(GENERIC_STRING, __FILE__, __LINE__), ::testing::ExitedWithCode(EXIT_FAILURE), ".*");
 }
 
 TEST(error_death_tests, err_parse_incorrect_longhand_flag)
 {
-	ASSERT_EXIT(error::err_parse_incorrect_longhand_flag(GENERIC_STRING, __FILE__, __LINE__), ::testing::ExitedWithCode(EXIT_FAILURE), ".*");
+	ASSERT_EXIT(error::errParseIncorrectLonghandFlag(GENERIC_STRING, __FILE__, __LINE__), ::testing::ExitedWithCode(EXIT_FAILURE), ".*");
 }
 
 TEST(error_death_tests, err_parse_could_not_parse_flag)
 {
-	ASSERT_EXIT(error::err_parse_could_not_parse_flag(GENERIC_STRING, __FILE__, __LINE__), ::testing::ExitedWithCode(EXIT_FAILURE), ".*");
+	ASSERT_EXIT(error::errParseCouldNotParseFlag(GENERIC_STRING, __FILE__, __LINE__), ::testing::ExitedWithCode(EXIT_FAILURE), ".*");
 }
 
 TEST(error_death_tests, err_invalid_url)
 {
-	ASSERT_EXIT(error::err_invalid_url(GENERIC_STRING, __FILE__, __LINE__), ::testing::ExitedWithCode(EXIT_FAILURE), ".*");
+	ASSERT_EXIT(error::errInvalidUrl(GENERIC_STRING, __FILE__, __LINE__), ::testing::ExitedWithCode(EXIT_FAILURE), ".*");
 }
 
 TEST(error_death_tests, err_not_implemented)
 {
-	ASSERT_EXIT(error::err_not_implemented(GENERIC_STRING, __FILE__, __LINE__), ::testing::ExitedWithCode(EXIT_FAILURE), ".*");
+	ASSERT_EXIT(error::errNotImplemented(GENERIC_STRING, __FILE__, __LINE__), ::testing::ExitedWithCode(EXIT_FAILURE), ".*");
 }
 
 TEST(print_hash_matches, basic_matches)

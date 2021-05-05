@@ -36,9 +36,9 @@ void regex::parseFlargPairs(std::string flargStr, std::map<std::string, std::str
 {
 	std::map<std::string, std::function<void(std::string, const char*, int)>> failureExpressions =
 	{
-		{ "(?<!-)-([^\\s-]{2,})", error::err_parse_incorrect_longhand_flag }, // -wrong
-		{ "--([^-])(?:\\s|$)", error::err_parse_incorrect_shorthand_flag },   // --w rong
-		{ "(-{3,}\\S+)", error::err_parse_could_not_parse_flag },             // ---wrong
+		{ "(?<!-)-([^\\s-]{2,})", error::errParseIncorrectLonghandFlag }, // -wrong
+		{ "--([^-])(?:\\s|$)", error::errParseIncorrectShorthandFlag },   // --w rong
+		{ "(-{3,}\\S+)", error::errParseCouldNotParseFlag },             // ---wrong
 	};
 
 	std::string::const_iterator

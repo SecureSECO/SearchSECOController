@@ -9,41 +9,33 @@ Utrecht University within the Software Project course.
 #include "Networking.h"
 #include "Parser.h"
 
-#define DATABASE_API_IP "131.211.31.153"
-#define DATABASE_API_PORT "8003"
-
-#define DATABASE_UPLOAD_REQUEST "upld"
-#define DATABASE_CHECK_UPLOAD_REQUEST "chup"
-#define DATABASE_CHECK_REQUEST "chck"
-
-std::string DatabaseRequests::uploadHashes(std::vector<HashData> hashes, ProjectMetaData metaData, AuthorData authorData)
+std::string DatabaseRequests::uploadHashes(std::vector<HashData> hashes, ProjectMetaData metaData, AuthorData authorData, std::string apiIP, std::string apiPort)
 {
 	int dataSize = 0;
 	const char* rawData = NetworkUtils::getAllDataFromHashes(hashes, dataSize, metaData.getAsHeader(), authorData);
-
-	return execRequest(DATABASE_UPLOAD_REQUEST, rawData, dataSize);
+	return execRequest(DATABASE_UPLOAD_REQUEST, rawData, dataSize, apiIP, apiPort);
 }
 
-std::string DatabaseRequests::findMatches(std::vector<HashData> hashes)
+std::string DatabaseRequests::findMatches(std::vector<HashData> hashes, std::string apiIP, std::string apiPort)
 {
 	int dataSize = 0;
 	const char* rawData = NetworkUtils::getHashDataFromHashes(hashes, dataSize);
 
-	return execRequest(DATABASE_CHECK_REQUEST, rawData, dataSize);
+	return execRequest(DATABASE_CHECK_REQUEST, rawData, dataSize, apiIP, apiPort);
 }
 
-std::string DatabaseRequests::checkUploadHashes(std::vector<HashData> hashes, ProjectMetaData metaData, AuthorData authorData)
+std::string DatabaseRequests::checkUploadHashes(std::vector<HashData> hashes, ProjectMetaData metaData, AuthorData authorData, std::string apiIP, std::string apiPort)
 {
 	int dataSize = 0;
 	const char* rawData = NetworkUtils::getAllDataFromHashes(hashes, dataSize, metaData.getAsHeader(), authorData);
 
-	return execRequest(DATABASE_CHECK_UPLOAD_REQUEST, rawData, dataSize);
+	return execRequest(DATABASE_CHECK_UPLOAD_REQUEST, rawData, dataSize, apiIP, apiPort);
 }
 
-std::string DatabaseRequests::execRequest(std::string request, const char* rawData, int dataSize)
+std::string DatabaseRequests::execRequest(std::string request, const char* rawData, int dataSize, std::string apiIP, std::string apiPort)
 {
 	// First start the connection.
-	NetworkHandler* networkHandler = startConnection();
+	NetworkHandler* networkHandler = startConnection(apiIP, apiPort);
 
 	// Then send the header (what request we are doing and how much data we are sending).
 	std::string requestType = request + std::to_string(dataSize) + "\n";
@@ -62,9 +54,9 @@ std::string DatabaseRequests::execRequest(std::string request, const char* rawDa
 	return output;
 }
 
-NetworkHandler* DatabaseRequests::startConnection()
+NetworkHandler* DatabaseRequests::startConnection(std::string apiIP, std::string apiPort)
 {
 	NetworkHandler* nh = NetworkHandler::createHandler();
-	nh->openConnection(DATABASE_API_IP, DATABASE_API_PORT);
+	nh->openConnection(apiIP, apiPort);
 	return nh;
 }

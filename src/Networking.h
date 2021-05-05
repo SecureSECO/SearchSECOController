@@ -32,7 +32,7 @@ public:
 
 	std::string receiveData();
 private:
-	static boost::asio::io_context io_context;
+	static boost::asio::io_context ioContext;
 	/// <summary>
 	/// Basic constructor which initializes the socket with the given context.
 	/// </summary>

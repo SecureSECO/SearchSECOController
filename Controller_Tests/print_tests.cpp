@@ -1,18 +1,20 @@
 /*
 This program has been developed by students from the bachelor Computer Science at
 Utrecht University within the Software Project course.
-� Copyright Utrecht University (Department of Information and Computing Sciences)
+© Copyright Utrecht University (Department of Information and Computing Sciences)
 */
 
+// Google test header file
 #include "pch.h"
 
-#include <regex>
+// Controller includes
+#include "error.cpp"
+#include "print.h"
+#include "utils.h"
+
+// External includes
 #include <climits>
-
-#include "Print.h"
-#include "Utils.h"
-#include "Error.cpp"
-
+#include <regex>
 
 
 #define GENERIC_STRING "teststring"

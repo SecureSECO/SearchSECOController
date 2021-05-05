@@ -4,8 +4,11 @@ Utrecht University within the Software Project course.
 © Copyright Utrecht University (Department of Information and Computing Sciences)
 */
 
+// Google test header file
 #include "pch.h"
-#include "Utils.h"
+
+// Controller includes
+#include "utils.h"
 
 
 TEST(contains_tests, is_in_vector)

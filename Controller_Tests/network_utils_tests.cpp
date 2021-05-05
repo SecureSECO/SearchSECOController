@@ -3,10 +3,19 @@ This program has been developed by students from the bachelor Computer Science a
 Utrecht University within the Software Project course.
 © Copyright Utrecht University (Department of Information and Computing Sciences)
 */
+
+// Google test header file
 #include "pch.h"
-#include "NetworkUtils.h"
-#include "../parser/Parser/HashData.h"
-#include "../spider-revisited/Spider-Revisited/CodeBlock.h"
+
+// Controller includes
+#include "network_utils.h"
+
+// Parser includes
+#include "HashData.h"
+
+// Spider includes
+#include "CodeBlock.h"
+
 
 TEST(Networking_get__all_data_from_hashes_tests, basic_test)
 {

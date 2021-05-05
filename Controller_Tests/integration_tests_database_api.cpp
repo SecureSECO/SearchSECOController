@@ -1,16 +1,19 @@
 /*
 This program has been developed by students from the bachelor Computer Science at
 Utrecht University within the Software Project course.
-? Copyright Utrecht University (Department of Information and Computing Sciences)
+© Copyright Utrecht University (Department of Information and Computing Sciences)
 */
 
-
+// Google test header file
 #include "pch.h"
-#include "DatabaseAPIMock.h"
 
-#include "DatabaseRequests.h"
+// Controller includes
+#include "database_api_mock.h"
+#include "database_requests.h"
 
+// External includes
 #include <thread>
+
 
 // Constants.
 #define LOCALHOST "127.0.0.1"

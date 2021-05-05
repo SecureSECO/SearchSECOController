@@ -3,8 +3,13 @@ This program has been developed by students from the bachelor Computer Science a
 Utrecht University within the Software Project course.
 © Copyright Utrecht University (Department of Information and Computing Sciences)
 */
+
+// Google test header file
 #include "pch.h"
-#include "Commands.h"
+
+// Controller includes
+#include "commands.h"
+
 
 TEST(Commands_tests, check_valid_command)
 {

@@ -8,15 +8,19 @@ Utrecht University within the Software Project course.
 NOTE: These tests depend on the used GitHub repositories. If a test fails, make sure the repository is not changed in an unexpected way.
 */
 
+// Google test header file
 #include "pch.h"
 
-#include "Flags.h"
-#include "Commands.h"
-#include "Utils.h"
+// Controller includes
+#include "commands.h"
+#include "flags.h"
+#include "utils.h"
 
-#include <map>
+// External includes
 #include <filesystem>
+#include <map>
 #include <string>
+
 
 using recursive_directory_iterator = std::filesystem::recursive_directory_iterator;
 
@@ -145,4 +149,3 @@ TEST(IntegrationTestSpider, WrongURLFailure)
 
     EXPECT_EQ(result.size(), 0);
 }
-

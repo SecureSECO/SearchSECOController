@@ -1,15 +1,19 @@
 ﻿/*
 This program has been developed by students from the bachelor Computer Science at
 Utrecht University within the Software Project course.
-� Copyright Utrecht University (Department of Information and Computing Sciences)
+© Copyright Utrecht University (Department of Information and Computing Sciences)
 */
 
-// NOTE: These tests depend on the used GitHub repository. If a test fails, make sure the repository is not changed in an unexpected way.
+/*
+NOTE: These tests depend on the used GitHub repositories. If a test fails, make sure the repository is not changed in an unexpected way.
+*/
 
+// Google test header file
 #include "pch.h"
 
-#include "Utils.h"
-#include "ProjectMetaData.h"
+// Controller includes
+#include "utils.h"
+#include "project_metadata.h"
 
 
 TEST(IntegrationTestCrawler, BasicTest)

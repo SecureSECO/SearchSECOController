@@ -8,9 +8,12 @@ Utrecht University within the Software Project course.
 NOTE: These tests depend on the Linux0dot01 integration test of the spider.
 */
 
+// Google test header file
 #include "pch.h"
 
-#include "Commands.h"
+// Controller includes
+#include "commands.h"
+
 
 //Constants.
 #define TEMPPATH "temp"

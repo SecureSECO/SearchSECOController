@@ -4,11 +4,15 @@ Utrecht University within the Software Project course.
 © Copyright Utrecht University (Department of Information and Computing Sciences)
 */
 
+// Google test header file
 #include "pch.h"
 
+// Controller includes
 #include "regex_wrapper.h"
 
+// External includes
 #include <map>
+
 
 #pragma region Cross-Test variable declarations
 

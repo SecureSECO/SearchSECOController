@@ -5,15 +5,19 @@ Utrecht University within the Software Project course.
 */
 
 #pragma once
+
+// External includes
+#include <boost/array.hpp>
+#include <boost/asio.hpp>
+#include <boost/bind/bind.hpp>
+#include <boost/enable_shared_from_this.hpp>
+#include <boost/shared_ptr.hpp>
+#include <ctime>
+#include <iostream>
 #include <string>
 #include <vector>
-#include <boost/bind/bind.hpp>
-#include <boost/shared_ptr.hpp>
-#include <boost/enable_shared_from_this.hpp>
-#include <boost/asio.hpp>
-#include <boost/array.hpp>
-#include <iostream>
-#include <ctime>
+
+
 using boost::asio::ip::tcp;
 
 class RequestHandler

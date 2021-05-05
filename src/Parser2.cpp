@@ -5,6 +5,7 @@ Utrecht University within the Software Project course.
 */
 
 #include "Parser2.h"
+#include "Print.h"
 #include <fstream>
 #include "Utils.h"
 

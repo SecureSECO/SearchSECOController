@@ -14,8 +14,6 @@ Utrecht University within the Software Project course.
 #include "Parser2.h"
 #include "regex_wrapper.h"
 
-#include "loguru/loguru.hpp"
-
 Input::Input(int argc, char* argv[]) 
 	: flags()
 {
@@ -97,7 +95,17 @@ void Input::parseOptionals(std::string call)
 	}
 
 	this->command = std::get<0>(result);
+	print::debug("Parsed command as " + print::quote(this->command), __FILE__, __LINE__);
 	this->flags.mandatoryArgument = std::get<1>(result);
+	if (flags.mandatoryArgument == "")
+	{
+		print::debug("No mandatory argument was entered", __FILE__, __LINE__);
+	}
+	else 
+	{
+		print::debug("Parsed mandatory argument as " + print::quote(this->flags.mandatoryArgument), __FILE__, __LINE__);
+	}
+	
 	std::string flargs = std::get<2>(result);
 
 	if (flags.mandatoryArgument != "" && !regex::validateURL(flags.mandatoryArgument))
@@ -122,6 +130,8 @@ void Input::parseOptionals(std::string call)
 			error::err_flag_not_exist(flag, false, __FILE__, __LINE__);
 		}
 
+		print::debug("Detected flag " + print::quote(flag) + " with argument " + print::quote(argument), __FILE__, __LINE__);
+
 		this->optionalArguments[flag] = argument;
 	}
 }
@@ -131,7 +141,10 @@ void Input::applyDefaults()
 	std::map<std::string, std::string> fullArgs = {};
 	this->flagSource = {};
 
-	std::map<std::string, std::string> configDefaults = FlagParser::parseConfig(this->executablePath + "/cfg/config.txt");
+	auto configpath = this->executablePath + "/cfg/config.txt";
+
+	print::debug("Reading config file at " + configpath, __FILE__, __LINE__);
+	std::map<std::string, std::string> configDefaults = FlagParser::parseConfig(configpath);
 
 	std::map<std::string, std::string>::iterator it;
 	for (it = configDefaults.begin(); it != configDefaults.end(); ++it)
@@ -149,6 +162,7 @@ void Input::applyDefaults()
 	}
 
 	this->optionalArguments = fullArgs;
+	print::debug("Default argument values applied successfully", __FILE__, __LINE__);
 }
 
 void Input::sanitizeArguments()

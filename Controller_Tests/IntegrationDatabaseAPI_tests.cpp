@@ -64,3 +64,11 @@ TEST(IntegrationDatabaseAPITest, checkUploadTest)
     );
     EXPECT_EQ(result, "Request received from chup");
 }
+
+TEST(IntegrationDatabaseAPITest, wrongPortCheckTest)
+{
+    ConnectionHandler* connectionHandler = new ConnectionHandler();
+    std::thread* t1 = new std::thread(&ConnectionHandler::StartListen, connectionHandler);
+
+    EXPECT_THROW(DatabaseRequests::findMatches(DUMMYHASHES, LOCALHOST, "wrongport"), std::runtime_error);
+}

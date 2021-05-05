@@ -23,7 +23,17 @@ void Commands::execute(std::string command, Flags flags)
 	else if (flags.flag_version) {
 		version(flags);
 	}
-	else {
+	else 
+	{
+		if (command == "")
+		{
+			error::err_cmd_not_found(__FILE__, __LINE__);
+		}
+
+		if (!Commands::isCommand(command))
+		{
+			error::err_cmd_not_exist(command, __FILE__, __LINE__);
+		}
 		perform[command](flags);
 	}
 }

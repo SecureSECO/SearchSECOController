@@ -29,6 +29,10 @@ add_executable(${TEST_NAME}
   Print_tests.cpp 
   Utils_tests.cpp
   regex_tests.cpp
+  IntegrationCrawler_tests.cpp
+  IntegrationSpider_tests.cpp
+  IntegrationParser_tests.cpp
+  IntegrationDatabaseAPI_tests.cpp
 )
 target_link_libraries(${TEST_NAME} gtest_main controller)
 

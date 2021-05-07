@@ -1,0 +1,53 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Tests">
+      <UniqueIdentifier>{6d6c5fdb-8f81-498b-9037-fbce3c323610}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{6a38f891-c38d-42c1-952c-5a2770f6ab1c}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="commandsTests.cpp">
+      <Filter>Tests</Filter>
+    </ClCompile>
+    <ClCompile Include="databaseAPIMock.cpp">
+      <Filter>Tests</Filter>
+    </ClCompile>
+    <ClCompile Include="integrationTestsCrawler.cpp">
+      <Filter>Tests</Filter>
+    </ClCompile>
+    <ClCompile Include="integrationTestsDatabaseAPI.cpp">
+      <Filter>Tests</Filter>
+    </ClCompile>
+    <ClCompile Include="integrationTestsParser.cpp">
+      <Filter>Tests</Filter>
+    </ClCompile>
+    <ClCompile Include="integrationTestsSpider.cpp">
+      <Filter>Tests</Filter>
+    </ClCompile>
+    <ClCompile Include="networkUtilsTests.cpp">
+      <Filter>Tests</Filter>
+    </ClCompile>
+    <ClCompile Include="printTests.cpp">
+      <Filter>Tests</Filter>
+    </ClCompile>
+    <ClCompile Include="regexTests.cpp">
+      <Filter>Tests</Filter>
+    </ClCompile>
+    <ClCompile Include="utilsTests.cpp">
+      <Filter>Tests</Filter>
+    </ClCompile>
+    <ClCompile Include="pch.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="pch.h" />
+    <ClInclude Include="database_api_mock.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+</Project>

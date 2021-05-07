@@ -27,26 +27,26 @@
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
+    <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v142</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
+    <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <PlatformToolset>v142</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
+    <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v142</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
+    <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <PlatformToolset>v142</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
@@ -91,13 +91,13 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>libs;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>parser\Parser;spider-revisited\Spider-Revisited;crawler\Crawler;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>libs</AdditionalLibraryDirectories>
-      <AdditionalDependencies>curlcpp.lib;curlcppd.lib;libcurl.lib;libcurld.lib;Crypt32.lib;ws2_32.lib;winmm.lib;wldap32.lib;SearchSECOSpider.lib;Parser.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>Crypt32.lib;ws2_32.lib;winmm.lib;wldap32.lib;SearchSECOSpider.lib;Parser.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -108,7 +108,8 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>libs;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>parser\Parser;spider-revisited\Spider-Revisited;crawler\Crawler;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -116,7 +117,7 @@
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>libs</AdditionalLibraryDirectories>
-      <AdditionalDependencies>curlcpp.lib;curlcppd.lib;libcurl.lib;libcurld.lib;Crypt32.lib;ws2_32.lib;winmm.lib;wldap32.lib;SearchSECOSpider.lib;Parser.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>Crypt32.lib;ws2_32.lib;winmm.lib;wldap32.lib;SearchSECOSpider.lib;Parser.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -125,14 +126,14 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>libs;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <LanguageStandard>stdcpplatest</LanguageStandard>
+      <AdditionalIncludeDirectories>parser\Parser;spider-revisited\Spider-Revisited;crawler\Crawler;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>libs</AdditionalLibraryDirectories>
-      <AdditionalDependencies>curlcpp.lib;curlcppd.lib;libcurl.lib;libcurld.lib;Crypt32.lib;ws2_32.lib;winmm.lib;wldap32.lib;SearchSECOSpider.lib;Parser.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>Crypt32.lib;ws2_32.lib;winmm.lib;wldap32.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -143,8 +144,8 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>libs;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <BrowseInformation>true</BrowseInformation>
+      <AdditionalIncludeDirectories>parser\Parser;spider-revisited\Spider-Revisited;crawler\Crawler;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -152,7 +153,7 @@
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>libs</AdditionalLibraryDirectories>
-      <AdditionalDependencies>curlcpp.lib;curlcppd.lib;libcurl.lib;libcurld.lib;Crypt32.lib;ws2_32.lib;winmm.lib;wldap32.lib;SearchSECOSpider.lib;Parser.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>Crypt32.lib;ws2_32.lib;winmm.lib;wldap32.lib;SearchSECOSpider.lib;Parser.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
       <Command>call copy_versions.bat</Command>
@@ -162,38 +163,43 @@
     </Bscmake>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="src\Commands.cpp" />
-    <ClCompile Include="src\Controller.cpp" />
-    <ClCompile Include="src\DatabaseRequests.cpp" />
-    <ClCompile Include="src\Error.cpp" />
-    <ClCompile Include="src\Flags.cpp" />
-    <ClCompile Include="src\Input.cpp" />
-    <ClCompile Include="src\NetworkUtils.cpp" />
-    <ClCompile Include="src\Networking.cpp" />
-    <ClCompile Include="src\Parser.cpp" />
-    <ClCompile Include="src\Print.cpp" />
-    <ClCompile Include="src\Utils.cpp" />
+    <ClCompile Include="src\commands.cpp" />
+    <ClCompile Include="src\databaseRequests.cpp" />
+    <ClCompile Include="src\error.cpp" />
+    <ClCompile Include="src\flags.cpp" />
+    <ClCompile Include="src\input.cpp" />
+    <ClCompile Include="src\networkUtils.cpp" />
+    <ClCompile Include="src\networking.cpp" />
+    <ClCompile Include="src\parser2.cpp" />
+    <ClCompile Include="src\print.cpp" />
+    <ClCompile Include="src\regexWrapper.cpp" />
+    <ClCompile Include="src\utils.cpp" />
     <ClCompile Include="src\loguru\loguru.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="crawler\Crawler\Crawler.vcxproj">
+      <Project>{5cd94da9-b893-4439-8f37-55df86cd1399}</Project>
+    </ProjectReference>
     <ProjectReference Include="parser\Parser\Parser.vcxproj">
       <Project>{0b2abd3c-f7b7-4bf9-acde-ba39c1d9ef30}</Project>
     </ProjectReference>
-    <ProjectReference Include="spider\SearchSECOSpider\SearchSECOSpider.vcxproj">
-      <Project>{6d103808-9182-4c40-830c-caa07c5528bd}</Project>
+    <ProjectReference Include="spider-revisited\Spider-Revisited\Spider-Revisited.vcxproj">
+      <Project>{1ca7580e-b483-4c24-ac1c-00327d39cdc9}</Project>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\Commands.h" />
-    <ClInclude Include="src\DatabaseRequests.h" />
-    <ClInclude Include="src\FlagParser.h" />
-    <ClInclude Include="src\Flags.h" />
-    <ClInclude Include="src\Input.h" />
-    <ClInclude Include="src\NetworkUtils.h" />
-    <ClInclude Include="src\Networking.h" />
-    <ClInclude Include="src\Print.h" />
-    <ClInclude Include="src\ProjectMetaData.h" />
-    <ClInclude Include="src\Utils.h" />
+    <ClInclude Include="src\commands.h" />
+    <ClInclude Include="src\databaseRequests.h" />
+    <ClInclude Include="src\flagParser.h" />
+    <ClInclude Include="src\flags.h" />
+    <ClInclude Include="src\input.h" />
+    <ClInclude Include="src\networkUtils.h" />
+    <ClInclude Include="src\networking.h" />
+    <ClInclude Include="src\parser2.h" />
+    <ClInclude Include="src\print.h" />
+    <ClInclude Include="src\projectMetadata.h" />
+    <ClCompile Include="src\regexWrapper.h" />
+    <ClInclude Include="src\utils.h" />
     <ClCompile Include="src\loguru\loguru.hpp" />
   </ItemGroup>
   <ItemGroup>

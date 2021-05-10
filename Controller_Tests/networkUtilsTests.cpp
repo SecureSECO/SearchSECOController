@@ -145,6 +145,27 @@ TEST(networkingGet_AllDataFromHashesTests, bigCommit)
 	EXPECT_EQ(size, target.size());
 }
 
+TEST(networkingGet_AllDataFromHashesTests, bigCommit2)
+{
+	std::vector<HashData> hashes = { HashData("HASH", "FUNCTION", "FILENAME", 5, 7), HashData("HASH1", "FUNCTION", "FILENAME", 8, 9), HashData("HASH2", "FUNCTION", "FILENAME", 11, 15) };
+	AuthorData authordata;
+	CommitData cd1 = CommitData();
+	cd1.author = "Author";
+	cd1.authorMail = "author@mail.com";
+
+	CodeBlock cb1 = CodeBlock();
+	cb1.commit = std::make_shared<CommitData>(cd1);
+	cb1.line = 4;
+	cb1.numLines = 16;
+	authordata["FILENAME"].push_back(cb1);
+
+	int size;
+	const char* buffer = NetworkUtils::getAllDataFromHashes(hashes, size, "HEADER", authordata);
+	std::string target = "HEADER\nHASH?FUNCTION?FILENAME?5?1?Author?author@mail.com\nHASH1?FUNCTION?FILENAME?8?1?Author?author@mail.com\nHASH2?FUNCTION?FILENAME?11?1?Author?author@mail.com\n";
+	EXPECT_EQ(target, std::string(buffer, buffer + size));
+	EXPECT_EQ(size, target.size());
+}
+
 TEST(networkingGet_AllDataFromHashesTests, empty)
 {
 	std::vector<HashData> hashes = { };

@@ -105,9 +105,9 @@ int NetworkUtils::getAuthors(std::map<HashData, std::vector<std::string>>& autho
 		int authorIndex = 0;
 		std::map<std::string, int> dupes;
 		
-		while (hashesIndex < (int)hashes[key.first].size() && authorIndex < (int)rawData[key.first].size())
+		while (hashesIndex < (int)hashes[key.first].size() || authorIndex < (int)rawData[key.first].size())
 		{
-			if (currentEnd < rawData[key.first][authorIndex].line)
+			if (authorIndex == (int)rawData[key.first].size() || currentEnd < rawData[key.first][authorIndex].line)
 			{
 				hashesIndex++;
 				if (hashesIndex >= (int)hashes[key.first].size())
@@ -120,7 +120,6 @@ int NetworkUtils::getAuthors(std::map<HashData, std::vector<std::string>>& autho
 				}
 				currentEnd = hashes[key.first][hashesIndex]->lineNumberEnd;
 				dupes = std::map<std::string, int>();
-				continue;
 			}
 			if (hashes[key.first][hashesIndex]->lineNumber <=
 				rawData[key.first][authorIndex].line + rawData[key.first][authorIndex].numLines)

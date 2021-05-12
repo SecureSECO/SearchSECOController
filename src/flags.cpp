@@ -29,7 +29,7 @@ std::map<std::string, std::string> Flags::shorthandFlagToLong =
 Flags::Flags()
 {
 	this->mandatoryArgument = "";
-	this->flag_cpu = std::thread::hardware_concurrency() / 2;
+	this->flag_cpu = std::max(1u, std::thread::hardware_concurrency() / 2);
 	this->flag_ram = RAM_DEFAULT;
 	this->flag_output = "console";
 	this->flag_save = false;

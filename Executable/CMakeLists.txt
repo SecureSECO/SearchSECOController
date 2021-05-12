@@ -10,6 +10,7 @@ project(searchseco)
 add_subdirectory(../src ./src)
 
 set(EXECUTABLE_PROCESS searchseco)
+set(CMAKE_CXX_STANDARD 17)
 
 add_executable(
     ${EXECUTABLE_PROCESS}

@@ -1,7 +1,7 @@
 /*
 This program has been developed by students from the bachelor Computer Science at
 Utrecht University within the Software Project course.
-© Copyright Utrecht University (Department of Information and Computing Sciences)
+Â© Copyright Utrecht University (Department of Information and Computing Sciences)
 */
 
 // Controller includes
@@ -18,8 +18,14 @@ Utrecht University within the Software Project course.
 #include <string>
 
 
+#include <thread>
+
+
 int main(int argc, char* argv[])
 {
+	int x = std::thread::hardware_concurrency();
+
+	print::printline(std::to_string(x));
 	loguru::g_stderr_verbosity = loguru::Verbosity_OFF;
 
 	loguru::init(argc, argv, { nullptr, "controller" });

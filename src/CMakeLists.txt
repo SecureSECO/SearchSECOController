@@ -6,6 +6,8 @@ add_subdirectory(../parser/Parser ./Parser)
 add_subdirectory(../spider-revisited/Spider-Revisited ./Spider-Revisited)
 add_subdirectory(../crawler/Crawler ./Crawler)
 
+set(CMAKE_CXX_STANDARD 17)
+
 if (WIN32)
   set(Boost_USE_STATIC_LIBS ON) 
   set(Boost_USE_MULTITHREADED ON)  

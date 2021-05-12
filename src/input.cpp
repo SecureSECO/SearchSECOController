@@ -11,6 +11,7 @@ Utrecht University within the Software Project course.
 #include "regexWrapper.h"
 
 // External includes
+#include <filesystem>
 #include <iostream>
 #include <regex>
 #include <vector>
@@ -65,8 +66,8 @@ void Input::parseCliInput(int argc, char* argv[])
 		flargs += args[i] + ' ';
 	}
 
-	print::debug("Parsing executable path", __FILE__, __LINE__);
-	Input::parseExecutablePath(argv[0]);
+	print::debug("Finding executable path", __FILE__, __LINE__);
+	Input::getExecutablePath();
 
 	print::debug("Parsing optionals", __FILE__, __LINE__);
 	Input::parseOptionals(flargs);
@@ -75,16 +76,9 @@ void Input::parseCliInput(int argc, char* argv[])
 	Flags::mapShortFlagToLong(this->optionalArguments);
 }
 
-void Input::parseExecutablePath(std::string fullPath)
+void Input::getExecutablePath()
 {
-    print::debug("Parsing path " + print::quote(fullPath), __FILE__, __LINE__);
-
-	std::smatch match;
-	std::regex pathRegex("(.+)searchseco.exe");
-
-	std::regex_match(fullPath, match, pathRegex);
-
-	this->executablePath = match[1];
+	this->executablePath = std::filesystem::current_path().string();
 
 	print::debug("Found executable path as " + print::quote(this->executablePath), __FILE__, __LINE__);
 }

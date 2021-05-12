@@ -51,7 +51,7 @@ private:
 	/// <summary>
 	/// Extracts the path to the executable.
 	/// </summary>
-	void parseExecutablePath(std::string fullPath);
+	void getExecutablePath();
 	/// <summary>
 	/// Parses and extracts the optional flags entered by the user.
 	/// </summary>

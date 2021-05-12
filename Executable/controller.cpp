@@ -18,14 +18,8 @@ Utrecht University within the Software Project course.
 #include <string>
 
 
-#include <thread>
-
-
 int main(int argc, char* argv[])
 {
-	int x = std::thread::hardware_concurrency();
-
-	print::printline(std::to_string(x));
 	loguru::g_stderr_verbosity = loguru::Verbosity_OFF;
 
 	loguru::init(argc, argv, { nullptr, "controller" });

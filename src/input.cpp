@@ -11,10 +11,10 @@ Utrecht University within the Software Project course.
 #include "regexWrapper.h"
 
 // External includes
+#include <filesystem>
 #include <iostream>
 #include <regex>
 #include <vector>
-#include <filesystem>
 
 
 Input::Input(int argc, char* argv[]) 

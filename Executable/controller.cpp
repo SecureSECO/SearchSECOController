@@ -5,10 +5,10 @@ Utrecht University within the Software Project course.
 */
 
 // Controller includes
-#include "Commands.h"
-#include "Input.h"
-#include "Parser2.h"
-#include "Print.h"
+#include "commands.h"
+#include "input.h"
+#include "parser2.h"
+#include "print.h"
 
 // External includes
 #include "loguru/loguru.hpp"

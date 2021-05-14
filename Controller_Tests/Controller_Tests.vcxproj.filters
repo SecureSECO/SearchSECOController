@@ -9,9 +9,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="commandsTests.cpp">
-      <Filter>Tests</Filter>
-    </ClCompile>
     <ClCompile Include="databaseAPIMock.cpp">
       <Filter>Tests</Filter>
     </ClCompile>

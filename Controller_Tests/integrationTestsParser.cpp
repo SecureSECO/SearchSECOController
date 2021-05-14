@@ -12,7 +12,7 @@ NOTE: These tests depend on the Linux0dot01 integration test of the spider.
 #include "pch.h"
 
 // Controller includes
-#include "commands.h"
+#include "moduleFacades.h"
 
 
 //Constants.
@@ -29,8 +29,8 @@ TEST(integrationParser, basic)
         {HashData("", "rw_hd", "kernel\\hd.c", 101, 117)},
     };
 
-    Commands::downloadRepository("https://github.com/zavg/linux-0.01", parserFlags, TEMPPATH);
-    auto hashes = Commands::parseRepository(TEMPPATH, parserFlags);
+    moduleFacades::downloadRepository("https://github.com/zavg/linux-0.01", parserFlags, TEMPPATH);
+    auto hashes = moduleFacades::parseRepository(TEMPPATH, parserFlags);
 
     int count = 0;
     for(HashData hd : hashes) 
@@ -55,8 +55,8 @@ TEST(integrationParser, failurecase)
     std::vector<HashData> expected = {
     };
 
-    Commands::downloadRepository("https://github.com/zavg/linux-0.01", parserFlags, TEMPPATH);
-    auto hashes = Commands::parseRepository("wrongpath", parserFlags);
+    moduleFacades::downloadRepository("https://github.com/zavg/linux-0.01", parserFlags, TEMPPATH);
+    auto hashes = moduleFacades::parseRepository("wrongpath", parserFlags);
 
     int count = 0;
     for (HashData hd : hashes)

@@ -12,7 +12,7 @@ NOTE: These tests depend on the used GitHub repositories. If a test fails, make 
 #include "pch.h"
 
 // Controller includes
-#include "commands.h"
+#include "moduleFacades.h"
 #include "flags.h"
 #include "utils.h"
 
@@ -37,7 +37,7 @@ int cloneAndCheck(std::map<std::string, bool> &dict, std::string url)
     // Dummy variables.
     Flags spiderFlags;
 
-    Commands::downloadRepository(url, spiderFlags, TEMPPATH);
+    moduleFacades::downloadRepository(url, spiderFlags, TEMPPATH);
     int count = 0;
     for (const auto &dirEntry : recursive_directory_iterator(TEMPPATH))
     {
@@ -145,7 +145,7 @@ TEST(integrationSpider, wrongURLFailurecase)
     Flags spiderFlags;
     std::string url = "https://secureseco.org";
 
-    AuthorData result = Commands::downloadRepository(url, spiderFlags, TEMPPATH);
+    AuthorData result = moduleFacades::downloadRepository(url, spiderFlags, TEMPPATH);
 
     EXPECT_EQ(result.size(), 0);
 }

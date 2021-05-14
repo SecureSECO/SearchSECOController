@@ -9,6 +9,9 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\commandFactory.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="src\commands.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -22,6 +25,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\input.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\moduleFacades.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\networkUtils.cpp">
@@ -47,6 +53,9 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\commandFactory.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="src\commands.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -60,6 +69,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\input.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\moduleFacades.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\networkUtils.h">
@@ -78,7 +90,7 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\regexWrapper.h">
-      <Filter>Header Files</Filter>
+    <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\utils.h">
       <Filter>Header Files</Filter>

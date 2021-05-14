@@ -163,11 +163,13 @@
     </Bscmake>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\commandFactory.cpp" />
     <ClCompile Include="src\commands.cpp" />
     <ClCompile Include="src\databaseRequests.cpp" />
     <ClCompile Include="src\error.cpp" />
     <ClCompile Include="src\flags.cpp" />
     <ClCompile Include="src\input.cpp" />
+    <ClCompile Include="src\moduleFacades.cpp" />
     <ClCompile Include="src\networkUtils.cpp" />
     <ClCompile Include="src\networking.cpp" />
     <ClCompile Include="src\parser2.cpp" />
@@ -188,11 +190,13 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\commandFactory.h" />
     <ClInclude Include="src\commands.h" />
     <ClInclude Include="src\databaseRequests.h" />
     <ClInclude Include="src\flagParser.h" />
     <ClInclude Include="src\flags.h" />
     <ClInclude Include="src\input.h" />
+    <ClInclude Include="src\moduleFacades.h" />
     <ClInclude Include="src\networkUtils.h" />
     <ClInclude Include="src\networking.h" />
     <ClInclude Include="src\parser2.h" />

@@ -23,8 +23,7 @@ endif()
 
 set(CMAKE_CXX_STANDARD 20)
 set(TEST_NAME controller_tests)
-add_executable(${TEST_NAME} 
-  commandsTests.cpp 
+add_executable(${TEST_NAME}
   networkUtilsTests.cpp 
   printTests.cpp 
   utilsTests.cpp

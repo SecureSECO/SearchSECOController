@@ -37,7 +37,6 @@
     <ClInclude Include="pch.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="commandsTests.cpp" />
     <ClCompile Include="databaseAPIMock.cpp" />
     <ClCompile Include="integrationTestsCrawler.cpp" />
     <ClCompile Include="integrationTestsDatabaseAPI.cpp" />

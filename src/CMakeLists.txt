@@ -20,11 +20,13 @@ endif()
 find_package(Boost REQUIRED COMPONENTS regex date_time)
 
 set(CONTROLLER_HEADER_LIST
+  commandFactory.h
   commands.h
   databaseRequests.h
   flagParser.h
   flags.h
   input.h
+  moduleFacades.h
   networkUtils.h
   networking.h
   parser2.h
@@ -36,11 +38,13 @@ set(CONTROLLER_HEADER_LIST
 )
 
 add_library(controller
+  commandFactory.cpp
   commands.cpp  
   databaseRequests.cpp
   error.cpp
   flags.cpp
   input.cpp
+  moduleFacades.cpp
   networkUtils.cpp
   networking.cpp
   parser2.cpp

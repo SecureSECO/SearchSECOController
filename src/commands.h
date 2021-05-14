@@ -21,65 +21,72 @@ Utrecht University within the Software Project course.
 #include <string>
 #include <vector>
 
-
-class Commands
+class Command
 {
 public:
+	std::string helpMessage();
 	/// <summary>
 	/// Will execute the given command with the flags you give it.
 	/// </summary>
 	/// <param name="command">The command you want to execute.</param>
 	/// <param name="flags">The flags with which you want to execute the command.</param>
-	static void execute(std::string command, Flags flags);
+	virtual void execute(Flags flags) = 0;
 
-	/// <summary>
-	/// Checks if there is a command with the given name.
-	/// </summary>
-	/// <param name="command">The command you want to check if it exists.</param>
-	static bool isCommand(std::string command);
+protected:
+	std::string helpMessageText;
+};
 
-	/// <summary>
-	/// Will call the spider to download a given repository.
-	/// </summary>
-	static AuthorData downloadRepository(std::string repository, Flags flags, std::string downloadPath);
-	/// <summary>
-	/// Will call the parser to parse the given repository.
-	/// </summary>
-	static std::vector<HashData> parseRepository(std::string repository, Flags flags);
-private:
-
-	static std::map<std::string, std::function<void(Flags)>> perform;
-	static std::map<std::string, std::string> helpMessagesCommands;
-	static std::vector<std::string> commandNames;
-	static std::map<std::string, std::string> helpMessagesCommonFlags;
-	static std::vector<std::string> commonFlagNames;
+class Start : public Command
+{
+public:
+	Start();
 
 	/// <summary>
 	/// Starts the worker node.
 	/// </summary>
-	static void start(Flags flags);
+	void execute(Flags flags) override;
+};
+
+class Check : public Command
+{
+public:
+	Check();
+
 	/// <summary>
 	/// Checks matches with the database for the given repository.
 	/// </summary>
-	static void check(Flags flags);
+	void execute(Flags flags) override;
+};
+
+class Upload : public Command
+{
+public:
+	Upload();
+
 	/// <summary>
 	/// Uploads given repository.
 	/// </summary>
-	static void upload(Flags flags);
+	void execute(Flags flags) override;
+};
+
+class CheckUpload : public Command
+{
+public:
+	CheckUpload();
+
 	/// <summary>
 	/// Does both check and upload for a given repository.
 	/// </summary>
-	static void checkupload(Flags flags);
+	void execute(Flags flags) override;
+};
+
+class Update : public Command
+{
+public:
+	Update();
+
 	/// <summary>
 	/// Will update this program.
 	/// </summary>
-	static void update(Flags flags);
-	/// <summary>
-	/// Gives back the version of the program and all submodules.
-	/// </summary>
-	static void version(Flags flags);
-	/// <summary>
-	/// Prints a help message.
-	/// </summary>
-	static void help(std::string commandString);
+	void execute(Flags flags) override;
 };

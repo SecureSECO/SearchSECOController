@@ -11,6 +11,7 @@ Utrecht University within the Software Project course.
 
 // Parser includes
 #include "HashData.h"
+#include "CodeBlock.h"
 
 // External includes
 #include <string>

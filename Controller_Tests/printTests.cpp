@@ -224,31 +224,31 @@ AuthorData getDummyAuthorData()
 	return authordata;
 }
 
-
-TEST(print_matches_test, base_test) 
-{
-	testing::internal::CaptureStdout();
-
-	printMatches::printHashMatches(dummyHashes, dummyDatabaseOutput, getDummyAuthorData());
-	
-	std::string output = testing::internal::GetCapturedStdout();
-
-	EXPECT_EQ(output, R"(
-func2 in file file2 line 6 was found in our database: 
-Function func3 in project 1 in file file3 line 10
-Authors of local function: 
-	Author2	author2@mail.com
-Authors of function found in database: 
-	5
-
-Summary:
-	Matches: 1
-Local authors present in matches: 
-	Author2	author2@mail.com: 1
-Authors present in database matches: 
-	5: 1
-)");
-}
+// TODO: Somehow test this.
+//TEST(print_matches_test, base_test) 
+//{
+//	testing::internal::CaptureStdout();
+//
+//	printMatches::printHashMatches(dummyHashes, dummyDatabaseOutput, getDummyAuthorData());
+//	
+//	std::string output = testing::internal::GetCapturedStdout();
+//
+//	EXPECT_EQ(output, R"(
+//func2 in file file2 line 6 was found in our database: 
+//Function func3 in project 1 in file file3 line 10
+//Authors of local function: 
+//	Author2	author2@mail.com
+//Authors of function found in database: 
+//	5
+//
+//Summary:
+//	Matches: 1
+//Local authors present in matches: 
+//	Author2	author2@mail.com: 1
+//Authors present in database matches: 
+//	5: 1
+//)");
+//}
 
 // ERROR TESTING
 int test_intc = 6;

@@ -26,6 +26,7 @@ Utrecht University within the Software Project course.
 #define DATABASE_UPLOAD_REQUEST "upld"
 #define DATABASE_CHECK_UPLOAD_REQUEST "chup"
 #define DATABASE_CHECK_REQUEST "chck"
+#define DATABASE_GET_AUTHORS_BY_ID "auid"
 
 class NetworkHandler;
 
@@ -37,21 +38,40 @@ public:
 	/// </summary>
 	/// <param name="hashes">The hashes to be uploaded.</param>
 	/// <returns>The string that the database send back.</returns>
-	static std::string uploadHashes(std::vector<HashData> hashes, ProjectMetaData metaData, AuthorData authorData, std::string apiIP = DATABASE_API_IP, std::string apiPort = DATABASE_API_PORT);
+	static std::string uploadHashes(std::vector<HashData> hashes, 
+		ProjectMetaData metaData, 
+		AuthorData authorData, 
+		std::string apiIP = DATABASE_API_IP, 
+		std::string apiPort = DATABASE_API_PORT);
 
 	/// <summary>
 	/// Sends a request to the database to find matching hashes in the database.
 	/// </summary>
 	/// <param name="hashes">The hashes you want to find in the database.</param>
 	/// <returns>The matches that the database gives back.</returns>
-	static std::string findMatches(std::vector<HashData> hashes, std::string apiIP = DATABASE_API_IP, std::string apiPort = DATABASE_API_PORT);
+	static std::string findMatches(std::vector<HashData> hashes, 
+		std::string apiIP = DATABASE_API_IP, 
+		std::string apiPort = DATABASE_API_PORT);
 
 	/// <summary>
 	/// Sends a request to the database to upload and check the given hashes.
 	/// </summary>
 	/// <param name="hashes">The hashes to be uploaded.</param>
 	/// <returns>The string that the database send back.</returns>
-	static std::string checkUploadHashes(std::vector<HashData> hashes, ProjectMetaData metaData, AuthorData authorData, std::string apiIP = DATABASE_API_IP, std::string apiPort = DATABASE_API_PORT);
+	static std::string checkUploadHashes(std::vector<HashData> hashes, 
+		ProjectMetaData metaData, 
+		AuthorData authorData, 
+		std::string apiIP = DATABASE_API_IP, 
+		std::string apiPort = DATABASE_API_PORT);
+
+	/// <summary>
+	/// Sends a request to the database to upload and check the given hashes.
+	/// </summary>
+	/// <param name="hashes">The hashes to be uploaded.</param>
+	/// <returns>The string that the database send back.</returns>
+	static std::string getAuthor(std::map<std::string, int> authors,
+		std::string apiIP = DATABASE_API_IP,
+		std::string apiPort = DATABASE_API_PORT);
 private:
 	/// <summary>
 	/// The logic for sending a request to the database.

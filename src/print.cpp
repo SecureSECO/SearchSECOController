@@ -5,6 +5,7 @@ Utrecht University within the Software Project course.
 */
 
 // Controller includes
+#include "databaseRequests.h"
 #include "print.h"
 #include "utils.h"
 
@@ -155,10 +156,10 @@ void printMatches::printHashMatches(std::vector<HashData> hashes, std::string da
 {
 	std::map<std::string, std::vector<std::string>> receivedHashes = {};
 	// Seperate the response we got into its individual entries.
-	std::vector<std::string> dbentries = utils::split(databaseOutput, '\n');
+	std::vector<std::string> dbentries = utils::split(databaseOutput, ENTRY_DELIMITER);
 	for (std::string entry : dbentries)
 	{
-		std::vector<std::string> entrySplitted = utils::split(entry, '?');
+		std::vector<std::string> entrySplitted = utils::split(entry, INNER_DELIMITER);
 
 		receivedHashes[entrySplitted[0]] = entrySplitted;
 			
@@ -202,12 +203,12 @@ void printMatches::printMatch(
 	print::printline("Authors of local function: ");
 	for (std::string s : authors[hash])
 	{
-		utils::replace(s, '?', '\t');
+		utils::replace(s, INNER_DELIMITER, '\t');
 		print::printline(s);
 		authorsCopied[s]++;
 	}
 	print::printline("Authors of function found in database: ");
-
+	
 	for (int i = 7; i < 7 + std::stoi(dbEntry[6]); i++)
 	{
 		authorCopiedForm[dbEntry[i]]++;
@@ -218,6 +219,13 @@ void printMatches::printMatch(
 void printMatches::printSummary(std::map<std::string, int> authorCopiedForm, std::map<std::string, int> authorsCopied, int matches) 
 {
 	
+	// name_1?mail_1?id_1\nname_2?mail_2?id_2\n...
+
+	std::string authorString = DatabaseRequests::getAuthor(authorCopiedForm);
+
+	std::vector<std::string> entries = utils::split(authorString, ENTRY_DELIMITER);
+
+
 	print::printline("\nSummary:");
 	print::printline("\tMatches: " + std::to_string(matches));
 	print::printline("Local authors present in matches: ");
@@ -225,11 +233,24 @@ void printMatches::printSummary(std::map<std::string, int> authorCopiedForm, std
 	{
 		print::printline(x.first + ": " + std::to_string(x.second));
 	}
+
+
 	print::printline("Authors present in database matches: ");
-	for (auto const& x : authorCopiedForm)
+	for (int i = 0; i < entries.size(); ++i)
+	{
+		std::vector<std::string> entry = utils::split(entries[i], INNER_DELIMITER);
+		if (entry.size() < 3)
+		{
+			continue;
+		}
+
+		print::printline('\t' + entry[0] + "\t" + entry[1] + ": " + std::to_string(authorCopiedForm[entry[2]]));
+	}
+
+	/*for (auto const& x : authorCopiedForm)
 	{
 		print::printline("\t" + x.first + ": " + std::to_string(x.second));
-	}
+	}*/
 }
 
 #pragma endregion Matches

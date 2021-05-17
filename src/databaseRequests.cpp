@@ -36,6 +36,14 @@ std::string DatabaseRequests::checkUploadHashes(std::vector<HashData> hashes, Pr
 	return execRequest(DATABASE_CHECK_UPLOAD_REQUEST, rawData, dataSize, apiIP, apiPort);
 }
 
+std::string DatabaseRequests::getAuthor(std::map<std::string, int> authors, std::string apiIP, std::string apiPort)
+{
+	int dataSize = 0;
+	const char* rawData = NetworkUtils::getAuthorStringToSend(authors, dataSize);
+
+	return execRequest(DATABASE_GET_AUTHORS_BY_ID, rawData, dataSize, apiIP, apiPort);
+}
+
 std::string DatabaseRequests::execRequest(std::string request, const char* rawData, int dataSize, std::string apiIP, std::string apiPort)
 {
 	// First start the connection.

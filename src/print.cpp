@@ -10,7 +10,7 @@ Utrecht University within the Software Project course.
 
 // Parser includes
 #include "Parser.h"
-#include "NetworkUtils.h"
+#include "networkUtils.h"
 
 // External includes
 #include "loguru/loguru.hpp"

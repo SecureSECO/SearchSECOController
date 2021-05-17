@@ -27,7 +27,6 @@ CheckOptions:
     - { key: readability-identifier-naming.LocalConstantPointerCase, value: camelBack }
     - { key: readability-identifier-naming.LocalPointerCase, value: camelBack }
     - { key: readability-identifier-naming.LocalVariableCase, value: camelBack }
-    - { key: readability-identifier-naming.MacroDefinitionCase, value: camelBack }
     - { key: readability-identifier-naming.MemberCase, value: camelBack }
     - { key: readability-identifier-naming.MethodCase, value: camelBack }
     - { key: readability-identifier-naming.NamespaceCase, value: camelBack }
@@ -51,4 +50,4 @@ CheckOptions:
     - { key: readability-identifier-naming.ValueTemplateParameterCase, value: camelBack }
     - { key: readability-identifier-naming.VariableCase, value: camelBack }
     - { key: readability-identifier-naming.VirtualMethodCase, value: camelBack }
-    - { key: readability-function-size.LineThreshold, value: 20}
+    - { key: readability-function-size.LineThreshold, value: 35}

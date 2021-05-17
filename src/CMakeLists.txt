@@ -6,6 +6,8 @@ add_subdirectory(../parser/Parser ./Parser)
 add_subdirectory(../spider-revisited/Spider-Revisited ./Spider-Revisited)
 add_subdirectory(../crawler/Crawler ./Crawler)
 
+set(CMAKE_CXX_STANDARD 17)
+
 if (WIN32)
   set(Boost_USE_STATIC_LIBS ON) 
   set(Boost_USE_MULTITHREADED ON)  
@@ -18,33 +20,37 @@ endif()
 find_package(Boost REQUIRED COMPONENTS regex date_time)
 
 set(CONTROLLER_HEADER_LIST
-  Commands.h
-  DatabaseRequests.h
-  Flag.h
-  FlagParser.h
-  Flags.h
-  Input.h
-  Networking.h
-  NetworkUtils.h
-  Parser2.h
-  Print.h
-  regex_wrapper.h
-  Utils.h
+  commandFactory.h
+  commands.h
+  databaseRequests.h
+  flagParser.h
+  flags.h
+  input.h
+  moduleFacades.h
+  networkUtils.h
+  networking.h
+  parser2.h
+  print.h
+  projectMetadata.h
+  regexWrapper.h
+  utils.h
   loguru/loguru.hpp
 )
 
 add_library(controller
-  Commands.cpp  
-  DatabaseRequests.cpp
-  Error.cpp
-  Flags.cpp
-  Input.cpp
-  Networking.cpp
-  NetworkUtils.cpp
-  Parser2.cpp
-  Print.cpp
-  regex_wrapper.cpp
-  Utils.cpp
+  commandFactory.cpp
+  commands.cpp  
+  databaseRequests.cpp
+  error.cpp
+  flags.cpp
+  input.cpp
+  moduleFacades.cpp
+  networkUtils.cpp
+  networking.cpp
+  parser2.cpp
+  print.cpp
+  regexWrapper.cpp
+  utils.cpp
   loguru/loguru.cpp
   ${CONTROLLER_HEADER_LIST}
 )

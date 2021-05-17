@@ -13,7 +13,7 @@ set(EXECUTABLE_PROCESS searchseco)
 
 add_executable(
     ${EXECUTABLE_PROCESS}
-    "Controller.cpp"
+    "controller.cpp"
 )
 
 target_link_libraries(${EXECUTABLE_PROCESS} controller)

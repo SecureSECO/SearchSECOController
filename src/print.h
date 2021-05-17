@@ -73,7 +73,7 @@ namespace print
 
 }
 
-static class printMatches
+class printMatches
 {
 public:
 	/// <summary>

@@ -26,7 +26,7 @@ Utrecht University within the Software Project course.
 #define DATABASE_UPLOAD_REQUEST "upld"
 #define DATABASE_CHECK_UPLOAD_REQUEST "chup"
 #define DATABASE_CHECK_REQUEST "chck"
-#define DATABASE_GET_AUTHORS_BY_ID "auid"
+#define DATABASE_GET_AUTHORS_BY_ID "idau"
 
 class NetworkHandler;
 

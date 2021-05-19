@@ -145,6 +145,7 @@ int NetworkUtils::getAuthors(std::map<HashData, std::vector<std::string>>& autho
 const char* NetworkUtils::getAuthorStringToSend(std::map<std::string, int>& authors, int& size)
 {
 	// First, calculate the size, so we don't have to expand it later.
+	size = 0;
 	for (auto const& x : authors)
 	{
 		size += x.first.length() + 1;

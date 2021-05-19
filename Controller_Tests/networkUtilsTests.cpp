@@ -300,3 +300,35 @@ TEST(networkingGetHashDataFromHashesTests, bigger)
 	EXPECT_EQ(target, std::string(buffer, buffer + size));
 	EXPECT_EQ(target.size(), size);
 }
+
+TEST(networkingGetAuthorsToSend, basic_test)
+{
+	std::map<std::string, int> authors = { {"author1", 0}, {"author2", 0} };
+	int size;
+	const char* buffer = NetworkUtils::getAuthorStringToSend(authors, size);
+	std::string target = "author1\nauthor2\n";
+	EXPECT_EQ(size, target.size());
+	EXPECT_EQ(target, std::string(buffer, buffer + size));
+}
+
+TEST(networkingGetAuthorsToSend, empty)
+{
+	std::map<std::string, int> authors = {  };
+	int size;
+	const char* buffer = NetworkUtils::getAuthorStringToSend(authors, size);
+	std::string target = "";
+	EXPECT_EQ(target, std::string(buffer, buffer + size));
+	EXPECT_EQ(size, target.size());
+}
+
+TEST(networkingGetAuthorsToSend, basic_test_2)
+{
+	std::map<std::string, int> authors = { {"author1", 0}, {"author2", 0}, {"author3", 0} , {"author4", 0}, {"author5", 0} };
+	int size;
+	const char* buffer = NetworkUtils::getAuthorStringToSend(authors, size);
+	std::string target = "author1\nauthor2\nauthor3\nauthor4\nauthor5\n";
+	EXPECT_EQ(target, std::string(buffer, buffer + size));
+	EXPECT_EQ(size, target.size());
+}
+
+

@@ -246,11 +246,6 @@ void printMatches::printSummary(std::map<std::string, int> authorCopiedForm, std
 
 		print::printline('\t' + entry[0] + "\t" + entry[1] + ": " + std::to_string(authorCopiedForm[entry[2]]));
 	}
-
-	/*for (auto const& x : authorCopiedForm)
-	{
-		print::printline("\t" + x.first + ": " + std::to_string(x.second));
-	}*/
 }
 
 #pragma endregion Matches

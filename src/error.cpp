@@ -38,6 +38,8 @@ enum errCode
 	parseCouldNotParseFlag,
 	invalidUrl,
 	notImplemented,
+	// Database related errors start at 400.
+	dbConnection = 400,
 };
 
 // Descriptions of the error messages.
@@ -129,6 +131,12 @@ std::string descParseCouldNotParseFlag(std::string* strs)
 	return strs[0] + " could not be parsed";
 }
 
+// strs: [message]
+std::string descConnectionError(std::string* strs) 
+{
+	return "Database connection terminated with the following message: " + strs[0];
+}
+
 // Maps an error code to a description.
 std::map <int, std::function<std::string(std::string*)>> errDesc =
 {
@@ -146,6 +154,7 @@ std::map <int, std::function<std::string(std::string*)>> errDesc =
 	{parseCouldNotParseFlag, descParseCouldNotParseFlag},
 	{invalidUrl, descInvalidUrl},
 	{notImplemented, descErrNotImplemented},
+	{dbConnection, descConnectionError}
 };
 
 #pragma endregion Descriptions
@@ -267,6 +276,14 @@ void error::errNotImplemented(std::string funcname, const char* file, int line)
 {
 	err(notImplemented,
 		new std::string[1]{ funcname },
+		file, line
+	);
+}
+
+void error::errDBConnection(std::string message, const char* file, int line) 
+{
+	err(dbConnection,
+		new std::string[1]{ message },
 		file, line
 	);
 }

@@ -152,4 +152,9 @@ namespace error
 	/// Throws the "Not Implemented" error.
 	/// </summary>
 	void errNotImplemented(std::string message, const char* file, int line);
+
+	/// <summary>
+	/// Throws the error for a failing connection to the database.
+	/// </summary>
+	void errDBConnection(std::string message, const char* file, int line);
 };

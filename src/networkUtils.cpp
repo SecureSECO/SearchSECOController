@@ -142,7 +142,7 @@ int NetworkUtils::getAuthors(std::map<HashData, std::vector<std::string>>& autho
 	return authorSize;
 }
 
-const char* NetworkUtils::getAuthorStringToSend(std::map<std::string, int>& authors, int& size)
+const char* NetworkUtils::getAuthorStringToSend(const std::map<std::string, int>& authors, int& size)
 {
 	// First, calculate the size, so we don't have to expand it later.
 	size = 0;
@@ -161,7 +161,7 @@ const char* NetworkUtils::getAuthorStringToSend(std::map<std::string, int>& auth
 	return data;
 }
 
-const char* NetworkUtils::getProjectsRequest(std::map<std::pair<std::string, std::string>, int>& projects, int& size)
+const char* NetworkUtils::getProjectsRequest(const std::map<std::pair<std::string, std::string>, int>& projects, int& size)
 {
 	// First, calculate the size, so we don't have to expand it later.
 	size = 0;

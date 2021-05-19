@@ -70,16 +70,15 @@ public:
 	/// </summary>
 	/// <param name="authors">The authors you want the data from.</param>
 	/// <returns>The string that the database send back.</returns>
-	static std::string getAuthor(std::map<std::string, int> authors,
+	static std::string getAuthor(const std::map<std::string, int> &authors,
 		std::string apiIP = DATABASE_API_IP,
 		std::string apiPort = DATABASE_API_PORT);
 
 	/// <summary>
 	/// Sends a request to the database to upload and check the given hashes.
 	/// </summary>
-	/// <param name="hashes">The hashes to be uploaded.</param>
 	/// <returns>The string that the database send back.</returns>
-	static std::string getProjectData(std::map<std::pair<std::string, std::string>, int>,
+	static std::string getProjectData(const std::map<std::pair<std::string, std::string>, int> &projects,
 		std::string apiIP = DATABASE_API_IP,
 		std::string apiPort = DATABASE_API_PORT);
 private:

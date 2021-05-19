@@ -36,7 +36,7 @@ std::string DatabaseRequests::checkUploadHashes(std::vector<HashData> hashes, Pr
 	return execRequest(DATABASE_CHECK_UPLOAD_REQUEST, rawData, dataSize, apiIP, apiPort);
 }
 
-std::string DatabaseRequests::getAuthor(std::map<std::string, int> authors, std::string apiIP, std::string apiPort)
+std::string DatabaseRequests::getAuthor(const std::map<std::string, int> &authors, std::string apiIP, std::string apiPort)
 {
 	int dataSize = 0;
 	const char* rawData = NetworkUtils::getAuthorStringToSend(authors, dataSize);
@@ -44,11 +44,11 @@ std::string DatabaseRequests::getAuthor(std::map<std::string, int> authors, std:
 	return execRequest(DATABASE_GET_AUTHORS_BY_ID, rawData, dataSize, apiIP, apiPort);
 }
 
-std::string DatabaseRequests::getProjectData(std::map<std::pair<std::string, std::string>, int> authors,
+std::string DatabaseRequests::getProjectData(const std::map<std::pair<std::string, std::string>, int> &project,
 	std::string apiIP, std::string apiPort)
 {
 	int dataSize = 0;
-	const char* rawData = NetworkUtils::getProjectsRequest(authors, dataSize);
+	const char* rawData = NetworkUtils::getProjectsRequest(project, dataSize);
 
 	return execRequest(DATABASE_GET_PROJECT_DATA, rawData, dataSize, apiIP, apiPort);
 }

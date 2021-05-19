@@ -193,11 +193,15 @@ void printMatches::printHashMatches(std::vector<HashData> hashes, std::string da
 void printMatches::parseDatabaseHashes(
 	std::vector<std::string>& dbentries,
 	std::map<std::string, std::vector<std::string>>& receivedHashes,
-	std::map<std::pair<std::string, std::string>, int> projects,
-	std::map<std::string, int> dbAuthors)
+	std::map<std::pair<std::string, std::string>, int> &projects,
+	std::map<std::string, int> &dbAuthors)
 {
 	for (std::string entry : dbentries)
 	{
+		if (entry == "")
+		{
+			continue;
+		}
 		std::vector<std::string> entrySplitted = utils::split(entry, INNER_DELIMITER);
 
 		receivedHashes[entrySplitted[0]] = entrySplitted;
@@ -225,12 +229,20 @@ void printMatches::getDatabaseAuthorAndProjectData(
 	for (int i = 0; i < projectEntries.size(); i++)
 	{
 		auto splitted = utils::split(projectEntries[i], INNER_DELIMITER);
+		if (splitted.size() == 1)
+		{
+			continue;
+		}
 		dbProjects[splitted[0]] = splitted;
 	}
 	// Getting the author data out of it.
 	for (int i = 0; i < authorEntries.size(); i++)
 	{
 		auto splitted = utils::split(authorEntries[i], INNER_DELIMITER);
+		if (splitted.size() == 1)
+		{
+			continue;
+		}
 		authorIdToName[splitted[2]] = splitted;
 	}
 }
@@ -248,7 +260,7 @@ void printMatches::printMatch(
 	std::vector<std::string> dbEntry = receivedHashes[hash.hash];
 	print::printline("\n" + hash.functionName + " in file " + hash.fileName + " line "
 		+ std::to_string(hash.lineNumber) + " was found in our database: ");
-	print::printline("Function " + dbEntry[3] + " in project " + dbProjects[dbEntry[1]][1]
+	print::printline("Function " + dbEntry[3] + " in project " + dbProjects[dbEntry[1]][3]
 		+ " in file " + dbEntry[4] + " line " + dbEntry[5]);
 	print::printline("Authors of local function: ");
 	for (std::string s : authors[hash])
@@ -271,7 +283,7 @@ void printMatches::printSummary(std::map<std::string, int> authorCopiedForm,
 	int matches,
 	std::map<std::string, std::vector<std::string>>& dbProjects,
 	std::map<std::string, std::vector<std::string>>& authorIdToName,
-	std::map<std::pair<std::string, std::string>, int> projects)
+	std::map<std::pair<std::string, std::string>, int> &projects)
 {
 
 	print::printline("\nSummary:");
@@ -279,7 +291,7 @@ void printMatches::printSummary(std::map<std::string, int> authorCopiedForm,
 	print::printline("Projects found in database:");
 	for (const auto& x : projects)
 	{
-		print::printline("\t" + x.first.first + ": " + std::to_string(x.second));
+		print::printline("\t" + dbProjects[x.first.first][3] + ": " + std::to_string(x.second) + " (" + dbProjects[x.first.first][4] + ")");
 	}
 	print::printline("\nLocal authors present in matches: ");
 	for (auto const& x : authorsCopied)

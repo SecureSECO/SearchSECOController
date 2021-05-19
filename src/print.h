@@ -99,8 +99,8 @@ private:
 	static void parseDatabaseHashes(
 		std::vector<std::string>& dbentries,
 		std::map<std::string, std::vector<std::string>>& receivedHashes,
-		std::map<std::pair<std::string, std::string>, int> projects,
-		std::map<std::string, int> dbAuthors);
+		std::map<std::pair<std::string, std::string>, int> &projects,
+		std::map<std::string, int> &dbAuthors);
 
 	/// <summary>
 	/// Will send database requests to retrieve the missing information.
@@ -136,18 +136,12 @@ private:
 	/// <summary>
 	/// Prints a summary for all the matches found.
 	/// </summary>
-	/// <param name="authorCopiedForm"></param>
-	/// <param name="authorsCopied"></param>
-	/// <param name="matches"></param>
-	/// <param name="dbProjects"></param>
-	/// <param name="authorIdToName"></param>
-	/// <param name="projects"></param>
 	static void printSummary(std::map<std::string, int> authorCopiedForm, 
 		std::map<std::string, int> authorsCopied, 
 		int matches,
 		std::map<std::string, std::vector<std::string>>& dbProjects,
 		std::map<std::string, std::vector<std::string>>& authorIdToName,
-		std::map<std::pair<std::string, std::string>, int> projects);
+		std::map<std::pair<std::string, std::string>, int> &projects);
 
 };
 

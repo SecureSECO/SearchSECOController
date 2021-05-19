@@ -1,7 +1,7 @@
 /*
 This program has been developed by students from the bachelor Computer Science at
 Utrecht University within the Software Project course.
-Â© Copyright Utrecht University (Department of Information and Computing Sciences)
+© Copyright Utrecht University (Department of Information and Computing Sciences)
 */
 
 // Controller includes
@@ -25,7 +25,7 @@ std::string Command::helpMessage()
 	return helpMessageText;
 }
 
-Start::Start() 
+Start::Start()
 {
 	this->helpMessageText = R"(
 	start: Starts a workernode.
@@ -93,10 +93,10 @@ void Check::execute(Flags flags)
 		+ flags.mandatoryArgument + " against the SearchSECO database";
 	print::log(msg, __FILE__, __LINE__);
 
-	moduleFacades::downloadRepository(flags.mandatoryArgument, flags, DOWNLOAD_LOCATION);
+	AuthorData authorData = moduleFacades::downloadRepository(flags.mandatoryArgument, flags, DOWNLOAD_LOCATION);
 	std::vector<HashData> hashes = moduleFacades::parseRepository(DOWNLOAD_LOCATION, flags);
 	// Calling the function that will print all the matches for us.
-	print::printHashMatches(hashes, DatabaseRequests::findMatches(hashes));
+	printMatches::printHashMatches(hashes, DatabaseRequests::findMatches(hashes), authorData);
 	//TODO: delete temp folder.
 }
 
@@ -128,7 +128,7 @@ void CheckUpload::execute(Flags flags)
 		+ flags.mandatoryArgument + " to the SearchSECO database";
 	print::log(msg, __FILE__, __LINE__);
 
-	print::printHashMatches(hashes, DatabaseRequests::checkUploadHashes(hashes, metaData, authorData));
+	printMatches::printHashMatches(hashes, DatabaseRequests::checkUploadHashes(hashes, metaData, authorData), authorData);
 }
 
 void Update::execute(Flags flags)

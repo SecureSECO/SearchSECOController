@@ -155,40 +155,17 @@ void print::versionFull()
 void printMatches::printHashMatches(std::vector<HashData> hashes, std::string databaseOutput, AuthorData authordata)
 {
 	std::map<std::string, std::vector<std::string>> receivedHashes = {};
+
+	std::map<std::pair<std::string, std::string>, int> projects;
+	std::map<std::string, int> dbAuthors;
+	std::map<std::string, std::vector<std::string>> dbProjects;
+	std::map<std::string, std::vector<std::string>> authorIdToName;
+
 	// Seperate the response we got into its individual entries.
 	std::vector<std::string> dbentries = utils::split(databaseOutput, ENTRY_DELIMITER);
-
-	std::map<std::string, int> dbAuthors;
-	std::map<std::pair<std::string, std::string>, int> projects;
-
-	for (std::string entry : dbentries)
-	{
-		std::vector<std::string> entrySplitted = utils::split(entry, INNER_DELIMITER);
-
-		receivedHashes[entrySplitted[0]] = entrySplitted;
-		for (int i = 7; i < 7 + std::stoi(entrySplitted[6]); i++)
-		{
-			dbAuthors[entrySplitted[i]]++;
-		}
-		projects[std::pair<std::string, std::string>(entrySplitted[1], entrySplitted[2])]++;
-	}
-	std::vector<std::string> authorEntries = 
-		utils::split(DatabaseRequests::getAuthor(dbAuthors), ENTRY_DELIMITER);
-	std::vector<std::string> projectEntries =
-		utils::split(DatabaseRequests::getProjectData(projects), ENTRY_DELIMITER);
-
-	std::map<std::string, std::vector<std::string>> dbProjects;
-	for (int i = 0; i < projectEntries.size(); i++)
-	{
-		auto splitted = utils::split(projectEntries[i], INNER_DELIMITER);
-		dbProjects[splitted[0]] = splitted;
-	}
-	std::map<std::string, std::vector<std::string>> authorIdToName;
-	for (int i = 0; i < authorEntries.size(); i++)
-	{
-		auto splitted = utils::split(authorEntries[i], INNER_DELIMITER);
-		authorIdToName[splitted[2]] = splitted;
-	}
+	parseDatabaseHashes(dbentries, receivedHashes, projects, dbAuthors);
+	
+	getDatabaseAuthorAndProjectData(projects, dbAuthors, dbProjects, authorIdToName);
 
 	// Author data
 	std::map<std::string, std::vector<HashData*>> transformedList;
@@ -211,6 +188,51 @@ void printMatches::printHashMatches(std::vector<HashData> hashes, std::string da
 		}
 	}
 	printSummary(authorCopiedForm, authorsCopied, matches, dbProjects, authorIdToName, projects);
+}
+
+void printMatches::parseDatabaseHashes(
+	std::vector<std::string>& dbentries,
+	std::map<std::string, std::vector<std::string>>& receivedHashes,
+	std::map<std::pair<std::string, std::string>, int> projects,
+	std::map<std::string, int> dbAuthors)
+{
+	for (std::string entry : dbentries)
+	{
+		std::vector<std::string> entrySplitted = utils::split(entry, INNER_DELIMITER);
+
+		receivedHashes[entrySplitted[0]] = entrySplitted;
+		for (int i = 7; i < 7 + std::stoi(entrySplitted[6]); i++)
+		{
+			dbAuthors[entrySplitted[i]]++;
+		}
+		projects[std::pair<std::string, std::string>(entrySplitted[1], entrySplitted[2])]++;
+	}
+}
+
+void printMatches::getDatabaseAuthorAndProjectData(
+	std::map<std::pair<std::string, std::string>, int>& projects,
+	std::map<std::string, int> &dbAuthors,
+	std::map<std::string, std::vector<std::string>>& dbProjects,
+	std::map<std::string, std::vector<std::string>>& authorIdToName)
+{
+	// Database requests.
+	std::vector<std::string> authorEntries =
+		utils::split(DatabaseRequests::getAuthor(dbAuthors), ENTRY_DELIMITER);
+	std::vector<std::string> projectEntries =
+		utils::split(DatabaseRequests::getProjectData(projects), ENTRY_DELIMITER);
+
+	// Getting the project data out of it.
+	for (int i = 0; i < projectEntries.size(); i++)
+	{
+		auto splitted = utils::split(projectEntries[i], INNER_DELIMITER);
+		dbProjects[splitted[0]] = splitted;
+	}
+	// Getting the author data out of it.
+	for (int i = 0; i < authorEntries.size(); i++)
+	{
+		auto splitted = utils::split(authorEntries[i], INNER_DELIMITER);
+		authorIdToName[splitted[2]] = splitted;
+	}
 }
 
 void printMatches::printMatch(

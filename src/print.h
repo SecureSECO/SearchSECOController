@@ -82,6 +82,47 @@ public:
 	static void printHashMatches(std::vector<HashData> hashes, std::string databaseOutput, AuthorData authordata);
 
 private:
+	/// <summary>
+	/// Will parse the dbentries into the other parameters given.
+	/// </summary>
+	/// <param name="dbentries">The function input. This is what we got from the database.</param>
+	/// <param name="receivedHashes">The hashes in the database output, stored in a map where
+	/// the key is the hash, and the std::vector is the rest of the data given by the database.
+	/// This data will be in the same order as the database gave it to us.</param>
+	/// <param name="projects">The projects found in the database.
+	/// The key for this map is a pair where the first is the project id,
+	/// and the second is the project version.
+	/// The value after is how often we came across this project.</param>
+	/// <param name="dbAuthors">The authors we found in the database output.
+	/// The key for this map is the author id,
+	/// the value is how often we found this author.</param>
+	static void parseDatabaseHashes(
+		std::vector<std::string>& dbentries,
+		std::map<std::string, std::vector<std::string>>& receivedHashes,
+		std::map<std::pair<std::string, std::string>, int> projects,
+		std::map<std::string, int> dbAuthors);
+
+	/// <summary>
+	/// Will send database requests to retrieve the missing information.
+	/// "projects" and "dbAuthors" are input here, 
+	/// and "dbProjects" and "authorIdToName" are output.
+	/// </summary>
+	/// <param name="projects">Output from parseDatabasehHashes.</param>
+	/// <param name="dbAuthors">Output from parseDatabasehHashes.</param>
+	/// <param name="dbProjects">The key will be the id of the project,
+	/// the value is a list of all the things the database gave us about the project,
+	/// in the same order as we got it.</param>
+	/// <param name="authorIdToName">The key will be the id of the author,
+	/// the value is a list of all the things the database gave us about the author,
+	/// in the same order as we got it.</param>
+	static void getDatabaseAuthorAndProjectData(std::map<std::pair<std::string, std::string>, int>& projects,
+		std::map<std::string, int>& dbAuthors,
+		std::map<std::string, std::vector<std::string>>& dbProjects,
+		std::map<std::string, std::vector<std::string>>& authorIdToName);
+
+	/// <summary>
+	/// Prints a match for a given hash.
+	/// </summary>
 	static void printMatch(
 		HashData hash,
 		std::map<std::string, std::vector<std::string>>& receivedHashes,
@@ -91,6 +132,16 @@ private:
 		std::map<std::string, std::vector<std::string>> &dbProjects,
 		std::map<std::string, std::vector<std::string>> &authorIdToName
 	);
+
+	/// <summary>
+	/// Prints a summary for all the matches found.
+	/// </summary>
+	/// <param name="authorCopiedForm"></param>
+	/// <param name="authorsCopied"></param>
+	/// <param name="matches"></param>
+	/// <param name="dbProjects"></param>
+	/// <param name="authorIdToName"></param>
+	/// <param name="projects"></param>
 	static void printSummary(std::map<std::string, int> authorCopiedForm, 
 		std::map<std::string, int> authorsCopied, 
 		int matches,

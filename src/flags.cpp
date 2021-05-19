@@ -23,7 +23,8 @@ std::map<std::string, std::string> Flags::shorthandFlagToLong =
 	{"c", "cpu"},
 	{"r", "ram"},
 	{"o", "output"},
-	{"s", "save"}
+	{"s", "save"},
+	{"b", "branch"}
 };
 
 Flags::Flags()
@@ -37,6 +38,7 @@ Flags::Flags()
 
 	this->flag_help = false;
 	this->flag_version = false;
+	this->flag_branch = "master";
 }
 
 void Flags::mapShortFlagToLong(std::map<std::string, std::string>& flargs)

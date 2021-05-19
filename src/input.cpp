@@ -202,6 +202,10 @@ void Input::sanitizeArguments()
 		{
 			Input::sanitizeVersionFlag(argument, fromConfig);
 		}
+		else if (flag == "branch")
+		{
+			Input::sanitizeBranchFlag(argument, fromConfig);
+		}
 	}
 }
 
@@ -305,6 +309,17 @@ void Input::sanitizeVersionFlag(std::string arg, bool fromConfig)
 	print::debug(msg, __FILE__, __LINE__);
 	Input::requireNArguments(0, "version", arg);
 	this->flags.flag_version = true;
+}
+
+void Input::sanitizeBranchFlag(std::string arg, bool fromConfig)
+{
+	auto msg = "Sanitizing --branch flag";
+
+	print::debug(msg, __FILE__, __LINE__);
+	Input::requireNArguments(1, "branch", arg);
+
+	// TODO: Maybe check if this is something which could be a legal branch?
+	this->flags.flag_branch = arg;
 }
 #pragma endregion
 

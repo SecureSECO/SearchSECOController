@@ -97,6 +97,10 @@ private:
 	/// Sanitizes the argument of the (--version | -v) flag.
 	/// </summary>
 	void sanitizeVersionFlag(std::string arg, bool fromConfig);
+	/// <summary>
+	/// Sanitizes the argument of the (--branch | -b) flag.
+	/// </summary>
+	void sanitizeBranchFlag(std::string arg, bool fromConfig);
 
 	/// <summary>
 	/// Helper function to force a certain amount of arguments for a flag. Throws the correct error when 

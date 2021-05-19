@@ -167,7 +167,7 @@ void printMatches::printHashMatches(std::vector<HashData> hashes, std::string da
 	
 	getDatabaseAuthorAndProjectData(projects, dbAuthors, dbProjects, authorIdToName);
 
-	// Author data
+	// Author data.
 	std::map<std::string, std::vector<HashData*>> transformedList;
 	std::map<HashData, std::vector<std::string>> authors;
 	NetworkUtils::transformHashList(hashes, transformedList);

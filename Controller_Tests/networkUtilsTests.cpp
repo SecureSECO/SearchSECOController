@@ -301,7 +301,7 @@ TEST(networkingGetHashDataFromHashesTests, bigger)
 	EXPECT_EQ(target.size(), size);
 }
 
-TEST(networkingGetAuthorsToSend, basic_test)
+TEST(networkingGetAuthorsToSend, two_authors)
 {
 	std::map<std::string, int> authors = { {"author1", 0}, {"author2", 0} };
 	int size;
@@ -321,7 +321,7 @@ TEST(networkingGetAuthorsToSend, empty)
 	EXPECT_EQ(size, target.size());
 }
 
-TEST(networkingGetAuthorsToSend, basic_test_2)
+TEST(networkingGetAuthorsToSend, more_authors)
 {
 	std::map<std::string, int> authors = { {"author1", 0}, {"author2", 0 }, {"author3" , 0 }, {"author4", 0}, {"author5", 0} };
 	int size;
@@ -331,7 +331,7 @@ TEST(networkingGetAuthorsToSend, basic_test_2)
 	EXPECT_EQ(size, target.size());
 }
 
-TEST(networkingGetProjectToSend, basic_test)
+TEST(networkingGetProjectToSend, two_projects)
 {
 	std::map<std::pair<std::string, std::string>, int> authors = { {{"project1", "12"}, 0}, {{"project2", "51"}, 0 } };
 	int size;
@@ -351,7 +351,7 @@ TEST(networkingGetProjectToSend, empty)
 	EXPECT_EQ(size, target.size());
 }
 
-TEST(networkingGetProjectToSend, basic_test_2)
+TEST(networkingGetProjectToSend, more_projects)
 {
 	std::map<std::pair<std::string, std::string>, int> authors = { {{"project1", "12"}, 0}, {{"project2", "51"}, 0 }, {{"project3", "69"}, 0 }, {{"project4", "42"}, 0 }, {{"project5", "420"}, 0 } };
 	int size;

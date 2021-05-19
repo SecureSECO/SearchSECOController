@@ -157,4 +157,14 @@ namespace error
 	/// Throws the error for a failing connection to the database.
 	/// </summary>
 	void errDBConnection(std::string message, const char* file, int line);
+
+	/// <summary>
+	/// Throws the error if the database API threw an error in the process of processing current request.
+	/// </summary>
+	void errDBInternal(std::string message, const char* file, int line);
+
+	/// <summary>
+	/// Throws the error if the database API responds in an unexpected manner.
+	/// </summary>
+	void errDBUnkownResponse(const char* file, int line);
 };

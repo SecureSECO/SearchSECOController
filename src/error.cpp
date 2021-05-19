@@ -40,6 +40,8 @@ enum errCode
 	notImplemented,
 	// Database related errors start at 400.
 	dbConnection = 400,
+	dbInternal,
+	dbUnknownRepsonse,
 };
 
 // Descriptions of the error messages.
@@ -137,6 +139,23 @@ std::string descConnectionError(std::string* strs)
 	return "Database connection terminated with the following message: " + strs[0];
 }
 
+// strs: [message]
+std::string descDBInternal(std::string* strs) 
+{
+	if (strs[0] == "") 
+	{
+		return "Database threw internal error, please try again later.";
+	}
+
+	return "Following error occured in the database: " + strs[0];
+}
+
+// no strs
+std::string descDBUnkownResponse(std::string* strs) 
+{
+	return "Database responded in an unexpected way. Please try again later.";
+}
+
 // Maps an error code to a description.
 std::map <int, std::function<std::string(std::string*)>> errDesc =
 {
@@ -154,7 +173,10 @@ std::map <int, std::function<std::string(std::string*)>> errDesc =
 	{parseCouldNotParseFlag, descParseCouldNotParseFlag},
 	{invalidUrl, descInvalidUrl},
 	{notImplemented, descErrNotImplemented},
-	{dbConnection, descConnectionError}
+	{dbConnection, descConnectionError},
+	{dbInternal, descDBInternal},
+	{dbUnknownRepsonse, descDBUnkownResponse}
+	
 };
 
 #pragma endregion Descriptions
@@ -286,6 +308,19 @@ void error::errDBConnection(std::string message, const char* file, int line)
 		new std::string[1]{ message },
 		file, line
 	);
+}
+
+void error::errDBInternal(std::string message, const char* file, int line) 
+{
+	err(dbInternal,
+		new std::string[1]{ message },
+		file, line
+	);
+}
+
+void error::errDBUnkownResponse(const char* file, int line)
+{
+	err(dbUnknownRepsonse, {}, file, line);
 }
 
 #pragma endregion Specific_error_handlers

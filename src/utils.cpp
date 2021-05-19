@@ -82,7 +82,7 @@ ProjectMetaData utils::getProjectMetadata(std::string url)
 	{
 		hash += id[i] *(i+1);
 	}
-
+	
 	return ProjectMetaData(std::to_string(hash),
 		std::to_string(getIntegerTimeFromString(pmd.version)), 
 		pmd.license, 

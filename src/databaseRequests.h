@@ -27,6 +27,7 @@ Utrecht University within the Software Project course.
 #define DATABASE_CHECK_UPLOAD_REQUEST "chup"
 #define DATABASE_CHECK_REQUEST "chck"
 #define DATABASE_GET_AUTHORS_BY_ID "idau"
+#define DATABASE_GET_PROJECT_DATA "extp"
 
 class NetworkHandler;
 
@@ -65,11 +66,20 @@ public:
 		std::string apiPort = DATABASE_API_PORT);
 
 	/// <summary>
+	/// Sends a request to the database get the author name and mail from the given author ids.
+	/// </summary>
+	/// <param name="authors">The authors you want the data from.</param>
+	/// <returns>The string that the database send back.</returns>
+	static std::string getAuthor(std::map<std::string, int> authors,
+		std::string apiIP = DATABASE_API_IP,
+		std::string apiPort = DATABASE_API_PORT);
+
+	/// <summary>
 	/// Sends a request to the database to upload and check the given hashes.
 	/// </summary>
 	/// <param name="hashes">The hashes to be uploaded.</param>
 	/// <returns>The string that the database send back.</returns>
-	static std::string getAuthor(std::map<std::string, int> authors,
+	static std::string getProjectData(std::map<std::pair<std::string, std::string>, int>,
 		std::string apiIP = DATABASE_API_IP,
 		std::string apiPort = DATABASE_API_PORT);
 private:

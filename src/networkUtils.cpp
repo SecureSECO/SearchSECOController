@@ -146,16 +146,37 @@ const char* NetworkUtils::getAuthorStringToSend(std::map<std::string, int>& auth
 {
 	// First, calculate the size, so we don't have to expand it later.
 	size = 0;
-	for (auto const& x : authors)
+	for (const auto& x : authors)
 	{
 		size += x.first.length() + 1;
 	}
 	char* data = new char[size];
 	// Create the string.
 	int pos = 0;
-	for (auto const& x : authors)
+	for (const auto& x : authors)
 	{
 		addStringToBuffer(data, pos, x.first);
+		data[pos++] = ENTRY_DELIMITER;
+	}
+	return data;
+}
+
+const char* NetworkUtils::getProjectsRequest(std::map<std::pair<std::string, std::string>, int>& projects, int& size)
+{
+	// First, calculate the size, so we don't have to expand it later.
+	size = 0;
+	for (const auto& x : projects)
+	{
+		size += x.first.first.length() + x.first.second.length() + 2;
+	}
+	char* data = new char[size];
+	// Create the string.
+	int pos = 0;
+	for (auto x : projects)
+	{
+		addStringToBuffer(data, pos, x.first.first);
+		data[pos++] = INNER_DELIMITER;
+		addStringToBuffer(data, pos, x.first.second);
 		data[pos++] = ENTRY_DELIMITER;
 	}
 	return data;

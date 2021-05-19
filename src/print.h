@@ -87,9 +87,16 @@ private:
 		std::map<std::string, std::vector<std::string>>& receivedHashes,
 		std::map<HashData, std::vector<std::string>>& authors, 
 		std::map<std::string, int>& authorCopiedForm,
-		std::map<std::string, int>& authorsCopied
+		std::map<std::string, int>& authorsCopied,
+		std::map<std::string, std::vector<std::string>> &dbProjects,
+		std::map<std::string, std::vector<std::string>> &authorIdToName
 	);
-	static void printSummary(std::map<std::string, int> authorCopiedForm, std::map<std::string, int> authorsCopied, int matches);
+	static void printSummary(std::map<std::string, int> authorCopiedForm, 
+		std::map<std::string, int> authorsCopied, 
+		int matches,
+		std::map<std::string, std::vector<std::string>>& dbProjects,
+		std::map<std::string, std::vector<std::string>>& authorIdToName,
+		std::map<std::pair<std::string, std::string>, int> projects);
 
 };
 

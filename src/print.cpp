@@ -157,12 +157,37 @@ void printMatches::printHashMatches(std::vector<HashData> hashes, std::string da
 	std::map<std::string, std::vector<std::string>> receivedHashes = {};
 	// Seperate the response we got into its individual entries.
 	std::vector<std::string> dbentries = utils::split(databaseOutput, ENTRY_DELIMITER);
+
+	std::map<std::string, int> dbAuthors;
+	std::map<std::pair<std::string, std::string>, int> projects;
+
 	for (std::string entry : dbentries)
 	{
 		std::vector<std::string> entrySplitted = utils::split(entry, INNER_DELIMITER);
 
 		receivedHashes[entrySplitted[0]] = entrySplitted;
-			
+		for (int i = 7; i < 7 + std::stoi(entrySplitted[6]); i++)
+		{
+			dbAuthors[entrySplitted[i]]++;
+		}
+		projects[std::pair<std::string, std::string>(entrySplitted[1], entrySplitted[2])]++;
+	}
+	std::vector<std::string> authorEntries = 
+		utils::split(DatabaseRequests::getAuthor(dbAuthors), ENTRY_DELIMITER);
+	std::vector<std::string> projectEntries =
+		utils::split(DatabaseRequests::getProjectData(projects), ENTRY_DELIMITER);
+
+	std::map<std::string, std::vector<std::string>> dbProjects;
+	for (int i = 0; i < projectEntries.size(); i++)
+	{
+		auto splitted = utils::split(projectEntries[i], INNER_DELIMITER);
+		dbProjects[splitted[0]] = splitted;
+	}
+	std::map<std::string, std::vector<std::string>> authorIdToName;
+	for (int i = 0; i < authorEntries.size(); i++)
+	{
+		auto splitted = utils::split(authorEntries[i], INNER_DELIMITER);
+		authorIdToName[splitted[2]] = splitted;
 	}
 
 	// Author data
@@ -181,10 +206,11 @@ void printMatches::printHashMatches(std::vector<HashData> hashes, std::string da
 		if (receivedHashes.count(hashes[i].hash) > 0)
 		{
 			matches++;
-			printMatch(hashes[i], receivedHashes, authors, authorCopiedForm, authorsCopied);
+			printMatch(
+				hashes[i], receivedHashes, authors, authorCopiedForm, authorsCopied, dbProjects, authorIdToName);
 		}
 	}
-	printSummary(authorCopiedForm, authorsCopied, matches);
+	printSummary(authorCopiedForm, authorsCopied, matches, dbProjects, authorIdToName, projects);
 }
 
 void printMatches::printMatch(
@@ -192,13 +218,15 @@ void printMatches::printMatch(
 	std::map<std::string, std::vector<std::string>>& receivedHashes, 
 	std::map<HashData, std::vector<std::string>>& authors, 
 	std::map<std::string, int>& authorCopiedForm, 
-	std::map<std::string, int>& authorsCopied
+	std::map<std::string, int>& authorsCopied,
+	std::map<std::string, std::vector<std::string>>& dbProjects,
+	std::map<std::string, std::vector<std::string>>& authorIdToName
 ) 
 {
 	std::vector<std::string> dbEntry = receivedHashes[hash.hash];
 	print::printline("\n" + hash.functionName + " in file " + hash.fileName + " line "
 		+ std::to_string(hash.lineNumber) + " was found in our database: ");
-	print::printline("Function " + dbEntry[3] + " in project " + dbEntry[1]
+	print::printline("Function " + dbEntry[3] + " in project " + dbProjects[dbEntry[1]][1]
 		+ " in file " + dbEntry[4] + " line " + dbEntry[5]);
 	print::printline("Authors of local function: ");
 	for (std::string s : authors[hash])
@@ -212,39 +240,36 @@ void printMatches::printMatch(
 	for (int i = 7; i < 7 + std::stoi(dbEntry[6]); i++)
 	{
 		authorCopiedForm[dbEntry[i]]++;
-		print::printline("\t" + dbEntry[i]);
+		print::printline("\t" + authorIdToName[dbEntry[i]][0] + '\t' + authorIdToName[dbEntry[i]][1]);
 	}
 }
 
-void printMatches::printSummary(std::map<std::string, int> authorCopiedForm, std::map<std::string, int> authorsCopied, int matches) 
+void printMatches::printSummary(std::map<std::string, int> authorCopiedForm,
+	std::map<std::string, int> authorsCopied,
+	int matches,
+	std::map<std::string, std::vector<std::string>>& dbProjects,
+	std::map<std::string, std::vector<std::string>>& authorIdToName,
+	std::map<std::pair<std::string, std::string>, int> projects)
 {
-	
-	// name_1?mail_1?id_1\nname_2?mail_2?id_2\n...
-
-	std::string authorString = DatabaseRequests::getAuthor(authorCopiedForm);
-
-	std::vector<std::string> entries = utils::split(authorString, ENTRY_DELIMITER);
-
 
 	print::printline("\nSummary:");
-	print::printline("\tMatches: " + std::to_string(matches));
-	print::printline("Local authors present in matches: ");
+	print::printline("Matches: " + std::to_string(matches));
+	print::printline("Projects found in database:");
+	for (const auto& x : projects)
+	{
+		print::printline("\t" + x.first.first + ": " + std::to_string(x.second));
+	}
+	print::printline("\nLocal authors present in matches: ");
 	for (auto const& x : authorsCopied)
 	{
 		print::printline(x.first + ": " + std::to_string(x.second));
 	}
 
 
-	print::printline("Authors present in database matches: ");
-	for (int i = 0; i < entries.size(); ++i)
+	print::printline("\nAuthors present in database matches: ");
+	for (auto const& x : authorCopiedForm)
 	{
-		std::vector<std::string> entry = utils::split(entries[i], INNER_DELIMITER);
-		if (entry.size() < 3)
-		{
-			continue;
-		}
-
-		print::printline('\t' + entry[0] + "\t" + entry[1] + ": " + std::to_string(authorCopiedForm[entry[2]]));
+		print::printline('\t' + authorIdToName[x.first][0] + "\t" + authorIdToName[x.first][1] + ": " + std::to_string(x.second));
 	}
 }
 

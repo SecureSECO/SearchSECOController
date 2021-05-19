@@ -44,6 +44,15 @@ std::string DatabaseRequests::getAuthor(std::map<std::string, int> authors, std:
 	return execRequest(DATABASE_GET_AUTHORS_BY_ID, rawData, dataSize, apiIP, apiPort);
 }
 
+std::string DatabaseRequests::getProjectData(std::map<std::pair<std::string, std::string>, int> authors,
+	std::string apiIP, std::string apiPort)
+{
+	int dataSize = 0;
+	const char* rawData = NetworkUtils::getProjectsRequest(authors, dataSize);
+
+	return execRequest(DATABASE_GET_PROJECT_DATA, rawData, dataSize, apiIP, apiPort);
+}
+
 std::string DatabaseRequests::execRequest(std::string request, const char* rawData, int dataSize, std::string apiIP, std::string apiPort)
 {
 	// First start the connection.

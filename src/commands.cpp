@@ -89,46 +89,62 @@ void Start::execute(Flags flags)
 
 void Check::execute(Flags flags)
 {
-	auto msg = "Checking the code from the project at "
+	auto msg = " the code from the project at "
 		+ flags.mandatoryArgument + " against the SearchSECO database";
-	print::log(msg, __FILE__, __LINE__);
+	print::log("Checking" + msg, __FILE__, __LINE__);
 
 	AuthorData authorData = moduleFacades::downloadRepository(flags.mandatoryArgument, flags, DOWNLOAD_LOCATION);
 	std::vector<HashData> hashes = moduleFacades::parseRepository(DOWNLOAD_LOCATION, flags);
 	// Calling the function that will print all the matches for us.
 	printMatches::printHashMatches(hashes, DatabaseRequests::findMatches(hashes), authorData);
 	//TODO: delete temp folder.
+
+	// Reset thread name to controller, and log a success message
+	loguru::set_thread_name("controller");
+	print::log("Sucessfully checked" + msg, __FILE__, __LINE__);
 }
 
 void Upload::execute(Flags flags)
 {
-	auto msg = "Uploading the code from the project at "
+	auto msg = " the code from the project at "
 		+ flags.mandatoryArgument + " to the SearchSECO database";
-	print::log(msg, __FILE__, __LINE__);
+	print::log("Uploading" + msg, __FILE__, __LINE__);
 
 	AuthorData authorData = moduleFacades::downloadRepository(flags.mandatoryArgument, flags, DOWNLOAD_LOCATION);
 	std::vector<HashData> hashes = moduleFacades::parseRepository(DOWNLOAD_LOCATION, flags);
 	// Uploading the hashes.
 	ProjectMetaData meta = utils::getProjectMetadata(flags.mandatoryArgument);
 	print::printline(DatabaseRequests::uploadHashes(hashes, meta, authorData));
+
+	// Reset thread name to controller, and log a success message
+	loguru::set_thread_name("controller");
+	print::log("Successfully uploaded" + msg, __FILE__, __LINE__);
 }
 
 void CheckUpload::execute(Flags flags)
 {
-	auto msg = "Checking the code from the project at "
+	auto msg = " the code from the project at "
 		+ flags.mandatoryArgument + " against the SearchSECO database";
-	print::log(msg, __FILE__, __LINE__);
+	print::log("Checking" + msg, __FILE__, __LINE__);
 
 	AuthorData authorData = moduleFacades::downloadRepository(flags.mandatoryArgument, flags, DOWNLOAD_LOCATION);
 	std::vector<HashData> hashes = moduleFacades::parseRepository(DOWNLOAD_LOCATION, flags);
 
+	// Reset thread name to controller, and log a success message
+	loguru::set_thread_name("controller");
+	print::log("Successully checked" + msg, __FILE__, __LINE__);
+
 	ProjectMetaData metaData = utils::getProjectMetadata(flags.mandatoryArgument);
 	// Uploading the hashes.
-	msg = "Uploading the code from the project at "
+	msg = " the code from the project at "
 		+ flags.mandatoryArgument + " to the SearchSECO database";
-	print::log(msg, __FILE__, __LINE__);
+	print::log("Uploading" + msg, __FILE__, __LINE__);
 
 	printMatches::printHashMatches(hashes, DatabaseRequests::checkUploadHashes(hashes, metaData, authorData), authorData);
+
+	// Reset thread name to controller, and log a success message
+	loguru::set_thread_name("controller");
+	print::log("Successfully uploaded" + msg, __FILE__, __LINE__);
 }
 
 void Update::execute(Flags flags)

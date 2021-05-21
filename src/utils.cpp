@@ -72,7 +72,8 @@ std::string utils::padLeft(std::string src, char pad, int length)
 
 ProjectMetaData utils::getProjectMetadata(std::string url)
 {
-	ProjectMetadata pmd = RunCrawler::findMetadata(url);
+	int code;
+	ProjectMetadata pmd = RunCrawler::findMetadata(url, code);
 
 	// TODO: very temporary hashing.
 	std::string id = pmd.authorMail + pmd.authorName + pmd.version;
@@ -81,7 +82,7 @@ ProjectMetaData utils::getProjectMetadata(std::string url)
 	{
 		hash += id[i] *(i+1);
 	}
-
+	
 	return ProjectMetaData(std::to_string(hash),
 		std::to_string(getIntegerTimeFromString(pmd.version)), 
 		pmd.license, 

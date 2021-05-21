@@ -9,9 +9,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="commandsTests.cpp">
-      <Filter>Tests</Filter>
-    </ClCompile>
     <ClCompile Include="databaseAPIMock.cpp">
       <Filter>Tests</Filter>
     </ClCompile>
@@ -43,11 +40,10 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />
-    <ClInclude Include="database_api_mock.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
+    <ClInclude Include="databaseAPIMock.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+    <None Include="extensions" />
   </ItemGroup>
 </Project>

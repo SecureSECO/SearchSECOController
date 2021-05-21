@@ -42,7 +42,8 @@ public:
 	/// </summary>
 	std::string getAsHeader()
 	{
-		return NetworkUtils::generateHeader({ id, version, license, name, url, authorName, authorMail });
+		std::vector<std::string> header = { id, version, license, name, url, authorName, authorMail };
+		return NetworkUtils::generateHeader(header);
 	};
 
 	std::string id;

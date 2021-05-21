@@ -11,6 +11,7 @@ Utrecht University within the Software Project course.
 #include "regexWrapper.h"
 
 // External includes
+#include <filesystem>
 #include <iostream>
 #include <regex>
 #include <vector>
@@ -65,8 +66,8 @@ void Input::parseCliInput(int argc, char* argv[])
 		flargs += args[i] + ' ';
 	}
 
-	print::debug("Parsing executable path", __FILE__, __LINE__);
-	Input::parseExecutablePath(argv[0]);
+	print::debug("Finding executable path", __FILE__, __LINE__);
+	Input::getExecutablePath();
 
 	print::debug("Parsing optionals", __FILE__, __LINE__);
 	Input::parseOptionals(flargs);
@@ -75,16 +76,9 @@ void Input::parseCliInput(int argc, char* argv[])
 	Flags::mapShortFlagToLong(this->optionalArguments);
 }
 
-void Input::parseExecutablePath(std::string fullPath)
+void Input::getExecutablePath()
 {
-    print::debug("Parsing path " + print::quote(fullPath), __FILE__, __LINE__);
-
-	std::smatch match;
-	std::regex pathRegex("(.+)searchseco.exe");
-
-	std::regex_match(fullPath, match, pathRegex);
-
-	this->executablePath = match[1];
+	this->executablePath = std::filesystem::current_path().string();
 
 	print::debug("Found executable path as " + print::quote(this->executablePath), __FILE__, __LINE__);
 }
@@ -208,6 +202,10 @@ void Input::sanitizeArguments()
 		{
 			Input::sanitizeVersionFlag(argument, fromConfig);
 		}
+		else if (flag == "branch")
+		{
+			Input::sanitizeBranchFlag(argument, fromConfig);
+		}
 	}
 }
 
@@ -311,6 +309,17 @@ void Input::sanitizeVersionFlag(std::string arg, bool fromConfig)
 	print::debug(msg, __FILE__, __LINE__);
 	Input::requireNArguments(0, "version", arg);
 	this->flags.flag_version = true;
+}
+
+void Input::sanitizeBranchFlag(std::string arg, bool fromConfig)
+{
+	auto msg = "Sanitizing --branch flag";
+
+	print::debug(msg, __FILE__, __LINE__);
+	Input::requireNArguments(1, "branch", arg);
+
+	// TODO: Maybe check if this is something which could be a legal branch?
+	this->flags.flag_branch = arg;
 }
 #pragma endregion
 

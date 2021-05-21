@@ -1,7 +1,7 @@
 /*
 This program has been developed by students from the bachelor Computer Science at
 Utrecht University within the Software Project course.
-© Copyright Utrecht University (Department of Information and Computing Sciences)
+Â© Copyright Utrecht University (Department of Information and Computing Sciences)
 */
 
 // Controller includes
@@ -10,9 +10,9 @@ Utrecht University within the Software Project course.
 
 // External includes
 #include "loguru/loguru.hpp"
+#include <thread>
 
 
-#define CPU_DEFAULT 2 // TODO What amount of cpus make sense
 #define RAM_DEFAULT 8 // TODO What amount of ram makes sense
 
 std::map<std::string, std::string> Flags::shorthandFlagToLong =
@@ -23,13 +23,14 @@ std::map<std::string, std::string> Flags::shorthandFlagToLong =
 	{"c", "cpu"},
 	{"r", "ram"},
 	{"o", "output"},
-	{"s", "save"}
+	{"s", "save"},
+	{"b", "branch"}
 };
 
 Flags::Flags()
 {
 	this->mandatoryArgument = "";
-	this->flag_cpu = CPU_DEFAULT;
+	this->flag_cpu = std::max(1u, std::thread::hardware_concurrency() / 2);
 	this->flag_ram = RAM_DEFAULT;
 	this->flag_output = "console";
 	this->flag_save = false;
@@ -37,6 +38,7 @@ Flags::Flags()
 
 	this->flag_help = false;
 	this->flag_version = false;
+	this->flag_branch = "master";
 }
 
 void Flags::mapShortFlagToLong(std::map<std::string, std::string>& flargs)

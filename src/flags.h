@@ -20,6 +20,7 @@ public:
 	int flag_cpu;
 	int flag_ram;
 	std::string flag_output;
+	std::string flag_branch;
 	bool flag_save;
 	loguru::Verbosity flag_verbose;
 

@@ -9,15 +9,17 @@ Utrecht University within the Software Project course.
 #include "print.h"
 
 
+inline
 bool operator==(HashData const& lhs, HashData const& rhs)
 {
-	return lhs.hash == rhs.hash && 
-		lhs.fileName == rhs.fileName && 
+	return lhs.hash == rhs.hash &&
+		lhs.fileName == rhs.fileName &&
 		lhs.functionName == rhs.functionName
 		&& lhs.lineNumber == rhs.lineNumber
 		&& lhs.lineNumberEnd == rhs.lineNumberEnd;
 }
 
+inline
 bool operator<(HashData const& lhs, HashData const& rhs)
 {
 	if (lhs.hash != rhs.hash)
@@ -39,6 +41,7 @@ bool operator<(HashData const& lhs, HashData const& rhs)
 	return lhs.lineNumberEnd < rhs.lineNumberEnd;
 }
 
+
 void NetworkUtils::addStringToBuffer(char* buffer, int& pos, std::string adding)
 {
 	for (char c : adding)
@@ -59,16 +62,16 @@ void NetworkUtils::addHashDataToBuffer(char* buffer, int& pos, HashData& hd, std
 {
 	// Hash|functionName|fileLocation|lineNumber|number_of_authors|author1_name|author1_mail|...
 	addStringToBuffer(buffer, pos, hd.hash);
-	buffer[pos++] = '?';
+	buffer[pos++] = INNER_DELIMITER;
 	addStringToBuffer(buffer, pos, hd.functionName);
-	buffer[pos++] = '?';
+	buffer[pos++] = INNER_DELIMITER;
 	addStringToBuffer(buffer, pos, hd.fileName);
-	buffer[pos++] = '?';
+	buffer[pos++] = INNER_DELIMITER;
 	addStringToBuffer(buffer, pos, std::to_string(hd.lineNumber));
-	buffer[pos++] = '?';
+	buffer[pos++] = INNER_DELIMITER;
 	addStringToBuffer(buffer, pos, std::to_string(authors[hd].size()));
 	addStringsToBuffer(buffer, pos, authors[hd]);
-	buffer[pos++] = '\n';
+	buffer[pos++] = ENTRY_DELIMITER;
 }
 
 void NetworkUtils::transformHashList(std::vector<HashData>& hashes, std::map<std::string, std::vector<HashData*>> &output)
@@ -105,9 +108,9 @@ int NetworkUtils::getAuthors(std::map<HashData, std::vector<std::string>>& autho
 		int authorIndex = 0;
 		std::map<std::string, int> dupes;
 		
-		while (hashesIndex < (int)hashes[key.first].size() && authorIndex < (int)rawData[key.first].size())
+		while (hashesIndex < (int)hashes[key.first].size() || authorIndex < (int)rawData[key.first].size())
 		{
-			if (currentEnd < rawData[key.first][authorIndex].line)
+			if (authorIndex == (int)rawData[key.first].size() || currentEnd < rawData[key.first][authorIndex].line)
 			{
 				hashesIndex++;
 				if (hashesIndex >= (int)hashes[key.first].size())
@@ -120,13 +123,12 @@ int NetworkUtils::getAuthors(std::map<HashData, std::vector<std::string>>& autho
 				}
 				currentEnd = hashes[key.first][hashesIndex]->lineNumberEnd;
 				dupes = std::map<std::string, int>();
-				continue;
 			}
 			if (hashes[key.first][hashesIndex]->lineNumber <=
 				rawData[key.first][authorIndex].line + rawData[key.first][authorIndex].numLines)
 			{
 				CodeBlock cd = rawData[key.first][authorIndex];
-				std::string toAdd = "?" + cd.commit->author + "?" + cd.commit->authorMail;
+				std::string toAdd = INNER_DELIMITER + cd.commit->author + INNER_DELIMITER + cd.commit->authorMail;
 				if (dupes[toAdd] == 0)
 				{
 					authorSize += toAdd.length();
@@ -140,7 +142,47 @@ int NetworkUtils::getAuthors(std::map<HashData, std::vector<std::string>>& autho
 	return authorSize;
 }
 
-const char* NetworkUtils::getAllDataFromHashes(std::vector<HashData> data, int& size, std::string header, AuthorData& authors)
+const char* NetworkUtils::getAuthorStringToSend(const std::map<std::string, int>& authors, int& size)
+{
+	// First, calculate the size, so we don't have to expand it later.
+	size = 0;
+	for (const auto& x : authors)
+	{
+		size += x.first.length() + 1;
+	}
+	char* data = new char[size];
+	// Create the string.
+	int pos = 0;
+	for (const auto& x : authors)
+	{
+		addStringToBuffer(data, pos, x.first);
+		data[pos++] = ENTRY_DELIMITER;
+	}
+	return data;
+}
+
+const char* NetworkUtils::getProjectsRequest(const std::map<std::pair<std::string, std::string>, int>& projects, int& size)
+{
+	// First, calculate the size, so we don't have to expand it later.
+	size = 0;
+	for (const auto& x : projects)
+	{
+		size += x.first.first.length() + x.first.second.length() + 2;
+	}
+	char* data = new char[size];
+	// Create the string.
+	int pos = 0;
+	for (auto x : projects)
+	{
+		addStringToBuffer(data, pos, x.first.first);
+		data[pos++] = INNER_DELIMITER;
+		addStringToBuffer(data, pos, x.first.second);
+		data[pos++] = ENTRY_DELIMITER;
+	}
+	return data;
+}
+
+const char* NetworkUtils::getAllDataFromHashes(std::vector<HashData>& data, int& size, std::string header, AuthorData& authors)
 {
 	// For getting the corresponding authors for each method,
 	// we first need to transform the list of hashes a bit.
@@ -165,7 +207,7 @@ const char* NetworkUtils::getAllDataFromHashes(std::vector<HashData> data, int& 
 	char* buffer = new char[size];
 	int pos = 0;
 	addStringToBuffer(buffer, pos, header);
-	buffer[pos++] = '\n';
+	buffer[pos++] = ENTRY_DELIMITER;
 
 	for (HashData hd : data)
 	{
@@ -174,7 +216,7 @@ const char* NetworkUtils::getAllDataFromHashes(std::vector<HashData> data, int& 
 	return buffer;
 }
 
-const char* NetworkUtils::getHashDataFromHashes(std::vector<HashData> data, int& size)
+const char* NetworkUtils::getHashDataFromHashes(std::vector<HashData>& data, int& size)
 {
 	// Calcutating the eventual size of the string before hand, 
 	// so that we don't have to increase the size of the buffer.
@@ -193,13 +235,13 @@ const char* NetworkUtils::getHashDataFromHashes(std::vector<HashData> data, int&
 	{
 		// hash
 		addStringToBuffer(buffer, pos, hd.hash);
-		buffer[pos++] = '\n';
+		buffer[pos++] = ENTRY_DELIMITER;
 	}
 
 	return buffer;
 }
 
-std::string NetworkUtils::generateHeader(std::vector<std::string> components)
+std::string NetworkUtils::generateHeader(std::vector<std::string> &components)
 {
 	if (components.size() == 0)
 	{
@@ -213,7 +255,7 @@ std::string NetworkUtils::generateHeader(std::vector<std::string> components)
 			// TODO: we might want to change this later, dependent on what the database wants.
 			components[i] = "-";
 		}
-		output.append('?' + components[i]);
+		output.append(INNER_DELIMITER + components[i]);
 	}
 	return output;
 }

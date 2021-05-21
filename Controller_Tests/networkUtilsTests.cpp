@@ -145,6 +145,27 @@ TEST(networkingGet_AllDataFromHashesTests, bigCommit)
 	EXPECT_EQ(size, target.size());
 }
 
+TEST(networkingGet_AllDataFromHashesTests, bigCommit2)
+{
+	std::vector<HashData> hashes = { HashData("HASH", "FUNCTION", "FILENAME", 5, 7), HashData("HASH1", "FUNCTION", "FILENAME", 8, 9), HashData("HASH2", "FUNCTION", "FILENAME", 11, 15) };
+	AuthorData authordata;
+	CommitData cd1 = CommitData();
+	cd1.author = "Author";
+	cd1.authorMail = "author@mail.com";
+
+	CodeBlock cb1 = CodeBlock();
+	cb1.commit = std::make_shared<CommitData>(cd1);
+	cb1.line = 4;
+	cb1.numLines = 16;
+	authordata["FILENAME"].push_back(cb1);
+
+	int size;
+	const char* buffer = NetworkUtils::getAllDataFromHashes(hashes, size, "HEADER", authordata);
+	std::string target = "HEADER\nHASH?FUNCTION?FILENAME?5?1?Author?author@mail.com\nHASH1?FUNCTION?FILENAME?8?1?Author?author@mail.com\nHASH2?FUNCTION?FILENAME?11?1?Author?author@mail.com\n";
+	EXPECT_EQ(target, std::string(buffer, buffer + size));
+	EXPECT_EQ(size, target.size());
+}
+
 TEST(networkingGet_AllDataFromHashesTests, empty)
 {
 	std::vector<HashData> hashes = { };
@@ -278,4 +299,64 @@ TEST(networkingGetHashDataFromHashesTests, bigger)
 	std::string target = "HASH0\nHASH1\nHASH2\nHASH3\n";
 	EXPECT_EQ(target, std::string(buffer, buffer + size));
 	EXPECT_EQ(target.size(), size);
+}
+
+TEST(networkingGetAuthorsToSend, two_authors)
+{
+	std::map<std::string, int> authors = { {"author1", 0}, {"author2", 0} };
+	int size;
+	const char* buffer = NetworkUtils::getAuthorStringToSend(authors, size);
+	std::string target = "author1\nauthor2\n";
+	EXPECT_EQ(size, target.size());
+	EXPECT_EQ(target, std::string(buffer, buffer + size));
+}
+
+TEST(networkingGetAuthorsToSend, empty)
+{
+	std::map<std::string, int> authors = {  };
+	int size;
+	const char* buffer = NetworkUtils::getAuthorStringToSend(authors, size);
+	std::string target = "";
+	EXPECT_EQ(target, std::string(buffer, buffer + size));
+	EXPECT_EQ(size, target.size());
+}
+
+TEST(networkingGetAuthorsToSend, more_authors)
+{
+	std::map<std::string, int> authors = { {"author1", 0}, {"author2", 0 }, {"author3" , 0 }, {"author4", 0}, {"author5", 0} };
+	int size;
+	const char* buffer = NetworkUtils::getAuthorStringToSend(authors, size);
+	std::string target = "author1\nauthor2\nauthor3\nauthor4\nauthor5\n";
+	EXPECT_EQ(target, std::string(buffer, buffer + size));
+	EXPECT_EQ(size, target.size());
+}
+
+TEST(networkingGetProjectToSend, two_projects)
+{
+	std::map<std::pair<std::string, std::string>, int> authors = { {{"project1", "12"}, 0}, {{"project2", "51"}, 0 } };
+	int size;
+	const char* buffer = NetworkUtils::getProjectsRequest(authors, size);
+	std::string target = "project1?12\nproject2?51\n";
+	EXPECT_EQ(target, std::string(buffer, buffer + size));
+	EXPECT_EQ(size, target.size());
+}
+
+TEST(networkingGetProjectToSend, empty)
+{
+	std::map<std::pair<std::string, std::string>, int> authors = { };
+	int size;
+	const char* buffer = NetworkUtils::getProjectsRequest(authors, size);
+	std::string target = "";
+	EXPECT_EQ(target, std::string(buffer, buffer + size));
+	EXPECT_EQ(size, target.size());
+}
+
+TEST(networkingGetProjectToSend, more_projects)
+{
+	std::map<std::pair<std::string, std::string>, int> authors = { {{"project1", "12"}, 0}, {{"project2", "51"}, 0 }, {{"project3", "69"}, 0 }, {{"project4", "42"}, 0 }, {{"project5", "420"}, 0 } };
+	int size;
+	const char* buffer = NetworkUtils::getProjectsRequest(authors, size);
+	std::string target = "project1?12\nproject2?51\nproject3?69\nproject4?42\nproject5?420\n";
+	EXPECT_EQ(target, std::string(buffer, buffer + size));
+	EXPECT_EQ(size, target.size());
 }

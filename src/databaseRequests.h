@@ -39,7 +39,7 @@ public:
 	/// </summary>
 	/// <param name="hashes">The hashes to be uploaded.</param>
 	/// <returns>The string that the database send back.</returns>
-	static std::string uploadHashes(std::vector<HashData> hashes, 
+	static std::string uploadHashes(std::vector<HashData> &hashes, 
 		ProjectMetaData metaData, 
 		AuthorData authorData, 
 		std::string apiIP = DATABASE_API_IP, 
@@ -50,7 +50,7 @@ public:
 	/// </summary>
 	/// <param name="hashes">The hashes you want to find in the database.</param>
 	/// <returns>The matches that the database gives back.</returns>
-	static std::string findMatches(std::vector<HashData> hashes, 
+	static std::string findMatches(std::vector<HashData> &hashes,
 		std::string apiIP = DATABASE_API_IP, 
 		std::string apiPort = DATABASE_API_PORT);
 
@@ -59,7 +59,7 @@ public:
 	/// </summary>
 	/// <param name="hashes">The hashes to be uploaded.</param>
 	/// <returns>The string that the database send back.</returns>
-	static std::string checkUploadHashes(std::vector<HashData> hashes, 
+	static std::string checkUploadHashes(std::vector<HashData> &hashes,
 		ProjectMetaData metaData, 
 		AuthorData authorData, 
 		std::string apiIP = DATABASE_API_IP, 

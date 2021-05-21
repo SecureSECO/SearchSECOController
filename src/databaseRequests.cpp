@@ -13,14 +13,14 @@ Utrecht University within the Software Project course.
 #include "Parser.h"
 
 
-std::string DatabaseRequests::uploadHashes(std::vector<HashData> hashes, ProjectMetaData metaData, AuthorData authorData, std::string apiIP, std::string apiPort)
+std::string DatabaseRequests::uploadHashes(std::vector<HashData> &hashes, ProjectMetaData metaData, AuthorData authorData, std::string apiIP, std::string apiPort)
 {
 	int dataSize = 0;
 	const char* rawData = NetworkUtils::getAllDataFromHashes(hashes, dataSize, metaData.getAsHeader(), authorData);
 	return execRequest(DATABASE_UPLOAD_REQUEST, rawData, dataSize, apiIP, apiPort);
 }
 
-std::string DatabaseRequests::findMatches(std::vector<HashData> hashes, std::string apiIP, std::string apiPort)
+std::string DatabaseRequests::findMatches(std::vector<HashData> &hashes, std::string apiIP, std::string apiPort)
 {
 	int dataSize = 0;
 	const char* rawData = NetworkUtils::getHashDataFromHashes(hashes, dataSize);
@@ -28,7 +28,7 @@ std::string DatabaseRequests::findMatches(std::vector<HashData> hashes, std::str
 	return execRequest(DATABASE_CHECK_REQUEST, rawData, dataSize, apiIP, apiPort);
 }
 
-std::string DatabaseRequests::checkUploadHashes(std::vector<HashData> hashes, ProjectMetaData metaData, AuthorData authorData, std::string apiIP, std::string apiPort)
+std::string DatabaseRequests::checkUploadHashes(std::vector<HashData> &hashes, ProjectMetaData metaData, AuthorData authorData, std::string apiIP, std::string apiPort)
 {
 	int dataSize = 0;
 	const char* rawData = NetworkUtils::getAllDataFromHashes(hashes, dataSize, metaData.getAsHeader(), authorData);

@@ -182,7 +182,7 @@ const char* NetworkUtils::getProjectsRequest(const std::map<std::pair<std::strin
 	return data;
 }
 
-const char* NetworkUtils::getAllDataFromHashes(std::vector<HashData> data, int& size, std::string header, AuthorData& authors)
+const char* NetworkUtils::getAllDataFromHashes(std::vector<HashData>& data, int& size, std::string header, AuthorData& authors)
 {
 	// For getting the corresponding authors for each method,
 	// we first need to transform the list of hashes a bit.
@@ -216,7 +216,7 @@ const char* NetworkUtils::getAllDataFromHashes(std::vector<HashData> data, int& 
 	return buffer;
 }
 
-const char* NetworkUtils::getHashDataFromHashes(std::vector<HashData> data, int& size)
+const char* NetworkUtils::getHashDataFromHashes(std::vector<HashData>& data, int& size)
 {
 	// Calcutating the eventual size of the string before hand, 
 	// so that we don't have to increase the size of the buffer.
@@ -241,7 +241,7 @@ const char* NetworkUtils::getHashDataFromHashes(std::vector<HashData> data, int&
 	return buffer;
 }
 
-std::string NetworkUtils::generateHeader(std::vector<std::string> components)
+std::string NetworkUtils::generateHeader(std::vector<std::string> &components)
 {
 	if (components.size() == 0)
 	{

@@ -39,7 +39,7 @@ public:
 	/// Even if the header is empty, it will still put an end line in the beginning.</param>
 	/// 
 	/// <returns>A char pointer to string with all the data in it.</returns>
-	static const char* getAllDataFromHashes(std::vector<HashData> data, int& size,
+	static const char* getAllDataFromHashes(std::vector<HashData> &data, int& size,
 		std::string header, AuthorData& authors);
 
 	/// <summary>
@@ -54,12 +54,12 @@ public:
 	/// The initial value that you give it will be ignored.</param>
 	/// 
 	/// <returns>A char pointer to string with all the data in it.</returns>
-	static const char* getHashDataFromHashes(std::vector<HashData> data, int& size);
+	static const char* getHashDataFromHashes(std::vector<HashData>& data, int& size);
 
 	/// <summary>
 	/// Will put all the strings that you pass it into a single string seperated by null chars.
 	/// </summary>
-	static std::string generateHeader(std::vector<std::string> components);
+	static std::string generateHeader(std::vector<std::string> &components);
 
 	/// <summary>
 	/// Transforms a list of hashes into a map. This map has as key a string

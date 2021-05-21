@@ -224,9 +224,6 @@ AuthorData getDummyAuthorData()
 	return authordata;
 }
 
-// TODO: Testing the print matches function probably needs to be done in a system test,
-// because of the networking that is involved.
-
 // ERROR TESTING
 int test_intc = 6;
 int* test_ints = new int[test_intc]

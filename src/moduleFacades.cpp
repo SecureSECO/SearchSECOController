@@ -4,14 +4,14 @@ Utrecht University within the Software Project course.
 © Copyright Utrecht University (Department of Information and Computing Sciences)
 */
 
-// Controller includes
+// Controller includes.
 #include "moduleFacades.h"
 #include "print.h"
 
-// Parser includes
+// Parser includes.
 #include "Parser.h"
 
-// Spider includes
+// Spider includes.
 #include "RunSpider.h"
 
 

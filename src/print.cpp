@@ -291,7 +291,8 @@ void printMatches::printSummary(std::map<std::string, int> authorCopiedForm,
 	print::printline("Projects found in database:");
 	for (const auto& x : projects)
 	{
-		print::printline("\t" + dbProjects[x.first.first][3] + ": " + std::to_string(x.second) + " (" + dbProjects[x.first.first][4] + ")");
+		print::printline("\t" + dbProjects[x.first.first][3] + ": " + std::to_string(x.second) 
+			+ " (" + dbProjects[x.first.first][4] + ")");
 	}
 	print::printline("\nLocal authors present in matches: ");
 	for (auto const& x : authorsCopied)

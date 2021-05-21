@@ -221,4 +221,9 @@ namespace error
 	/// Throws the "Not Implemented" error.
 	/// </summary>
 	void errNotImplemented(std::string message, const char* file, int line);
+
+	/// <summary>
+	/// Throws the "Invalid database response" error.
+	/// </summary>
+	void errInvalidDatabaseAnswer(const char* file, int line);
 };

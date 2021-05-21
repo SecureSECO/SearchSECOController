@@ -94,16 +94,14 @@ void Start::execute(Flags flags)
 		std::vector<std::string> splitted = utils::split(job, '?');
 		if (splitted.size() < 1)
 		{
-			print::warn("Database give invalid request.", __FILE__, __LINE__);
-			return;
+			error::errInvalidDatabaseAnswer(__FILE__, __LINE__);
 		}
 		if (splitted[0] == "Spider")
 		{
 			Upload upload = Upload();
 			if (splitted.size() < 2)
 			{
-				print::warn("Database give invalid request.", __FILE__, __LINE__);
-				return;
+				error::errInvalidDatabaseAnswer(__FILE__, __LINE__);
 			}
 			flags.mandatoryArgument = splitted[1];
 			upload.execute(flags);
@@ -112,8 +110,7 @@ void Start::execute(Flags flags)
 		{
 			if (splitted.size() < 2)
 			{
-				print::warn("Database give invalid request.", __FILE__, __LINE__);
-				return;
+				error::errInvalidDatabaseAnswer(__FILE__, __LINE__);
 			}
 			std::vector<std::string> crawled = moduleFacades::crawlRepositories(std::stoi(splitted[1]));
 			// TODO: Update this once the crawler gives back the crawlid.
@@ -123,6 +120,10 @@ void Start::execute(Flags flags)
 		else if (splitted[0] == "No Job")
 		{
 			std::this_thread::sleep_for(std::chrono::milliseconds(2000));
+		}
+		else
+		{
+
 		}
 
 		// Check if we need to stop.

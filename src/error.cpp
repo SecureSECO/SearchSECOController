@@ -38,6 +38,7 @@ enum errCode
 	parseCouldNotParseFlag,
 	invalidUrl,
 	notImplemented,
+	invalidDatabaseAnswer,
 };
 
 // Descriptions of the error messages.
@@ -267,6 +268,14 @@ void error::errNotImplemented(std::string funcname, const char* file, int line)
 {
 	err(notImplemented,
 		new std::string[1]{ funcname },
+		file, line
+	);
+}
+
+void error::errInvalidDatabaseAnswer(const char* file, int line)
+{
+	err(invalidDatabaseAnswer, 
+		new std::string[1]{ "Invalid database response." }, 
 		file, line
 	);
 }

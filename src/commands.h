@@ -24,7 +24,11 @@ Utrecht University within the Software Project course.
 class Command
 {
 public:
+	/// <summary>
+	/// Prints the help message corresponding to this command.
+	/// </summary>
 	std::string helpMessage();
+
 	/// <summary>
 	/// Will execute the given command with the flags you give it.
 	/// </summary>

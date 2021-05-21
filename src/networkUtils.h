@@ -106,6 +106,30 @@ public:
 	/// The initial value that you give it will be ignored.</param>
 	/// <returns>A char pointer to string with all the data in it.</returns>
 	static const char* getProjectsRequest(const std::map<std::pair<std::string, std::string>, int>& projects, int& size);
+
+	/// <summary>
+	/// Converts the list of urls into a string that can be send to the database,
+	/// so that they can be added as jobs to the job queue.
+	/// </summary>
+	/// <param name="url">The list of urls.</param>
+	/// <param name="size">This is basically a second return value. 
+	/// The size of the string that is returned will be put in here. 
+	/// The initial value that you give it will be ignored.</param>
+	/// <returns>A char pointer to string with all the data in it.</returns>
+	static const char* getJobsRequest(const std::vector<std::string>& urls, int& size);
+
+	/// <summary>
+	/// Converts the list of urls into a string that can be send to the database,
+	/// so that they can be added as jobs to the job queue.
+	/// This one is used for the automatic crawling.
+	/// </summary>
+	/// <param name="url">The list of urls.</param>
+	/// <param name="crawlid">The crawl id from where the next crawler is going to crawl.</parmam>
+	/// <param name="size">This is basically a second return value. 
+	/// The size of the string that is returned will be put in here. 
+	/// The initial value that you give it will be ignored.</param>
+	/// <returns>A char pointer to string with all the data in it.</returns>
+	static const char* getUploadCrawlRequest(const std::vector<std::string>& urls, int crawlid, int& size);
 private:
 	/// <summary>
 	/// Adds a string to a char* buffer.

@@ -16,6 +16,7 @@ Utrecht University within the Software Project course.
 
 // Spider includes
 #include "RunSpider.h"
+#include <iostream>
 
 
 #define DOWNLOAD_LOCATION "spiderDownloads"
@@ -84,7 +85,67 @@ void Start::execute(Flags flags)
 		+ std::to_string(flags.flag_ram) + "GB RAM";
 	print::log(msg, __FILE__, __LINE__);
 
-	error::errNotImplemented("start", __FILE__, __LINE__);
+	bool s = stop;
+	std::thread t(&readCommandLine, this);
+	while (!s)
+	{
+		std::string job = DatabaseRequests::getNextJob();
+
+		std::vector<std::string> splitted = utils::split(job, '?');
+		if (splitted.size() < 1)
+		{
+			print::warn("Database give invalid request.", __FILE__, __LINE__);
+			return;
+		}
+		if (splitted[0] == "Spider")
+		{
+			Upload upload = Upload();
+			if (splitted.size() < 2)
+			{
+				print::warn("Database give invalid request.", __FILE__, __LINE__);
+				return;
+			}
+			flags.mandatoryArgument = splitted[1];
+			upload.execute(flags);
+		}
+		else if (splitted[0] == "Crawl")
+		{
+			if (splitted.size() < 2)
+			{
+				print::warn("Database give invalid request.", __FILE__, __LINE__);
+				return;
+			}
+			std::vector<std::string> crawled = moduleFacades::crawlRepositories(std::stoi(splitted[1]));
+			// TODO: Update this once the crawler gives back the crawlid.
+			DatabaseRequests::addCrawledJobs(crawled, std::stoi(splitted[1]) + 100);
+			
+		}
+		else if (splitted[0] == "No Job")
+		{
+			std::this_thread::sleep_for(std::chrono::milliseconds(2000));
+		}
+
+		// Check if we need to stop.
+		mtx.lock();
+		s = stop;
+		mtx.unlock();
+	}
+}
+
+void Start::readCommandLine()
+{
+	while (true)
+	{
+		std::string command;
+		std::cin >> command;
+		if (command == "stop")
+		{
+			mtx.lock();
+			stop = true;
+			mtx.unlock();
+			break;
+		}
+	}
 }
 
 void Check::execute(Flags flags)

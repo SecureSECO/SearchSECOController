@@ -28,6 +28,9 @@ Utrecht University within the Software Project course.
 #define DATABASE_CHECK_REQUEST "chck"
 #define DATABASE_GET_AUTHORS_BY_ID "idau"
 #define DATABASE_GET_PROJECT_DATA "extp"
+#define DATABASE_ADD_JOB "upjb"
+#define DATABASE_CRAWL_DATA "upcd"
+#define DATABASE_GET_NEXT_JOB "gtjb"
 
 class NetworkHandler;
 
@@ -79,6 +82,29 @@ public:
 	/// </summary>
 	/// <returns>The string that the database send back.</returns>
 	static std::string getProjectData(const std::map<std::pair<std::string, std::string>, int> &projects,
+		std::string apiIP = DATABASE_API_IP,
+		std::string apiPort = DATABASE_API_PORT);
+
+	/// <summary>
+	/// Sends a get next job request to the api.
+	/// </summary>
+	/// <returns>The next job the worked node should do.</returns>
+	static std::string getNextJob(std::string apiIP = DATABASE_API_IP,
+		std::string apiPort = DATABASE_API_PORT);
+
+	/// <summary>
+	/// Sends a request to the api to add the given jobs to the job queue.
+	/// </summary>
+	static std::string addJobs(const std::vector<std::string>& jobs,
+		std::string apiIP = DATABASE_API_IP,
+		std::string apiPort = DATABASE_API_PORT);
+
+	/// <summary>
+	/// Adds the jobs the crawler found to the job queue.
+	/// </summary>
+	/// <param name="jobs">The jobs to be added.</param>
+	/// <param name="crawlid">The crawler id the crawler returns.</param>
+	static std::string addCrawledJobs(const std::vector<std::string>& jobs, int crawlid,
 		std::string apiIP = DATABASE_API_IP,
 		std::string apiPort = DATABASE_API_PORT);
 private:

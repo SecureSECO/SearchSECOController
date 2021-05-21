@@ -6,13 +6,13 @@ Utrecht University within the Software Project course.
 
 #pragma once
 
-// Controller includes
+// Controller includes.
 #include "flags.h"
 
-// Parser includes
+// Parser includes.
 #include "HashData.h"
 
-// Spider includes
+// Spider includes.
 #include "CodeBlock.h"
 
 
@@ -26,4 +26,6 @@ namespace moduleFacades
 	/// Will call the parser to parse the given repository.
 	/// </summary>
 	std::vector<HashData> parseRepository(std::string repository, Flags flags);
+
+	std::vector<std::string> crawlRepositories(int startId);
 };

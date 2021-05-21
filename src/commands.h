@@ -20,6 +20,7 @@ Utrecht University within the Software Project course.
 #include <map>
 #include <string>
 #include <vector>
+#include <mutex>
 
 class Command
 {
@@ -45,6 +46,10 @@ public:
 	/// Starts the worker node.
 	/// </summary>
 	void execute(Flags flags) override;
+private:
+	void readCommandLine();
+	bool stop = false;
+	std::mutex mtx;
 };
 
 class Check : public Command

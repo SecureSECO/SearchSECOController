@@ -360,3 +360,71 @@ TEST(networkingGetProjectToSend, more_projects)
 	EXPECT_EQ(target, std::string(buffer, buffer + size));
 	EXPECT_EQ(size, target.size());
 }
+
+TEST(networkingGetAddJobRequest, two_jobs)
+{
+	// TODO: Priority, once that has been added.
+	std::vector<std::string> authors = { "url1", "url2" };
+	int size;
+	const char* buffer = NetworkUtils::getJobsRequest(authors, size);
+	std::string target = "url1?1\nurl2?1\n";
+	EXPECT_EQ(target, std::string(buffer, buffer + size));
+	EXPECT_EQ(size, target.size());
+}
+
+TEST(networkingGetAddJobRequest, empty)
+{
+	std::vector<std::string> authors = {};
+	int size;
+	const char* buffer = NetworkUtils::getJobsRequest(authors, size);
+	std::string target = "";
+	EXPECT_EQ(target, std::string(buffer, buffer + size));
+	EXPECT_EQ(size, target.size());
+}
+
+TEST(networkingGetAddJobRequest, more_jobs)
+{
+	// TODO: Priority, once that has been added.
+	std::vector<std::string> authors = { "url1", "url2", "url3" , "url4" , "url5" };
+	int size;
+	const char* buffer = NetworkUtils::getJobsRequest(authors, size);
+	std::string target = "url1?1\nurl2?1\nurl3?1\nurl4?1\nurl5?1\n";
+	EXPECT_EQ(target, std::string(buffer, buffer + size));
+	EXPECT_EQ(size, target.size());
+}
+
+TEST(networkingGetCrawledRequest, two_jobs)
+{
+	// TODO: Priority, once that has been added.
+	std::vector<std::string> authors = { "url1", "url2" };
+	int crawlid = 10;
+	int size;
+	const char* buffer = NetworkUtils::getUploadCrawlRequest(authors, crawlid, size);
+	std::string target = std::to_string(crawlid) + "\nurl1?1\nurl2?1\n";
+	EXPECT_EQ(target, std::string(buffer, buffer + size));
+	EXPECT_EQ(size, target.size());
+}
+
+TEST(networkingGetCrawledRequest, empty)
+{
+	// TODO: Priority, once that has been added.
+	std::vector<std::string> authors = { };
+	int crawlid = 5;
+	int size;
+	const char* buffer = NetworkUtils::getUploadCrawlRequest(authors, crawlid, size);
+	std::string target = std::to_string(crawlid) + "\n";
+	EXPECT_EQ(target, std::string(buffer, buffer + size));
+	EXPECT_EQ(size, target.size());
+}
+
+TEST(networkingGetCrawledRequest, more_jobs)
+{
+	// TODO: Priority, once that has been added.
+	std::vector<std::string> authors = { "url1", "url2", "url3" , "url4" , "url5" };
+	int crawlid = 25;
+	int size;
+	const char* buffer = NetworkUtils::getUploadCrawlRequest(authors, crawlid, size);
+	std::string target = std::to_string(crawlid) + "\nurl1?1\nurl2?1\nurl3?1\nurl4?1\nurl5?1\n";
+	EXPECT_EQ(target, std::string(buffer, buffer + size));
+	EXPECT_EQ(size, target.size());
+}

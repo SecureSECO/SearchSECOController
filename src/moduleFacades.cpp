@@ -4,16 +4,18 @@ Utrecht University within the Software Project course.
 © Copyright Utrecht University (Department of Information and Computing Sciences)
 */
 
-// Controller includes
+// Controller includes.
 #include "moduleFacades.h"
 #include "print.h"
 
-// Parser includes
+// Parser includes.
 #include "Parser.h"
 
-// Spider includes
+// Spider includes.
 #include "RunSpider.h"
 
+// Crawler includes.
+#include "RunCrawler.h"
 
 AuthorData moduleFacades::downloadRepository(std::string repository, Flags flags, std::string downloadPath)
 {
@@ -32,4 +34,16 @@ std::vector<HashData> moduleFacades::parseRepository(std::string repository, Fla
 		utils::replace(hashes[i].fileName, '/', '\\');
 	}
 	return hashes;
+}
+
+std::vector<std::string> moduleFacades::crawlRepositories(int startId)
+{
+	print::debug("Calling the crawler to crawl a repositories", __FILE__, __LINE__);
+	int error = 0;
+	auto urls = RunCrawler::crawlRepositories(CrawlableSource::GITHUB, error);
+	if (error != 0)
+	{
+		print::warn("Crawler returned with error code " + std::to_string(error), __FILE__, __LINE__);
+	}
+	return urls;
 }

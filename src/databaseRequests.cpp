@@ -70,9 +70,9 @@ std::string DatabaseRequests::checkResponseCode(std::string data)
 		print::log("Database request succesfull.", __FILE__, __LINE__);
 		return info;
 	}
-	else if (statusCode == "502") 
+	else if (statusCode == "400") 
 	{
-		error::errDBInternal(info, __FILE__, __LINE__);
+		error::errDBBadRequest(info, __FILE__, __LINE__);
 	}
 	else 
 	{

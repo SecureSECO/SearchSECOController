@@ -40,7 +40,7 @@ enum errCode
 	notImplemented,
 	// Database related errors start at 400.
 	dbConnection = 400,
-	dbInternal,
+	dbBadRequest,
 	dbUnknownRepsonse,
 };
 
@@ -140,11 +140,11 @@ std::string descConnectionError(std::string* strs)
 }
 
 // strs: [message]
-std::string descDBInternal(std::string* strs) 
+std::string descDBBadRequest(std::string* strs) 
 {
 	if (strs[0] == "") 
 	{
-		return "Database threw internal error, please try again later.";
+		return "Something was wrong with the sent request, please try again later.";
 	}
 
 	return "Following error occured in the database: " + strs[0];
@@ -174,7 +174,7 @@ std::map <int, std::function<std::string(std::string*)>> errDesc =
 	{invalidUrl, descInvalidUrl},
 	{notImplemented, descErrNotImplemented},
 	{dbConnection, descConnectionError},
-	{dbInternal, descDBInternal},
+	{dbBadRequest, descDBBadRequest},
 	{dbUnknownRepsonse, descDBUnkownResponse}
 	
 };
@@ -310,9 +310,9 @@ void error::errDBConnection(std::string message, const char* file, int line)
 	);
 }
 
-void error::errDBInternal(std::string message, const char* file, int line) 
+void error::errDBBadRequest(std::string message, const char* file, int line) 
 {
-	err(dbInternal,
+	err(dbBadRequest,
 		new std::string[1]{ message },
 		file, line
 	);

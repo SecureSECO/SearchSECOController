@@ -19,11 +19,14 @@ Utrecht University within the Software Project course.
 
 
 #define DOWNLOAD_LOCATION "spiderDownloads"
+#define CONTROLLER_THREAD_NAME "controller"
 
 std::string Command::helpMessage()
 {
 	return helpMessageText;
 }
+
+#pragma region Start
 
 Start::Start()
 {
@@ -37,6 +40,24 @@ Start::Start()
 			-r --ram : RAM cap(in GB) (default no cap))";
 }
 
+void Start::logPreExecutionMessage(int fCPU, int fRAM, const char* file, int line)
+{
+	auto msg = "Starting a worker node with "
+		+ std::to_string(fCPU) + " cpu cores and "
+		+ std::to_string(fRAM) + "GB RAM";
+	print::log(msg, file, line);
+}
+
+void Start::logPostExecutionMessage(const char* file, int line)
+{
+	loguru::set_thread_name(CONTROLLER_THREAD_NAME);
+	print::log("Successfully terminated the worker node", file, line);
+}
+
+#pragma endregion Start
+
+#pragma region Check
+
 Check::Check()
 {
 	this->helpMessageText = R"(
@@ -48,6 +69,26 @@ Check::Check()
 			-s --save: Save the parser results for later use.)";
 }
 
+std::string Check::partialLogMessage(std::string url)
+{
+	return " the code from the project at " + url + " against the SearchSECO database";
+}
+
+void Check::logPreExecutionMessage(std::string url, const char* file, int line)
+{
+	print::log("Checking" + Check::partialLogMessage(url), file, line);
+}
+
+void Check::logPostExecutionMessage(std::string url, const char* file, int line)
+{
+	loguru::set_thread_name(CONTROLLER_THREAD_NAME);
+	print::log("Successfully checked" + Check::partialLogMessage(url), file, line);
+}
+
+#pragma endregion Check
+
+#pragma region Upload
+
 Upload::Upload()
 {
 	this->helpMessageText = R"(
@@ -57,6 +98,24 @@ Upload::Upload()
 		Optionals:
 			-s --save: Save the parser results for later use.)";
 }
+
+std::string Upload::partialLogMessage(std::string url)
+{
+	return " the code from the project at " + url + " to the SearchSECO database";
+}
+
+void Upload::logPreExecutionMessage(std::string url, const char* file, int line)
+{
+	print::log("Uploading" + Upload::partialLogMessage(url), file, line);
+}
+
+void Upload::logPostExecutionMessage(std::string url, const char* file, int line)
+{
+	loguru::set_thread_name(CONTROLLER_THREAD_NAME);
+	print::log("Successfully uploaded" + Upload::partialLogMessage(url), file, line);
+}
+
+#pragma endregion Upload
 
 CheckUpload::CheckUpload()
 {
@@ -69,6 +128,8 @@ CheckUpload::CheckUpload()
 			-s --save: Save the parser results for later use.)";
 }
 
+#pragma region Update
+
 Update::Update()
 {
 	this->helpMessageText = R"(
@@ -77,81 +138,92 @@ Update::Update()
 			The version you want to update to. If no version is specified, the most recent version will be used.)";
 }
 
+void Update::logPreExecutionMessage(std::string targetVersion, const char* file, int line)
+{
+	print::log("Attempting to update searchseco to version " + targetVersion, file, line);
+}
+
+void Update::logPostExecutionMessage(const char* file, int line)
+{
+	loguru::set_thread_name(CONTROLLER_THREAD_NAME);
+	print::log("Succesfully updated searchseco and its submodules", file, line);
+}
+
+#pragma endregion Update
+
 void Start::execute(Flags flags)
 {
-	auto msg = "Starting a worker node with "
-		+ std::to_string(flags.flag_cpu) + " cpu cores and "
-		+ std::to_string(flags.flag_ram) + "GB RAM";
-	print::log(msg, __FILE__, __LINE__);
+	int
+		fCPU = flags.flag_cpu,
+		fRAM = flags.flag_ram;
+
+	Start::logPreExecutionMessage(fCPU, fRAM, __FILE__, __LINE__);
 
 	error::errNotImplemented("start", __FILE__, __LINE__);
+
+	Start::logPostExecutionMessage(__FILE__, __LINE__);
 }
 
 void Check::execute(Flags flags)
 {
-	auto msg = " the code from the project at "
-		+ flags.mandatoryArgument + " against the SearchSECO database";
-	print::log("Checking" + msg, __FILE__, __LINE__);
+	auto url = flags.mandatoryArgument;
 
-	AuthorData authorData = moduleFacades::downloadRepository(flags.mandatoryArgument, flags, DOWNLOAD_LOCATION);
+	this->logPreExecutionMessage(url, __FILE__, __LINE__);
+
+	AuthorData authorData = moduleFacades::downloadRepository(url, flags, DOWNLOAD_LOCATION);
 	std::vector<HashData> hashes = moduleFacades::parseRepository(DOWNLOAD_LOCATION, flags);
+
 	// Calling the function that will print all the matches for us.
 	printMatches::printHashMatches(hashes, DatabaseRequests::findMatches(hashes), authorData);
 	//TODO: delete temp folder.
 
-	// Reset thread name to controller, and log a success message
-	loguru::set_thread_name("controller");
-	print::log("Sucessfully checked" + msg, __FILE__, __LINE__);
+	this->logPostExecutionMessage(url, __FILE__, __LINE__);
 }
 
 void Upload::execute(Flags flags)
 {
-	auto msg = " the code from the project at "
-		+ flags.mandatoryArgument + " to the SearchSECO database";
-	print::log("Uploading" + msg, __FILE__, __LINE__);
+	auto url = flags.mandatoryArgument;
 
-	AuthorData authorData = moduleFacades::downloadRepository(flags.mandatoryArgument, flags, DOWNLOAD_LOCATION);
+	this->logPreExecutionMessage(url, __FILE__, __LINE__);
+
+	AuthorData authorData = moduleFacades::downloadRepository(url, flags, DOWNLOAD_LOCATION);
 	std::vector<HashData> hashes = moduleFacades::parseRepository(DOWNLOAD_LOCATION, flags);
+
 	// Uploading the hashes.
-	ProjectMetaData meta = utils::getProjectMetadata(flags.mandatoryArgument);
+	ProjectMetaData meta = utils::getProjectMetadata(url);
 	print::printline(DatabaseRequests::uploadHashes(hashes, meta, authorData));
 
-	// Reset thread name to controller, and log a success message
-	loguru::set_thread_name("controller");
-	print::log("Successfully uploaded" + msg, __FILE__, __LINE__);
+	this->logPostExecutionMessage(url, __FILE__, __LINE__);
 }
 
 void CheckUpload::execute(Flags flags)
 {
-	auto msg = " the code from the project at "
-		+ flags.mandatoryArgument + " against the SearchSECO database";
-	print::log("Checking" + msg, __FILE__, __LINE__);
+	auto url = flags.mandatoryArgument;
 
-	AuthorData authorData = moduleFacades::downloadRepository(flags.mandatoryArgument, flags, DOWNLOAD_LOCATION);
+	Check::logPreExecutionMessage(url, __FILE__, __LINE__);
+
+	AuthorData authorData = moduleFacades::downloadRepository(url, flags, DOWNLOAD_LOCATION);
 	std::vector<HashData> hashes = moduleFacades::parseRepository(DOWNLOAD_LOCATION, flags);
 
-	// Reset thread name to controller, and log a success message
-	loguru::set_thread_name("controller");
-	print::log("Successully checked" + msg, __FILE__, __LINE__);
+	Check::logPostExecutionMessage(url, __FILE__, __LINE__);
 
-	ProjectMetaData metaData = utils::getProjectMetadata(flags.mandatoryArgument);
-	// Uploading the hashes.
-	msg = " the code from the project at "
-		+ flags.mandatoryArgument + " to the SearchSECO database";
-	print::log("Uploading" + msg, __FILE__, __LINE__);
+
+	Upload::logPreExecutionMessage(url, __FILE__, __LINE__);
+
+	ProjectMetaData metaData = utils::getProjectMetadata(url);
 
 	printMatches::printHashMatches(hashes, DatabaseRequests::checkUploadHashes(hashes, metaData, authorData), authorData);
 
-	// Reset thread name to controller, and log a success message
-	loguru::set_thread_name("controller");
-	print::log("Successfully uploaded" + msg, __FILE__, __LINE__);
+	Upload::logPostExecutionMessage(url, __FILE__, __LINE__);
 }
 
 void Update::execute(Flags flags)
 {
-	auto msg = "Attempting to update searchseco to version "
-		+ flags.mandatoryArgument;
-	print::log(msg, __FILE__, __LINE__);
+	auto target = flags.mandatoryArgument;
+
+	Update::logPreExecutionMessage(target, __FILE__, __LINE__);
 
 	error::errNotImplemented("update", __FILE__, __LINE__);
+
+	Update::logPostExecutionMessage(__FILE__, __LINE__);
 }

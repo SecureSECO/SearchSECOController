@@ -43,6 +43,11 @@ namespace print
 	void loguruSetSilent();
 
 	/// <summary>
+	/// Resets the thread name back to our name in loguru. Used when control is returned to us.
+	/// </summary>
+	void loguruResetThreadName();
+
+	/// <summary>
 	/// Prints a given string to the console, followed by a newline character.
 	/// </summary>
 	/// <param name="str">The string to output.</param>

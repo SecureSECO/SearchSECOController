@@ -1,7 +1,7 @@
 /*
 This program has been developed by students from the bachelor Computer Science at
 Utrecht University within the Software Project course.
-© Copyright Utrecht University (Department of Information and Computing Sciences)
+ï¿½ Copyright Utrecht University (Department of Information and Computing Sciences)
 */
 
 // Controller includes
@@ -18,6 +18,7 @@ boost::asio::io_context NetworkHandler::ioContext;
 
 void NetworkHandler::openConnection(std::string server, std::string port)
 {
+	print::debug("Opening a new connection", __FILE__, __LINE__);
 	std::string serverApi = server;
 
 	tcp::resolver resolver(ioContext);
@@ -39,6 +40,7 @@ void NetworkHandler::sendData(const char* data, int dataLength)
 
 std::string NetworkHandler::receiveData()
 {
+	print::debug("Listening for a database response", __FILE__, __LINE__);
 	// The buffer we are going to return as a string.
 	std::vector<char> ret = std::vector<char>();
 	for (;;)
@@ -46,8 +48,9 @@ std::string NetworkHandler::receiveData()
 		boost::array<char, 128> buf;
 		boost::system::error_code error;
 
-		// Read incomming data.
+		// Read incoming data.
 		size_t len = socket.read_some(boost::asio::buffer(buf), error);
+		print::debug("Receiving " + std::to_string(len) + " bytes", __FILE__, __LINE__);
 
 		// Add it to out buffer.
 		for (int i = 0; i < len; i++)

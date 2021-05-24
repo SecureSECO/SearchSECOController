@@ -25,20 +25,24 @@ void termination::failure()
 
 void termination::failureCrawler(int code, const char* file, int line)
 {
+	print::loguruResetThreadName();
 	error::errSubmoduleFatalFailureCrawler(file, line);
 }
 
 void termination::failureSpider(int code, const char* file, int line)
 {
+	print::loguruResetThreadName();
 	error::errSubmoduleFatalFailureSpider(file, line);
 }
 
 void termination::failureParser(int code, const char* file, int line)
 {
+	print::loguruResetThreadName();
 	error::errSubmoduleFatalFailureParser(file, line);
 }
 
 void termination::failureDatabase(int code, const char* file, int line)
 {
+	print::loguruResetThreadName();
 	error::errSubmoduleFatalFailureDatabase(file, line);
 }

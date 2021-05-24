@@ -33,6 +33,7 @@ set(CONTROLLER_HEADER_LIST
   print.h
   projectMetadata.h
   regexWrapper.h
+  termination.h
   utils.h
   loguru/loguru.hpp
 )
@@ -50,6 +51,7 @@ add_library(controller
   parser2.cpp
   print.cpp
   regexWrapper.cpp
+  termination.cpp
   utils.cpp
   loguru/loguru.cpp
   ${CONTROLLER_HEADER_LIST}

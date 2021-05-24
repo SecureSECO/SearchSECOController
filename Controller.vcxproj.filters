@@ -45,12 +45,16 @@
     <ClCompile Include="src\regexWrapper.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\termination.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="src\utils.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\loguru\loguru.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\loguru\loguru.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\commandFactory.h">
@@ -90,14 +94,15 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\regexWrapper.h">
-    <Filter>Header Files</Filter>
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\termination.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\utils.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\loguru\loguru.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
+    
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

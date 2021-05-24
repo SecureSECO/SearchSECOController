@@ -19,7 +19,6 @@ Utrecht University within the Software Project course.
 
 
 #define DOWNLOAD_LOCATION "spiderDownloads"
-#define CONTROLLER_THREAD_NAME "controller"
 
 std::string Command::helpMessage()
 {
@@ -50,7 +49,7 @@ void Start::logPreExecutionMessage(int fCPU, int fRAM, const char* file, int lin
 
 void Start::logPostExecutionMessage(const char* file, int line)
 {
-	loguru::set_thread_name(CONTROLLER_THREAD_NAME);
+	print::loguruResetThreadName();
 	print::log("Successfully terminated the worker node", file, line);
 }
 
@@ -94,7 +93,7 @@ void Check::logPreExecutionMessage(std::string url, const char* file, int line)
 
 void Check::logPostExecutionMessage(std::string url, const char* file, int line)
 {
-	loguru::set_thread_name(CONTROLLER_THREAD_NAME);
+	print::loguruResetThreadName();
 	print::log("Successfully checked" + Check::partialLogMessage(url), file, line);
 }
 
@@ -140,7 +139,7 @@ void Upload::logPreExecutionMessage(std::string url, const char* file, int line)
 
 void Upload::logPostExecutionMessage(std::string url, const char* file, int line)
 {
-	loguru::set_thread_name(CONTROLLER_THREAD_NAME);
+	print::loguruResetThreadName();
 	print::log("Successfully uploaded" + Upload::partialLogMessage(url), file, line);
 }
 
@@ -215,7 +214,7 @@ void Update::logPreExecutionMessage(std::string targetVersion, const char* file,
 
 void Update::logPostExecutionMessage(const char* file, int line)
 {
-	loguru::set_thread_name(CONTROLLER_THREAD_NAME);
+	print::loguruResetThreadName();
 	print::log("Succesfully updated searchseco and its submodules", file, line);
 }
 

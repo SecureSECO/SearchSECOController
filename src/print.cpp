@@ -76,6 +76,11 @@ void print::loguruSetSilent()
 	loguru::g_stderr_verbosity = loguru::Verbosity_OFF;
 }
 
+void print::loguruResetThreadName() 
+{
+	loguru::set_thread_name("controller");
+}
+
 #pragma endregion
 
 

@@ -7,6 +7,7 @@ Utrecht University within the Software Project course.
 // Controller includes.
 #include "moduleFacades.h"
 #include "print.h"
+#include "termination.h"
 
 // Crawler includes
 #include "RunCrawler.h"
@@ -22,14 +23,31 @@ AuthorData moduleFacades::downloadRepository(std::string repository, Flags flags
 {
 	print::debug("Calling the spider to download a repository", __FILE__, __LINE__);
 
-	return RunSpider::runSpider(repository, downloadPath, flags.flag_cpu, flags.flag_branch);
+	int code = 0;
+
+	auto authorData = RunSpider::runSpider(repository, downloadPath, flags.flag_cpu, flags.flag_branch);
+
+	if (code != 0)
+	{
+		termination::failureSpider(code);
+	}
+
+	return authorData;
 }
 
 std::vector<HashData> moduleFacades::parseRepository(std::string repository, Flags flags)
 {
 	print::debug("Calling the parser to parse a repository", __FILE__, __LINE__);
 
+	int code = 0;
+
 	auto hashes = Parser::parse(repository, flags.flag_cpu);
+
+	if (code != 0)
+	{
+		termination::failureParser(code);
+	}
+
 	for (int i = 0; i < hashes.size(); i++)
 	{
 		utils::replace(hashes[i].fileName, '/', '\\');
@@ -39,8 +57,16 @@ std::vector<HashData> moduleFacades::parseRepository(std::string repository, Fla
 
 ProjectMetaData moduleFacades::getProjectMetadata(std::string url)
 {
+	print::debug("Calling the crawler to get the metadata from a project", __FILE__, __LINE__);
+
 	int code;
+
 	ProjectMetadata pmd = RunCrawler::findMetadata(url, code);
+
+	if (code != 0)
+	{
+		termination::failureCrawler(code);
+	}
 
 	// TODO: very temporary hashing.
 	std::string id = pmd.authorMail + pmd.authorName + pmd.version;

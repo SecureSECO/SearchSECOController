@@ -38,6 +38,10 @@ enum errCode
 	parseIncorrectLonghandFlag,
 	parseCouldNotParseFlag,
 	invalidUrl,
+	submoduleFailureCrawler,
+	submoduleFailureSpider,
+	submoduleFailureParser,
+	submoduleFailureDatabase,
 	notImplemented,
 };
 
@@ -130,6 +134,30 @@ std::string descParseCouldNotParseFlag(std::string* strs)
 	return strs[0] + " could not be parsed";
 }
 
+// no strs
+std::string descSubmoduleFailureCrawler(std::string* strs)
+{
+	return "The Crawler ran into a fatal error. Terminating execution.";
+}
+
+// no strs
+std::string descSubmoduleFailureSpider(std::string* strs)
+{
+	return "The Spider ran into a fatal error. Terminating execution.";
+}
+
+// no strs
+std::string descSubmoduleFailureParser(std::string* strs)
+{
+	return "The Parser ran into a fatal error. Terminating execution.";
+}
+
+// no strs
+std::string descSubmoduleFailureDatabase(std::string* strs)
+{
+	return "The Database ran into a fatal error. Terminating execution.";
+}
+
 // Maps an error code to a description.
 std::map <int, std::function<std::string(std::string*)>> errDesc =
 {
@@ -146,6 +174,10 @@ std::map <int, std::function<std::string(std::string*)>> errDesc =
 	{parseIncorrectLonghandFlag, descParseIncorrectLonghandFlag},
 	{parseCouldNotParseFlag, descParseCouldNotParseFlag},
 	{invalidUrl, descInvalidUrl},
+	{submoduleFailureCrawler, descSubmoduleFailureCrawler},
+	{submoduleFailureSpider, descSubmoduleFailureSpider},
+	{submoduleFailureParser, descSubmoduleFailureParser},
+	{submoduleFailureDatabase, descSubmoduleFailureDatabase},
 	{notImplemented, descErrNotImplemented},
 };
 
@@ -260,6 +292,30 @@ void error::errInvalidUrl(std::string url, const char* file, int line)
 		new std::string[1] { url },
 		file, line
 	);
+}
+
+void error::errSubmoduleFatalFailureCrawler(const char* file, int line)
+{
+	err(submoduleFailureCrawler,
+		{}, file, line);
+}
+
+void error::errSubmoduleFatalFailureSpider(const char* file, int line)
+{
+	err(submoduleFailureSpider,
+		{}, file, line);
+}
+
+void error::errSubmoduleFatalFailureParser(const char* file, int line)
+{
+	err(submoduleFailureParser,
+		{}, file, line);
+}
+
+void error::errSubmoduleFatalFailureDatabase(const char* file, int line)
+{
+	err(submoduleFailureDatabase,
+		{}, file, line);
 }
 
 void error::errNotImplemented(std::string funcname, const char* file, int line)

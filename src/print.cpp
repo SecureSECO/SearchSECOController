@@ -71,6 +71,11 @@ void print::warn(std::string msg, const char* file, int line)
 	loguru::log(loguru::Verbosity_WARNING, file, line, "%s", msg.c_str());
 }
 
+void print::loguruSetSilent()
+{
+	loguru::g_stderr_verbosity = loguru::Verbosity_OFF;
+}
+
 #pragma endregion
 
 

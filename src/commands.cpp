@@ -54,6 +54,19 @@ void Start::logPostExecutionMessage(const char* file, int line)
 	print::log("Successfully terminated the worker node", file, line);
 }
 
+void Start::execute(Flags flags)
+{
+	int
+		fCPU = flags.flag_cpu,
+		fRAM = flags.flag_ram;
+
+	Start::logPreExecutionMessage(fCPU, fRAM, __FILE__, __LINE__);
+
+	error::errNotImplemented("start", __FILE__, __LINE__);
+
+	Start::logPostExecutionMessage(__FILE__, __LINE__);
+}
+
 #pragma endregion Start
 
 #pragma region Check
@@ -83,6 +96,22 @@ void Check::logPostExecutionMessage(std::string url, const char* file, int line)
 {
 	loguru::set_thread_name(CONTROLLER_THREAD_NAME);
 	print::log("Successfully checked" + Check::partialLogMessage(url), file, line);
+}
+
+void Check::execute(Flags flags)
+{
+	auto url = flags.mandatoryArgument;
+
+	this->logPreExecutionMessage(url, __FILE__, __LINE__);
+
+	AuthorData authorData = moduleFacades::downloadRepository(url, flags, DOWNLOAD_LOCATION);
+	std::vector<HashData> hashes = moduleFacades::parseRepository(DOWNLOAD_LOCATION, flags);
+
+	// Calling the function that will print all the matches for us.
+	printMatches::printHashMatches(hashes, DatabaseRequests::findMatches(hashes), authorData);
+	//TODO: delete temp folder.
+
+	this->logPostExecutionMessage(url, __FILE__, __LINE__);
 }
 
 #pragma endregion Check
@@ -115,71 +144,6 @@ void Upload::logPostExecutionMessage(std::string url, const char* file, int line
 	print::log("Successfully uploaded" + Upload::partialLogMessage(url), file, line);
 }
 
-#pragma endregion Upload
-
-CheckUpload::CheckUpload()
-{
-	this->helpMessageText = R"(
-	checkupload: Takes a github url, and does both the check and upload.
-		Arguments:
-			Url to a github repository.
-		Optionals:
-			-o --output: Console to print to the console, else you can give a file path.  
-			-s --save: Save the parser results for later use.)";
-}
-
-#pragma region Update
-
-Update::Update()
-{
-	this->helpMessageText = R"(
-	update: Updates the program.
-		Optionals:
-			The version you want to update to. If no version is specified, the most recent version will be used.)";
-}
-
-void Update::logPreExecutionMessage(std::string targetVersion, const char* file, int line)
-{
-	print::log("Attempting to update searchseco to version " + targetVersion, file, line);
-}
-
-void Update::logPostExecutionMessage(const char* file, int line)
-{
-	loguru::set_thread_name(CONTROLLER_THREAD_NAME);
-	print::log("Succesfully updated searchseco and its submodules", file, line);
-}
-
-#pragma endregion Update
-
-void Start::execute(Flags flags)
-{
-	int
-		fCPU = flags.flag_cpu,
-		fRAM = flags.flag_ram;
-
-	Start::logPreExecutionMessage(fCPU, fRAM, __FILE__, __LINE__);
-
-	error::errNotImplemented("start", __FILE__, __LINE__);
-
-	Start::logPostExecutionMessage(__FILE__, __LINE__);
-}
-
-void Check::execute(Flags flags)
-{
-	auto url = flags.mandatoryArgument;
-
-	this->logPreExecutionMessage(url, __FILE__, __LINE__);
-
-	AuthorData authorData = moduleFacades::downloadRepository(url, flags, DOWNLOAD_LOCATION);
-	std::vector<HashData> hashes = moduleFacades::parseRepository(DOWNLOAD_LOCATION, flags);
-
-	// Calling the function that will print all the matches for us.
-	printMatches::printHashMatches(hashes, DatabaseRequests::findMatches(hashes), authorData);
-	//TODO: delete temp folder.
-
-	this->logPostExecutionMessage(url, __FILE__, __LINE__);
-}
-
 void Upload::execute(Flags flags)
 {
 	auto url = flags.mandatoryArgument;
@@ -194,6 +158,21 @@ void Upload::execute(Flags flags)
 	print::printline(DatabaseRequests::uploadHashes(hashes, meta, authorData));
 
 	this->logPostExecutionMessage(url, __FILE__, __LINE__);
+}
+
+#pragma endregion Upload
+
+#pragma region CheckUpload
+
+CheckUpload::CheckUpload()
+{
+	this->helpMessageText = R"(
+	checkupload: Takes a github url, and does both the check and upload.
+		Arguments:
+			Url to a github repository.
+		Optionals:
+			-o --output: Console to print to the console, else you can give a file path.  
+			-s --save: Save the parser results for later use.)";
 }
 
 void CheckUpload::execute(Flags flags)
@@ -217,6 +196,29 @@ void CheckUpload::execute(Flags flags)
 	Upload::logPostExecutionMessage(url, __FILE__, __LINE__);
 }
 
+#pragma endregion CheckUpload
+
+#pragma region Update
+
+Update::Update()
+{
+	this->helpMessageText = R"(
+	update: Updates the program.
+		Optionals:
+			The version you want to update to. If no version is specified, the most recent version will be used.)";
+}
+
+void Update::logPreExecutionMessage(std::string targetVersion, const char* file, int line)
+{
+	print::log("Attempting to update searchseco to version " + targetVersion, file, line);
+}
+
+void Update::logPostExecutionMessage(const char* file, int line)
+{
+	loguru::set_thread_name(CONTROLLER_THREAD_NAME);
+	print::log("Succesfully updated searchseco and its submodules", file, line);
+}
+
 void Update::execute(Flags flags)
 {
 	auto target = flags.mandatoryArgument;
@@ -227,3 +229,5 @@ void Update::execute(Flags flags)
 
 	Update::logPostExecutionMessage(__FILE__, __LINE__);
 }
+
+#pragma endregion Update

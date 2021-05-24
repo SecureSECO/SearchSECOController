@@ -38,6 +38,11 @@ namespace print
 	void warn(std::string msg, const char* file, int line);
 
 	/// <summary>
+	/// Sets loguru to "silent mode", i.e. it will not log anything to stderr.
+	/// </summary>
+	void loguruSetSilent();
+
+	/// <summary>
 	/// Prints a given string to the console, followed by a newline character.
 	/// </summary>
 	/// <param name="str">The string to output.</param>

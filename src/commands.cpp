@@ -98,29 +98,15 @@ void Start::execute(Flags flags)
 		}
 		if (splitted[0] == "Spider")
 		{
-			print::log("Start parsing and uploading " + splitted[1], __FILE__, __LINE__);
-			Upload upload = Upload();
-			if (splitted.size() < 2)
-			{
-				error::errInvalidDatabaseAnswer(__FILE__, __LINE__);
-			}
-			flags.mandatoryArgument = splitted[1];
-			upload.execute(flags);
+			handleSpiderRequest(splitted, flags);
 		}
 		else if (splitted[0] == "Crawl")
 		{
-			print::log("Start crawling", __FILE__, __LINE__);
-			if (splitted.size() < 2)
-			{
-				error::errInvalidDatabaseAnswer(__FILE__, __LINE__);
-			}
-			CrawlData crawled = moduleFacades::crawlRepositories(std::stoi(splitted[1]));
-			DatabaseRequests::addCrawledJobs(crawled);
-			
+			handleCrawlRequest(splitted, flags);
 		}
 		else if (splitted[0] == "No Job")
 		{
-			print::log("Waiting for a lob to be available", __FILE__, __LINE__);
+			print::log("Waiting for a job to be available", __FILE__, __LINE__);
 			std::this_thread::sleep_for(std::chrono::milliseconds(5000));
 		}
 		else
@@ -134,6 +120,31 @@ void Start::execute(Flags flags)
 		mtx.unlock();
 	}
 	t.join();
+}
+
+void Start::handleCrawlRequest(std::vector<std::string> &splitted, Flags flags)
+{
+	print::log("Start crawling", __FILE__, __LINE__);
+	if (splitted.size() < 2)
+	{
+		error::errInvalidDatabaseAnswer(__FILE__, __LINE__);
+	}
+	CrawlData crawled = moduleFacades::crawlRepositories(std::stoi(splitted[1]));
+	DatabaseRequests::addCrawledJobs(crawled);
+}
+
+void Start::handleSpiderRequest(std::vector<std::string> &splitted, Flags flags)
+{
+	print::log("Start parsing and uploading " + splitted[1], __FILE__, __LINE__);
+	Upload upload = Upload();
+	if (splitted.size() < 2)
+	{
+		error::errInvalidDatabaseAnswer(__FILE__, __LINE__);
+	}
+	// TODO: Tempory conversion of the urls. Crawler should be doing this.
+	flags.mandatoryArgument = "https://github.com" + splitted[1].substr(28);
+	//flags.mandatoryArgument = splitted[1];
+	upload.execute(flags);
 }
 
 void Start::readCommandLine()

@@ -47,6 +47,8 @@ public:
 	/// </summary>
 	void execute(Flags flags) override;
 private:
+	void handleCrawlRequest(std::vector<std::string> &splitted, Flags flags);
+	void handleSpiderRequest(std::vector<std::string> &splitted, Flags flags);
 	void readCommandLine();
 	bool stop = false;
 	std::mutex mtx;

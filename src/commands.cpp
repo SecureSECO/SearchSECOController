@@ -86,7 +86,7 @@ void Start::execute(Flags flags)
 	print::log(msg, __FILE__, __LINE__);
 
 	bool s = stop;
-	std::thread t(&readCommandLine, this);
+	std::thread t(&Start::readCommandLine, this);
 	while (!s)
 	{
 		std::string job = DatabaseRequests::getNextJob();
@@ -98,6 +98,7 @@ void Start::execute(Flags flags)
 		}
 		if (splitted[0] == "Spider")
 		{
+			print::log("Start parsing and uploading " + splitted[1], __FILE__, __LINE__);
 			Upload upload = Upload();
 			if (splitted.size() < 2)
 			{
@@ -108,22 +109,23 @@ void Start::execute(Flags flags)
 		}
 		else if (splitted[0] == "Crawl")
 		{
+			print::log("Start crawling", __FILE__, __LINE__);
 			if (splitted.size() < 2)
 			{
 				error::errInvalidDatabaseAnswer(__FILE__, __LINE__);
 			}
-			std::vector<std::string> crawled = moduleFacades::crawlRepositories(std::stoi(splitted[1]));
-			// TODO: Update this once the crawler gives back the crawlid.
-			DatabaseRequests::addCrawledJobs(crawled, std::stoi(splitted[1]) + 100);
+			CrawlData crawled = moduleFacades::crawlRepositories(std::stoi(splitted[1]));
+			DatabaseRequests::addCrawledJobs(crawled);
 			
 		}
 		else if (splitted[0] == "No Job")
 		{
-			std::this_thread::sleep_for(std::chrono::milliseconds(2000));
+			print::log("Waiting for a lob to be available", __FILE__, __LINE__);
+			std::this_thread::sleep_for(std::chrono::milliseconds(5000));
 		}
 		else
 		{
-
+			error::errInvalidDatabaseAnswer(__FILE__, __LINE__);
 		}
 
 		// Check if we need to stop.
@@ -131,6 +133,7 @@ void Start::execute(Flags flags)
 		s = stop;
 		mtx.unlock();
 	}
+	t.join();
 }
 
 void Start::readCommandLine()

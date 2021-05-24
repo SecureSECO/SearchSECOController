@@ -9,6 +9,9 @@ Utrecht University within the Software Project course.
 // Controller includes
 #include "projectMetadata.h"
 
+// Crawler includes
+#include "RunCrawler.h"
+
 // Parser includes
 #include "HashData.h"
 
@@ -104,7 +107,7 @@ public:
 	/// </summary>
 	/// <param name="jobs">The jobs to be added.</param>
 	/// <param name="crawlid">The crawler id the crawler returns.</param>
-	static std::string addCrawledJobs(const std::vector<std::string>& jobs, int crawlid,
+	static std::string addCrawledJobs(const CrawlData& jobs,
 		std::string apiIP = DATABASE_API_IP,
 		std::string apiPort = DATABASE_API_PORT);
 private:

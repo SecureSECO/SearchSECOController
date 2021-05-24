@@ -204,28 +204,27 @@ const char* NetworkUtils::getJobsRequest(const std::vector<std::string>& urls, i
 	return data;
 }
 
-const char* NetworkUtils::getUploadCrawlRequest(const std::vector<std::string>& urls, int crawlid, int& size)
+const char* NetworkUtils::getUploadCrawlRequest(const CrawlData& urls, int& size)
 {
 	// First, calculate the size, so we don't have to expand it later.
 	// Initial size is for the header.
-	size = std::to_string(crawlid).length() + 1;
-	for (const auto& x : urls)
+	size = std::to_string(urls.finalProjectId).length() + 1;
+	for (const auto& x : urls.URLImportanceList)
 	{
-		// TODO: Plus the priority once the crawler gives it back. (for now + 1).
-		size += x.length() + 1 + 2;
+		size += x.first.length() + std::to_string(x.second).length() + 2;
 	}
 	char* data = new char[size];
 	// Create the string.
 	int pos = 0;
 
-	addStringToBuffer(data, pos, std::to_string(crawlid));
+	addStringToBuffer(data, pos, std::to_string(urls.finalProjectId));
 	data[pos++] = ENTRY_DELIMITER;
 
-	for (auto x : urls)
+	for (auto x : urls.URLImportanceList)
 	{
-		addStringToBuffer(data, pos, x);
+		addStringToBuffer(data, pos, x.first);
 		data[pos++] = INNER_DELIMITER;
-		addStringToBuffer(data, pos, "1"); // TODO: priority once the crawler gives it.
+		addStringToBuffer(data, pos, std::to_string(x.second));
 		data[pos++] = ENTRY_DELIMITER;
 	}
 	return data;

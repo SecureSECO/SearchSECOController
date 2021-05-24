@@ -36,11 +36,11 @@ std::vector<HashData> moduleFacades::parseRepository(std::string repository, Fla
 	return hashes;
 }
 
-std::vector<std::string> moduleFacades::crawlRepositories(int startId)
+CrawlData moduleFacades::crawlRepositories(int startId)
 {
 	print::debug("Calling the crawler to crawl a repositories", __FILE__, __LINE__);
 	int error = 0;
-	auto urls = RunCrawler::crawlRepositories(CrawlableSource::GITHUB, error);
+	auto urls = RunCrawler::crawlRepositories("https://github.com/", startId, error);
 	if (error != 0)
 	{
 		print::warn("Crawler returned with error code " + std::to_string(error), __FILE__, __LINE__);

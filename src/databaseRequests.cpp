@@ -66,11 +66,11 @@ std::string DatabaseRequests::addJobs(const std::vector<std::string>& jobs,
 	return execRequest(DATABASE_ADD_JOB, rawData, dataSize, apiIP, apiPort);
 }
 
-std::string DatabaseRequests::addCrawledJobs(const std::vector<std::string>& jobs, int crawlid,
+std::string DatabaseRequests::addCrawledJobs(const CrawlData& jobs,
 	std::string apiIP, std::string apiPort)
 {
 	int dataSize = 0;
-	const char* rawData = NetworkUtils::getUploadCrawlRequest(jobs, crawlid, dataSize);
+	const char* rawData = NetworkUtils::getUploadCrawlRequest(jobs, dataSize);
 	return execRequest(DATABASE_CRAWL_DATA, rawData, dataSize, apiIP, apiPort);
 }
 

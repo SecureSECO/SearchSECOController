@@ -9,6 +9,9 @@ Utrecht University within the Software Project course.
 // Controller includes.
 #include "flags.h"
 
+// Crawler includes
+#include "RunCrawler.h"
+
 // Parser includes.
 #include "HashData.h"
 
@@ -27,5 +30,5 @@ namespace moduleFacades
 	/// </summary>
 	std::vector<HashData> parseRepository(std::string repository, Flags flags);
 
-	std::vector<std::string> crawlRepositories(int startId);
+	CrawlData crawlRepositories(int startId);
 };

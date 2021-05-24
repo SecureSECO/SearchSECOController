@@ -6,6 +6,7 @@ Utrecht University within the Software Project course.
 
 // Controller includes
 #include "print.h"
+#include "termination.h"
 #include "utils.h"
 
 // External includes
@@ -209,9 +210,7 @@ void err(errCode code, std::string* strs, const char* file, int line, std::strin
 
 	delete[] strs;
 
-	loguru::g_stderr_verbosity = loguru::Verbosity_OFF;
-
-	exit(EXIT_FAILURE);
+	termination::failure();
 }
 
 #pragma region Specific_error_handlers

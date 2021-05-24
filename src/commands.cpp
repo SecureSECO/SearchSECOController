@@ -142,8 +142,8 @@ void Start::handleSpiderRequest(std::vector<std::string> &splitted, Flags flags)
 		error::errInvalidDatabaseAnswer(__FILE__, __LINE__);
 	}
 	// TODO: Tempory conversion of the urls. Crawler should be doing this.
-	flags.mandatoryArgument = "https://github.com" + splitted[1].substr(28);
-	//flags.mandatoryArgument = splitted[1];
+	//flags.mandatoryArgument = "https://github.com" + splitted[1].substr(28);
+	flags.mandatoryArgument = splitted[1];
 	upload.execute(flags);
 }
 

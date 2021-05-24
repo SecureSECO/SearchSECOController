@@ -9,6 +9,9 @@ Utrecht University within the Software Project course.
 // Controller includes
 #include "flags.h"
 
+// Crawler includes
+#include "projectMetadata.h"
+
 // Parser includes
 #include "HashData.h"
 
@@ -26,4 +29,9 @@ namespace moduleFacades
 	/// Will call the parser to parse the given repository.
 	/// </summary>
 	std::vector<HashData> parseRepository(std::string repository, Flags flags);
+
+	/// <summary>
+	/// Calls the crawler to get the metadata from the given url.
+	/// </summary>
+	ProjectMetaData getProjectMetadata(std::string url);
 };

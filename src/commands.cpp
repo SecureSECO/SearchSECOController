@@ -154,7 +154,7 @@ void Upload::execute(Flags flags)
 	std::vector<HashData> hashes = moduleFacades::parseRepository(DOWNLOAD_LOCATION, flags);
 
 	// Uploading the hashes.
-	ProjectMetaData meta = utils::getProjectMetadata(url);
+	ProjectMetaData meta = moduleFacades::getProjectMetadata(url);
 	print::printline(DatabaseRequests::uploadHashes(hashes, meta, authorData));
 
 	this->logPostExecutionMessage(url, __FILE__, __LINE__);
@@ -189,7 +189,7 @@ void CheckUpload::execute(Flags flags)
 
 	Upload::logPreExecutionMessage(url, __FILE__, __LINE__);
 
-	ProjectMetaData metaData = utils::getProjectMetadata(url);
+	ProjectMetaData metaData = moduleFacades::getProjectMetadata(url);
 
 	printMatches::printHashMatches(hashes, DatabaseRequests::checkUploadHashes(hashes, metaData, authorData), authorData);
 

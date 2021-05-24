@@ -8,6 +8,9 @@ Utrecht University within the Software Project course.
 #include "moduleFacades.h"
 #include "print.h"
 
+// Crawler includes
+#include "RunCrawler.h"
+
 // Parser includes
 #include "Parser.h"
 
@@ -32,4 +35,27 @@ std::vector<HashData> moduleFacades::parseRepository(std::string repository, Fla
 		utils::replace(hashes[i].fileName, '/', '\\');
 	}
 	return hashes;
+}
+
+ProjectMetaData moduleFacades::getProjectMetadata(std::string url)
+{
+	int code;
+	ProjectMetadata pmd = RunCrawler::findMetadata(url, code);
+
+	// TODO: very temporary hashing.
+	std::string id = pmd.authorMail + pmd.authorName + pmd.version;
+	long long hash = 0;
+	for (int i = 0; i < id.size(); i++)
+	{
+		hash += id[i] * (i + 1);
+	}
+
+	return ProjectMetaData(
+		std::to_string(hash),
+		std::to_string(utils::getIntegerTimeFromString(pmd.version)),
+		pmd.license,
+		pmd.name,
+		pmd.url,
+		pmd.authorName,
+		pmd.authorMail);
 }

@@ -8,9 +8,6 @@ Utrecht University within the Software Project course.
 #include "projectMetadata.h"
 #include "utils.h"
 
-// Crawler includes
-#include "RunCrawler.h"
-
 // External includes
 #include <chrono>
 #include <ctime>
@@ -68,28 +65,6 @@ std::string utils::padLeft(std::string src, char pad, int length)
 	}
 
 	return src;
-}
-
-ProjectMetaData utils::getProjectMetadata(std::string url)
-{
-	int code;
-	ProjectMetadata pmd = RunCrawler::findMetadata(url, code);
-
-	// TODO: very temporary hashing.
-	std::string id = pmd.authorMail + pmd.authorName + pmd.version;
-	long long hash = 0;
-	for (int i = 0; i < id.size(); i++)
-	{
-		hash += id[i] *(i+1);
-	}
-	
-	return ProjectMetaData(std::to_string(hash),
-		std::to_string(getIntegerTimeFromString(pmd.version)), 
-		pmd.license, 
-		pmd.name, 
-		pmd.url, 
-		pmd.authorName, 
-		pmd.authorMail);
 }
 
 long long utils::getIntegerTimeFromString(std::string time)

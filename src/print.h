@@ -225,6 +225,26 @@ namespace error
 	void errInvalidUrl(std::string url, const char* file, int line);
 
 	/// <summary>
+	/// Signals a fatal failure occurred in the crawler submodule.
+	/// </summary>
+	void errSubmoduleFatalFailureCrawler(const char* file, int line);
+
+	/// <summary>
+	/// Signals a fatal failure occurred in the crawler submodule.
+	/// </summary>
+	void errSubmoduleFatalFailureSpider(const char* file, int line);
+
+	/// <summary>
+	/// Signals a fatal failure occurred in the crawler submodule.
+	/// </summary>
+	void errSubmoduleFatalFailureParser(const char* file, int line);
+
+	/// <summary>
+	/// Signals a fatal failure occurred in the crawler submodule.
+	/// </summary>
+	void errSubmoduleFatalFailureDatabase(const char* file, int line);
+
+	/// <summary>
 	/// Throws the "Not Implemented" error.
 	/// </summary>
 	void errNotImplemented(std::string message, const char* file, int line);

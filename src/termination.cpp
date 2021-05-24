@@ -22,3 +22,23 @@ void termination::failure()
 	print::loguruSetSilent();
 	exit(1);
 }
+
+void termination::failureCrawler(int code)
+{
+	termination::failure();
+}
+
+void termination::failureSpider(int code)
+{
+	termination::failure();
+}
+
+void termination::failureParser(int code)
+{
+	termination::failure();
+}
+
+void termination::failureDatabase(int code)
+{
+	termination::failure();
+}

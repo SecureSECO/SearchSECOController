@@ -10,13 +10,13 @@ namespace termination
 {
 	void successful();
 
-	void failureCrawler(int code);
-
-	void failureSpider(int code);
-
-	void failureParser(int code);
-
-	void failureDatabase(int code);
-
 	void failure();
+
+	void failureCrawler(int code, const char* file, int line);
+
+	void failureSpider(int code, const char* file, int line);
+
+	void failureParser(int code, const char* file, int line);
+
+	void failureDatabase(int code, const char* file, int line);
 };

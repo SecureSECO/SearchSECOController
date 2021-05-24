@@ -23,22 +23,22 @@ void termination::failure()
 	exit(1);
 }
 
-void termination::failureCrawler(int code)
+void termination::failureCrawler(int code, const char* file, int line)
 {
-	termination::failure();
+	error::errSubmoduleFatalFailureCrawler(file, line);
 }
 
-void termination::failureSpider(int code)
+void termination::failureSpider(int code, const char* file, int line)
 {
-	termination::failure();
+	error::errSubmoduleFatalFailureSpider(file, line);
 }
 
-void termination::failureParser(int code)
+void termination::failureParser(int code, const char* file, int line)
 {
-	termination::failure();
+	error::errSubmoduleFatalFailureParser(file, line);
 }
 
-void termination::failureDatabase(int code)
+void termination::failureDatabase(int code, const char* file, int line)
 {
-	termination::failure();
+	error::errSubmoduleFatalFailureDatabase(file, line);
 }

@@ -29,7 +29,7 @@ AuthorData moduleFacades::downloadRepository(std::string repository, Flags flags
 
 	if (code != 0)
 	{
-		termination::failureSpider(code);
+		termination::failureSpider(code, __FILE__, __LINE__);
 	}
 
 	return authorData;
@@ -45,7 +45,7 @@ std::vector<HashData> moduleFacades::parseRepository(std::string repository, Fla
 
 	if (code != 0)
 	{
-		termination::failureParser(code);
+		termination::failureParser(code, __FILE__, __LINE__);
 	}
 
 	for (int i = 0; i < hashes.size(); i++)
@@ -65,7 +65,7 @@ ProjectMetaData moduleFacades::getProjectMetadata(std::string url)
 
 	if (code != 0)
 	{
-		termination::failureCrawler(code);
+		termination::failureCrawler(code, __FILE__, __LINE__);
 	}
 
 	// TODO: very temporary hashing.

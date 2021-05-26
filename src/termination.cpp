@@ -23,25 +23,25 @@ void termination::failure()
 	exit(1);
 }
 
-void termination::failureCrawler(int code, const char* file, int line)
+void termination::failureCrawler(const char* file, int line)
 {
 	print::loguruResetThreadName();
 	error::errSubmoduleFatalFailureCrawler(file, line);
 }
 
-void termination::failureSpider(int code, const char* file, int line)
+void termination::failureSpider(const char* file, int line)
 {
 	print::loguruResetThreadName();
 	error::errSubmoduleFatalFailureSpider(file, line);
 }
 
-void termination::failureParser(int code, const char* file, int line)
+void termination::failureParser(const char* file, int line)
 {
 	print::loguruResetThreadName();
 	error::errSubmoduleFatalFailureParser(file, line);
 }
 
-void termination::failureDatabase(int code, const char* file, int line)
+void termination::failureDatabase(const char* file, int line)
 {
 	print::loguruResetThreadName();
 	error::errSubmoduleFatalFailureDatabase(file, line);

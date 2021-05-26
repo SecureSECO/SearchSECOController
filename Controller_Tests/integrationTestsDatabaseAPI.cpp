@@ -30,7 +30,7 @@ TEST(integrationDatabaseAPI, upload)
 
     std::string result = DatabaseRequests::uploadHashes(
         DUMMYHASHES, 
-        ProjectMetaData("5", "2", "Lyzenze", "ProjectName", "url.com", "authorName", "author@mail.com"), 
+        ProjectMetaData("5", "2", "Lyzenze", "ProjectName", "url.com", "authorName", "author@mail.com", "master"), 
         {},
         LOCALHOST,
         PORT
@@ -58,7 +58,7 @@ TEST(integrationDatabaseAPI, checkUpload)
     
     std::string result = DatabaseRequests::checkUploadHashes(
         DUMMYHASHES, 
-        ProjectMetaData("5", "2", "Lyzenze", "ProjectName", "url.com", "authorName", "author@mail.com"), 
+        ProjectMetaData("5", "2", "Lyzenze", "ProjectName", "url.com", "authorName", "author@mail.com", "master"), 
         {},
         LOCALHOST, 
         PORT

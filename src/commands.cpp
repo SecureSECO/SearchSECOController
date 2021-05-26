@@ -186,6 +186,10 @@ void Upload::execute(Flags flags)
 
 	AuthorData authorData = moduleFacades::downloadRepository(flags.mandatoryArgument, flags, DOWNLOAD_LOCATION);
 	std::vector<HashData> hashes = moduleFacades::parseRepository(DOWNLOAD_LOCATION, flags);
+	if (hashes.size() == 0)
+	{
+		return;
+	}
 	// Uploading the hashes.
 	ProjectMetaData meta = utils::getProjectMetadata(flags.mandatoryArgument);
 	print::printline(DatabaseRequests::uploadHashes(hashes, meta, authorData));

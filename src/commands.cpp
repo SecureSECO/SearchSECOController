@@ -139,7 +139,7 @@ void Start::handleSpiderRequest(std::vector<std::string> &splitted, Flags flags)
 {
 	print::log("Start parsing and uploading " + splitted[1], __FILE__, __LINE__);
 	Upload upload = Upload();
-	if (splitted.size() < 2)
+	if (splitted.size() < 2 || splitted[1] == "")
 	{
 		error::errInvalidDatabaseAnswer(__FILE__, __LINE__);
 	}

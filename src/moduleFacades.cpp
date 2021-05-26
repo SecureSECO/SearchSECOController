@@ -23,9 +23,7 @@ AuthorData moduleFacades::downloadRepository(std::string repository, Flags flags
 {
 	print::debug("Calling the spider to download a repository", __FILE__, __LINE__);
 
-	int code = 0;
-
-	auto authorData = RunSpider::runSpider(repository, downloadPath, flags.flag_cpu, code, flags.flag_branch);
+	auto authorData = RunSpider::runSpider(repository, downloadPath, flags.flag_cpu, flags.flag_branch);
 
 	if (errno != 0)
 	{
@@ -39,11 +37,9 @@ std::vector<HashData> moduleFacades::parseRepository(std::string repository, Fla
 {
 	print::debug("Calling the parser to parse a repository", __FILE__, __LINE__);
 
-	int code = 0;
-
 	auto hashes = Parser::parse(repository, flags.flag_cpu);
 
-	if (code != 0)
+	if (errno != 0)
 	{
 		termination::failureParser(__FILE__, __LINE__);
 	}

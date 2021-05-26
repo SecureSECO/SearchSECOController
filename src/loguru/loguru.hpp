@@ -78,6 +78,7 @@ Website: www.ilikebigbits.com
 	}
 
 */
+#define _LOGURU_CPP_IMPLEMENTATION
 
 #if defined(LOGURU_IMPLEMENTATION)
 	#error "You are defining LOGURU_IMPLEMENTATION. This is for older versions of Loguru. You should now instead include loguru.cpp (or build it and link with it)"

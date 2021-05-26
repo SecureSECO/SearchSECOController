@@ -89,7 +89,8 @@ ProjectMetaData utils::getProjectMetadata(std::string url)
 		pmd.name, 
 		pmd.url, 
 		pmd.authorName, 
-		pmd.authorMail);
+		pmd.authorMail,
+		pmd.defaultBranch);
 }
 
 long long utils::getIntegerTimeFromString(std::string time)

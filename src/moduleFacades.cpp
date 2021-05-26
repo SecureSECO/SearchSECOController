@@ -21,7 +21,8 @@ AuthorData moduleFacades::downloadRepository(std::string repository, Flags flags
 {
 	print::debug("Calling the spider to download a repository", __FILE__, __LINE__);
 
-	return RunSpider::runSpider(repository, downloadPath, flags.flag_cpu, flags.flag_branch);
+	int code = 0;
+	return RunSpider::runSpider(repository, downloadPath, flags.flag_cpu, code, flags.flag_branch);
 }
 
 std::vector<HashData> moduleFacades::parseRepository(std::string repository, Flags flags)

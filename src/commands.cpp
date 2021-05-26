@@ -143,10 +143,17 @@ void Start::handleSpiderRequest(std::vector<std::string> &splitted, Flags flags)
 	{
 		error::errInvalidDatabaseAnswer(__FILE__, __LINE__);
 	}
-	// TODO: Tempory conversion of the urls. Crawler should be doing this.
-	//flags.mandatoryArgument = "https://github.com" + splitted[1].substr(28);
 	flags.mandatoryArgument = splitted[1];
-	upload.execute(flags);
+	ProjectMetaData meta = utils::getProjectMetadata(flags.mandatoryArgument);
+	flags.flag_branch = meta.defaultBranch;
+	AuthorData authorData = moduleFacades::downloadRepository(flags.mandatoryArgument, flags, DOWNLOAD_LOCATION);
+	std::vector<HashData> hashes = moduleFacades::parseRepository(DOWNLOAD_LOCATION, flags);
+	if (hashes.size() == 0)
+	{
+		return;
+	}
+	// Uploading the hashes.
+	print::printline(DatabaseRequests::uploadHashes(hashes, meta, authorData));
 }
 
 void Start::readCommandLine()

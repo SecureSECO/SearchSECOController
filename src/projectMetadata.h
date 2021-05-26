@@ -26,7 +26,8 @@ public:
 		std::string name,
 		std::string url,
 		std::string authorName,
-		std::string authorMail)
+		std::string authorMail,
+		std::string defaultBranch)
 	{
 		this->id = id;
 		this->version = version;
@@ -34,7 +35,8 @@ public:
 		this->name = name;
 		this->url = url;
 		this->authorName = authorName;
-		this->authorMail = authorMail;;
+		this->authorMail = authorMail;
+		this->defaultBranch = defaultBranch;
 	}
 
 	/// <summary>
@@ -52,4 +54,5 @@ public:
 	std::string url;
 	std::string authorName;
 	std::string authorMail;
+	std::string defaultBranch;
 };

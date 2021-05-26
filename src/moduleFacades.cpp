@@ -25,11 +25,11 @@ AuthorData moduleFacades::downloadRepository(std::string repository, Flags flags
 
 	int code = 0;
 
-	auto authorData = RunSpider::runSpider(repository, downloadPath, flags.flag_cpu, flags.flag_branch);
+	auto authorData = RunSpider::runSpider(repository, downloadPath, flags.flag_cpu, code, flags.flag_branch);
 
-	if (code != 0)
+	if (errno != 0)
 	{
-		termination::failureSpider(code, __FILE__, __LINE__);
+		termination::failureSpider(__FILE__, __LINE__);
 	}
 
 	return authorData;
@@ -45,7 +45,7 @@ std::vector<HashData> moduleFacades::parseRepository(std::string repository, Fla
 
 	if (code != 0)
 	{
-		termination::failureParser(code, __FILE__, __LINE__);
+		termination::failureParser(__FILE__, __LINE__);
 	}
 
 	for (int i = 0; i < hashes.size(); i++)
@@ -59,13 +59,11 @@ ProjectMetaData moduleFacades::getProjectMetadata(std::string url)
 {
 	print::debug("Calling the crawler to get the metadata from a project", __FILE__, __LINE__);
 
-	int code;
+	ProjectMetadata pmd = RunCrawler::findMetadata(url);
 
-	ProjectMetadata pmd = RunCrawler::findMetadata(url, code);
-
-	if (code != 0)
+	if (errno != 0)
 	{
-		termination::failureCrawler(code, __FILE__, __LINE__);
+		termination::failureCrawler(__FILE__, __LINE__);
 	}
 
 	// TODO: very temporary hashing.

@@ -12,11 +12,11 @@ namespace termination
 
 	void failure();
 
-	void failureCrawler(int code, const char* file, int line);
+	void failureCrawler(const char* file, int line);
 
-	void failureSpider(int code, const char* file, int line);
+	void failureSpider(const char* file, int line);
 
-	void failureParser(int code, const char* file, int line);
+	void failureParser(const char* file, int line);
 
-	void failureDatabase(int code, const char* file, int line);
+	void failureDatabase(const char* file, int line);
 };

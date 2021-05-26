@@ -16,7 +16,9 @@ Utrecht University within the Software Project course.
 
 // Spider includes
 #include "RunSpider.h"
+
 #include <iostream>
+#include <thread>
 
 
 #define DOWNLOAD_LOCATION "spiderDownloads"

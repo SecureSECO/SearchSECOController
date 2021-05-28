@@ -1,7 +1,7 @@
 /*
 This program has been developed by students from the bachelor Computer Science at
 Utrecht University within the Software Project course.
-© Copyright Utrecht University (Department of Information and Computing Sciences)
+Â© Copyright Utrecht University (Department of Information and Computing Sciences)
 */
 
 #pragma once
@@ -16,6 +16,7 @@ Utrecht University within the Software Project course.
 #include "CodeBlock.h"
 
 // External includes.
+#include "loguru/loguru.hpp"
 #include <string>
 #include <vector>
 

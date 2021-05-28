@@ -12,7 +12,6 @@ Utrecht University within the Software Project course.
 #include "termination.h"
 
 // External includes
-#include "loguru/loguru.hpp"
 #include <functional>
 #include <iostream>
 #include <map>

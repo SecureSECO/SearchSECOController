@@ -21,8 +21,7 @@ AuthorData moduleFacades::downloadRepository(std::string repository, Flags flags
 {
 	print::debug("Calling the spider to download a repository", __FILE__, __LINE__);
 
-	int code = 0;
-	return RunSpider::runSpider(repository, downloadPath, flags.flag_cpu, code, flags.flag_branch);
+	return RunSpider::runSpider(repository, downloadPath, flags.flag_cpu, flags.flag_branch);
 }
 
 std::vector<HashData> moduleFacades::parseRepository(std::string repository, Flags flags)
@@ -40,11 +39,6 @@ std::vector<HashData> moduleFacades::parseRepository(std::string repository, Fla
 CrawlData moduleFacades::crawlRepositories(int startId)
 {
 	print::debug("Calling the crawler to crawl a repositories", __FILE__, __LINE__);
-	int error = 0;
-	auto urls = RunCrawler::crawlRepositories("https://github.com/", startId, error);
-	if (error != 0)
-	{
-		print::warn("Crawler returned with error code " + std::to_string(error), __FILE__, __LINE__);
-	}
+	auto urls = RunCrawler::crawlRepositories("https://github.com/", startId);
 	return urls;
 }

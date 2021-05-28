@@ -339,7 +339,7 @@ void error::errDBInternalError(std::string message, const char* file, int line)
 	);
 }
 
-void error::errDBUnkownResponse(const char* file, int line)
+void error::errDBUnknownResponse(const char* file, int line)
 {
 	err(dbUnknownRepsonse, {}, file, line);
 }

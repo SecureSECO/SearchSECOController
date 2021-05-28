@@ -171,5 +171,5 @@ namespace error
 	/// <summary>
 	/// Throws the error if the database API responds in an unexpected manner.
 	/// </summary>
-	void errDBUnkownResponse(const char* file, int line);
+	void errDBUnknownResponse(const char* file, int line);
 };

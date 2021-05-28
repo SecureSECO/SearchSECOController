@@ -67,7 +67,7 @@ std::string DatabaseRequests::checkResponseCode(std::string data)
 
 	if (statusCode == "200") 
 	{
-		print::log("Database request succesfull.", __FILE__, __LINE__);
+		print::log("Database request succesful.", __FILE__, __LINE__);
 		return info;
 	}
 	else if (statusCode == "400") 
@@ -80,7 +80,7 @@ std::string DatabaseRequests::checkResponseCode(std::string data)
 	}
 	else 
 	{
-		error::errDBUnkownResponse(__FILE__, __LINE__);
+		error::errDBUnknownResponse(__FILE__, __LINE__);
 	}
 }
 

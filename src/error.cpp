@@ -38,6 +38,11 @@ enum errCode
 	parseCouldNotParseFlag,
 	invalidUrl,
 	notImplemented,
+	// Database related errors start at 400.
+	dbConnection = 400,
+	dbBadRequest,
+	dbInternalError,
+	dbUnknownRepsonse,
 };
 
 // Descriptions of the error messages.
@@ -129,6 +134,40 @@ std::string descParseCouldNotParseFlag(std::string* strs)
 	return strs[0] + " could not be parsed";
 }
 
+// strs: [message]
+std::string descConnectionError(std::string* strs) 
+{
+	return "Database connection terminated with the following message: " + strs[0];
+}
+
+// strs: [message]
+std::string descDBBadRequest(std::string* strs) 
+{
+	if (strs[0] == "") 
+	{
+		return "Something was wrong with the sent request, please try again later.";
+	}
+
+	return "Something was wrong with the request. Following error occured in the database: " + strs[0];
+}
+
+// strs: [message]
+std::string descDBInternalError(std::string* strs) 
+{
+	if (strs[0] == "") 
+	{
+		return "Something went wrong in the database, please try again later.";
+	}
+
+	return "Something went wrong in the database. Following error occured in the database: " + strs[0];
+}
+
+// no strs
+std::string descDBUnkownResponse(std::string* strs) 
+{
+	return "Database responded in an unexpected way. Please try again later.";
+}
+
 // Maps an error code to a description.
 std::map <int, std::function<std::string(std::string*)>> errDesc =
 {
@@ -146,6 +185,11 @@ std::map <int, std::function<std::string(std::string*)>> errDesc =
 	{parseCouldNotParseFlag, descParseCouldNotParseFlag},
 	{invalidUrl, descInvalidUrl},
 	{notImplemented, descErrNotImplemented},
+	{dbConnection, descConnectionError},
+	{dbBadRequest, descDBBadRequest},
+	{dbInternalError, descDBInternalError},
+	{dbUnknownRepsonse, descDBUnkownResponse}
+	
 };
 
 #pragma endregion Descriptions
@@ -269,6 +313,35 @@ void error::errNotImplemented(std::string funcname, const char* file, int line)
 		new std::string[1]{ funcname },
 		file, line
 	);
+}
+
+void error::errDBConnection(std::string message, const char* file, int line) 
+{
+	err(dbConnection,
+		new std::string[1]{ message },
+		file, line
+	);
+}
+
+void error::errDBBadRequest(std::string message, const char* file, int line) 
+{
+	err(dbBadRequest,
+		new std::string[1]{ message },
+		file, line
+	);
+}
+
+void error::errDBInternalError(std::string message, const char* file, int line) 
+{
+	err(dbInternalError,
+		new std::string[1]{ message },
+		file, line
+	);
+}
+
+void error::errDBUnknownResponse(const char* file, int line)
+{
+	err(dbUnknownRepsonse, {}, file, line);
 }
 
 #pragma endregion Specific_error_handlers

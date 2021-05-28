@@ -14,9 +14,13 @@ Utrecht University within the Software Project course.
 #include "CodeBlock.h"
 
 // External includes
-#include "loguru/loguru.hpp"
 #include <string>
 #include <vector>
+
+#ifndef LOGURU_INCLUDED
+	#define LOGURU_INCLUDED true
+	#include "loguru/loguru.hpp"
+#endif
 
 
 namespace print

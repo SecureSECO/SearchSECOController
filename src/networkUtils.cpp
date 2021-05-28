@@ -264,7 +264,7 @@ const char* NetworkUtils::getAllDataFromHashes(std::vector<HashData> data, int& 
 	return buffer;
 }
 
-const char* NetworkUtils::getHashDataFromHashes(std::vector<HashData> data, int& size)
+const char* NetworkUtils::getHashDataFromHashes(std::vector<HashData>& data, int& size)
 {
 	// Calcutating the eventual size of the string before hand, 
 	// so that we don't have to increase the size of the buffer.
@@ -289,7 +289,7 @@ const char* NetworkUtils::getHashDataFromHashes(std::vector<HashData> data, int&
 	return buffer;
 }
 
-std::string NetworkUtils::generateHeader(std::vector<std::string> components)
+std::string NetworkUtils::generateHeader(std::vector<std::string> &components)
 {
 	if (components.size() == 0)
 	{

@@ -4,16 +4,16 @@ Utrecht University within the Software Project course.
 © Copyright Utrecht University (Department of Information and Computing Sciences)
 */
 
-// Controller includes
+// Controller includes.
 #include "databaseRequests.h"
+#include "networkUtils.h"
 #include "print.h"
 #include "utils.h"
 
-// Parser includes
+// Parser includes.
 #include "Parser.h"
-#include "networkUtils.h"
 
-// External includes
+// External includes.
 #include "loguru/loguru.hpp"
 #include <fstream>
 #include <functional>
@@ -152,7 +152,7 @@ void print::versionFull()
 
 #pragma region Matches
 
-void printMatches::printHashMatches(std::vector<HashData> hashes, std::string databaseOutput, AuthorData authordata)
+void printMatches::printHashMatches(std::vector<HashData> &hashes, std::string databaseOutput, AuthorData &authordata)
 {
 	std::map<std::string, std::vector<std::string>> receivedHashes = {};
 
@@ -278,8 +278,8 @@ void printMatches::printMatch(
 	}
 }
 
-void printMatches::printSummary(std::map<std::string, int> authorCopiedForm,
-	std::map<std::string, int> authorsCopied,
+void printMatches::printSummary(std::map<std::string, int> &authorCopiedForm,
+	std::map<std::string, int> &authorsCopied,
 	int matches,
 	std::map<std::string, std::vector<std::string>>& dbProjects,
 	std::map<std::string, std::vector<std::string>>& authorIdToName,
@@ -291,7 +291,8 @@ void printMatches::printSummary(std::map<std::string, int> authorCopiedForm,
 	print::printline("Projects found in database:");
 	for (const auto& x : projects)
 	{
-		print::printline("\t" + dbProjects[x.first.first][3] + ": " + std::to_string(x.second) + " (" + dbProjects[x.first.first][4] + ")");
+		print::printline("\t" + dbProjects[x.first.first][3] + ": " + std::to_string(x.second) 
+			+ " (" + dbProjects[x.first.first][4] + ")");
 	}
 	print::printline("\nLocal authors present in matches: ");
 	for (auto const& x : authorsCopied)

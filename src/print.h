@@ -6,14 +6,16 @@ Utrecht University within the Software Project course.
 
 #pragma once
 
-// Controller includes
+// Controller includes.
 #include "utils.h"
 
-// Parser includes
+// Parser includes.
 #include "HashData.h"
+
+// Spider includes.
 #include "CodeBlock.h"
 
-// External includes
+// External includes.
 #include <string>
 #include <vector>
 
@@ -79,7 +81,7 @@ public:
 	/// <summary>
 	/// Prints information about the hash matches that were found in the database.
 	/// </summary>
-	static void printHashMatches(std::vector<HashData> hashes, std::string databaseOutput, AuthorData authordata);
+	static void printHashMatches(std::vector<HashData>& hashes, std::string databaseOutput, AuthorData &authordata);
 
 private:
 	/// <summary>
@@ -136,8 +138,8 @@ private:
 	/// <summary>
 	/// Prints a summary for all the matches found.
 	/// </summary>
-	static void printSummary(std::map<std::string, int> authorCopiedForm, 
-		std::map<std::string, int> authorsCopied, 
+	static void printSummary(std::map<std::string, int> &authorCopiedForm, 
+		std::map<std::string, int> &authorsCopied, 
 		int matches,
 		std::map<std::string, std::vector<std::string>>& dbProjects,
 		std::map<std::string, std::vector<std::string>>& authorIdToName,

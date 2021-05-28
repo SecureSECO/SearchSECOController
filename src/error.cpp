@@ -41,6 +41,7 @@ enum errCode
 	// Database related errors start at 400.
 	dbConnection = 400,
 	dbBadRequest,
+	dbInternalError,
 	dbUnknownRepsonse,
 };
 
@@ -147,7 +148,18 @@ std::string descDBBadRequest(std::string* strs)
 		return "Something was wrong with the sent request, please try again later.";
 	}
 
-	return "Following error occured in the database: " + strs[0];
+	return "Something was wrong with the request. Following error occured in the database: " + strs[0];
+}
+
+// strs: [message]
+std::string descDBInternalError(std::string* strs) 
+{
+	if (strs[0] == "") 
+	{
+		return "Something went wrong in the database, please try again later.";
+	}
+
+	return "Something went wrong in the database. Following error occured in the database: " + strs[0];
 }
 
 // no strs
@@ -175,6 +187,7 @@ std::map <int, std::function<std::string(std::string*)>> errDesc =
 	{notImplemented, descErrNotImplemented},
 	{dbConnection, descConnectionError},
 	{dbBadRequest, descDBBadRequest},
+	{dbInternalError, descDBInternalError},
 	{dbUnknownRepsonse, descDBUnkownResponse}
 	
 };
@@ -313,6 +326,14 @@ void error::errDBConnection(std::string message, const char* file, int line)
 void error::errDBBadRequest(std::string message, const char* file, int line) 
 {
 	err(dbBadRequest,
+		new std::string[1]{ message },
+		file, line
+	);
+}
+
+void error::errDBInternalError(std::string message, const char* file, int line) 
+{
+	err(dbInternalError,
 		new std::string[1]{ message },
 		file, line
 	);

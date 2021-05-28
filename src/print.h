@@ -164,6 +164,11 @@ namespace error
 	void errDBBadRequest(std::string message, const char* file, int line);
 
 	/// <summary>
+	/// Throws the error if the database API threw an error that something went wrong server side.
+	/// </summary>
+	void errDBInternalError(std::string message, const char* file, int line);
+
+	/// <summary>
 	/// Throws the error if the database API responds in an unexpected manner.
 	/// </summary>
 	void errDBUnkownResponse(const char* file, int line);

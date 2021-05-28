@@ -74,6 +74,10 @@ std::string DatabaseRequests::checkResponseCode(std::string data)
 	{
 		error::errDBBadRequest(info, __FILE__, __LINE__);
 	}
+	else if (statusCode == "500") 
+	{
+		error::errDBInternalError(info, __FILE__, __LINE__);
+	}
 	else 
 	{
 		error::errDBUnkownResponse(__FILE__, __LINE__);

@@ -8,6 +8,8 @@ Utrecht University within the Software Project course.
 #include "databaseRequests.h"
 #include "networkUtils.h"
 #include "networking.h"
+#include "print.h"
+#include "utils.h"
 
 // Parser includes
 #include "Parser.h"
@@ -102,7 +104,31 @@ std::string DatabaseRequests::execRequest(std::string request, const char* rawDa
 	delete[] rawData;
 	delete networkHandler;
 
-	return output;
+	return checkResponseCode(output);
+}
+
+std::string DatabaseRequests::checkResponseCode(std::string data)
+{
+	std::string statusCode = utils::split(data, '\n')[0];
+	std::string info = data.substr(4, data.length() - 4);
+
+	if (statusCode == "200") 
+	{
+		print::log("Database request succesful.", __FILE__, __LINE__);
+		return info;
+	}
+	else if (statusCode == "400") 
+	{
+		error::errDBBadRequest(info, __FILE__, __LINE__);
+	}
+	else if (statusCode == "500") 
+	{
+		error::errDBInternalError(info, __FILE__, __LINE__);
+	}
+	else 
+	{
+		error::errDBUnknownResponse(__FILE__, __LINE__);
+	}
 }
 
 NetworkHandler* DatabaseRequests::startConnection(std::string apiIP, std::string apiPort)

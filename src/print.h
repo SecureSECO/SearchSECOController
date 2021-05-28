@@ -228,4 +228,24 @@ namespace error
 	/// Throws the "Invalid database response" error.
 	/// </summary>
 	void errInvalidDatabaseAnswer(const char* file, int line);
+
+	/// <summary>
+	/// Throws the error for a failing connection to the database.
+	/// </summary>
+	void errDBConnection(std::string message, const char* file, int line);
+
+	/// <summary>
+	/// Throws the error if the database API threw an error in the process of processing current request.
+	/// </summary>
+	void errDBBadRequest(std::string message, const char* file, int line);
+
+	/// <summary>
+	/// Throws the error if the database API threw an error that something went wrong server side.
+	/// </summary>
+	void errDBInternalError(std::string message, const char* file, int line);
+
+	/// <summary>
+	/// Throws the error if the database API responds in an unexpected manner.
+	/// </summary>
+	void errDBUnknownResponse(const char* file, int line);
 };

@@ -230,7 +230,8 @@ const char* NetworkUtils::getUploadCrawlRequest(const CrawlData& urls, int& size
 	return data;
 }
 
-const char* NetworkUtils::getAllDataFromHashes(std::vector<HashData> data, int& size, std::string header, AuthorData& authors)
+const char* NetworkUtils::getAllDataFromHashes(std::vector<HashData>& data, int& size,
+	std::string header, AuthorData& authors)
 {
 	// For getting the corresponding authors for each method,
 	// we first need to transform the list of hashes a bit.

@@ -5,6 +5,7 @@ Utrecht University within the Software Project course.
 */
 
 // Controller includes
+#include "controller.h"
 #include "commandFactory.h"
 #include "input.h"
 #include "print.h"
@@ -17,7 +18,14 @@ Utrecht University within the Software Project course.
 #include <string>
 
 
-int main(int argc, char* argv[])
+int main(int argc, char* argv[]) 
+{
+	return controller::entryPoint(argc, argv);
+}
+
+void controller::dummy(){}
+
+int controller::entryPoint(int argc, char* argv[])
 {
 	loguru::g_stderr_verbosity = loguru::Verbosity_OFF;
 

@@ -5,8 +5,8 @@
 [submodule "spider-revisited"]
   path = spider-revisited
   url = ../spider-revisited.git
-  branch = loguru_fix_test
+  branch = development
 [submodule "crawler"]
   path = crawler
   url = ../crawler.git
-  branch = loguru_fix_test
+  branch = development

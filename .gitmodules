@@ -4,9 +4,9 @@
   branch = development
 [submodule "spider-revisited"]
   path = spider-revisited
-  url = ../spider-revisited
+  url = ../spider-revisited.git
   branch = development
 [submodule "crawler"]
   path = crawler
-  url = ../crawler
+  url = ../crawler.git
   branch = development

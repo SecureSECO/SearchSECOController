@@ -22,8 +22,8 @@ Utrecht University within the Software Project course.
 AuthorData moduleFacades::downloadRepository(std::string repository, Flags flags, std::string downloadPath)
 {
 	print::debug("Calling the spider to download a repository", __FILE__, __LINE__);
-	int test = 0;
-	auto authorData = RunSpider::runSpider(repository, downloadPath, flags.flag_cpu, test, flags.flag_branch);
+
+	auto authorData = RunSpider::runSpider(repository, downloadPath, flags.flag_cpu, flags.flag_branch);
 
 	if (errno != 0)
 	{

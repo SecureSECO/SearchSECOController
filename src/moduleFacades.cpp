@@ -23,7 +23,9 @@ AuthorData moduleFacades::downloadRepository(std::string repository, Flags flags
 {
 	print::debug("Calling the spider to download a repository", __FILE__, __LINE__);
 
-	auto authorData = RunSpider::runSpider(repository, downloadPath, flags.flag_cpu, flags.flag_branch);
+	int testcode;
+
+	auto authorData = RunSpider::runSpider(repository, downloadPath, testcode);
 
 	if (errno != 0)
 	{

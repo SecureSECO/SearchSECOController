@@ -73,7 +73,7 @@ std::string utils::padLeft(std::string src, char pad, int length)
 ProjectMetaData utils::getProjectMetadata(std::string url)
 {
 	ProjectMetadata pmd = RunCrawler::findMetadata(url);
-
+	int er = errno;
 	// TODO: very temporary hashing.
 	std::string id = pmd.authorMail + pmd.authorName + pmd.version;
 	long long hash = 0;
@@ -81,15 +81,16 @@ ProjectMetaData utils::getProjectMetadata(std::string url)
 	{
 		hash += id[i] *(i+1);
 	}
-	
-	return ProjectMetaData(std::to_string(hash),
-		std::to_string(getIntegerTimeFromString(pmd.version)), 
-		pmd.license, 
-		pmd.name, 
-		pmd.url, 
-		pmd.authorName, 
+	ProjectMetaData pm = ProjectMetaData(std::to_string(hash),
+		std::to_string(getIntegerTimeFromString(pmd.version)),
+		pmd.license,
+		pmd.name,
+		pmd.url,
+		pmd.authorName,
 		pmd.authorMail,
 		pmd.defaultBranch);
+	errno = er;
+	return pm;
 }
 
 long long utils::getIntegerTimeFromString(std::string time)

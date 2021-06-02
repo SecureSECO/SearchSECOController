@@ -144,10 +144,29 @@ void Start::handleSpiderRequest(std::vector<std::string> &splitted, Flags flags)
 		error::errInvalidDatabaseAnswer(__FILE__, __LINE__);
 	}
 	flags.mandatoryArgument = splitted[1];
+	errno = 0;
 	ProjectMetaData meta = utils::getProjectMetadata(flags.mandatoryArgument);
+	if (errno != 0)
+	{
+		errno = 0;
+		print::warn("Error getting project meta data, moving on to the next job.", __FILE__, __LINE__);
+		return;
+	}
 	flags.flag_branch = meta.defaultBranch;
 	AuthorData authorData = moduleFacades::downloadRepository(flags.mandatoryArgument, flags, DOWNLOAD_LOCATION);
+	if (errno != 0)
+	{
+		errno = 0;
+		print::warn("Error downloading project, moving on to the next job.", __FILE__, __LINE__);
+		return;
+	}
 	std::vector<HashData> hashes = moduleFacades::parseRepository(DOWNLOAD_LOCATION, flags);
+	if (errno != 0)
+	{
+		errno = 0;
+		print::warn("Error parsing project, moving on to the next job.", __FILE__, __LINE__);
+		return;
+	}
 	if (hashes.size() == 0)
 	{
 		return;

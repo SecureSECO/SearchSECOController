@@ -8,8 +8,8 @@ Utrecht University within the Software Project course.
 
 
 
-namespace controller 
+namespace entrypoint 
 {
-	int entryPoint(int argc, char* argv[]);
+	int entrypoint(int argc, char* argv[]);
 	void dummy();
 }

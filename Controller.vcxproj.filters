@@ -18,6 +18,9 @@
     <ClCompile Include="src\databaseRequests.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\entrypoint.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="src\error.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -30,10 +33,10 @@
     <ClCompile Include="src\moduleFacades.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\networkUtils.cpp">
+    <ClCompile Include="src\networking.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\networking.cpp">
+    <ClCompile Include="src\networkUtils.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\print.cpp">
@@ -51,8 +54,6 @@
     <ClCompile Include="src\loguru\loguru.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\loguru\loguru.hpp" />
-    <ClCompile Include="src\regexWrapper.h" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\commandFactory.h">
@@ -64,6 +65,9 @@
     <ClInclude Include="src\databaseRequests.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\entrypoint.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="src\flags.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -73,10 +77,10 @@
     <ClInclude Include="src\moduleFacades.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\networkUtils.h">
+    <ClInclude Include="src\networking.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\networking.h">
+    <ClInclude Include="src\networkUtils.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\print.h">
@@ -85,10 +89,18 @@
     <ClInclude Include="src\projectMetadata.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\regexWrapper.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\termination.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="src\utils.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\termination.h" />
+    <ClInclude Include="src\loguru\loguru.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

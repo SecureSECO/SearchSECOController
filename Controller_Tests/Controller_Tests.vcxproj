@@ -64,9 +64,6 @@
     <ProjectReference Include="..\Controller.vcxproj">
       <Project>{2b4653d9-dea6-40bb-a27f-15fa59f843b8}</Project>
     </ProjectReference>
-    <ProjectReference Include="..\Executable\Executable.vcxproj">
-      <Project>{a886ec61-40b0-4da5-8832-8d0528071db6}</Project>
-    </ProjectReference>
   </ItemGroup>
   <ItemDefinitionGroup />
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
@@ -132,7 +129,7 @@
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <WarningLevel>Level3</WarningLevel>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
-      <AdditionalIncludeDirectories>..\Executable;..\src;..\parser\Parser;..\crawler\Crawler;..\spider-revisited\Spider-Revisited;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\src;..\parser\Parser;..\crawler\Crawler;..\spider-revisited\Spider-Revisited;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>

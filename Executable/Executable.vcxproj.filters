@@ -24,9 +24,4 @@
     <None Include="extensions" />
     <None Include=".env" />
   </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="controller.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-  </ItemGroup>
 </Project>

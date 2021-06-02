@@ -7,10 +7,9 @@ Utrecht University within the Software Project course.
 // Google test header file.
 #include "pch.h"
 
-// Controller includes.
-#include "controller.h"
+// Controller includes. 
+#include "entrypoint.h"
 #include "databaseAPIMock.h"
-
 
 
 
@@ -21,7 +20,7 @@ TEST(systemTestCheck, dummy)
 
 	//char* n_argv[] = { "path", "searchseco", "check", "https://github.com/zavg/linux-0.01" };
 
-	EXPECT_NO_THROW(controller::dummy());
+	EXPECT_NO_THROW(entrypoint::dummy());
 	//EXPECT_NO_THROW(controller::entryPoint(4, n_argv));
 }
 

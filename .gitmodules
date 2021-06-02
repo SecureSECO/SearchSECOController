@@ -1,7 +1,7 @@
 [submodule "parser"]
   path = parser
   url = ../parser.git
-  branch = development
+  branch = basic_custom_parser
 [submodule "spider-revisited"]
   path = spider-revisited
   url = ../spider-revisited

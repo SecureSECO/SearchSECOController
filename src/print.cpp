@@ -21,17 +21,6 @@ Utrecht University within the Software Project course.
 #include <map>
 #include <stdlib.h>
 
-
-inline
-bool operator==(HashData const& lhs, HashData const& rhs)
-{
-	return lhs.hash == rhs.hash &&
-		lhs.fileName == rhs.fileName &&
-		lhs.functionName == rhs.functionName
-		&& lhs.lineNumber == rhs.lineNumber
-		&& lhs.lineNumberEnd == rhs.lineNumberEnd;
-}
-
 inline
 bool operator<(HashData const& lhs, HashData const& rhs)
 { 
@@ -205,6 +194,10 @@ void printMatches::parseDatabaseHashes(
 		std::vector<std::string> entrySplitted = utils::split(entry, INNER_DELIMITER);
 
 		receivedHashes[entrySplitted[0]] = entrySplitted;
+		if (entrySplitted.size() < 7)
+		{
+			continue;
+		}
 		for (int i = 7; i < 7 + std::stoi(entrySplitted[6]); i++)
 		{
 			dbAuthors[entrySplitted[i]]++;
@@ -273,8 +266,11 @@ void printMatches::printMatch(
 	
 	for (int i = 7; i < 7 + std::stoi(dbEntry[6]); i++)
 	{
-		authorCopiedForm[dbEntry[i]]++;
-		print::printline("\t" + authorIdToName[dbEntry[i]][0] + '\t' + authorIdToName[dbEntry[i]][1]);
+		if (authorIdToName.count(dbEntry[i]) > 0)
+		{
+			authorCopiedForm[dbEntry[i]]++;
+			print::printline("\t" + authorIdToName[dbEntry[i]][0] + '\t' + authorIdToName[dbEntry[i]][1]);
+		}
 	}
 }
 

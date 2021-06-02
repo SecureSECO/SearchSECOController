@@ -1,7 +1,7 @@
 /*
 This program has been developed by students from the bachelor Computer Science at
 Utrecht University within the Software Project course.
-© Copyright Utrecht University (Department of Information and Computing Sciences)
+Â© Copyright Utrecht University (Department of Information and Computing Sciences)
 */
 
 #pragma once
@@ -21,10 +21,6 @@ Utrecht University within the Software Project course.
 // External includes
 #include <string>
 #include <vector>
-
-
-#define DATABASE_API_IP "-1"
-#define DATABASE_API_PORT "-1"
 
 #define DATABASE_UPLOAD_REQUEST "upld"
 #define DATABASE_CHECK_UPLOAD_REQUEST "chup"
@@ -48,8 +44,8 @@ public:
 	static std::string uploadHashes(std::vector<HashData> &hashes, 
 		ProjectMetaData metaData, 
 		AuthorData &authorData, 
-		std::string apiIP = DATABASE_API_IP, 
-		std::string apiPort = DATABASE_API_PORT);
+		std::string apiIP, 
+		std::string apiPort);
 
 	/// <summary>
 	/// Sends a request to the database to find matching hashes in the database.
@@ -57,8 +53,8 @@ public:
 	/// <param name="hashes">The hashes you want to find in the database.</param>
 	/// <returns>The matches that the database gives back.</returns>
 	static std::string findMatches(std::vector<HashData> &hashes,
-		std::string apiIP = DATABASE_API_IP, 
-		std::string apiPort = DATABASE_API_PORT);
+		std::string apiIP, 
+		std::string apiPort);
 
 	/// <summary>
 	/// Sends a request to the database to upload and check the given hashes.
@@ -68,8 +64,8 @@ public:
 	static std::string checkUploadHashes(std::vector<HashData> &hashes,
 		ProjectMetaData metaData, 
 		AuthorData &authorData, 
-		std::string apiIP = DATABASE_API_IP, 
-		std::string apiPort = DATABASE_API_PORT);
+		std::string apiIP, 
+		std::string apiPort);
 
 	/// <summary>
 	/// Sends a request to the database get the author name and mail from the given author ids.
@@ -77,30 +73,30 @@ public:
 	/// <param name="authors">The authors you want the data from.</param>
 	/// <returns>The string that the database send back.</returns>
 	static std::string getAuthor(const std::map<std::string, int> &authors,
-		std::string apiIP = DATABASE_API_IP,
-		std::string apiPort = DATABASE_API_PORT);
+		std::string apiIP,
+		std::string apiPort);
 
 	/// <summary>
 	/// Sends a request to the database to upload and check the given hashes.
 	/// </summary>
 	/// <returns>The string that the database send back.</returns>
 	static std::string getProjectData(const std::map<std::pair<std::string, std::string>, int> &projects,
-		std::string apiIP = DATABASE_API_IP,
-		std::string apiPort = DATABASE_API_PORT);
+		std::string apiIP,
+		std::string apiPort);
 
 	/// <summary>
 	/// Sends a get next job request to the api.
 	/// </summary>
 	/// <returns>The next job the worked node should do.</returns>
-	static std::string getNextJob(std::string apiIP = DATABASE_API_IP,
-		std::string apiPort = DATABASE_API_PORT);
+	static std::string getNextJob(std::string apiIP,
+		std::string apiPort);
 
 	/// <summary>
 	/// Sends a request to the api to add the given jobs to the job queue.
 	/// </summary>
 	static std::string addJobs(const std::vector<std::string>& jobs,
-		std::string apiIP = DATABASE_API_IP,
-		std::string apiPort = DATABASE_API_PORT);
+		std::string apiIP,
+		std::string apiPort);
 
 	/// <summary>
 	/// Adds the jobs the crawler found to the job queue.
@@ -108,8 +104,8 @@ public:
 	/// <param name="jobs">The jobs to be added.</param>
 	/// <param name="crawlid">The crawler id the crawler returns.</param>
 	static std::string addCrawledJobs(const CrawlData& jobs,
-		std::string apiIP = DATABASE_API_IP,
-		std::string apiPort = DATABASE_API_PORT);
+		std::string apiIP,
+		std::string apiPort);
 private:
 	/// <summary>
 	/// The logic for sending a request to the database.
@@ -124,7 +120,11 @@ private:
 	/// This data can most likely be generated with a function in NetworkUtils like getAllDataFromHashes.</param>
 	/// <param name="dataSize">How much data we are sending.</param>
 	/// <returns>The string that the database send back.</returns>
-	static std::string execRequest(std::string request, const char* rawData, int dataSize, std::string apiIP, std::string apiPort);
+	static std::string execRequest(std::string request, 
+		const char* rawData, 
+		int dataSize, 
+		std::string apiIP, 
+		std::string apiPort);
 
 	/// <summary>
 	/// Checks if the database returns a valid response code and handles potential errors.

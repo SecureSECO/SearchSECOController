@@ -6,10 +6,15 @@ Utrecht University within the Software Project course.
 
 #pragma once
 
+#include <string>
+
+#define DATABASE_API_IP "131.211.31.153"
+#define DATABASE_API_PORT "8003"
+
 
 
 namespace entrypoint 
 {
-	int entrypoint(int argc, char* argv[]);
+	int entrypoint(int argc, char* argv[], std::string apiIP = DATABASE_API_IP, std::string apiPort = DATABASE_API_PORT);
 	void dummy();
 }

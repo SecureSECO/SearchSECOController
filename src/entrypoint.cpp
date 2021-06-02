@@ -21,7 +21,7 @@ Utrecht University within the Software Project course.
 
 void entrypoint::dummy(){}
 
-int entrypoint::entrypoint(int argc, char* argv[])
+int entrypoint::entrypoint(int argc, char* argv[], std::string apiIP, std::string apiPort)
 {
 	loguru::g_stderr_verbosity = loguru::Verbosity_OFF;
 
@@ -50,7 +50,7 @@ int entrypoint::entrypoint(int argc, char* argv[])
 	else
 	{
 		auto command = commandFactory->getCommand(userInput.command);
-		command->execute(flags);
+		command->execute(flags, apiIP, apiPort);
 	}
 
 	// Prevent loguru from logging "atexit" to stderr. This is not nice when we want to display the version for example,

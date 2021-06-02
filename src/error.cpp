@@ -167,9 +167,11 @@ std::string descDBInternalError(std::string* strs)
 }
 
 // no strs
-std::string descDBUnkownResponse(std::string* strs) 
+std::string descDBUnkownResponse(std::string* strs)
 {
 	return "Database responded in an unexpected way. Please try again later.";
+}
+
 // no strs
 std::string descSubmoduleFailureCrawler(std::string* strs)
 {

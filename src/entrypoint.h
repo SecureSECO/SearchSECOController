@@ -16,5 +16,4 @@ Utrecht University within the Software Project course.
 namespace entrypoint 
 {
 	int entrypoint(int argc, char* argv[], std::string apiIP = DATABASE_API_IP, std::string apiPort = DATABASE_API_PORT);
-	void dummy();
 }

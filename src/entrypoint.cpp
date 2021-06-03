@@ -19,8 +19,6 @@ Utrecht University within the Software Project course.
 #include <string>
 
 
-void entrypoint::dummy(){}
-
 int entrypoint::entrypoint(int argc, char* argv[], std::string apiIP, std::string apiPort)
 {
 	loguru::g_stderr_verbosity = loguru::Verbosity_OFF;

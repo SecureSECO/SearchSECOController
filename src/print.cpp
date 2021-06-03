@@ -248,6 +248,11 @@ void printMatches::parseDatabaseHashes(
 		}
 		std::vector<std::string> entrySplitted = utils::split(entry, INNER_DELIMITER);
 
+		if (entrySplitted.size() < 7) 
+		{
+			continue;
+		}
+
 		receivedHashes[entrySplitted[0]] = entrySplitted;
 		if (entrySplitted.size() < 7)
 		{

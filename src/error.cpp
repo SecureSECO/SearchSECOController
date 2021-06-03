@@ -40,7 +40,6 @@ enum errCode
 	submoduleFailureCrawler,
 	submoduleFailureSpider,
 	submoduleFailureParser,
-	submoduleFailureDatabase,
 	notImplemented,
 	// Database related errors start at 400.
 	dbConnection = 400,
@@ -190,12 +189,6 @@ std::string descSubmoduleFailureParser(std::string* strs)
 	return "The Parser ran into a fatal error. Terminating execution.";
 }
 
-// no strs
-std::string descSubmoduleFailureDatabase(std::string* strs)
-{
-	return "The Database ran into a fatal error. Terminating execution.";
-}
-
 // Maps an error code to a description.
 std::map <int, std::function<std::string(std::string*)>> errDesc =
 {
@@ -215,7 +208,6 @@ std::map <int, std::function<std::string(std::string*)>> errDesc =
 	{submoduleFailureCrawler, descSubmoduleFailureCrawler},
 	{submoduleFailureSpider, descSubmoduleFailureSpider},
 	{submoduleFailureParser, descSubmoduleFailureParser},
-	{submoduleFailureDatabase, descSubmoduleFailureDatabase},
 	{notImplemented, descErrNotImplemented},
 	{dbConnection, descConnectionError},
 	{dbBadRequest, descDBBadRequest},
@@ -352,12 +344,6 @@ void error::errSubmoduleFatalFailureSpider(const char* file, int line)
 void error::errSubmoduleFatalFailureParser(const char* file, int line)
 {
 	err(submoduleFailureParser,
-		{}, file, line);
-}
-
-void error::errSubmoduleFatalFailureDatabase(const char* file, int line)
-{
-	err(submoduleFailureDatabase,
 		{}, file, line);
 }
 

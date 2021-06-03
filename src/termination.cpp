@@ -44,5 +44,5 @@ void termination::failureParser(const char* file, int line)
 void termination::failureDatabase(const char* file, int line)
 {
 	print::loguruResetThreadName();
-	error::errSubmoduleFatalFailureDatabase(file, line);
+	error::errDBInternalError("", file, line);
 }

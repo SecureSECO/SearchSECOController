@@ -24,7 +24,11 @@ Utrecht University within the Software Project course.
 class Command
 {
 public:
+	/// <summary>
+	/// Prints the help message corresponding to this command.
+	/// </summary>
 	std::string helpMessage();
+
 	/// <summary>
 	/// Will execute the given command with the flags you give it.
 	/// </summary>
@@ -45,6 +49,16 @@ public:
 	/// Starts the worker node.
 	/// </summary>
 	void execute(Flags flags) override;
+
+	/// <summary>
+	/// Logs the pre-execution message.
+	/// </summary>
+	static void logPreExecutionMessage(int fCPU, int fRAM, const char* file, int line);
+
+	/// <summary>
+	/// Logs the post-execution message.
+	/// </summary>
+	static void logPostExecutionMessage(const char* file, int line);
 };
 
 class Check : public Command
@@ -56,6 +70,22 @@ public:
 	/// Checks matches with the database for the given repository.
 	/// </summary>
 	void execute(Flags flags) override;
+
+	/// <summary>
+	/// Logs the pre-execution message.
+	/// </summary>
+	static void logPreExecutionMessage(std::string url, const char* file, int line);
+
+	/// <summary>
+	/// Logs the post-execution message.
+	/// </summary>
+	static void logPostExecutionMessage(std::string url, const char* file, int line);
+
+private:
+	/// <summary>
+	/// Constructs the partial message to be logged. An appropriate prefix will be prepended to this.
+	/// </summary>
+	static std::string partialLogMessage(std::string url);
 };
 
 class Upload : public Command
@@ -67,6 +97,22 @@ public:
 	/// Uploads given repository.
 	/// </summary>
 	void execute(Flags flags) override;
+
+	/// <summary>
+	/// Logs the pre-execution message.
+	/// </summary>
+	static void logPreExecutionMessage(std::string url, const char* file, int line);
+
+	/// <summary>
+	/// Logs the post-execution message.
+	/// </summary>
+	static void logPostExecutionMessage(std::string url, const char* file, int line);
+
+private:
+	/// <summary>
+	/// Constructs the partial message to be logged. An appropriate prefix will be prepended to this.
+	/// </summary>
+	static std::string partialLogMessage(std::string url);
 };
 
 class CheckUpload : public Command
@@ -89,4 +135,14 @@ public:
 	/// Will update this program.
 	/// </summary>
 	void execute(Flags flags) override;
+
+	/// <summary>
+	/// Logs the pre-execution message.
+	/// </summary>
+	static void logPreExecutionMessage(std::string targetVersion, const char* file, int line);
+
+	/// <summary>
+	/// Logs the post-execution message.
+	/// </summary>
+	static void logPostExecutionMessage(const char* file, int line);
 };

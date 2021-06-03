@@ -175,6 +175,7 @@
     <ClCompile Include="src\parser2.cpp" />
     <ClCompile Include="src\print.cpp" />
     <ClCompile Include="src\regexWrapper.cpp" />
+    <ClCompile Include="src\termination.cpp" />
     <ClCompile Include="src\utils.cpp" />
     <ClCompile Include="src\loguru\loguru.cpp" />
   </ItemGroup>
@@ -203,6 +204,7 @@
     <ClInclude Include="src\print.h" />
     <ClInclude Include="src\projectMetadata.h" />
     <ClCompile Include="src\regexWrapper.h" />
+    <ClInclude Include="src\termination.h" />
     <ClInclude Include="src\utils.h" />
     <ClCompile Include="src\loguru\loguru.hpp" />
   </ItemGroup>

@@ -9,7 +9,6 @@ Utrecht University within the Software Project course.
 #include "print.h"
 
 // External includes
-#include "loguru/loguru.hpp"
 #include <thread>
 
 

@@ -1,15 +1,15 @@
 /*
 This program has been developed by students from the bachelor Computer Science at
 Utrecht University within the Software Project course.
-© Copyright Utrecht University (Department of Information and Computing Sciences)
+Â© Copyright Utrecht University (Department of Information and Computing Sciences)
 */
 
 // Controller includes
 #include "print.h"
+#include "termination.h"
 #include "utils.h"
 
 // External includes
-#include "loguru/loguru.hpp"
 #include <fstream>
 #include <functional>
 #include <iostream>
@@ -37,6 +37,9 @@ enum errCode
 	parseIncorrectLonghandFlag,
 	parseCouldNotParseFlag,
 	invalidUrl,
+	submoduleFailureCrawler,
+	submoduleFailureSpider,
+	submoduleFailureParser,
 	notImplemented,
 	// Database related errors start at 400.
 	dbConnection = 400,
@@ -163,9 +166,27 @@ std::string descDBInternalError(std::string* strs)
 }
 
 // no strs
-std::string descDBUnkownResponse(std::string* strs) 
+std::string descDBUnkownResponse(std::string* strs)
 {
 	return "Database responded in an unexpected way. Please try again later.";
+}
+
+// no strs
+std::string descSubmoduleFailureCrawler(std::string* strs)
+{
+	return "The Crawler ran into a fatal error. Terminating execution.";
+}
+
+// no strs
+std::string descSubmoduleFailureSpider(std::string* strs)
+{
+	return "The Spider ran into a fatal error. Terminating execution.";
+}
+
+// no strs
+std::string descSubmoduleFailureParser(std::string* strs)
+{
+	return "The Parser ran into a fatal error. Terminating execution.";
 }
 
 // Maps an error code to a description.
@@ -184,6 +205,9 @@ std::map <int, std::function<std::string(std::string*)>> errDesc =
 	{parseIncorrectLonghandFlag, descParseIncorrectLonghandFlag},
 	{parseCouldNotParseFlag, descParseCouldNotParseFlag},
 	{invalidUrl, descInvalidUrl},
+	{submoduleFailureCrawler, descSubmoduleFailureCrawler},
+	{submoduleFailureSpider, descSubmoduleFailureSpider},
+	{submoduleFailureParser, descSubmoduleFailureParser},
 	{notImplemented, descErrNotImplemented},
 	{dbConnection, descConnectionError},
 	{dbBadRequest, descDBBadRequest},
@@ -209,9 +233,7 @@ void err(errCode code, std::string* strs, const char* file, int line, std::strin
 
 	delete[] strs;
 
-	loguru::g_stderr_verbosity = loguru::Verbosity_OFF;
-
-	exit(EXIT_FAILURE);
+	termination::failure();
 }
 
 #pragma region Specific_error_handlers
@@ -305,6 +327,24 @@ void error::errInvalidUrl(std::string url, const char* file, int line)
 		new std::string[1] { url },
 		file, line
 	);
+}
+
+void error::errSubmoduleFatalFailureCrawler(const char* file, int line)
+{
+	err(submoduleFailureCrawler,
+		{}, file, line);
+}
+
+void error::errSubmoduleFatalFailureSpider(const char* file, int line)
+{
+	err(submoduleFailureSpider,
+		{}, file, line);
+}
+
+void error::errSubmoduleFatalFailureParser(const char* file, int line)
+{
+	err(submoduleFailureParser,
+		{}, file, line);
 }
 
 void error::errNotImplemented(std::string funcname, const char* file, int line)

@@ -27,10 +27,6 @@ AuthorData moduleFacades::downloadRepository(std::string repository, Flags flags
 
 	auto authorData = RunSpider::runSpider(repository, downloadPath, flags.flag_cpu, flags.flag_branch);
 
-	if (errno != 0)
-	{
-		termination::failureSpider(__FILE__, __LINE__);
-	}
 
 	return authorData;
 }
@@ -41,10 +37,6 @@ std::vector<HashData> moduleFacades::parseRepository(std::string repository, Fla
 
 	auto hashes = Parser::parse(repository, flags.flag_cpu);
 
-	if (errno != 0)
-	{
-		termination::failureParser(__FILE__, __LINE__);
-	}
 
 	for (int i = 0; i < hashes.size(); i++)
 	{

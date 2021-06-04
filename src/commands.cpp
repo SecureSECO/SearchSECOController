@@ -204,7 +204,15 @@ void Check::execute(Flags flags)
 	this->logPreExecutionMessage(url, __FILE__, __LINE__);
 
 	AuthorData authorData = moduleFacades::downloadRepository(url, flags, DOWNLOAD_LOCATION);
+	if (errno != 0)
+	{
+		termination::failureSpider(__FILE__, __LINE__);
+	}
 	std::vector<HashData> hashes = moduleFacades::parseRepository(DOWNLOAD_LOCATION, flags);
+	if (errno != 0)
+	{
+		termination::failureParser(__FILE__, __LINE__);
+	}
 
 	// Calling the function that will print all the matches for us.
 	printMatches::printHashMatches(hashes, DatabaseRequests::findMatches(hashes), authorData);
@@ -250,7 +258,15 @@ void Upload::execute(Flags flags)
 	this->logPreExecutionMessage(url, __FILE__, __LINE__);
 
 	AuthorData authorData = moduleFacades::downloadRepository(url, flags, DOWNLOAD_LOCATION);
+	if (errno != 0)
+	{
+		termination::failureSpider(__FILE__, __LINE__);
+	}
 	std::vector<HashData> hashes = moduleFacades::parseRepository(DOWNLOAD_LOCATION, flags);
+	if (errno != 0)
+	{
+		termination::failureParser(__FILE__, __LINE__);
+	}
 	// Uploading the hashes.
 	ProjectMetaData meta = moduleFacades::getProjectMetadata(url);
 	if (errno != 0)
@@ -284,7 +300,15 @@ void CheckUpload::execute(Flags flags)
 	Check::logPreExecutionMessage(url, __FILE__, __LINE__);
 
 	AuthorData authorData = moduleFacades::downloadRepository(url, flags, DOWNLOAD_LOCATION);
+	if (errno != 0)
+	{
+		termination::failureSpider(__FILE__, __LINE__);
+	}
 	std::vector<HashData> hashes = moduleFacades::parseRepository(DOWNLOAD_LOCATION, flags);
+	if (errno != 0)
+	{
+		termination::failureParser(__FILE__, __LINE__);
+	}
 
 	Check::logPostExecutionMessage(url, __FILE__, __LINE__);
 

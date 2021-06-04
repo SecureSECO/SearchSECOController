@@ -20,7 +20,7 @@ Utrecht University within the Software Project course.
 #define PORT "6969"
 
 // Dummies
-#define DUMMYHASHES { HashData("hash", "functionname", "filename", 5, 420) };
+#define DUMMYHASHES { HashData("hash", "functionname", "filename", 5, 420) }
 
 
 TEST(integrationDatabaseAPI, upload)

@@ -1,7 +1,7 @@
 /*
 This program has been developed by students from the bachelor Computer Science at
 Utrecht University within the Software Project course.
-© Copyright Utrecht University (Department of Information and Computing Sciences)
+ï¿½ Copyright Utrecht University (Department of Information and Computing Sciences)
 */
 
 #pragma once
@@ -61,8 +61,17 @@ public:
 	/// </summary>
 	static void logPostExecutionMessage(const char* file, int line);
 private:
+	/// <summary>
+	/// Handles crawl requests.
+	/// </summary>
 	void handleCrawlRequest(std::vector<std::string> &splitted, Flags flags);
+	/// <summary>
+	/// Handles spider requests.
+	/// </summary>
 	void handleSpiderRequest(std::vector<std::string> &splitted, Flags flags);
+	/// <summary>
+	/// Reads the command line.
+	/// </summary>
 	void readCommandLine();
 	bool stop = false;
 	std::mutex mtx;

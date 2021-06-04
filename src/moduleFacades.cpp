@@ -27,7 +27,6 @@ AuthorData moduleFacades::downloadRepository(std::string repository, Flags flags
 
 	auto authorData = RunSpider::runSpider(repository, downloadPath, flags.flag_cpu, flags.flag_branch);
 
-
 	return authorData;
 }
 
@@ -36,7 +35,6 @@ std::vector<HashData> moduleFacades::parseRepository(std::string repository, Fla
 	print::debug("Calling the parser to parse a repository", __FILE__, __LINE__);
 
 	auto hashes = Parser::parse(repository, flags.flag_cpu);
-
 
 	for (int i = 0; i < hashes.size(); i++)
 	{
@@ -69,7 +67,6 @@ ProjectMetaData moduleFacades::getProjectMetadata(std::string url)
 		pmd.defaultBranch);
 	errno = er;
 	return pm;
-
 }
 
 CrawlData moduleFacades::crawlRepositories(int startId)

@@ -40,10 +40,14 @@
     <ClCompile Include="systemTestsCheck.cpp">
       <Filter>Tests</Filter>
     </ClCompile>
+    <ClCompile Include="systemTestsUtils.cpp">
+      <Filter>Tests</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />
     <ClInclude Include="databaseAPIMock.h" />
+    <ClInclude Include="systemTestsUtils.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

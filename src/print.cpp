@@ -20,6 +20,8 @@ Utrecht University within the Software Project course.
 #include <iostream>
 #include <map>
 #include <stdlib.h>
+#include <StringStream.h>
+#include <iomanip>
 
 inline
 bool operator<(HashData const& lhs, HashData const& rhs)
@@ -176,7 +178,7 @@ void printMatches::printHashMatches(std::vector<HashData> &hashes, std::string d
 				hashes[i], receivedHashes, authors, authorCopiedForm, authorsCopied, dbProjects, authorIdToName);
 		}
 	}
-	printSummary(authorCopiedForm, authorsCopied, matches, dbProjects, authorIdToName, projects);
+	printSummary(authorCopiedForm, authorsCopied, matches, hashes.size(), dbProjects, authorIdToName, projects);
 }
 
 void printMatches::parseDatabaseHashes(
@@ -276,14 +278,17 @@ void printMatches::printMatch(
 
 void printMatches::printSummary(std::map<std::string, int> &authorCopiedForm,
 	std::map<std::string, int> &authorsCopied,
-	int matches,
+	int matches, int methods,
 	std::map<std::string, std::vector<std::string>>& dbProjects,
 	std::map<std::string, std::vector<std::string>>& authorIdToName,
 	std::map<std::pair<std::string, std::string>, int> &projects)
 {
 
 	print::printline("\nSummary:");
-	print::printline("Matches: " + std::to_string(matches));
+	print::printline("Methods in checked project: " + std::to_string(methods));
+	std::stringstream stream;
+	stream << std::fixed << std::setprecision(2) << ((float)matches * 100 / methods);
+	print::printline("Matches: " + std::to_string(matches) + " (" + stream.str() + "%)");
 	print::printline("Projects found in database:");
 	for (const auto& x : projects)
 	{

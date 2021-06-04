@@ -140,7 +140,7 @@ private:
 	/// </summary>
 	static void printSummary(std::map<std::string, int> &authorCopiedForm, 
 		std::map<std::string, int> &authorsCopied, 
-		int matches,
+		int matches, int methods,
 		std::map<std::string, std::vector<std::string>>& dbProjects,
 		std::map<std::string, std::vector<std::string>>& authorIdToName,
 		std::map<std::pair<std::string, std::string>, int> &projects);

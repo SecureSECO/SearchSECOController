@@ -38,7 +38,6 @@ set(CONTROLLER_HEADER_LIST
   moduleFacades.h
   networkUtils.h
   networking.h
-  parser2.h
   print.h
   projectMetadata.h
   regexWrapper.h
@@ -56,7 +55,6 @@ add_library(controller
   moduleFacades.cpp
   networkUtils.cpp
   networking.cpp
-  parser2.cpp
   print.cpp
   regexWrapper.cpp
   termination.cpp

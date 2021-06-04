@@ -172,7 +172,6 @@
     <ClCompile Include="src\moduleFacades.cpp" />
     <ClCompile Include="src\networkUtils.cpp" />
     <ClCompile Include="src\networking.cpp" />
-    <ClCompile Include="src\parser2.cpp" />
     <ClCompile Include="src\print.cpp" />
     <ClCompile Include="src\regexWrapper.cpp" />
     <ClCompile Include="src\termination.cpp" />
@@ -199,7 +198,6 @@
     <ClInclude Include="src\moduleFacades.h" />
     <ClInclude Include="src\networkUtils.h" />
     <ClInclude Include="src\networking.h" />
-    <ClInclude Include="src\parser2.h" />
     <ClInclude Include="src\print.h" />
     <ClInclude Include="src\projectMetadata.h" />
     <ClCompile Include="src\regexWrapper.h" />

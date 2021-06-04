@@ -36,9 +36,6 @@
     <ClCompile Include="src\networking.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\parser2.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\print.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -55,6 +52,7 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\loguru\loguru.hpp" />
+    <ClCompile Include="src\regexWrapper.h" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\commandFactory.h">
@@ -81,16 +79,10 @@
     <ClInclude Include="src\networking.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\parser2.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="src\print.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\projectMetadata.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\regexWrapper.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\termination.h">
@@ -99,7 +91,6 @@
     <ClInclude Include="src\utils.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

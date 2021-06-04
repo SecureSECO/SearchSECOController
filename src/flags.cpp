@@ -7,8 +7,10 @@ Utrecht University within the Software Project course.
 // Controller includes
 #include "flags.h"
 #include "print.h"
+#include "utils.h"
 
 // External includes
+#include <fstream>
 #include <thread>
 
 
@@ -99,4 +101,29 @@ bool Flags::isLongFlag(std::string flag)
 	}
 
 	return false;
+}
+
+std::map<std::string, std::string> Flags::parseConfig(std::string configPath)
+{
+	std::ifstream configFile(configPath);
+
+	std::string line;
+	std::vector<std::string> flagArg;
+	std::string flag;
+	std::string arg;
+
+	std::map<std::string, std::string> configFlagArgs = {};
+
+	while (std::getline(configFile, line))
+	{
+		flagArg = utils::split(line, ':');
+		flag = utils::trimWhiteSpaces(flagArg[0]);
+		arg = utils::trimWhiteSpaces(flagArg[1]);
+
+		configFlagArgs[flag] = arg;
+	}
+
+	configFile.close();
+
+	return configFlagArgs;
 }

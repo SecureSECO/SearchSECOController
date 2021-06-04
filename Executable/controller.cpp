@@ -7,7 +7,6 @@ Utrecht University within the Software Project course.
 // Controller includes
 #include "commandFactory.h"
 #include "input.h"
-#include "parser2.h"
 #include "print.h"
 #include "termination.h"
 

@@ -6,7 +6,6 @@ Utrecht University within the Software Project course.
 
 // Controller includes
 #include "input.h"
-#include "parser2.h"
 #include "print.h"
 #include "regexWrapper.h"
 
@@ -144,7 +143,7 @@ void Input::applyDefaults()
 	auto configpath = this->executablePath + "/cfg/config.txt";
 
 	print::debug("Reading config file at " + configpath, __FILE__, __LINE__);
-	std::map<std::string, std::string> configDefaults = FlagParser::parseConfig(configpath);
+	std::map<std::string, std::string> configDefaults = Flags::parseConfig(configpath);
 
 	std::map<std::string, std::string>::iterator it;
 	for (it = configDefaults.begin(); it != configDefaults.end(); ++it)

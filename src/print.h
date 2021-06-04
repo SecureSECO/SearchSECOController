@@ -1,7 +1,7 @@
 /*
 This program has been developed by students from the bachelor Computer Science at
 Utrecht University within the Software Project course.
-© Copyright Utrecht University (Department of Information and Computing Sciences)
+Â© Copyright Utrecht University (Department of Information and Computing Sciences)
 */
 
 #pragma once
@@ -16,6 +16,7 @@ Utrecht University within the Software Project course.
 #include "CodeBlock.h"
 
 // External includes.
+#include "loguru/loguru.hpp"
 #include <string>
 #include <vector>
 
@@ -36,6 +37,16 @@ namespace print
 	/// Print a warning message to stdout, and log to a file.
 	/// </summary>
 	void warn(std::string msg, const char* file, int line);
+
+	/// <summary>
+	/// Sets loguru to "silent mode", i.e. it will not log anything to stderr.
+	/// </summary>
+	void loguruSetSilent();
+
+	/// <summary>
+	/// Resets the thread name back to our name in loguru. Used when control is returned to us.
+	/// </summary>
+	void loguruResetThreadName();
 
 	/// <summary>
 	/// Prints a given string to the console, followed by a newline character.
@@ -218,6 +229,26 @@ namespace error
 	/// </summary>
 	/// <param name="url">The 'URL' in question.</param>
 	void errInvalidUrl(std::string url, const char* file, int line);
+
+	/// <summary>
+	/// Signals a fatal failure occurred in the crawler submodule.
+	/// </summary>
+	void errSubmoduleFatalFailureCrawler(const char* file, int line);
+
+	/// <summary>
+	/// Signals a fatal failure occurred in the crawler submodule.
+	/// </summary>
+	void errSubmoduleFatalFailureSpider(const char* file, int line);
+
+	/// <summary>
+	/// Signals a fatal failure occurred in the crawler submodule.
+	/// </summary>
+	void errSubmoduleFatalFailureParser(const char* file, int line);
+
+	/// <summary>
+	/// Signals a fatal failure occurred in the crawler submodule.
+	/// </summary>
+	void errSubmoduleFatalFailureDatabase(const char* file, int line);
 
 	/// <summary>
 	/// Throws the "Not Implemented" error.

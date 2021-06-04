@@ -8,6 +8,16 @@ add_subdirectory(../crawler/Crawler ./Crawler)
 
 set(CMAKE_CXX_STANDARD 17)
 
+message("Building the controller...")
+if(NOT DEFINED LOGURU_INCLUDED)
+   set(LOGURU_FILES
+   loguru/loguru.hpp
+   loguru/loguru.cpp
+   )
+   set(LOGURU_INCLUDED true)
+   message("Including loguru files...")
+endif()
+
 if (WIN32)
   set(Boost_USE_STATIC_LIBS ON) 
   set(Boost_USE_MULTITHREADED ON)  
@@ -34,6 +44,7 @@ set(CONTROLLER_HEADER_LIST
   print.h
   projectMetadata.h
   regexWrapper.h
+  termination.h
   utils.h
 )
 
@@ -51,8 +62,10 @@ add_library(controller
   parser2.cpp
   print.cpp
   regexWrapper.cpp
+  termination.cpp
   utils.cpp
   ${CONTROLLER_HEADER_LIST}
+  ${LOGURU_FILES}
 )
 
 target_link_libraries(controller spider parser crawler ${Boost_LIBRARIES})

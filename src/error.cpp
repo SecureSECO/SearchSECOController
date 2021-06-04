@@ -45,7 +45,7 @@ enum errCode
 	dbConnection = 400,
 	dbBadRequest,
 	dbInternalError,
-	dbUnknownRepsonse,
+	dbUnknownResponse,
 	invalidDatabaseAnswer,
 };
 
@@ -213,7 +213,7 @@ std::map <int, std::function<std::string(std::string*)>> errDesc =
 	{dbConnection, descConnectionError},
 	{dbBadRequest, descDBBadRequest},
 	{dbInternalError, descDBInternalError},
-	{dbUnknownRepsonse, descDBUnkownResponse}
+	{dbUnknownResponse, descDBUnkownResponse}
 	
 };
 
@@ -382,7 +382,7 @@ void error::errDBInternalError(std::string message, const char* file, int line)
 
 void error::errDBUnknownResponse(const char* file, int line)
 {
-	err(dbUnknownRepsonse, {}, file, line);
+	err(dbUnknownResponse, {}, file, line);
 }
 
 void error::errInvalidDatabaseAnswer(const char* file, int line)

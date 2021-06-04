@@ -30,7 +30,6 @@ endif()
 find_package(Boost REQUIRED COMPONENTS regex date_time)
 
 set(CONTROLLER_HEADER_LIST
-  loguru/loguru.hpp
   commandFactory.h
   commands.h
   databaseRequests.h
@@ -49,7 +48,6 @@ set(CONTROLLER_HEADER_LIST
 )
 
 add_library(controller
-  loguru/loguru.cpp
   commandFactory.cpp
   commands.cpp  
   databaseRequests.cpp

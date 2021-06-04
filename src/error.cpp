@@ -46,6 +46,7 @@ enum errCode
 	dbBadRequest,
 	dbInternalError,
 	dbUnknownRepsonse,
+	invalidDatabaseAnswer,
 };
 
 // Descriptions of the error messages.
@@ -382,6 +383,14 @@ void error::errDBInternalError(std::string message, const char* file, int line)
 void error::errDBUnknownResponse(const char* file, int line)
 {
 	err(dbUnknownRepsonse, {}, file, line);
+}
+
+void error::errInvalidDatabaseAnswer(const char* file, int line)
+{
+	err(invalidDatabaseAnswer,
+		new std::string[1]{ "Invalid database response." },
+		file, line
+	);
 }
 
 #pragma endregion Specific_error_handlers

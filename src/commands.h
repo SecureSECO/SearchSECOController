@@ -20,6 +20,7 @@ Utrecht University within the Software Project course.
 #include <map>
 #include <string>
 #include <vector>
+#include <mutex>
 
 class Command
 {
@@ -59,6 +60,12 @@ public:
 	/// Logs the post-execution message.
 	/// </summary>
 	static void logPostExecutionMessage(const char* file, int line);
+private:
+	void handleCrawlRequest(std::vector<std::string> &splitted, Flags flags);
+	void handleSpiderRequest(std::vector<std::string> &splitted, Flags flags);
+	void readCommandLine();
+	bool stop = false;
+	std::mutex mtx;
 };
 
 class Check : public Command

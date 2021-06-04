@@ -20,17 +20,6 @@ Utrecht University within the Software Project course.
 #include <map>
 #include <stdlib.h>
 
-
-inline
-bool operator==(HashData const& lhs, HashData const& rhs)
-{
-	return lhs.hash == rhs.hash &&
-		lhs.fileName == rhs.fileName &&
-		lhs.functionName == rhs.functionName
-		&& lhs.lineNumber == rhs.lineNumber
-		&& lhs.lineNumberEnd == rhs.lineNumberEnd;
-}
-
 inline
 bool operator<(HashData const& lhs, HashData const& rhs)
 { 

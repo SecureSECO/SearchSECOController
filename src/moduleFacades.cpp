@@ -18,6 +18,8 @@ Utrecht University within the Software Project course.
 // Spider includes.
 #include "RunSpider.h"
 
+// Crawler includes.
+#include "RunCrawler.h"
 
 AuthorData moduleFacades::downloadRepository(std::string repository, Flags flags, std::string downloadPath)
 {
@@ -25,10 +27,6 @@ AuthorData moduleFacades::downloadRepository(std::string repository, Flags flags
 
 	auto authorData = RunSpider::runSpider(repository, downloadPath, flags.flag_cpu, flags.flag_branch);
 
-	if (errno != 0)
-	{
-		termination::failureSpider(__FILE__, __LINE__);
-	}
 
 	return authorData;
 }
@@ -39,10 +37,6 @@ std::vector<HashData> moduleFacades::parseRepository(std::string repository, Fla
 
 	auto hashes = Parser::parse(repository, flags.flag_cpu);
 
-	if (errno != 0)
-	{
-		termination::failureParser(__FILE__, __LINE__);
-	}
 
 	for (int i = 0; i < hashes.size(); i++)
 	{
@@ -55,13 +49,9 @@ ProjectMetaData moduleFacades::getProjectMetadata(std::string url)
 {
 	print::debug("Calling the crawler to get the metadata from a project", __FILE__, __LINE__);
 
-	ProjectMetadata pmd = RunCrawler::findMetadata(url);
+	ProjectMetadata pmd = RunCrawler::findMetadata(url);	
 
-	if (errno != 0)
-	{
-		termination::failureCrawler(__FILE__, __LINE__);
-	}
-
+	int er = errno;
 	// TODO: very temporary hashing.
 	std::string id = pmd.authorMail + pmd.authorName + pmd.version;
 	long long hash = 0;
@@ -69,13 +59,22 @@ ProjectMetaData moduleFacades::getProjectMetadata(std::string url)
 	{
 		hash += id[i] * (i + 1);
 	}
-
-	return ProjectMetaData(
-		std::to_string(hash),
+	ProjectMetaData pm = ProjectMetaData(std::to_string(hash),
 		std::to_string(utils::getIntegerTimeFromString(pmd.version)),
 		pmd.license,
 		pmd.name,
 		pmd.url,
 		pmd.authorName,
-		pmd.authorMail);
+		pmd.authorMail,
+		pmd.defaultBranch);
+	errno = er;
+	return pm;
+
+}
+
+CrawlData moduleFacades::crawlRepositories(int startId)
+{
+	print::debug("Calling the crawler to crawl a repositories", __FILE__, __LINE__);
+	auto urls = RunCrawler::crawlRepositories("https://github.com/", startId);
+	return urls;
 }

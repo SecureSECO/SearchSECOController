@@ -33,7 +33,6 @@ set(CONTROLLER_HEADER_LIST
   commandFactory.h
   commands.h
   databaseRequests.h
-  flagParser.h
   flags.h
   input.h
   moduleFacades.h

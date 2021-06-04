@@ -194,7 +194,6 @@
     <ClInclude Include="src\commandFactory.h" />
     <ClInclude Include="src\commands.h" />
     <ClInclude Include="src\databaseRequests.h" />
-    <ClInclude Include="src\flagParser.h" />
     <ClInclude Include="src\flags.h" />
     <ClInclude Include="src\input.h" />
     <ClInclude Include="src\moduleFacades.h" />

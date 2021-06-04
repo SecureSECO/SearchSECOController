@@ -25,13 +25,15 @@ Utrecht University within the Software Project course.
 
 TEST(integrationDatabaseAPI, upload)
 {
+    std::vector<HashData> dummyHashes = DUMMYHASHES;
     ConnectionHandler *connectionHandler = new ConnectionHandler();
     std::thread *t1 = new std::thread(&ConnectionHandler::StartListen, connectionHandler);
 
+    AuthorData ad = {};
     std::string result = DatabaseRequests::uploadHashes(
-        DUMMYHASHES, 
+        dummyHashes,
         ProjectMetaData("5", "2", "Lyzenze", "ProjectName", "url.com", "authorName", "author@mail.com"), 
-        {},
+        ad,
         LOCALHOST,
         PORT
     );
@@ -40,11 +42,12 @@ TEST(integrationDatabaseAPI, upload)
 
 TEST(integrationDatabaseAPI, check)
 {
+    std::vector<HashData> dummyHashes = DUMMYHASHES;
     ConnectionHandler *connectionHandler = new ConnectionHandler();
     std::thread *t1 = new std::thread(&ConnectionHandler::StartListen, connectionHandler);
 
     std::string result = DatabaseRequests::findMatches(
-        DUMMYHASHES, 
+        dummyHashes,
         LOCALHOST, 
         PORT
     );
@@ -53,13 +56,15 @@ TEST(integrationDatabaseAPI, check)
 
 TEST(integrationDatabaseAPI, checkUpload)
 {
+    std::vector<HashData> dummyHashes = DUMMYHASHES;
     ConnectionHandler* connectionHandler = new ConnectionHandler();
     std::thread* t1 = new std::thread(&ConnectionHandler::StartListen, connectionHandler);
     
+    AuthorData ad = {};
     std::string result = DatabaseRequests::checkUploadHashes(
-        DUMMYHASHES, 
+        dummyHashes,
         ProjectMetaData("5", "2", "Lyzenze", "ProjectName", "url.com", "authorName", "author@mail.com"), 
-        {},
+        ad,
         LOCALHOST, 
         PORT
     );
@@ -68,8 +73,9 @@ TEST(integrationDatabaseAPI, checkUpload)
 
 TEST(integrationDatabaseAPI, wrongPortCheck)
 {
+    std::vector<HashData> dummyHashes = DUMMYHASHES;
     ConnectionHandler* connectionHandler = new ConnectionHandler();
     std::thread* t1 = new std::thread(&ConnectionHandler::StartListen, connectionHandler);
 
-    EXPECT_THROW(DatabaseRequests::findMatches(DUMMYHASHES, LOCALHOST, "wrongport"), std::runtime_error);
+    EXPECT_THROW(DatabaseRequests::findMatches(dummyHashes, LOCALHOST, "wrongport"), std::runtime_error);
 }

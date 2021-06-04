@@ -28,7 +28,7 @@ void ConnectionHandler::StartListen()
 
 std::string RequestHandler::HandleRequest(std::string sender, std::string request)
 {
-    return "Request received from " + sender;
+    return "200\nRequest received from " + sender;
 }	
 
 

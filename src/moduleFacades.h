@@ -8,9 +8,11 @@ Utrecht University within the Software Project course.
 
 // Controller includes.
 #include "flags.h"
+#include "projectMetadata.h"
 
 // Crawler includes
 #include "RunCrawler.h"
+#include "ProjectMetadata.h"
 
 // Parser includes.
 #include "HashData.h"

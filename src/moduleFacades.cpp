@@ -11,7 +11,6 @@ Utrecht University within the Software Project course.
 
 // Crawler includes
 #include "RunCrawler.h"
-#include "ProjectMetadata.h"
 
 // Parser includes.
 #include "Parser.h"

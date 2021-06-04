@@ -1,28 +1,29 @@
 /*
 This program has been developed by students from the bachelor Computer Science at
 Utrecht University within the Software Project course.
-� Copyright Utrecht University (Department of Information and Computing Sciences)
+© Copyright Utrecht University (Department of Information and Computing Sciences)
 */
 
 // Google test header file.
 #include "pch.h"
 
 // Controller includes. 
-#include "entrypoint.h"
 #include "databaseAPIMock.h"
-
-// Constants.
-#define LOCALHOST "127.0.0.1"
-#define PORT "6969"
+#include "entrypoint.h"
+#include "systemTestsUtils.h"
+#include "utils.h"
 
 
 TEST(systemTestCheck, dummy) 
 {
+	systemTestsUtils::startAPIMock();
+
 	std::string command = "searchseco check https://github.com/zavg/linux-0.01";
+	std::vector<std::string> words = utils::split(command, ' ');
 
-	auto n_argv = new char*[4] { "path", "check", "https://github.com/zavg/linux-0.01", nullptr };
+	auto n_argv = systemTestsUtils::getArgv(words);//new char*[4] { "path", "check", "https://github.com/zavg/linux-0.01", nullptr };
 
-	EXPECT_EQ(0, entrypoint::entrypoint(3, n_argv, LOCALHOST, PORT));
+	EXPECT_EQ(0, entrypoint::entrypoint(words.size(), n_argv, LOCALHOST, PORT));
 }
 
 

@@ -7,11 +7,10 @@ Utrecht University within the Software Project course.
 // Controller includes
 #include "commandFactory.h"
 #include "input.h"
-#include "parser2.h"
 #include "print.h"
+#include "termination.h"
 
 // External includes
-#include "loguru/loguru.hpp"
 #include <functional>
 #include <iostream>
 #include <map>
@@ -50,7 +49,5 @@ int main(int argc, char* argv[])
 		command->execute(flags);
 	}
 
-	// Prevent loguru from logging "atexit" to stderr. This is not nice when we want to display the version for example,
-	//	it is only visual clutter.
-	loguru::g_stderr_verbosity = loguru::Verbosity_OFF;
+	termination::successful();
 }

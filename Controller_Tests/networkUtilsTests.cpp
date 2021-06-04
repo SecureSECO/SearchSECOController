@@ -10,6 +10,9 @@ Utrecht University within the Software Project course.
 // Controller includes
 #include "networkUtils.h"
 
+// Crawler includes
+#include "RunCrawler.h"
+
 // Parser includes
 #include "HashData.h"
 
@@ -357,6 +360,71 @@ TEST(networkingGetProjectToSend, more_projects)
 	int size;
 	const char* buffer = NetworkUtils::getProjectsRequest(authors, size);
 	std::string target = "project1?12\nproject2?51\nproject3?69\nproject4?42\nproject5?420\n";
+	EXPECT_EQ(target, std::string(buffer, buffer + size));
+	EXPECT_EQ(size, target.size());
+}
+
+TEST(networkingGetAddJobRequest, two_jobs)
+{
+	// TODO: Priority, once that has been added.
+	std::vector<std::string> authors = { "url1", "url2" };
+	int size;
+	const char* buffer = NetworkUtils::getJobsRequest(authors, size);
+	std::string target = "url1?1\nurl2?1\n";
+	EXPECT_EQ(target, std::string(buffer, buffer + size));
+	EXPECT_EQ(size, target.size());
+}
+
+TEST(networkingGetAddJobRequest, empty)
+{
+	std::vector<std::string> authors = {};
+	int size;
+	const char* buffer = NetworkUtils::getJobsRequest(authors, size);
+	std::string target = "";
+	EXPECT_EQ(target, std::string(buffer, buffer + size));
+	EXPECT_EQ(size, target.size());
+}
+
+TEST(networkingGetAddJobRequest, more_jobs)
+{
+	// TODO: Priority, once that has been added.
+	std::vector<std::string> authors = { "url1", "url2", "url3" , "url4" , "url5" };
+	int size;
+	const char* buffer = NetworkUtils::getJobsRequest(authors, size);
+	std::string target = "url1?1\nurl2?1\nurl3?1\nurl4?1\nurl5?1\n";
+	EXPECT_EQ(target, std::string(buffer, buffer + size));
+	EXPECT_EQ(size, target.size());
+}
+
+TEST(networkingGetCrawledRequest, two_jobs)
+{
+	int crawlid = 10;
+	CrawlData authors = { {{"url1", 2}, {"url2", 6}}, crawlid };
+	int size;
+	const char* buffer = NetworkUtils::getUploadCrawlRequest(authors, size);
+	std::string target = std::to_string(crawlid) + "\nurl1?2\nurl2?6\n";
+	EXPECT_EQ(target, std::string(buffer, buffer + size));
+	EXPECT_EQ(size, target.size());
+}
+
+TEST(networkingGetCrawledRequest, empty)
+{
+	int crawlid = 5;
+	CrawlData authors = { {}, crawlid };
+	int size;
+	const char* buffer = NetworkUtils::getUploadCrawlRequest(authors, size);
+	std::string target = std::to_string(crawlid) + "\n";
+	EXPECT_EQ(target, std::string(buffer, buffer + size));
+	EXPECT_EQ(size, target.size());
+}
+
+TEST(networkingGetCrawledRequest, more_jobs)
+{
+	int crawlid = 25;
+	CrawlData authors = { {{"url1", 1}, {"url2", 2}, {"url3", 3} , {"url4", 4} , {"url5", 5}}, crawlid };
+	int size;
+	const char* buffer = NetworkUtils::getUploadCrawlRequest(authors, size);
+	std::string target = std::to_string(crawlid) + "\nurl1?1\nurl2?2\nurl3?3\nurl4?4\nurl5?5\n";
 	EXPECT_EQ(target, std::string(buffer, buffer + size));
 	EXPECT_EQ(size, target.size());
 }

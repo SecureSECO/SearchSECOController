@@ -182,7 +182,55 @@ const char* NetworkUtils::getProjectsRequest(const std::map<std::pair<std::strin
 	return data;
 }
 
-const char* NetworkUtils::getAllDataFromHashes(std::vector<HashData>& data, int& size, std::string header, AuthorData& authors)
+const char* NetworkUtils::getJobsRequest(const std::vector<std::string>& urls, int& size)
+{
+	// First, calculate the size, so we don't have to expand it later.
+	size = 0;
+	for (const auto& x : urls)
+	{
+		size += x.length() + 1 + 2;
+	}
+	char* data = new char[size];
+	// Create the string.
+	int pos = 0;
+	for (auto x : urls)
+	{
+		addStringToBuffer(data, pos, x);
+		data[pos++] = INNER_DELIMITER;
+		addStringToBuffer(data, pos, "1");
+		data[pos++] = ENTRY_DELIMITER;
+	}
+	return data;
+}
+
+const char* NetworkUtils::getUploadCrawlRequest(const CrawlData& urls, int& size)
+{
+	// First, calculate the size, so we don't have to expand it later.
+	// Initial size is for the header.
+	size = std::to_string(urls.finalProjectId).length() + 1;
+	for (const auto& x : urls.URLImportanceList)
+	{
+		size += x.first.length() + std::to_string(x.second).length() + 2;
+	}
+	char* data = new char[size];
+	// Create the string.
+	int pos = 0;
+
+	addStringToBuffer(data, pos, std::to_string(urls.finalProjectId));
+	data[pos++] = ENTRY_DELIMITER;
+
+	for (auto x : urls.URLImportanceList)
+	{
+		addStringToBuffer(data, pos, x.first);
+		data[pos++] = INNER_DELIMITER;
+		addStringToBuffer(data, pos, std::to_string(x.second));
+		data[pos++] = ENTRY_DELIMITER;
+	}
+	return data;
+}
+
+const char* NetworkUtils::getAllDataFromHashes(std::vector<HashData>& data, int& size,
+	std::string header, AuthorData& authors)
 {
 	// For getting the corresponding authors for each method,
 	// we first need to transform the list of hashes a bit.

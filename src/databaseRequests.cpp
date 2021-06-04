@@ -8,6 +8,8 @@ Utrecht University within the Software Project course.
 #include "databaseRequests.h"
 #include "networkUtils.h"
 #include "networking.h"
+#include "print.h"
+#include "utils.h"
 
 // Parser includes
 #include "Parser.h"
@@ -62,6 +64,27 @@ std::string DatabaseRequests::getProjectData(const std::map<std::pair<std::strin
 	return execRequest(DATABASE_GET_PROJECT_DATA, rawData, dataSize, apiIP, apiPort);
 }
 
+std::string DatabaseRequests::getNextJob(std::string apiIP, std::string apiPort)
+{
+	return execRequest(DATABASE_GET_NEXT_JOB, nullptr, 0, apiIP, apiPort);
+}
+
+std::string DatabaseRequests::addJobs(const std::vector<std::string>& jobs,
+	std::string apiIP, std::string apiPort)
+{
+	int dataSize = 0;
+	const char* rawData = NetworkUtils::getJobsRequest(jobs, dataSize);
+	return execRequest(DATABASE_ADD_JOB, rawData, dataSize, apiIP, apiPort);
+}
+
+std::string DatabaseRequests::addCrawledJobs(const CrawlData& jobs,
+	std::string apiIP, std::string apiPort)
+{
+	int dataSize = 0;
+	const char* rawData = NetworkUtils::getUploadCrawlRequest(jobs, dataSize);
+	return execRequest(DATABASE_CRAWL_DATA, rawData, dataSize, apiIP, apiPort);
+}
+
 std::string DatabaseRequests::execRequest(std::string request, const char* rawData, int dataSize, std::string apiIP, std::string apiPort)
 {
 	// First start the connection.
@@ -81,7 +104,31 @@ std::string DatabaseRequests::execRequest(std::string request, const char* rawDa
 	delete[] rawData;
 	delete networkHandler;
 
-	return output;
+	return checkResponseCode(output);
+}
+
+std::string DatabaseRequests::checkResponseCode(std::string data)
+{
+	std::string statusCode = utils::split(data, '\n')[0];
+	std::string info = data.substr(4, data.length() - 4);
+
+	if (statusCode == "200") 
+	{
+		print::log("Database request succesful.", __FILE__, __LINE__);
+		return info;
+	}
+	else if (statusCode == "400") 
+	{
+		error::errDBBadRequest(info, __FILE__, __LINE__);
+	}
+	else if (statusCode == "500") 
+	{
+		error::errDBInternalError(info, __FILE__, __LINE__);
+	}
+	else 
+	{
+		error::errDBUnknownResponse(__FILE__, __LINE__);
+	}
 }
 
 NetworkHandler* DatabaseRequests::startConnection(std::string apiIP, std::string apiPort)

@@ -19,6 +19,7 @@ Utrecht University within the Software Project course.
 
 #include <iostream>
 #include <thread>
+#include "termination.h"
 
 
 #define DOWNLOAD_LOCATION "spiderDownloads"
@@ -54,6 +55,115 @@ void Start::logPostExecutionMessage(const char* file, int line)
 {
 	print::loguruResetThreadName();
 	print::log("Successfully terminated the worker node", file, line);
+}
+
+void Start::execute(Flags flags)
+{
+	logPreExecutionMessage(flags.flag_cpu, flags.flag_ram, __FILE__, __LINE__);
+
+	bool s = stop;
+	std::thread t(&Start::readCommandLine, this);
+	while (!s)
+	{
+		std::string job = DatabaseRequests::getNextJob();
+
+		std::vector<std::string> splitted = utils::split(job, '?');
+		if (splitted.size() < 1)
+		{
+			error::errInvalidDatabaseAnswer(__FILE__, __LINE__);
+		}
+		if (splitted[0] == "Spider")
+		{
+			handleSpiderRequest(splitted, flags);
+		}
+		else if (splitted[0] == "Crawl")
+		{
+			handleCrawlRequest(splitted, flags);
+		}
+		else if (splitted[0] == "No Job")
+		{
+			print::log("Waiting for a job to be available", __FILE__, __LINE__);
+			std::this_thread::sleep_for(std::chrono::milliseconds(5000));
+		}
+		else
+		{
+			error::errInvalidDatabaseAnswer(__FILE__, __LINE__);
+		}
+
+		// Check if we need to stop.
+		mtx.lock();
+		s = stop;
+		mtx.unlock();
+	}
+	t.join();
+	logPostExecutionMessage(__FILE__, __LINE__);
+}
+
+void Start::handleCrawlRequest(std::vector<std::string>& splitted, Flags flags)
+{
+	print::log("Start crawling", __FILE__, __LINE__);
+	if (splitted.size() < 2)
+	{
+		error::errInvalidDatabaseAnswer(__FILE__, __LINE__);
+	}
+	CrawlData crawled = moduleFacades::crawlRepositories(std::stoi(splitted[1]));
+	DatabaseRequests::addCrawledJobs(crawled);
+}
+
+void Start::handleSpiderRequest(std::vector<std::string>& splitted, Flags flags)
+{
+	print::log("Start parsing and uploading " + splitted[1], __FILE__, __LINE__);
+	Upload upload = Upload();
+	if (splitted.size() < 2 || splitted[1] == "")
+	{
+		error::errInvalidDatabaseAnswer(__FILE__, __LINE__);
+	}
+	flags.mandatoryArgument = splitted[1];
+	errno = 0;
+	ProjectMetaData meta = moduleFacades::getProjectMetadata(flags.mandatoryArgument);
+	if (errno != 0)
+	{
+		errno = 0;
+		print::warn("Error getting project meta data, moving on to the next job.", __FILE__, __LINE__);
+		return;
+	}
+	flags.flag_branch = meta.defaultBranch;
+	AuthorData authorData = moduleFacades::downloadRepository(flags.mandatoryArgument, flags, DOWNLOAD_LOCATION);
+	if (errno != 0)
+	{
+		errno = 0;
+		print::warn("Error downloading project, moving on to the next job.", __FILE__, __LINE__);
+		return;
+	}
+	std::vector<HashData> hashes = moduleFacades::parseRepository(DOWNLOAD_LOCATION, flags);
+	if (errno != 0)
+	{
+		errno = 0;
+		print::warn("Error parsing project, moving on to the next job.", __FILE__, __LINE__);
+		return;
+	}
+	if (hashes.size() == 0)
+	{
+		return;
+	}
+	// Uploading the hashes.
+	print::printline(DatabaseRequests::uploadHashes(hashes, meta, authorData));
+}
+
+void Start::readCommandLine()
+{
+	while (true)
+	{
+		std::string command;
+		std::cin >> command;
+		if (command == "stop")
+		{
+			mtx.lock();
+			stop = true;
+			mtx.unlock();
+			break;
+		}
+	}
 }
 
 #pragma endregion Start
@@ -122,117 +232,6 @@ std::string Upload::partialLogMessage(std::string url)
 	return " the code from the project at " + url + " to the SearchSECO database";
 }
 
-void Start::execute(Flags flags)
-{
-	auto msg = "Starting a worker node with "
-		+ std::to_string(flags.flag_cpu) + " cpu cores and "
-		+ std::to_string(flags.flag_ram) + "GB RAM";
-	print::log(msg, __FILE__, __LINE__);
-
-	bool s = stop;
-	std::thread t(&Start::readCommandLine, this);
-	while (!s)
-	{
-		std::string job = DatabaseRequests::getNextJob();
-
-		std::vector<std::string> splitted = utils::split(job, '?');
-		if (splitted.size() < 1)
-		{
-			error::errInvalidDatabaseAnswer(__FILE__, __LINE__);
-		}
-		if (splitted[0] == "Spider")
-		{
-			handleSpiderRequest(splitted, flags);
-		}
-		else if (splitted[0] == "Crawl")
-		{
-			handleCrawlRequest(splitted, flags);
-		}
-		else if (splitted[0] == "No Job")
-		{
-			print::log("Waiting for a job to be available", __FILE__, __LINE__);
-			std::this_thread::sleep_for(std::chrono::milliseconds(5000));
-		}
-		else
-		{
-			error::errInvalidDatabaseAnswer(__FILE__, __LINE__);
-		}
-
-		// Check if we need to stop.
-		mtx.lock();
-		s = stop;
-		mtx.unlock();
-	}
-	t.join();
-}
-
-void Start::handleCrawlRequest(std::vector<std::string> &splitted, Flags flags)
-{
-	print::log("Start crawling", __FILE__, __LINE__);
-	if (splitted.size() < 2)
-	{
-		error::errInvalidDatabaseAnswer(__FILE__, __LINE__);
-	}
-	CrawlData crawled = moduleFacades::crawlRepositories(std::stoi(splitted[1]));
-	DatabaseRequests::addCrawledJobs(crawled);
-}
-
-void Start::handleSpiderRequest(std::vector<std::string> &splitted, Flags flags)
-{
-	print::log("Start parsing and uploading " + splitted[1], __FILE__, __LINE__);
-	Upload upload = Upload();
-	if (splitted.size() < 2 || splitted[1] == "")
-	{
-		error::errInvalidDatabaseAnswer(__FILE__, __LINE__);
-	}
-	flags.mandatoryArgument = splitted[1];
-	errno = 0;
-	ProjectMetaData meta = moduleFacades::getProjectMetadata(flags.mandatoryArgument);
-	if (errno != 0)
-	{
-		errno = 0;
-		print::warn("Error getting project meta data, moving on to the next job.", __FILE__, __LINE__);
-		return;
-	}
-	flags.flag_branch = meta.defaultBranch;
-	AuthorData authorData = moduleFacades::downloadRepository(flags.mandatoryArgument, flags, DOWNLOAD_LOCATION);
-	if (errno != 0)
-	{
-		errno = 0;
-		print::warn("Error downloading project, moving on to the next job.", __FILE__, __LINE__);
-		return;
-	}
-	std::vector<HashData> hashes = moduleFacades::parseRepository(DOWNLOAD_LOCATION, flags);
-	if (errno != 0)
-	{
-		errno = 0;
-		print::warn("Error parsing project, moving on to the next job.", __FILE__, __LINE__);
-		return;
-	}
-	if (hashes.size() == 0)
-	{
-		return;
-	}
-	// Uploading the hashes.
-	print::printline(DatabaseRequests::uploadHashes(hashes, meta, authorData));
-}
-
-void Start::readCommandLine()
-{
-	while (true)
-	{
-		std::string command;
-		std::cin >> command;
-		if (command == "stop")
-		{
-			mtx.lock();
-			stop = true;
-			mtx.unlock();
-			break;
-		}
-	}
-}
-
 void Upload::logPreExecutionMessage(std::string url, const char* file, int line)
 {
 	print::log("Uploading" + Upload::partialLogMessage(url), file, line);
@@ -254,6 +253,10 @@ void Upload::execute(Flags flags)
 	std::vector<HashData> hashes = moduleFacades::parseRepository(DOWNLOAD_LOCATION, flags);
 	// Uploading the hashes.
 	ProjectMetaData meta = moduleFacades::getProjectMetadata(url);
+	if (errno != 0)
+	{
+		termination::failureCrawler(__FILE__, __LINE__);
+	}
 	print::printline(DatabaseRequests::uploadHashes(hashes, meta, authorData));
 
 	this->logPostExecutionMessage(url, __FILE__, __LINE__);
@@ -289,6 +292,10 @@ void CheckUpload::execute(Flags flags)
 	Upload::logPreExecutionMessage(url, __FILE__, __LINE__);
 
 	ProjectMetaData metaData = moduleFacades::getProjectMetadata(url);
+	if (errno != 0)
+	{
+		termination::failureCrawler(__FILE__, __LINE__);
+	}
 
 	printMatches::printHashMatches(hashes, DatabaseRequests::checkUploadHashes(hashes, metaData, authorData), authorData);
 

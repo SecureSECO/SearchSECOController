@@ -55,7 +55,10 @@ std::vector<HashData> moduleFacades::parseRepository(std::string repository, Fla
 
 ProjectMetaData moduleFacades::getProjectMetadata(std::string url)
 {
-	ProjectMetadata pmd = RunCrawler::findMetadata(url);
+	print::debug("Calling the crawler to get the metadata from a project", __FILE__, __LINE__);
+
+	ProjectMetadata pmd = RunCrawler::findMetadata(url);	
+
 	int er = errno;
 	// TODO: very temporary hashing.
 	std::string id = pmd.authorMail + pmd.authorName + pmd.version;

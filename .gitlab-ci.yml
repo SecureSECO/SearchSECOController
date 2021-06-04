@@ -13,7 +13,7 @@ google-tests:
     DEBIAN_FRONTEND: "noninteractive"
   before_script:
     - apt-get -y update && apt-get -y dist-upgrade
-    - apt-get -y install gcc g++ cmake autoconf curl libcurl4-openssl-dev git libboost-date-time-dev libboost-regex-dev nlohmann-json3-dev
+    - apt-get -y install gcc g++ cmake autoconf curl libcurl4-openssl-dev git libboost-date-time-dev libboost-regex-dev nlohmann-json3-dev libantlr4-runtime-dev libantlr4-runtime4.8
   script:
     - mkdir controller_test_build
     - cd controller_test_build

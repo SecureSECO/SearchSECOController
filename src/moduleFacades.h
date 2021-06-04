@@ -10,7 +10,7 @@ Utrecht University within the Software Project course.
 #include "flags.h"
 #include "projectMetadata.h"
 
-// Crawler includes
+// Crawler includes.
 #include "RunCrawler.h"
 #include "ProjectMetadata.h"
 

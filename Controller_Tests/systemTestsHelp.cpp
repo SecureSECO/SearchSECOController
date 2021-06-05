@@ -1,7 +1,7 @@
 /*
 This program has been developed by students from the bachelor Computer Science at
 Utrecht University within the Software Project course.
-Â© Copyright Utrecht University (Department of Information and Computing Sciences)
+© Copyright Utrecht University (Department of Information and Computing Sciences)
 */
 
 // Google test header file.
@@ -12,12 +12,9 @@ Utrecht University within the Software Project course.
 #include "systemTestsUtils.h"
 #include "utils.h"
 
-
-TEST(systemTestCheck, dummy) 
+TEST(systemTestHelp, dummy) 
 {
-	systemTestsUtils::startAPIMock();
-
-	std::string command = "searchseco check https://github.com/zavg/linux-0.01";
+	std::string command = "searchseco -h";
 	std::vector<std::string> words = utils::split(command, ' ');
 
 	auto n_argv = systemTestsUtils::getArgv(words);

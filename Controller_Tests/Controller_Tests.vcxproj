@@ -47,7 +47,13 @@
     <ClCompile Include="printTests.cpp" />
     <ClCompile Include="regexTests.cpp" />
     <ClCompile Include="systemTestsCheck.cpp" />
+    <ClCompile Include="systemTestsCheckUpload.cpp" />
+    <ClCompile Include="systemTestsHelp.cpp" />
+    <ClCompile Include="systemTestsStart.cpp" />
+    <ClCompile Include="systemTestsUpload.cpp" />
     <ClCompile Include="systemTestsUtils.cpp" />
+    <ClCompile Include="systemTestsVersion.cpp" />
+    <ClCompile Include="systemTestUpdate.cpp" />
     <ClCompile Include="utilsTests.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>

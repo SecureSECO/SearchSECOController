@@ -43,6 +43,24 @@
     <ClCompile Include="systemTestsUtils.cpp">
       <Filter>Tests</Filter>
     </ClCompile>
+    <ClCompile Include="systemTestsVersion.cpp">
+      <Filter>Tests</Filter>
+    </ClCompile>
+    <ClCompile Include="systemTestsHelp.cpp">
+      <Filter>Tests</Filter>
+    </ClCompile>
+    <ClCompile Include="systemTestsUpload.cpp">
+      <Filter>Tests</Filter>
+    </ClCompile>
+    <ClCompile Include="systemTestsCheckUpload.cpp">
+      <Filter>Tests</Filter>
+    </ClCompile>
+    <ClCompile Include="systemTestsStart.cpp">
+      <Filter>Tests</Filter>
+    </ClCompile>
+    <ClCompile Include="systemTestUpdate.cpp">
+      <Filter>Tests</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />

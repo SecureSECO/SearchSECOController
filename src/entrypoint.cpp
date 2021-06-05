@@ -8,8 +8,8 @@ Utrecht University within the Software Project course.
 #include "commandFactory.h"
 #include "entrypoint.h"
 #include "input.h"
-#include "parser2.h"
 #include "print.h"
+#include "termination.h"
 
 // External includes
 #include "loguru/loguru.hpp"
@@ -51,9 +51,5 @@ int entrypoint::entrypoint(int argc, char* argv[], std::string apiIP, std::strin
 		command->execute(flags, apiIP, apiPort);
 	}
 
-	// Prevent loguru from logging "atexit" to stderr. This is not nice when we want to display the version for example,
-	//	it is only visual clutter.
-	loguru::g_stderr_verbosity = loguru::Verbosity_OFF;
-
-	return 0;
+	termination::successful();
 }

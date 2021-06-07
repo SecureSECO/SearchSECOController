@@ -1,7 +1,7 @@
 /*
 This program has been developed by students from the bachelor Computer Science at
 Utrecht University within the Software Project course.
-© Copyright Utrecht University (Department of Information and Computing Sciences)
+Â© Copyright Utrecht University (Department of Information and Computing Sciences)
 */
 
 // Controller includes.
@@ -13,8 +13,7 @@ Utrecht University within the Software Project course.
 // Parser includes.
 #include "Parser.h"
 
-// External includes.
-#include "loguru/loguru.hpp"
+// External includes
 #include <fstream>
 #include <functional>
 #include <iostream>
@@ -60,6 +59,16 @@ void print::log(std::string msg, const char* file, int line)
 void print::warn(std::string msg, const char* file, int line)
 {
 	loguru::log(loguru::Verbosity_WARNING, file, line, "%s", msg.c_str());
+}
+
+void print::loguruSetSilent()
+{
+	loguru::g_stderr_verbosity = loguru::Verbosity_OFF;
+}
+
+void print::loguruResetThreadName() 
+{
+	loguru::set_thread_name("controller");
 }
 
 #pragma endregion

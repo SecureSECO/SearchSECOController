@@ -19,6 +19,7 @@ Utrecht University within the Software Project course.
 
 #include <iostream>
 #include <thread>
+#include "termination.h"
 
 
 #define DOWNLOAD_LOCATION "spiderDownloads"
@@ -27,6 +28,8 @@ std::string Command::helpMessage()
 {
 	return helpMessageText;
 }
+
+#pragma region Start
 
 Start::Start()
 {
@@ -40,52 +43,23 @@ Start::Start()
 			-r --ram : RAM cap(in GB) (default no cap))";
 }
 
-Check::Check()
+void Start::logPreExecutionMessage(int fCPU, int fRAM, const char* file, int line)
 {
-	this->helpMessageText = R"(
-	check: Takes a github url, downloads it and parses it. After that it will check for matches with the database.  
-		Arguments:
-			Url to a github repository.
-		Optionals:
-			-o --output: Console to print to the console, else you can give a file path.  
-			-s --save: Save the parser results for later use.)";
+	auto msg = "Starting a worker node with "
+		+ std::to_string(fCPU) + " cpu cores and "
+		+ std::to_string(fRAM) + "GB RAM";
+	print::log(msg, file, line);
 }
 
-Upload::Upload()
+void Start::logPostExecutionMessage(const char* file, int line)
 {
-	this->helpMessageText = R"(
-	upload: Takes a github url, downloads it and parses it. Results are sent to the database.
-		Arguments:
-			Url to a github repository.  
-		Optionals:
-			-s --save: Save the parser results for later use.)";
-}
-
-CheckUpload::CheckUpload()
-{
-	this->helpMessageText = R"(
-	checkupload: Takes a github url, and does both the check and upload.
-		Arguments:
-			Url to a github repository.
-		Optionals:
-			-o --output: Console to print to the console, else you can give a file path.  
-			-s --save: Save the parser results for later use.)";
-}
-
-Update::Update()
-{
-	this->helpMessageText = R"(
-	update: Updates the program.
-		Optionals:
-			The version you want to update to. If no version is specified, the most recent version will be used.)";
+	print::loguruResetThreadName();
+	print::log("Successfully terminated the worker node", file, line);
 }
 
 void Start::execute(Flags flags)
 {
-	auto msg = "Starting a worker node with "
-		+ std::to_string(flags.flag_cpu) + " cpu cores and "
-		+ std::to_string(flags.flag_ram) + "GB RAM";
-	print::log(msg, __FILE__, __LINE__);
+	logPreExecutionMessage(flags.flag_cpu, flags.flag_ram, __FILE__, __LINE__);
 
 	bool s = stop;
 	std::thread t(&Start::readCommandLine, this);
@@ -122,9 +96,10 @@ void Start::execute(Flags flags)
 		mtx.unlock();
 	}
 	t.join();
+	logPostExecutionMessage(__FILE__, __LINE__);
 }
 
-void Start::handleCrawlRequest(std::vector<std::string> &splitted, Flags flags)
+void Start::handleCrawlRequest(std::vector<std::string>& splitted, Flags flags)
 {
 	print::log("Start crawling", __FILE__, __LINE__);
 	if (splitted.size() < 2)
@@ -135,7 +110,7 @@ void Start::handleCrawlRequest(std::vector<std::string> &splitted, Flags flags)
 	DatabaseRequests::addCrawledJobs(crawled);
 }
 
-void Start::handleSpiderRequest(std::vector<std::string> &splitted, Flags flags)
+void Start::handleSpiderRequest(std::vector<std::string>& splitted, Flags flags)
 {
 	print::log("Start parsing and uploading " + splitted[1], __FILE__, __LINE__);
 	Upload upload = Upload();
@@ -145,7 +120,7 @@ void Start::handleSpiderRequest(std::vector<std::string> &splitted, Flags flags)
 	}
 	flags.mandatoryArgument = splitted[1];
 	errno = 0;
-	ProjectMetaData meta = utils::getProjectMetadata(flags.mandatoryArgument);
+	ProjectMetaData meta = moduleFacades::getProjectMetadata(flags.mandatoryArgument);
 	if (errno != 0)
 	{
 		errno = 0;
@@ -191,59 +166,198 @@ void Start::readCommandLine()
 	}
 }
 
+#pragma endregion Start
+
+#pragma region Check
+
+Check::Check()
+{
+	this->helpMessageText = R"(
+	check: Takes a github url, downloads it and parses it. After that it will check for matches with the database.  
+		Arguments:
+			Url to a github repository.
+		Optionals:
+			-o --output: Console to print to the console, else you can give a file path.  
+			-s --save: Save the parser results for later use.)";
+}
+
+std::string Check::partialLogMessage(std::string url)
+{
+	return " the code from the project at " + url + " against the SearchSECO database";
+}
+
+void Check::logPreExecutionMessage(std::string url, const char* file, int line)
+{
+	print::log("Checking" + Check::partialLogMessage(url), file, line);
+}
+
+void Check::logPostExecutionMessage(std::string url, const char* file, int line)
+{
+	print::loguruResetThreadName();
+	print::log("Successfully checked" + Check::partialLogMessage(url), file, line);
+}
+
 void Check::execute(Flags flags)
 {
-	auto msg = "Checking the code from the project at "
-		+ flags.mandatoryArgument + " against the SearchSECO database";
-	print::log(msg, __FILE__, __LINE__);
+	auto url = flags.mandatoryArgument;
 
-	AuthorData authorData = moduleFacades::downloadRepository(flags.mandatoryArgument, flags, DOWNLOAD_LOCATION);
+	this->logPreExecutionMessage(url, __FILE__, __LINE__);
+
+	AuthorData authorData = moduleFacades::downloadRepository(url, flags, DOWNLOAD_LOCATION);
+	if (errno != 0)
+	{
+		termination::failureSpider(__FILE__, __LINE__);
+	}
 	std::vector<HashData> hashes = moduleFacades::parseRepository(DOWNLOAD_LOCATION, flags);
+	if (errno != 0)
+	{
+		termination::failureParser(__FILE__, __LINE__);
+	}
+
 	// Calling the function that will print all the matches for us.
 	printMatches::printHashMatches(hashes, DatabaseRequests::findMatches(hashes), authorData);
 	//TODO: delete temp folder.
+
+	this->logPostExecutionMessage(url, __FILE__, __LINE__);
+}
+
+#pragma endregion Check
+
+#pragma region Upload
+
+Upload::Upload()
+{
+	this->helpMessageText = R"(
+	upload: Takes a github url, downloads it and parses it. Results are sent to the database.
+		Arguments:
+			Url to a github repository.  
+		Optionals:
+			-s --save: Save the parser results for later use.)";
+}
+
+std::string Upload::partialLogMessage(std::string url)
+{
+	return " the code from the project at " + url + " to the SearchSECO database";
+}
+
+void Upload::logPreExecutionMessage(std::string url, const char* file, int line)
+{
+	print::log("Uploading" + Upload::partialLogMessage(url), file, line);
+}
+
+void Upload::logPostExecutionMessage(std::string url, const char* file, int line)
+{
+	print::loguruResetThreadName();
+	print::log("Successfully uploaded" + Upload::partialLogMessage(url), file, line);
 }
 
 void Upload::execute(Flags flags)
 {
-	auto msg = "Uploading the code from the project at "
-		+ flags.mandatoryArgument + " to the SearchSECO database";
-	print::log(msg, __FILE__, __LINE__);
+	auto url = flags.mandatoryArgument;
 
-	AuthorData authorData = moduleFacades::downloadRepository(flags.mandatoryArgument, flags, DOWNLOAD_LOCATION);
-	std::vector<HashData> hashes = moduleFacades::parseRepository(DOWNLOAD_LOCATION, flags);
-	if (hashes.size() == 0)
+	this->logPreExecutionMessage(url, __FILE__, __LINE__);
+
+	AuthorData authorData = moduleFacades::downloadRepository(url, flags, DOWNLOAD_LOCATION);
+	if (errno != 0)
 	{
-		return;
+		termination::failureSpider(__FILE__, __LINE__);
+	}
+	std::vector<HashData> hashes = moduleFacades::parseRepository(DOWNLOAD_LOCATION, flags);
+	if (errno != 0)
+	{
+		termination::failureParser(__FILE__, __LINE__);
 	}
 	// Uploading the hashes.
-	ProjectMetaData meta = utils::getProjectMetadata(flags.mandatoryArgument);
+	ProjectMetaData meta = moduleFacades::getProjectMetadata(url);
+	if (errno != 0)
+	{
+		termination::failureCrawler(__FILE__, __LINE__);
+	}
 	print::printline(DatabaseRequests::uploadHashes(hashes, meta, authorData));
+
+	this->logPostExecutionMessage(url, __FILE__, __LINE__);
+}
+
+#pragma endregion Upload
+
+#pragma region CheckUpload
+
+CheckUpload::CheckUpload()
+{
+	this->helpMessageText = R"(
+	checkupload: Takes a github url, and does both the check and upload.
+		Arguments:
+			Url to a github repository.
+		Optionals:
+			-o --output: Console to print to the console, else you can give a file path.  
+			-s --save: Save the parser results for later use.)";
 }
 
 void CheckUpload::execute(Flags flags)
 {
-	auto msg = "Checking the code from the project at "
-		+ flags.mandatoryArgument + " against the SearchSECO database";
-	print::log(msg, __FILE__, __LINE__);
+	auto url = flags.mandatoryArgument;
 
-	AuthorData authorData = moduleFacades::downloadRepository(flags.mandatoryArgument, flags, DOWNLOAD_LOCATION);
+	Check::logPreExecutionMessage(url, __FILE__, __LINE__);
+
+	AuthorData authorData = moduleFacades::downloadRepository(url, flags, DOWNLOAD_LOCATION);
+	if (errno != 0)
+	{
+		termination::failureSpider(__FILE__, __LINE__);
+	}
 	std::vector<HashData> hashes = moduleFacades::parseRepository(DOWNLOAD_LOCATION, flags);
+	if (errno != 0)
+	{
+		termination::failureParser(__FILE__, __LINE__);
+	}
 
-	ProjectMetaData metaData = utils::getProjectMetadata(flags.mandatoryArgument);
-	// Uploading the hashes.
-	msg = "Uploading the code from the project at "
-		+ flags.mandatoryArgument + " to the SearchSECO database";
-	print::log(msg, __FILE__, __LINE__);
+	Check::logPostExecutionMessage(url, __FILE__, __LINE__);
+
+
+	Upload::logPreExecutionMessage(url, __FILE__, __LINE__);
+
+	ProjectMetaData metaData = moduleFacades::getProjectMetadata(url);
+	if (errno != 0)
+	{
+		termination::failureCrawler(__FILE__, __LINE__);
+	}
 
 	printMatches::printHashMatches(hashes, DatabaseRequests::checkUploadHashes(hashes, metaData, authorData), authorData);
+
+	Upload::logPostExecutionMessage(url, __FILE__, __LINE__);
+}
+
+#pragma endregion CheckUpload
+
+#pragma region Update
+
+Update::Update()
+{
+	this->helpMessageText = R"(
+	update: Updates the program.
+		Optionals:
+			The version you want to update to. If no version is specified, the most recent version will be used.)";
+}
+
+void Update::logPreExecutionMessage(std::string targetVersion, const char* file, int line)
+{
+	print::log("Attempting to update searchseco to version " + targetVersion, file, line);
+}
+
+void Update::logPostExecutionMessage(const char* file, int line)
+{
+	print::loguruResetThreadName();
+	print::log("Succesfully updated searchseco and its submodules", file, line);
 }
 
 void Update::execute(Flags flags)
 {
-	auto msg = "Attempting to update searchseco to version "
-		+ flags.mandatoryArgument;
-	print::log(msg, __FILE__, __LINE__);
+	auto target = flags.mandatoryArgument;
+
+	Update::logPreExecutionMessage(target, __FILE__, __LINE__);
 
 	error::errNotImplemented("update", __FILE__, __LINE__);
+
+	Update::logPostExecutionMessage(__FILE__, __LINE__);
 }
+
+#pragma endregion Update

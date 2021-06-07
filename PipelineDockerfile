@@ -1,0 +1,7 @@
+FROM ubuntu:latest
+ARG DEBIAN_FRONTEND=noninteractive
+RUN mkdir dependencies && \
+    cd dependencies && \
+    apt-get -y update && \
+    apt-get -y dist-upgrade && \
+    apt-get -y install gcc g++ cmake autoconf curl clang clang-tidy clang-format libcurl4-openssl-dev git libboost-date-time-dev libboost-regex-dev nlohmann-json3-dev

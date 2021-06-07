@@ -12,25 +12,25 @@ NOTE: These tests depend on the used GitHub repositories. If a test fails, make 
 #include "pch.h"
 
 // Controller includes
-#include "utils.h"
+#include "moduleFacades.h"
 #include "projectMetadata.h"
 
 
 TEST(integrationCrawler, basic)
 {
-    std::string url = "https://github.com/zavg/linux-0.01";
-    ProjectMetaData pmd = utils::getProjectMetadata(url);
-    EXPECT_EQ(pmd.url, url);
-    EXPECT_EQ(pmd.name, "linux-0.01");
-    EXPECT_EQ(pmd.authorName, "zavg");
-    EXPECT_EQ(pmd.authorMail, "");
-    EXPECT_EQ(pmd.license, "");
-    EXPECT_EQ(pmd.version, "1380815862000");
+	std::string url = "https://github.com/zavg/linux-0.01";
+	ProjectMetaData pmd = moduleFacades::getProjectMetadata(url);
+	EXPECT_EQ(pmd.url, url);
+	EXPECT_EQ(pmd.name, "linux-0.01");
+	EXPECT_EQ(pmd.authorName, "zavg");
+	EXPECT_EQ(pmd.authorMail, "");
+	EXPECT_EQ(pmd.license, "");
+	EXPECT_EQ(pmd.version, "1380815862000");
 }
 
 TEST(integrationCrawler, incorrectURLFailurecase)
 {
-    std::string url = "https://secureseco.org";
+	std::string url = "https://secureseco.org";
 
-    EXPECT_DEATH(utils::getProjectMetadata(url), ".*");
+	EXPECT_DEATH(moduleFacades::getProjectMetadata(url), ".*");
 }

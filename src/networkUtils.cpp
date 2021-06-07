@@ -177,7 +177,6 @@ const char* NetworkUtils::getJobsRequest(const std::vector<std::string>& urls, i
 	size = 0;
 	for (const auto& x : urls)
 	{
-		// TODO: Plus the priority once the crawler gives it back. (for now + 1).
 		size += x.length() + 1 + 2;
 	}
 	char* data = new char[size];
@@ -187,7 +186,7 @@ const char* NetworkUtils::getJobsRequest(const std::vector<std::string>& urls, i
 	{
 		addStringToBuffer(data, pos, x);
 		data[pos++] = INNER_DELIMITER;
-		addStringToBuffer(data, pos, "1"); // TODO: priority once the crawler gives it.
+		addStringToBuffer(data, pos, "1");
 		data[pos++] = ENTRY_DELIMITER;
 	}
 	return data;

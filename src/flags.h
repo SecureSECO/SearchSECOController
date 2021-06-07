@@ -10,7 +10,9 @@ Utrecht University within the Software Project course.
 #include "utils.h"
 
 // External includes
+#include <map>
 #include "loguru/loguru.hpp"
+#include <string>
 
 
 class Flags
@@ -52,4 +54,12 @@ public:
 	/// <param name="flag"></param>
 	/// <returns></returns>
 	static bool isLongFlag(std::string flag);
+
+	/// <summary>
+	/// Will read out the given config file and set the flags and arguments in the map given
+	/// to the value found in the config file.
+	/// </summary>
+	/// <param name="flagArgs">The map with of which the values will be updated.</param>
+	/// <param name="path">The path of the config file.</param>
+	static std::map<std::string, std::string> parseConfig(std::string configPath);
 };

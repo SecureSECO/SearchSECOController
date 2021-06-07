@@ -13,4 +13,3 @@ RUN cd controller && \
 	cmake ../Executable && \
 	cmake --build .
 ENTRYPOINT ["./controller/build/searchseco", "start"]
-#ENTRYPOINT ["/bin/sh", "-c" , "pwd"]

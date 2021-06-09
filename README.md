@@ -47,7 +47,7 @@ To see the full list of commands and their functionality see the official [docum
 The start command of the conrtoller can also be run using Docker. For this you need to have [Docker](https://docs.docker.com/get-docker/) installed. After this you can use the following command in the main folder to build the image:
 `docker build -t controller-image .`
 This will build the image for the container. After this you can use the following command to run the container:
-`docker run --name=conrtoller-container --network=host conrtoller-image`
+`docker run --name=controller-container --network=host controller-image`
 
 # Dependencies
 

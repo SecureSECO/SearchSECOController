@@ -29,6 +29,9 @@ public:
 	bool flag_help;
 	bool flag_version;
 
+	std::string flag_github_user;
+	std::string flag_github_token;
+
 	Flags();
 
 	/// <summary>

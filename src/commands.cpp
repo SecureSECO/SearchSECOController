@@ -106,7 +106,7 @@ void Start::handleCrawlRequest(std::vector<std::string>& splitted, Flags flags)
 	{
 		error::errInvalidDatabaseAnswer(__FILE__, __LINE__);
 	}
-	CrawlData crawled = moduleFacades::crawlRepositories(std::stoi(splitted[1]));
+	CrawlData crawled = moduleFacades::crawlRepositories(std::stoi(splitted[1]), flags);
 	DatabaseRequests::addCrawledJobs(crawled);
 }
 
@@ -120,7 +120,7 @@ void Start::handleSpiderRequest(std::vector<std::string>& splitted, Flags flags)
 	}
 	flags.mandatoryArgument = splitted[1];
 	errno = 0;
-	ProjectMetaData meta = moduleFacades::getProjectMetadata(flags.mandatoryArgument);
+	ProjectMetaData meta = moduleFacades::getProjectMetadata(flags.mandatoryArgument, flags);
 	if (errno != 0)
 	{
 		errno = 0;
@@ -268,7 +268,7 @@ void Upload::execute(Flags flags)
 		termination::failureParser(__FILE__, __LINE__);
 	}
 	// Uploading the hashes.
-	ProjectMetaData meta = moduleFacades::getProjectMetadata(url);
+	ProjectMetaData meta = moduleFacades::getProjectMetadata(url, flags);
 	if (errno != 0)
 	{
 		termination::failureCrawler(__FILE__, __LINE__);
@@ -315,7 +315,7 @@ void CheckUpload::execute(Flags flags)
 
 	Upload::logPreExecutionMessage(url, __FILE__, __LINE__);
 
-	ProjectMetaData metaData = moduleFacades::getProjectMetadata(url);
+	ProjectMetaData metaData = moduleFacades::getProjectMetadata(url, flags);
 	if (errno != 0)
 	{
 		termination::failureCrawler(__FILE__, __LINE__);

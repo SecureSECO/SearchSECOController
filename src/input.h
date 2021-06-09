@@ -101,6 +101,14 @@ private:
 	/// Sanitizes the argument of the (--branch | -b) flag.
 	/// </summary>
 	void sanitizeBranchFlag(std::string arg, bool fromConfig);
+	/// <summary>
+	/// Sanitizes the argument of the github_username flag.
+	/// </summary>
+	void sanitizeGithubUsername(std::string arg, bool fromConfig);
+	/// <summary>
+	/// Sanitizes the argument of the github_token flag.
+	/// </summary>
+	void sanitizeGithubToken(std::string arg, bool fromConfig);
 
 	/// <summary>
 	/// Helper function to force a certain amount of arguments for a flag. Throws the correct error when 

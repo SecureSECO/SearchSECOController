@@ -188,6 +188,11 @@ namespace error
 	void errFlagInvalidArg(std::string flag, std::string arg, bool from_config, const char* file, int line);
 
 	/// <summary>
+	/// Throws the "Missing Github authentication tokens" error.
+	/// </summary>
+	void errMissingGithubAuth(const char* file, int line);
+
+	/// <summary>
 	/// Throws the "Command Not Found" error.
 	/// </summary>
 	void errCmdNotFound(const char* file, int line);

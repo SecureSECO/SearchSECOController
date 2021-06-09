@@ -29,6 +29,7 @@ enum errCode
 	flagInvalidArg,
 	flagInvalidArgCfg,
 	flagIncorrectArgs,
+	githubMissingAuth,
 	cmdIncorrectArgs,
 	cmdNotFound,
 	cmdNotExist,
@@ -86,6 +87,12 @@ std::string descErrFlagInvalidArg(std::string* strs)
 std::string descErrFlagInvalidArgCfg(std::string* strs)
 {
 	return "Argument " + print::quote(strs[1]) + " is invalid for the flag " + print::quote("--" + strs[0]) + " (configuration file).\n" + ". See --help (-h) for valid value ranges.";
+}
+
+// no strs
+std::string descGithubMissingAuth(std::string* strs)
+{
+	return "Missing github authentication details, add them to the config file to Crawl";
 }
 
 // no strs
@@ -198,6 +205,7 @@ std::map <int, std::function<std::string(std::string*)>> errDesc =
 	{flagInvalidArg, descErrFlagInvalidArg},
 	{flagInvalidArgCfg, descErrFlagInvalidArgCfg},
 	{flagIncorrectArgs, descFlagIncorrectArguments},
+	{githubMissingAuth, descGithubMissingAuth},
 	{cmdIncorrectArgs, descCmdIncorrectArguments},
 	{cmdNotFound, descErrCmdNotFound},
 	{cmdNotExist, descErrCmdNotExist},
@@ -275,6 +283,11 @@ void error::errFlagInvalidArg(std::string flag, std::string arg, bool fromConfig
 	errCode code = fromConfig ? flagInvalidArgCfg : flagInvalidArg;
 
 	err(code, strs, file, line);
+}
+
+void error::errMissingGithubAuth(const char* file, int line)
+{
+	err(githubMissingAuth, {}, file, line);
 }
 
 void error::errCmdNotFound(const char* file, int line)

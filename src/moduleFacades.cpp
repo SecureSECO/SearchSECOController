@@ -43,11 +43,11 @@ std::vector<HashData> moduleFacades::parseRepository(std::string repository, Fla
 	return hashes;
 }
 
-ProjectMetaData moduleFacades::getProjectMetadata(std::string url)
+ProjectMetaData moduleFacades::getProjectMetadata(std::string url, Flags flags)
 {
 	print::debug("Calling the crawler to get the metadata from a project", __FILE__, __LINE__);
 
-	ProjectMetadata pmd = RunCrawler::findMetadata(url);	
+	ProjectMetadata pmd = RunCrawler::findMetadata(url, flags.flag_github_user, flags.flag_github_token);
 
 	int er = errno;
 	// TODO: very temporary hashing.
@@ -69,9 +69,9 @@ ProjectMetaData moduleFacades::getProjectMetadata(std::string url)
 	return pm;
 }
 
-CrawlData moduleFacades::crawlRepositories(int startId)
+CrawlData moduleFacades::crawlRepositories(int startId, Flags flags)
 {
 	print::debug("Calling the crawler to crawl a repositories", __FILE__, __LINE__);
-	auto urls = RunCrawler::crawlRepositories("https://github.com/", startId);
+	auto urls = RunCrawler::crawlRepositories("https://github.com/", startId, flags.flag_github_user, flags.flag_github_token);
 	return urls;
 }

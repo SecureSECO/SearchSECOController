@@ -335,7 +335,9 @@ void Input::sanitizeGithubUsername(std::string arg, bool fromConfig)
 
 	print::debug(msg, __FILE__, __LINE__);
 	if (arg == "")
-		error::errMissingGithubAuth(__FILE__, __LINE__);
+	{
+		print::warn("Missing github Username, functionality will be limited", __FILE__, __LINE__);
+	}
 
 	this->flags.flag_github_user = arg;
 }
@@ -346,7 +348,9 @@ void Input::sanitizeGithubToken(std::string arg, bool fromConfig)
 
 	print::debug(msg, __FILE__, __LINE__);
 	if (arg == "")
-		error::errMissingGithubAuth(__FILE__, __LINE__);
+	{
+		print::warn("Missing github token, functionality will be limited", __FILE__, __LINE__);
+	}
 
 	this->flags.flag_github_token = arg;
 }

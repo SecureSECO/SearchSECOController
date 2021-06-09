@@ -59,6 +59,12 @@ void Start::logPostExecutionMessage(const char* file, int line)
 
 void Start::execute(Flags flags)
 {
+	if (flags.flag_github_token == "" || flags.flag_github_user == "")
+	{
+		error::errMissingGithubAuth(__FILE__, __LINE__);
+		return;
+	}
+
 	logPreExecutionMessage(flags.flag_cpu, flags.flag_ram, __FILE__, __LINE__);
 
 	bool s = stop;
@@ -253,6 +259,12 @@ void Upload::logPostExecutionMessage(std::string url, const char* file, int line
 
 void Upload::execute(Flags flags)
 {
+	if (flags.flag_github_token == "" || flags.flag_github_user == "")
+	{
+		error::errMissingGithubAuth(__FILE__, __LINE__);
+		return;
+	}
+
 	auto url = flags.mandatoryArgument;
 
 	this->logPreExecutionMessage(url, __FILE__, __LINE__);
@@ -295,6 +307,12 @@ CheckUpload::CheckUpload()
 
 void CheckUpload::execute(Flags flags)
 {
+	if (flags.flag_github_token == "" || flags.flag_github_user == "")
+	{
+		error::errMissingGithubAuth(__FILE__, __LINE__);
+		return;
+	}
+
 	auto url = flags.mandatoryArgument;
 
 	Check::logPreExecutionMessage(url, __FILE__, __LINE__);

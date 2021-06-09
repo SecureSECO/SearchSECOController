@@ -85,8 +85,8 @@
     <ClInclude Include="src\projectMetadata.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\termination.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="src\regexWrapper.h">
+    <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\utils.h">
       <Filter>Header Files</Filter>

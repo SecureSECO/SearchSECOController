@@ -67,7 +67,7 @@ void Start::execute(Flags flags)
 	{
 		std::string job = DatabaseRequests::getNextJob();
 
-		std::vector<std::string> splitted = utils::split(job, '?');
+		std::vector<std::string> splitted = utils::split(job, INNER_DELIMITER);
 		if (splitted.size() < 1)
 		{
 			error::errInvalidDatabaseAnswer(__FILE__, __LINE__);
@@ -80,7 +80,7 @@ void Start::execute(Flags flags)
 		{
 			handleCrawlRequest(splitted, flags);
 		}
-		else if (splitted[0] == "No Job")
+		else if (splitted[0] == "NoJob")
 		{
 			print::log("Waiting for a job to be available", __FILE__, __LINE__);
 			std::this_thread::sleep_for(std::chrono::milliseconds(5000));

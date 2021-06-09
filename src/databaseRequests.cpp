@@ -110,7 +110,12 @@ std::string DatabaseRequests::execRequest(std::string request, const char* rawDa
 std::string DatabaseRequests::checkResponseCode(std::string data)
 {
 	std::string statusCode = utils::split(data, '\n')[0];
-	std::string info = data.substr(4, data.length() - 4);
+	
+	std::string info = "";
+	if (data.length() >= 4) 
+	{
+		info = data.substr(4, data.length() - 4);
+	}
 
 	if (statusCode == "200") 
 	{

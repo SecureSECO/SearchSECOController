@@ -10,6 +10,7 @@ Utrecht University within the Software Project course.
 #include <algorithm>
 #include <map>
 #include <string>
+#include <time.h>
 #include <vector>
 
 

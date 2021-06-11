@@ -16,6 +16,8 @@ add_executable(
     "controller.cpp"
 )
 
+SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pthread")
+
 target_link_libraries(${EXECUTABLE_PROCESS} controller)
 
 if(CMAKE_DL_LIBS)

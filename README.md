@@ -39,6 +39,8 @@ Open the solution file and build the project in Visual Studio. Note that you wil
    - Register it in your PATH environment variable.
 
 # Using
+After building you can set a (GitHub) personal acces token in Executable/cfg/config.txt (if this wasn't created rename the config_example.txt file). For info on creating this token click [here](https://docs.github.com/en/github/authenticating-to-github/keeping-your-account-and-data-secure/creating-a-personal-access-token), the token needs no permissions (see step 7 of guide) so it will not be able to interact with your personal GitHub account in any way. Without giving a token the program will not be able to use the Crawler (making it impossible to crawl repositories or upload projects).
+
 After building the program, it can be called using the following syntax:  
 `searchseco command mandatory_argument [-optional_flag flag_argument]`  
 To see the full list of commands and their functionality see the official [documentation](LINK HERE) or use the `-h` flag.

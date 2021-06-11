@@ -205,6 +205,14 @@ void Input::sanitizeArguments()
 		{
 			Input::sanitizeBranchFlag(argument, fromConfig);
 		}
+		else if (flag == "github_username")
+		{
+			Input::sanitizeGithubUsername(argument, fromConfig);
+		}
+		else if (flag == "github_token")
+		{
+			Input::sanitizeGithubToken(argument, fromConfig);
+		}
 	}
 }
 
@@ -319,6 +327,32 @@ void Input::sanitizeBranchFlag(std::string arg, bool fromConfig)
 
 	// TODO: Maybe check if this is something which could be a legal branch?
 	this->flags.flag_branch = arg;
+}
+
+void Input::sanitizeGithubUsername(std::string arg, bool fromConfig)
+{
+	auto msg = "Sanitizing --github_username flag";
+
+	print::debug(msg, __FILE__, __LINE__);
+	if (arg == "")
+	{
+		print::warn("Missing github Username, functionality will be limited", __FILE__, __LINE__);
+	}
+
+	this->flags.flag_github_user = arg;
+}
+
+void Input::sanitizeGithubToken(std::string arg, bool fromConfig)
+{
+	auto msg = "Sanitizing --github_token flag";
+
+	print::debug(msg, __FILE__, __LINE__);
+	if (arg == "")
+	{
+		print::warn("Missing github token, functionality will be limited", __FILE__, __LINE__);
+	}
+
+	this->flags.flag_github_token = arg;
 }
 #pragma endregion
 

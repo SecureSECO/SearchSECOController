@@ -59,6 +59,12 @@ void Start::logPostExecutionMessage(const char* file, int line)
 
 void Start::execute(Flags flags)
 {
+	if (flags.flag_github_token == "" || flags.flag_github_user == "")
+	{
+		error::errMissingGithubAuth(__FILE__, __LINE__);
+		return;
+	}
+
 	logPreExecutionMessage(flags.flag_cpu, flags.flag_ram, __FILE__, __LINE__);
 
 	bool s = stop;
@@ -106,7 +112,7 @@ void Start::handleCrawlRequest(std::vector<std::string>& splitted, Flags flags)
 	{
 		error::errInvalidDatabaseAnswer(__FILE__, __LINE__);
 	}
-	CrawlData crawled = moduleFacades::crawlRepositories(std::stoi(splitted[1]));
+	CrawlData crawled = moduleFacades::crawlRepositories(std::stoi(splitted[1]), flags);
 	DatabaseRequests::addCrawledJobs(crawled);
 }
 
@@ -120,7 +126,7 @@ void Start::handleSpiderRequest(std::vector<std::string>& splitted, Flags flags)
 	}
 	flags.mandatoryArgument = splitted[1];
 	errno = 0;
-	ProjectMetaData meta = moduleFacades::getProjectMetadata(flags.mandatoryArgument);
+	ProjectMetaData meta = moduleFacades::getProjectMetadata(flags.mandatoryArgument, flags);
 	if (errno != 0)
 	{
 		errno = 0;
@@ -253,6 +259,12 @@ void Upload::logPostExecutionMessage(std::string url, const char* file, int line
 
 void Upload::execute(Flags flags)
 {
+	if (flags.flag_github_token == "" || flags.flag_github_user == "")
+	{
+		error::errMissingGithubAuth(__FILE__, __LINE__);
+		return;
+	}
+
 	auto url = flags.mandatoryArgument;
 
 	this->logPreExecutionMessage(url, __FILE__, __LINE__);
@@ -268,7 +280,7 @@ void Upload::execute(Flags flags)
 		termination::failureParser(__FILE__, __LINE__);
 	}
 	// Uploading the hashes.
-	ProjectMetaData meta = moduleFacades::getProjectMetadata(url);
+	ProjectMetaData meta = moduleFacades::getProjectMetadata(url, flags);
 	if (errno != 0)
 	{
 		termination::failureCrawler(__FILE__, __LINE__);
@@ -295,6 +307,12 @@ CheckUpload::CheckUpload()
 
 void CheckUpload::execute(Flags flags)
 {
+	if (flags.flag_github_token == "" || flags.flag_github_user == "")
+	{
+		error::errMissingGithubAuth(__FILE__, __LINE__);
+		return;
+	}
+
 	auto url = flags.mandatoryArgument;
 
 	Check::logPreExecutionMessage(url, __FILE__, __LINE__);
@@ -315,7 +333,7 @@ void CheckUpload::execute(Flags flags)
 
 	Upload::logPreExecutionMessage(url, __FILE__, __LINE__);
 
-	ProjectMetaData metaData = moduleFacades::getProjectMetadata(url);
+	ProjectMetaData metaData = moduleFacades::getProjectMetadata(url, flags);
 	if (errno != 0)
 	{
 		termination::failureCrawler(__FILE__, __LINE__);

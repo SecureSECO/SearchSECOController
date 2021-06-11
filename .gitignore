@@ -339,4 +339,9 @@ ASALocalRun/
 
 # BeatPulse healthcheck temp database
 healthchecksdb
+
+# Download folder
 spiderDownloads/
+
+# Config file (also contains user token)
+Executable/cfg/config.txt

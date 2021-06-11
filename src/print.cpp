@@ -14,6 +14,7 @@ Utrecht University within the Software Project course.
 #include "Parser.h"
 
 // External includes
+#include <filesystem>
 #include <fstream>
 #include <functional>
 #include <iostream>
@@ -75,10 +76,25 @@ void print::loguruResetThreadName()
 
 
 #pragma region Print
+std::string line(std::string str)
+{
+	return str + '\n';
+}
 
 void print::printline(std::string str)
 {
-	std::cout << str << '\n';
+	std::cout << line(str);
+}
+
+void print::writelineToFile(std::string str, std::ofstream& file)
+{
+	file << line(str);
+}
+
+void print::printAndWriteToFile(std::string str, std::ofstream &file)
+{
+	print::printline(str);
+	print::writelineToFile(str, file);
 }
 
 std::string print::tab(int n)
@@ -152,7 +168,11 @@ void print::versionFull()
 
 #pragma region Matches
 
-void printMatches::printHashMatches(std::vector<HashData> &hashes, std::string databaseOutput, AuthorData &authordata)
+void printMatches::printHashMatches(
+	std::vector<HashData> &hashes, 
+	std::string databaseOutput, 
+	AuthorData &authordata, 
+	std::string url)
 {
 	std::map<std::string, std::vector<std::string>> receivedHashes = {};
 
@@ -173,6 +193,7 @@ void printMatches::printHashMatches(std::vector<HashData> &hashes, std::string d
 	NetworkUtils::transformHashList(hashes, transformedList);
 	NetworkUtils::getAuthors(authors, transformedList, authordata);
 
+	auto report = printMatches::setupOutputReport(url);
 
 	int matches = 0;
 	std::map<std::string, int> authorCopiedForm;
@@ -184,10 +205,31 @@ void printMatches::printHashMatches(std::vector<HashData> &hashes, std::string d
 		{
 			matches++;
 			printMatch(
-				hashes[i], receivedHashes, authors, authorCopiedForm, authorsCopied, dbProjects, authorIdToName);
+				hashes[i], 
+				receivedHashes, 
+				authors, 
+				authorCopiedForm, 
+				authorsCopied, 
+				dbProjects, 
+				authorIdToName,
+				report
+			);
 		}
 	}
-	printSummary(authorCopiedForm, authorsCopied, matches, hashes.size(), dbProjects, authorIdToName, projects);
+
+	print::writelineToFile("\n\n", report);
+
+	printSummary(
+		authorCopiedForm, 
+		authorsCopied, 
+		matches, 
+		hashes.size(), 
+		dbProjects, 
+		authorIdToName, 
+		projects,
+		report
+	);
+	report.close();
 }
 
 void printMatches::parseDatabaseHashes(
@@ -258,29 +300,32 @@ void printMatches::printMatch(
 	std::map<std::string, int>& authorCopiedForm, 
 	std::map<std::string, int>& authorsCopied,
 	std::map<std::string, std::vector<std::string>>& dbProjects,
-	std::map<std::string, std::vector<std::string>>& authorIdToName
+	std::map<std::string, std::vector<std::string>>& authorIdToName,
+	std::ofstream &report
 ) 
 {
 	std::vector<std::string> dbEntry = receivedHashes[hash.hash];
-	print::printline("\n" + hash.functionName + " in file " + hash.fileName + " line "
-		+ std::to_string(hash.lineNumber) + " was found in our database: ");
-	print::printline("Function " + dbEntry[3] + " in project " + dbProjects[dbEntry[1]][3]
-		+ " in file " + dbEntry[4] + " line " + dbEntry[5]);
-	print::printline("Authors of local function: ");
+	print::printAndWriteToFile("\n" + hash.functionName + " in file " + hash.fileName + " line "
+		+ std::to_string(hash.lineNumber) + " was found in our database: ", report);
+	print::printAndWriteToFile("Function " + dbEntry[3] + " in project " + dbProjects[dbEntry[1]][3]
+		+ " in file " + dbEntry[4] + " line " + dbEntry[5], report);
+	print::printAndWriteToFile("Authors of local function: ", report);
 	for (std::string s : authors[hash])
 	{
 		utils::replace(s, INNER_DELIMITER, '\t');
-		print::printline(s);
+		print::printAndWriteToFile(s, report);
 		authorsCopied[s]++;
 	}
-	print::printline("Authors of function found in database: ");
+	print::printAndWriteToFile("Authors of function found in database: ", report);
 	
 	for (int i = 7; i < 7 + std::stoi(dbEntry[6]); i++)
 	{
 		if (authorIdToName.count(dbEntry[i]) > 0)
 		{
 			authorCopiedForm[dbEntry[i]]++;
-			print::printline("\t" + authorIdToName[dbEntry[i]][0] + '\t' + authorIdToName[dbEntry[i]][1]);
+			print::printAndWriteToFile(
+				"\t" + authorIdToName[dbEntry[i]][0] + '\t' + authorIdToName[dbEntry[i]][1], 
+				report);
 		}
 	}
 }
@@ -290,32 +335,59 @@ void printMatches::printSummary(std::map<std::string, int> &authorCopiedForm,
 	int matches, int methods,
 	std::map<std::string, std::vector<std::string>>& dbProjects,
 	std::map<std::string, std::vector<std::string>>& authorIdToName,
-	std::map<std::pair<std::string, std::string>, int> &projects)
+	std::map<std::pair<std::string, std::string>, int> &projects,
+	std::ofstream &report)
 {
+	print::printAndWriteToFile("\nSummary:", report);
+	print::printAndWriteToFile("Methods in checked project: " + std::to_string(methods), report);
 
-	print::printline("\nSummary:");
-	print::printline("Methods in checked project: " + std::to_string(methods));
 	std::stringstream stream;
 	stream << std::fixed << std::setprecision(2) << ((float)matches * 100 / methods);
-	print::printline("Matches: " + std::to_string(matches) + " (" + stream.str() + "%)");
-	print::printline("Projects found in database:");
+	print::printAndWriteToFile("Matches: " + std::to_string(matches) + " (" + stream.str() + "%)", report);
+	print::printAndWriteToFile("Projects found in database:", report);
+
 	for (const auto& x : projects)
 	{
-		print::printline("\t" + dbProjects[x.first.first][3] + ": " + std::to_string(x.second) 
-			+ " (" + dbProjects[x.first.first][4] + ")");
+		print::printAndWriteToFile(
+			"\t" + dbProjects[x.first.first][3] + ": " + std::to_string(x.second)
+			+ " (" + dbProjects[x.first.first][4] + ")", 
+			report
+		);
 	}
-	print::printline("\nLocal authors present in matches: ");
+
+	print::printAndWriteToFile("\nLocal authors present in matches: ", report);
 	for (auto const& x : authorsCopied)
 	{
-		print::printline(x.first + ": " + std::to_string(x.second));
+		print::printAndWriteToFile(x.first + ": " + std::to_string(x.second), report);
 	}
 
-
-	print::printline("\nAuthors present in database matches: ");
+	print::printAndWriteToFile("\nAuthors present in database matches: ", report);
 	for (auto const& x : authorCopiedForm)
 	{
-		print::printline('\t' + authorIdToName[x.first][0] + "\t" + authorIdToName[x.first][1] + ": " + std::to_string(x.second));
+		print::printAndWriteToFile(
+			'\t' + authorIdToName[x.first][0] + "\t" + authorIdToName[x.first][1] + ": " + std::to_string(x.second), 
+			report
+		);
 	}
+}
+
+std::ofstream printMatches::setupOutputReport(std::string url)
+{
+	auto projectName = utils::split(url, '/').back();
+
+	std::ofstream report;
+	auto now = utils::ISO8601Now();
+	auto filename = "reports/" + now + "__" + projectName + ".txt";
+
+	std::filesystem::create_directory("reports");
+
+	report.open(filename, std::ios::trunc);
+
+	auto header = "Matched the project at \"" + url + "\" against the database on " + now;
+	print::writelineToFile(header, report);
+	print::writelineToFile(std::string(header.length(), '_') + '\n', report);
+
+	return report;
 }
 
 #pragma endregion Matches

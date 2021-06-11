@@ -221,7 +221,7 @@ void Check::execute(Flags flags)
 	}
 
 	// Calling the function that will print all the matches for us.
-	printMatches::printHashMatches(hashes, DatabaseRequests::findMatches(hashes), authorData);
+	printMatches::printHashMatches(hashes, DatabaseRequests::findMatches(hashes), authorData, url);
 	//TODO: delete temp folder.
 
 	this->logPostExecutionMessage(url, __FILE__, __LINE__);
@@ -339,7 +339,12 @@ void CheckUpload::execute(Flags flags)
 		termination::failureCrawler(__FILE__, __LINE__);
 	}
 
-	printMatches::printHashMatches(hashes, DatabaseRequests::checkUploadHashes(hashes, metaData, authorData), authorData);
+	printMatches::printHashMatches(
+		hashes, 
+		DatabaseRequests::checkUploadHashes(hashes, metaData, authorData), 
+		authorData, 
+		url
+	);
 
 	Upload::logPostExecutionMessage(url, __FILE__, __LINE__);
 }

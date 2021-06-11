@@ -55,6 +55,16 @@ namespace print
 	void printline(std::string str);
 
 	/// <summary>
+	/// Appends a given string to a file.
+	/// </summary>
+	void writelineToFile(std::string str, std::ofstream &file);
+
+	/// <summary>
+	/// Prints a line to stdout, and appends it to a file.
+	/// </summary>
+	void printAndWriteToFile(std::string str, std::ofstream &file);
+
+	/// <summary>
 	/// Returns a string of n tabs.
 	/// </summary>
 	std::string tab(int n = 1);
@@ -92,7 +102,12 @@ public:
 	/// <summary>
 	/// Prints information about the hash matches that were found in the database.
 	/// </summary>
-	static void printHashMatches(std::vector<HashData>& hashes, std::string databaseOutput, AuthorData &authordata);
+	static void printHashMatches(
+		std::vector<HashData>& hashes, 
+		std::string databaseOutput, 
+		AuthorData &authordata, 
+		std::string url
+	);
 
 private:
 	/// <summary>
@@ -143,7 +158,8 @@ private:
 		std::map<std::string, int>& authorCopiedForm,
 		std::map<std::string, int>& authorsCopied,
 		std::map<std::string, std::vector<std::string>> &dbProjects,
-		std::map<std::string, std::vector<std::string>> &authorIdToName
+		std::map<std::string, std::vector<std::string>> &authorIdToName,
+		std::ofstream &report
 	);
 
 	/// <summary>
@@ -154,8 +170,14 @@ private:
 		int matches, int methods,
 		std::map<std::string, std::vector<std::string>>& dbProjects,
 		std::map<std::string, std::vector<std::string>>& authorIdToName,
-		std::map<std::pair<std::string, std::string>, int> &projects);
+		std::map<std::pair<std::string, std::string>, int> &projects,
+		std::ofstream &report);
 
+	/// <summary>
+	/// Sets up the file for the plaintext output report.
+	/// </summary>
+	/// <returns>The pointer to the filestream.</returns>
+	static std::ofstream setupOutputReport(std::string url);
 };
 
 namespace error

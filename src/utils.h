@@ -79,4 +79,9 @@ public:
 	/// <param name="replace"></param>
 	/// <param name="with"></param>
 	static void replace(std::string& string, char replace, char with);
+
+	/// <summary>
+	/// Returns the date component is ISO 8601 format at the current time (e.g. 2020-12-09).
+	/// </summary>
+	static std::string ISO8601Now();
 };

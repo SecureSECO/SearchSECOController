@@ -109,7 +109,7 @@ std::string utils::ISO8601Now()
 {
 	auto tm = std::time(0);
 	struct tm now;
-	localtime_s(&now, &tm);
+	::localtime_s(&now, &tm);
 
 	return // YYYY-MM-DD 
 		std::to_string(1900 + now.tm_year) + "-" +  // Year  (tm_year is years since 1900)

@@ -177,18 +177,6 @@ void Input::sanitizeArguments()
 		{
 			Input::sanitizeCpuFlag(argument, fromConfig);
 		}
-		else if (flag == "ram")
-		{
-			Input::sanitizeRamFlag(argument, fromConfig);
-		}
-		else if (flag == "output")
-		{
-			Input::sanitizeOutputFlag(argument, fromConfig);
-		}
-		else if (flag == "save")
-		{
-			Input::sanitizeSaveFlag(argument, fromConfig);
-		}
 		else if (flag == "verbose")
 		{
 			Input::sanitizeVerboseFlag(argument, fromConfig);
@@ -229,49 +217,6 @@ void Input::sanitizeCpuFlag(std::string arg, bool fromConfig)
 		[this](int x) { this->flags.flag_cpu = x; },
 		[arg, fromConfig]() { error::errFlagInvalidArg("cpu", arg, fromConfig, __FILE__, __LINE__); },
 		2);
-}
-
-void Input::sanitizeRamFlag(std::string arg, bool fromConfig)
-{
-	auto msg = "Sanitizing --ram flag with argument " + arg
-		+ (fromConfig ? " from the config file" : "");
-
-	print::debug(msg, __FILE__, __LINE__);
-	Input::requireNArguments(1, "ram", arg);
-	Input::validateInteger(
-		arg,
-		[this](int x) { this->flags.flag_ram = x; },
-		[arg, fromConfig]() { error::errFlagInvalidArg("ram", arg, fromConfig, __FILE__, __LINE__); },
-		4,
-		64);
-}
-
-void Input::sanitizeOutputFlag(std::string arg, bool fromConfig)
-{
-	auto msg = "Sanitizing --output flag with argument " + arg
-		+ (fromConfig ? " from the config file" : "");
-
-	print::debug(msg, __FILE__, __LINE__);
-	Input::requireNArguments(1, "output", arg);
-
-	// TODO 'arg' needs to either be "console" or a valid file path.
-	if (arg == "console" || true)
-	{
-		this->flags.flag_output = arg;
-	}
-	else
-	{
-		error::errFlagInvalidArg("output", arg, fromConfig, __FILE__, __LINE__);
-	}
-}
-
-void Input::sanitizeSaveFlag(std::string arg, bool fromConfig)
-{
-	auto msg = "Sanitizing --save flag";
-
-	print::debug(msg, __FILE__, __LINE__);
-	Input::requireNArguments(0, "save", arg);
-	this->flags.flag_save = true;
 }
 
 void Input::sanitizeVerboseFlag(std::string arg, bool fromConfig)

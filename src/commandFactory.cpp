@@ -24,7 +24,6 @@ CommandFactory::CommandFactory()
 		{"check", new Check()},
 		{"upload", new Upload()},
 		{"checkupload", new CheckUpload()},
-		{"update", new Update()}
 	};
 
 	this->helpMessageCommonFlags = R"(

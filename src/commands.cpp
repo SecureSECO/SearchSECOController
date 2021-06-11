@@ -43,11 +43,10 @@ Start::Start()
 			-r --ram : RAM cap(in GB) (default no cap))";
 }
 
-void Start::logPreExecutionMessage(int fCPU, int fRAM, const char* file, int line)
+void Start::logPreExecutionMessage(int fCPU, const char* file, int line)
 {
 	auto msg = "Starting a worker node with "
-		+ std::to_string(fCPU) + " cpu cores and "
-		+ std::to_string(fRAM) + "GB RAM";
+		+ std::to_string(fCPU) + " cpu cores";
 	print::log(msg, file, line);
 }
 
@@ -65,7 +64,7 @@ void Start::execute(Flags flags)
 		return;
 	}
 
-	logPreExecutionMessage(flags.flag_cpu, flags.flag_ram, __FILE__, __LINE__);
+	logPreExecutionMessage(flags.flag_cpu, __FILE__, __LINE__);
 
 	bool s = stop;
 	std::thread t(&Start::readCommandLine, this);
@@ -345,37 +344,3 @@ void CheckUpload::execute(Flags flags)
 }
 
 #pragma endregion CheckUpload
-
-#pragma region Update
-
-Update::Update()
-{
-	this->helpMessageText = R"(
-	update: Updates the program.
-		Optionals:
-			The version you want to update to. If no version is specified, the most recent version will be used.)";
-}
-
-void Update::logPreExecutionMessage(std::string targetVersion, const char* file, int line)
-{
-	print::log("Attempting to update searchseco to version " + targetVersion, file, line);
-}
-
-void Update::logPostExecutionMessage(const char* file, int line)
-{
-	print::loguruResetThreadName();
-	print::log("Succesfully updated searchseco and its submodules", file, line);
-}
-
-void Update::execute(Flags flags)
-{
-	auto target = flags.mandatoryArgument;
-
-	Update::logPreExecutionMessage(target, __FILE__, __LINE__);
-
-	error::errNotImplemented("update", __FILE__, __LINE__);
-
-	Update::logPostExecutionMessage(__FILE__, __LINE__);
-}
-
-#pragma endregion Update

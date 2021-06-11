@@ -54,7 +54,7 @@ public:
 	/// <summary>
 	/// Logs the pre-execution message.
 	/// </summary>
-	static void logPreExecutionMessage(int fCPU, int fRAM, const char* file, int line);
+	static void logPreExecutionMessage(int fCPU, const char* file, int line);
 
 	/// <summary>
 	/// Logs the post-execution message.
@@ -140,25 +140,4 @@ public:
 	/// Does both check and upload for a given repository.
 	/// </summary>
 	void execute(Flags flags) override;
-};
-
-class Update : public Command
-{
-public:
-	Update();
-
-	/// <summary>
-	/// Will update this program.
-	/// </summary>
-	void execute(Flags flags) override;
-
-	/// <summary>
-	/// Logs the pre-execution message.
-	/// </summary>
-	static void logPreExecutionMessage(std::string targetVersion, const char* file, int line);
-
-	/// <summary>
-	/// Logs the post-execution message.
-	/// </summary>
-	static void logPostExecutionMessage(const char* file, int line);
 };

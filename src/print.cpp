@@ -376,14 +376,13 @@ std::ofstream printMatches::setupOutputReport(std::string url)
 	auto projectName = utils::split(url, '/').back();
 
 	std::ofstream report;
-	auto now = utils::ISO8601Now();
-	auto filename = "reports/" + now + "__" + projectName + ".txt";
+	auto filename = "reports/" + projectName + ".txt";
 
 	std::filesystem::create_directory("reports");
 
 	report.open(filename, std::ios::trunc);
 
-	auto header = "Matched the project at \"" + url + "\" against the database on " + now;
+	auto header = "Matched the project at \"" + url + "\" against the database.";
 	print::writelineToFile(header, report);
 	print::writelineToFile(std::string(header.length(), '_') + '\n', report);
 

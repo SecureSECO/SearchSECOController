@@ -33,3 +33,41 @@ char** systemTestsUtils::getArgv(std::vector<std::string> &words, std::string pa
 
 	return n_argv;
 }
+
+bool componentCalled(std::string component, std::vector<std::string> lines) 
+{
+	std::string line;
+	std::vector<std::string> words;
+	for (int i = 0; i < lines.size(); i++)
+	{
+		line = lines[i];
+		utils::replace(line, ']', '[');
+		words = utils::split(line, '[');
+
+		for (int j = 0; j < words.size(); j++) 
+		{
+			std::string word = utils::trimWhiteSpaces(words[j]);
+			if (word == component) 
+			{
+				return true;
+			}
+		}
+	}
+
+	return false;
+}
+
+bool systemTestsUtils::crawlerCalled(std::vector<std::string> outputLines)
+{
+	return componentCalled("crawler", outputLines);
+}
+
+bool systemTestsUtils::spiderCalled(std::vector<std::string> outputLines)
+{
+	return componentCalled("spider", outputLines);
+}
+
+bool systemTestsUtils::parserCalled(std::vector<std::string> outputLines)
+{
+	return componentCalled("parser", outputLines);
+}

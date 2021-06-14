@@ -24,4 +24,19 @@ namespace systemTestsUtils
 	/// <param name="path"> The path from which the executable is called. This is optional as it is not used in all commands. </param>
 	/// <returns> The information provided in the arguments in the correct format for the entrypoint. </returns>
 	char** getArgv(std::vector<std::string> &words, std::string path = "path");
+
+	/// <summary>
+	/// Checks if the Crawler is called in the given output lines.
+	/// </summary>
+	bool crawlerCalled(std::vector<std::string> outputLines);
+
+	/// <summary>
+	/// Checks if the Spider is called in the given output lines.
+	/// </summary>
+	bool spiderCalled(std::vector<std::string> outputLines);
+
+	/// <summary>
+	/// Checks if the Parser is called in the given output lines.
+	/// </summary>
+	bool parserCalled(std::vector<std::string> outputLines);
 }

@@ -171,6 +171,59 @@ void Start::readCommandLine()
 	}
 }
 
+void Start::versionProcessing(std::vector<std::string>& splitted, Flags flags)
+{
+	std::string startingTag = ""; // Tag to start from
+	bool startingTagReached = false;
+	if (startingTag == "")
+	{
+		startingTagReached = true;
+	}
+
+	AuthorData authorData = moduleFacades::downloadRepository(flags.mandatoryArgument, flags, DOWNLOAD_LOCATION);
+	std::vector<std::pair<std::string, long long>> tags = moduleFacades::getRepositoryTags(DOWNLOAD_LOCATION); // get tags from spider
+
+	std::string prevTag = "";
+
+	for (int i = tags.size() - 1; i >= 0; i--)
+	{
+		std::string curTag = tags[i].first;
+
+		if (!startingTagReached && curTag != startingTag)
+		{
+			continue;
+		}
+		else if (curTag == startingTag)
+		{
+			startingTagReached = true;
+		}
+
+		AuthorData authorData = moduleFacades::downloadRepository(flags.mandatoryArgument, flags, DOWNLOAD_LOCATION, prevTag, curTag);
+		if (errno != 0)
+		{
+			errno = 0;
+			print::warn("Error downloading tagged version of project, moving on to the next tag.", __FILE__, __LINE__);
+			continue;
+		}
+		std::vector<HashData> hashes = moduleFacades::parseRepository(DOWNLOAD_LOCATION, flags);
+		if (errno != 0)
+		{
+			errno = 0;
+			print::warn("Error parsing tagged version of project, moving on to the next tag.", __FILE__, __LINE__);
+			continue;
+		}
+		if (hashes.size() == 0)
+		{
+			continue;
+		}
+
+
+		// Uploading the hashes.
+
+		prevTag = curTag;
+	}
+}
+
 #pragma endregion Start
 
 #pragma region Check

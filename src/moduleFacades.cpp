@@ -19,13 +19,23 @@ Utrecht University within the Software Project course.
 #include "RunSpider.h"
 
 
-AuthorData moduleFacades::downloadRepository(std::string repository, Flags flags, std::string downloadPath)
+AuthorData moduleFacades::downloadRepository(std::string repository, Flags flags, 
+	std::string downloadPath, std::string tag, std::string nextTag)
 {
 	print::debug("Calling the spider to download a repository", __FILE__, __LINE__);
 
-	auto authorData = RunSpider::runSpider(repository, downloadPath, flags.flag_cpu, flags.flag_branch);
+	auto authorData = RunSpider::runSpider(repository, downloadPath, flags.flag_cpu, tag, nextTag, flags.flag_branch);
 
 	return authorData;
+}
+
+std::vector<std::pair<std::string, long long>> moduleFacades::getRepositoryTags(std::string downloadPath)
+{
+	print::debug("Calling the spider to get tags of previous versions", __FILE__, __LINE__);
+
+	std::vector<std::pair<std::string,long long>> tags = RunSpider::getTags(downloadPath);
+
+	return tags;
 }
 
 std::vector<HashData> moduleFacades::parseRepository(std::string repository, Flags flags)

@@ -69,6 +69,8 @@ private:
 	/// Handles spider requests.
 	/// </summary>
 	void handleSpiderRequest(std::vector<std::string> &splitted, Flags flags);
+
+	void versionProcessing(std::vector<std::string> &splitted, Flags flags);
 	/// <summary>
 	/// Reads the command line.
 	/// </summary>

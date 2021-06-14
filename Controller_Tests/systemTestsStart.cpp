@@ -22,9 +22,8 @@ TEST(systemTestStart, dummy)
 
 	auto n_argv = systemTestsUtils::getArgv(words);
 
-	// nwhy does this not pass?
-	// EXPECT_ANY_THROW(entrypoint::entrypoint(words.size(), n_argv, LOCALHOST, PORT));
-	ASSERT_EXIT(entrypoint::entrypoint(words.size(), n_argv, LOCALHOST, PORT), ::testing::ExitedWithCode(EXIT_FAILURE), ".*");
+
+	ASSERT_EXIT(entrypoint::entrypoint(words.size(), n_argv, LOCALHOST, PORT),
+		::testing::ExitedWithCode(EXIT_SUCCESS), ".*"
+	);
 }
-
-

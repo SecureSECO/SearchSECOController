@@ -20,7 +20,7 @@ TEST(systemTestUpdate, dummy)
 
 	auto n_argv = systemTestsUtils::getArgv(words);
 
-	ASSERT_EXIT(entrypoint::entrypoint(words.size(), n_argv, LOCALHOST, PORT), ::testing::ExitedWithCode(EXIT_FAILURE), ".*");
+	ASSERT_EXIT(entrypoint::entrypoint(words.size(), n_argv, LOCALHOST, PORT),
+		::testing::ExitedWithCode(EXIT_SUCCESS), ".*"
+	);
 }
-
-

@@ -22,7 +22,7 @@ TEST(systemTestUpload, dummy)
 
 	auto n_argv = systemTestsUtils::getArgv(words);
 
-	EXPECT_EQ(0, entrypoint::entrypoint(words.size(), n_argv, LOCALHOST, PORT));
+	ASSERT_EXIT(entrypoint::entrypoint(words.size(), n_argv, LOCALHOST, PORT),
+		::testing::ExitedWithCode(EXIT_SUCCESS), ".*"
+	);
 }
-
-

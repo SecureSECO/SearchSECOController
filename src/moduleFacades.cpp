@@ -18,8 +18,6 @@ Utrecht University within the Software Project course.
 // Spider includes.
 #include "RunSpider.h"
 
-// Crawler includes.
-#include "RunCrawler.h"
 
 AuthorData moduleFacades::downloadRepository(std::string repository, Flags flags, std::string downloadPath)
 {

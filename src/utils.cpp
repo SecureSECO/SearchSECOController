@@ -104,4 +104,5 @@ void utils::replace(std::string& string, char replace, char with)
 	}
 
 }
+
 #pragma endregion utils

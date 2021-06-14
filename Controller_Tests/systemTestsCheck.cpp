@@ -13,7 +13,7 @@ Utrecht University within the Software Project course.
 #include "utils.h"
 
 
-TEST(systemTestCheck, dummy) 
+TEST(systemTests, check______Successcase)
 {
 	systemTestsUtils::startAPIMock();
 

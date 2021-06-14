@@ -12,7 +12,7 @@ Utrecht University within the Software Project course.
 #include "systemTestsUtils.h"
 #include "utils.h"
 
-TEST(systemTestHelp, dummy) 
+TEST(systemTests, help_______Successcase)
 {
 	std::string command = "searchseco -h";
 	std::vector<std::string> words = utils::split(command, ' ');

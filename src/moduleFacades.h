@@ -32,7 +32,7 @@ namespace moduleFacades
 	/// <summary>
 	/// Will call the spider to download a given repository.
 	/// </summary>
-	std::vector<std::pair<std::string, long long>> goThroughVersionRepository(std::string downloadPath);
+	std::vector<std::pair<std::string, long long>> getRepositoryTags(std::string downloadPath);
 
 	
 	/// <summary>

@@ -181,7 +181,7 @@ void Start::versionProcessing(std::vector<std::string>& splitted, Flags flags)
 	}
 
 	AuthorData authorData = moduleFacades::downloadRepository(flags.mandatoryArgument, flags, DOWNLOAD_LOCATION);
-	std::vector<std::pair<std::string, long long>> tags = moduleFacades::getRepositoryTags(DOWNLOAD_LOCATION); // get tags from spider
+	std::vector<std::pair<std::string, long long>> tags = moduleFacades::getRepositoryTags(DOWNLOAD_LOCATION);
 
 	std::string prevTag = "";
 
@@ -216,7 +216,7 @@ void Start::versionProcessing(std::vector<std::string>& splitted, Flags flags)
 		{
 			continue;
 		}
-
+		//handling unchanged files?
 
 		// Uploading the hashes.
 

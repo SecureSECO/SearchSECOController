@@ -46,9 +46,6 @@
     <ClCompile Include="systemTestsVersion.cpp">
       <Filter>System Tests</Filter>
     </ClCompile>
-    <ClCompile Include="systemTestUpdate.cpp">
-      <Filter>System Tests</Filter>
-    </ClCompile>
     <ClCompile Include="integrationTestsCrawler.cpp">
       <Filter>Integration Tests</Filter>
     </ClCompile>

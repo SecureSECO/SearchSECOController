@@ -53,7 +53,6 @@
     <ClCompile Include="systemTestsUpload.cpp" />
     <ClCompile Include="systemTestsUtils.cpp" />
     <ClCompile Include="systemTestsVersion.cpp" />
-    <ClCompile Include="systemTestUpdate.cpp" />
     <ClCompile Include="utilsTests.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>

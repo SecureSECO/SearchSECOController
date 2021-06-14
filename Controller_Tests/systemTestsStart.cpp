@@ -24,6 +24,6 @@ TEST(systemTestStart, dummy)
 
 
 	ASSERT_EXIT(entrypoint::entrypoint(words.size(), n_argv, LOCALHOST, PORT),
-		::testing::ExitedWithCode(EXIT_SUCCESS), ".*"
+		::testing::ExitedWithCode(EXIT_FAILURE), ".*"
 	);
 }

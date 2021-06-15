@@ -110,6 +110,7 @@ std::map<std::string, std::string> Flags::parseConfig(std::string configPath)
 	std::string arg;
 
 	std::map<std::string, std::string> configFlagArgs = {};
+	auto n = 0;
 
 	while (std::getline(configFile, line))
 	{
@@ -118,9 +119,15 @@ std::map<std::string, std::string> Flags::parseConfig(std::string configPath)
 		arg = utils::trimWhiteSpaces(flagArg[1]);
 
 		configFlagArgs[flag] = arg;
+		++n;
 	}
 
 	configFile.close();
+
+	if (n == 0)
+	{
+		print::warn("No or empty configuration file was found at " + print::quote(configPath), __FILE__, __LINE__);
+	}
 
 	return configFlagArgs;
 }

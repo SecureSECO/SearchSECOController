@@ -140,7 +140,7 @@ void Input::applyDefaults()
 	std::map<std::string, std::string> fullArgs = {};
 	this->flagSource = {};
 
-	auto configpath = this->executablePath + "/cfg/config.txt";
+	auto configpath = this->executablePath + "\\cfg\\config.txt";
 
 	print::debug("Reading config file at " + configpath, __FILE__, __LINE__);
 	std::map<std::string, std::string> configDefaults = Flags::parseConfig(configpath);

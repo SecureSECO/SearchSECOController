@@ -23,8 +23,8 @@ Utrecht University within the Software Project course.
 #include <vector>
 
 
-#define DATABASE_API_IP "131.211.31.153"
-#define DATABASE_API_PORT "8003"
+#define DATABASE_API_IP "-1"
+#define DATABASE_API_PORT "-1"
 
 #define DATABASE_UPLOAD_REQUEST "upld"
 #define DATABASE_CHECK_UPLOAD_REQUEST "chup"

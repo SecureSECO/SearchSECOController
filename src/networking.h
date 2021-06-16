@@ -33,12 +33,15 @@ public:
 
 	/// <summary>
 	/// Opens a connection to the database.
+	/// if -1 is used for port server and port,
+	/// then we will use the list of ips defined in the .env file.
 	/// </summary>
 	void openConnection(std::string server, std::string port);
 
 	std::string receiveData();
 private:
 	static boost::asio::io_context ioContext;
+	static std::vector<std::pair<std::string, std::string>> ips;
 	/// <summary>
 	/// Basic constructor which initializes the socket with the given context.
 	/// </summary>
@@ -46,6 +49,16 @@ private:
 		: socket(io_context)
 	{
 	};
+
+	/// <summary>
+	/// Tries to establish a connection with the given server and port.
+	/// </summary>
+	void connect(std::string server, std::string port);
+
+	/// <summary>
+	/// Reads the ips for the database api out of the .env file.
+	/// </summary>
+	void readEnvFile();
 
 	tcp::socket socket;
 };

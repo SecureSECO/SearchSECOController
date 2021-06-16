@@ -41,6 +41,8 @@ enum errCode
 	submoduleFailureCrawler,
 	submoduleFailureSpider,
 	submoduleFailureParser,
+	noEnvFile,
+	noIpsInEnvFile,
 	notImplemented,
 	// Database related errors start at 400.
 	dbConnection = 400,
@@ -359,6 +361,19 @@ void error::errSubmoduleFatalFailureParser(const char* file, int line)
 {
 	err(submoduleFailureParser,
 		{}, file, line);
+}
+
+void error::errNoEnvFile(const char* file, int line)
+{
+	err(noEnvFile,
+		new std::string[1]{ "Unable to open .env file." }, file, line);
+}
+
+void error::errNoIpsInEnvFile(const char* file, int line)
+{
+	err(noIpsInEnvFile,
+		new std::string[1]{ "No IPs found in .env file. IPs should be in format API_IPS=ip1?port1,ip2?port2" }, 
+		file, line);
 }
 
 void error::errNotImplemented(std::string funcname, const char* file, int line)

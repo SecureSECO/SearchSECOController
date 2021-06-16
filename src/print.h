@@ -278,6 +278,16 @@ namespace error
 	void errSubmoduleFatalFailureDatabase(const char* file, int line);
 
 	/// <summary>
+	/// Throws the error if the database API responds in an unexpected manner.
+	/// </summary>
+	void errNoEnvFile(const char* file, int line);
+
+	/// <summary>
+	/// Throws the error if the database API responds in an unexpected manner.
+	/// </summary>
+	void errNoIpsInEnvFile(const char* file, int line);
+
+	/// <summary>
 	/// Throws the "Not Implemented" error.
 	/// </summary>
 	void errNotImplemented(std::string message, const char* file, int line);

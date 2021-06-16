@@ -22,5 +22,6 @@
   <ItemGroup>
     <None Include="packages.config" />
     <None Include="extensions" />
+    <None Include=".env" />
   </ItemGroup>
 </Project>

@@ -133,7 +133,7 @@ void Start::handleSpiderRequest(std::vector<std::string>& splitted, Flags flags)
 		return;
 	}
 	flags.flag_branch = meta.defaultBranch;
-	AuthorData authorData = moduleFacades::downloadRepository(flags.mandatoryArgument, flags, DOWNLOAD_LOCATION);
+	auto [authorData, commitHash, unchangedFiles] = moduleFacades::downloadRepository(flags.mandatoryArgument, flags, DOWNLOAD_LOCATION);
 	if (errno != 0)
 	{
 		errno = 0;
@@ -180,10 +180,10 @@ void Start::versionProcessing(std::vector<std::string>& splitted, Flags flags)
 	}
 	flags.mandatoryArgument = splitted[1];
 
-	std::string startingTime = ""; // Time to start from
-	if (splitted.size() > 2)
+	long long startingTime = 0; // Time to start from, request from db
+	if (splitted.size() > 2 && false)
 	{
-		startingTime = splitted[3];
+		startingTime = std::stoll(splitted[3]);
 	}
 
 	// Get project metadata.
@@ -197,13 +197,15 @@ void Start::versionProcessing(std::vector<std::string>& splitted, Flags flags)
 	flags.flag_branch = meta.defaultBranch;
 
 	// Download most recent commit, to retrieve tags.
-	AuthorData authorData = moduleFacades::downloadRepository(flags.mandatoryArgument, flags, DOWNLOAD_LOCATION);
+	auto [authorData, commitHash, unchangedFiles] = moduleFacades::downloadRepository(flags.mandatoryArgument, flags, DOWNLOAD_LOCATION);
 	if (errno != 0)
 	{
 		errno = 0;
 		print::warn("Error downloading project, moving on to the next job.", __FILE__, __LINE__);
 		return;
 	}
+	// Set commit hash of retrieved commit.
+	meta.versionHash = commitHash;
 	
 	// Get tags of previous versions.
 	std::vector<std::pair<std::string, long long>> tags = moduleFacades::getRepositoryTags(DOWNLOAD_LOCATION);
@@ -216,7 +218,7 @@ void Start::versionProcessing(std::vector<std::string>& splitted, Flags flags)
 
 	// This is the first version and there are no tags, 
 	// we just need to parse the most recent version we downloaded earlier.
-	if (startingTime == "" && tags.size() == 0) 
+	if (std::stoll(meta.versionTime) > startingTime && tags.size() == 0) 
 	{		
 		std::vector<HashData> hashes = moduleFacades::parseRepository(DOWNLOAD_LOCATION, flags);
 		if (errno != 0)
@@ -230,23 +232,29 @@ void Start::versionProcessing(std::vector<std::string>& splitted, Flags flags)
 			return;
 		}
 		print::printline(DatabaseRequests::uploadHashes(hashes, meta, authorData));
+		return;
+	} // There is a version in the database, we can't find any tags, and the HEAD is not newer than what is in the database.
+	else if (tags.size() == 0) 
+	{
+		return;
 	}
 
-	std::string prevTag = "";
+	std::string prevTag = tags[tags.size()-1].first;
 
 	for (int i = tags.size() - 1; i >= 0; i--)
 	{
 		std::string curTag = tags[i].first;
-		meta.versionTime = tags[i].second; // Update the time of this commit.
-		// Get version hash for tag from spider, put in meta
+		long long versionTime = tags[i].second; // Update the time of this commit.
 
 		// Skip tags before the starting time.
-		if (meta.versionTime <= startingTime)
+		if (versionTime <= startingTime)
 		{
 			prevTag = curTag;
 			continue;
 		}
-		
+
+		meta.versionTime = versionTime;
+
 		downloadTagged(flags, prevTag, curTag, meta);
 		
 		prevTag = curTag;
@@ -255,8 +263,7 @@ void Start::versionProcessing(std::vector<std::string>& splitted, Flags flags)
 
 void Start::downloadTagged(Flags flags, std::string prevTag, std::string curTag, ProjectMetaData meta)
 {
-
-	AuthorData authorData = moduleFacades::downloadRepository(flags.mandatoryArgument, flags, DOWNLOAD_LOCATION, prevTag, curTag);
+	auto [authorData, commitHash, unchangedFiles] = moduleFacades::downloadRepository(flags.mandatoryArgument, flags, DOWNLOAD_LOCATION, prevTag, curTag);
 	if (errno != 0)
 	{
 		errno = 0;
@@ -275,11 +282,10 @@ void Start::downloadTagged(Flags flags, std::string prevTag, std::string curTag,
 		return;
 	}
 
-	//handling unchanged files?
-
+	meta.versionHash = commitHash;
 
 	// Uploading the hashes.
-	print::printline(DatabaseRequests::uploadHashes(hashes, meta, authorData));
+	print::printline(DatabaseRequests::uploadHashes(hashes, meta, authorData, unchangedFiles));
 
 }
 
@@ -320,7 +326,7 @@ void Check::execute(Flags flags)
 
 	this->logPreExecutionMessage(url, __FILE__, __LINE__);
 
-	AuthorData authorData = moduleFacades::downloadRepository(url, flags, DOWNLOAD_LOCATION);
+	auto [authorData, commitHash, unchangedFiles] = moduleFacades::downloadRepository(url, flags, DOWNLOAD_LOCATION);
 	if (errno != 0)
 	{
 		termination::failureSpider(__FILE__, __LINE__);
@@ -380,7 +386,7 @@ void Upload::execute(Flags flags)
 
 	this->logPreExecutionMessage(url, __FILE__, __LINE__);
 
-	AuthorData authorData = moduleFacades::downloadRepository(url, flags, DOWNLOAD_LOCATION);
+	auto [authorData, commitHash, unchangedFiles] = moduleFacades::downloadRepository(url, flags, DOWNLOAD_LOCATION);
 	if (errno != 0)
 	{
 		termination::failureSpider(__FILE__, __LINE__);
@@ -396,6 +402,7 @@ void Upload::execute(Flags flags)
 	{
 		termination::failureCrawler(__FILE__, __LINE__);
 	}
+	meta.versionHash = commitHash;
 	print::printline(DatabaseRequests::uploadHashes(hashes, meta, authorData));
 
 	this->logPostExecutionMessage(url, __FILE__, __LINE__);
@@ -428,7 +435,7 @@ void CheckUpload::execute(Flags flags)
 
 	Check::logPreExecutionMessage(url, __FILE__, __LINE__);
 
-	AuthorData authorData = moduleFacades::downloadRepository(url, flags, DOWNLOAD_LOCATION);
+	auto [authorData, commitHash, unchangedFiles] = moduleFacades::downloadRepository(url, flags, DOWNLOAD_LOCATION);
 	if (errno != 0)
 	{
 		termination::failureSpider(__FILE__, __LINE__);
@@ -449,11 +456,12 @@ void CheckUpload::execute(Flags flags)
 	{
 		termination::failureCrawler(__FILE__, __LINE__);
 	}
+	metaData.versionHash = commitHash;
 
 	printMatches::printHashMatches(
 		hashes, 
-		DatabaseRequests::checkUploadHashes(hashes, metaData, authorData), 
-		authorData, 
+		DatabaseRequests::checkUploadHashes(hashes, metaData, authorData),
+		authorData,
 		url
 	);
 

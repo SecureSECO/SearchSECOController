@@ -348,3 +348,6 @@ Executable/cfg/config.txt
 
 #Reports folder
 reports/
+
+#.env file
+.env

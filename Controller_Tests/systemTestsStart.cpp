@@ -22,8 +22,16 @@ TEST(systemTests, start______Failurecase)
 
 	auto n_argv = systemTestsUtils::getArgv(words);
 
+	systemTestsUtils::resetLogFiles();
+
 
 	ASSERT_EXIT(entrypoint::entrypoint(words.size(), n_argv, LOCALHOST, PORT),
 		::testing::ExitedWithCode(EXIT_FAILURE), ".*"
 	);
+
+	std::vector<std::string> logLines = systemTestsUtils::readAllLogLines();
+	
+	EXPECT_FALSE(systemTestsUtils::crawlerCalled(logLines));
+	EXPECT_FALSE(systemTestsUtils::spiderCalled(logLines));
+	EXPECT_FALSE(systemTestsUtils::parserCalled(logLines));
 }

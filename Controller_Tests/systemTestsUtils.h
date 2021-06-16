@@ -5,6 +5,17 @@ Utrecht University within the Software Project course.
 */
 
 
+
+
+// Controller includes. 
+#include "databaseAPIMock.h"
+#include "entryPoint.h"
+#include "utils.h"
+
+// External includes.
+#include <iostream>
+#include <fstream>
+
 // Constants.
 #define LOCALHOST "127.0.0.1"
 #define PORT "6969"

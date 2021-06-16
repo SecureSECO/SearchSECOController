@@ -33,6 +33,7 @@ set(CONTROLLER_HEADER_LIST
   commandFactory.h
   commands.h
   databaseRequests.h
+  entrypoint.h
   flags.h
   input.h
   moduleFacades.h
@@ -49,6 +50,7 @@ add_library(controller
   commandFactory.cpp
   commands.cpp  
   databaseRequests.cpp
+  entrypoint.cpp
   error.cpp
   flags.cpp
   input.cpp

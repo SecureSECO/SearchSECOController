@@ -4,18 +4,11 @@ Utrecht University within the Software Project course.
 © Copyright Utrecht University (Department of Information and Computing Sciences)
 */
 
+
 // Google test header file.
 #include "pch.h"
 
-// Controller includes. 
-#include "databaseAPIMock.h"
-#include "entryPoint.h"
 #include "systemTestsUtils.h"
-#include "utils.h"
-
-// External includes.
-#include <iostream>
-#include <fstream>
 
 
 void systemTestsUtils::startAPIMock() 
@@ -47,7 +40,8 @@ void systemTestsUtils::resetLogFiles()
 
 std::vector<std::string> systemTestsUtils::readAllLogLines() 
 {
-	std::string logs;
+	std::string logs,
+				line;
 
 	std::ifstream ReadLogFile("logs/searchseco_all.log");
 	if (!ReadLogFile.is_open()) 
@@ -55,9 +49,9 @@ std::vector<std::string> systemTestsUtils::readAllLogLines()
 		print::printline("Unable to open log file");
 	}
 
-	while (std::getline(ReadLogFile, logs))
+	while (std::getline(ReadLogFile, line))
 	{
-		continue;
+		logs += line;
 	}
 
 	return utils::split(logs, '\n');

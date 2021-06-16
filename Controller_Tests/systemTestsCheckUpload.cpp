@@ -22,7 +22,15 @@ TEST(systemTests, checkuploadSuccesscase)
 
 	auto n_argv = systemTestsUtils::getArgv(words);
 
+	systemTestsUtils::resetLogFiles();
+
 	ASSERT_EXIT(entrypoint::entrypoint(words.size(), n_argv, LOCALHOST, PORT),
 		::testing::ExitedWithCode(EXIT_SUCCESS), ".*"
 	);
+
+	std::vector<std::string> logLines = systemTestsUtils::readAllLogLines();
+	
+	EXPECT_FALSE(systemTestsUtils::crawlerCalled(logLines));
+	EXPECT_TRUE(systemTestsUtils::spiderCalled(logLines));
+	EXPECT_TRUE(systemTestsUtils::parserCalled(logLines));
 }

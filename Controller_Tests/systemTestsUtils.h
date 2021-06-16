@@ -9,7 +9,7 @@ Utrecht University within the Software Project course.
 
 // Controller includes. 
 #include "databaseAPIMock.h"
-#include "entryPoint.h"
+#include "entrypoint.h"
 #include "utils.h"
 
 // External includes.

@@ -30,7 +30,7 @@ TEST(systemTests, upload_____Successcase)
 
 	std::vector<std::string> logLines = systemTestsUtils::readAllLogLines();
 	
-	EXPECT_FALSE(systemTestsUtils::crawlerCalled(logLines));
+	EXPECT_TRUE(systemTestsUtils::crawlerCalled(logLines));
 	EXPECT_TRUE(systemTestsUtils::spiderCalled(logLines));
 	EXPECT_TRUE(systemTestsUtils::parserCalled(logLines));
 }

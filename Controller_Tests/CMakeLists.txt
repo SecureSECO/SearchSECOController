@@ -28,11 +28,11 @@ add_executable(${TEST_NAME}
   printTests.cpp 
   utilsTests.cpp
   regexTests.cpp
-  databaseAPIMock.h
-  databaseAPIMock.cpp
-  systemTestsUtils.h
-  systemTestsUtils.cpp
-  systemTestsCheck.cpp
+  #databaseAPIMock.h
+  #databaseAPIMock.cpp
+  #systemTestsUtils.h
+  #systemTestsUtils.cpp
+  #systemTestsCheck.cpp
   #systemTestsCheckUpload.cpp
   #systemTestsHelp.cpp
   #systemTestsStart.cpp

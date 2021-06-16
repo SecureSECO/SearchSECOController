@@ -15,6 +15,15 @@ Utrecht University within the Software Project course.
 #include <regex>
 #include <vector>
 
+// OS Dependent includes
+#if defined(WIN32) || defined(_WIN32) || defined(__WIN32) && !defined(__CYGWIN__)
+// Windows
+#include <Windows.h>
+#else
+// Unix
+#include <unistd.h>
+#endif
+
 
 #define CONFIGURATION_FILE "cfg/config.txt"
 
@@ -79,7 +88,22 @@ void Input::parseCliInput(int argc, char* argv[])
 
 void Input::getExecutablePath()
 {
-	this->executablePath = std::filesystem::current_path().string();
+	#if defined(WIN32) || defined(_WIN32) || defined(__WIN32) && !defined(__CYGWIN__)
+	// Windows
+	wchar_t buffer[MAX_PATH];
+	GetModuleFileName(NULL, buffer, MAX_PATH);
+	std::wstring ws(buffer);
+	this->executablePath = std::filesystem::path(std::string(ws.begin(), ws.end()))
+		.parent_path()
+		.string();
+	#else
+	// Unix
+	char buffer[PATH_MAX];
+	ssize_t count = readlink("/proc/self/exe", buffer, PATH_MAX);
+	this->executablePath = std::filesystem::path(std::string(buffer, (count > 0) ? count : 0))
+		.parent_path()
+		.string();
+	#endif
 
 	print::debug("Found executable path as " + print::quote(this->executablePath), __FILE__, __LINE__);
 }

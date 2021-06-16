@@ -52,7 +52,6 @@ void Start::logPreExecutionMessage(int fCPU, const char* file, int line)
 
 void Start::logPostExecutionMessage(const char* file, int line)
 {
-	print::loguruResetThreadName();
 	print::log("Successfully terminated the worker node", file, line);
 }
 
@@ -198,7 +197,6 @@ void Check::logPreExecutionMessage(std::string url, const char* file, int line)
 
 void Check::logPostExecutionMessage(std::string url, const char* file, int line)
 {
-	print::loguruResetThreadName();
 	print::log("Successfully checked" + Check::partialLogMessage(url), file, line);
 }
 
@@ -252,7 +250,6 @@ void Upload::logPreExecutionMessage(std::string url, const char* file, int line)
 
 void Upload::logPostExecutionMessage(std::string url, const char* file, int line)
 {
-	print::loguruResetThreadName();
 	print::log("Successfully uploaded" + Upload::partialLogMessage(url), file, line);
 }
 

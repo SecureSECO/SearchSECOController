@@ -88,6 +88,10 @@ void Input::parseCliInput(int argc, char* argv[])
 
 void Input::getExecutablePath()
 {
+	// Code borrowed from (https://stackoverflow.com/a/1528493)
+	// https://stackoverflow.com/questions/18783087/how-to-properly-use-getmodulefilename, and
+	// https://stackoverflow.com/questions/23943239/how-to-get-path-to-current-exe-file-on-linux
+
 	#if defined(WIN32) || defined(_WIN32) || defined(__WIN32) && !defined(__CYGWIN__)
 	// Windows
 	wchar_t buffer[MAX_PATH];

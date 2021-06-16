@@ -218,7 +218,18 @@ void Check::execute(Flags flags, std::string apiIP, std::string apiPort)
 	}
 
 	// Calling the function that will print all the matches for us.
-	printMatches::printHashMatches(hashes, DatabaseRequests::findMatches(hashes), authorData, apiIP, apiPort, url);
+	printMatches::printHashMatches(
+		hashes, 
+		DatabaseRequests::findMatches(
+			hashes, 
+			apiIP, 
+			apiPort
+		), 
+		authorData, 
+		apiIP, 
+		apiPort, 
+		url
+	);
 	//TODO: delete temp folder.
 
 	this->logPostExecutionMessage(url, __FILE__, __LINE__);

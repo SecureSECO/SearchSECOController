@@ -345,3 +345,6 @@ spiderDownloads/
 
 # Config file (also contains user token)
 Executable/cfg/config.txt
+
+#Reports folder
+reports/

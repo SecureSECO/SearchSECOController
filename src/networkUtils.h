@@ -43,7 +43,7 @@ public:
 	/// 
 	/// <returns>A char pointer to string with all the data in it.</returns>
 	static const char* getAllDataFromHashes(std::vector<HashData> &data, int& size,
-		std::string header, AuthorData& authors, std::vector<std::string> unchangedFiles);
+		std::string header, AuthorData& authors, std::vector<std::string> unchangedFiles = std::vector<std::string>());
 
 	/// <summary>
 	/// This function will only copy the actual hash into a string.

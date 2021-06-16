@@ -18,8 +18,12 @@ NOTE: These tests depend on the used GitHub repositories. If a test fails, make 
 
 TEST(integrationCrawler, basic)
 {
+	Flags f;
+	f.flag_github_token = "empty";
+	f.flag_github_user = "empty";
+
 	std::string url = "https://github.com/zavg/linux-0.01";
-	ProjectMetaData pmd = moduleFacades::getProjectMetadata(url);
+	ProjectMetaData pmd = moduleFacades::getProjectMetadata(url, f);
 	EXPECT_EQ(pmd.url, url);
 	EXPECT_EQ(pmd.name, "linux-0.01");
 	EXPECT_EQ(pmd.authorName, "zavg");
@@ -30,7 +34,11 @@ TEST(integrationCrawler, basic)
 
 TEST(integrationCrawler, incorrectURLFailurecase)
 {
-	std::string url = "https://secureseco.org";
+	Flags f;
+	f.flag_github_token = "empty";
+	f.flag_github_user = "empty";
 
-	EXPECT_DEATH(moduleFacades::getProjectMetadata(url), ".*");
+	std::string url = "https://secureseco.org";
+	ProjectMetaData pmd = moduleFacades::getProjectMetadata(url, f);
+	EXPECT_NE(errno, 0);
 }

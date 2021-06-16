@@ -4,20 +4,7 @@ Utrecht University within the Software Project course.
 © Copyright Utrecht University (Department of Information and Computing Sciences)
 */
 
-// Controller includes
-#include "commandFactory.h"
 #include "entrypoint.h"
-#include "input.h"
-#include "print.h"
-#include "termination.h"
-
-// External includes
-#include "loguru/loguru.hpp"
-#include <functional>
-#include <iostream>
-#include <map>
-#include <string>
-
 
 void entrypoint::entrypoint(int argc, char* argv[], std::string apiIP, std::string apiPort)
 {

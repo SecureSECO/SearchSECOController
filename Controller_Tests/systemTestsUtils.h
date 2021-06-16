@@ -26,6 +26,16 @@ namespace systemTestsUtils
 	char** getArgv(std::vector<std::string> &words, std::string path = "path");
 
 	/// <summary>
+	/// Removes all logging files.
+	/// </summary>
+	void resetLogFiles();
+
+	/// <summary>
+	/// Reads the file where all logs are writen and returns them in lines.
+	/// </summary>
+	std::vector<std::string> readAllLogLines();
+
+	/// <summary>
 	/// Checks if the Crawler is called in the given output lines.
 	/// </summary>
 	bool crawlerCalled(std::vector<std::string> outputLines);

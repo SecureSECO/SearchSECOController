@@ -9,11 +9,33 @@ Utrecht University within the Software Project course.
 
 // Controller includes.
 #include "entrypoint.h"
+#include "moduleFacades.h"
 #include "systemTestsUtils.h"
 #include "utils.h"
 
-
 TEST(systemTests, check______Successcase)
+{
+	systemTestsUtils::startAPIMock();
+
+	std::string command = "searchseco check https://github.com/zavg/linux-0.01";
+	std::vector<std::string> words = utils::split(command, ' ');
+
+	auto n_argv = systemTestsUtils::getArgv(words);
+
+	systemTestsUtils::resetLogFiles();
+	
+	ASSERT_EXIT(entrypoint::entrypoint(words.size(), n_argv, LOCALHOST, PORT),
+		::testing::ExitedWithCode(EXIT_SUCCESS), ".*"
+	);
+
+	std::vector<std::string> logLines = systemTestsUtils::readAllLogLines();
+	
+	EXPECT_TRUE(systemTestsUtils::parserCalled(logLines));
+}
+
+
+/*
+TEST(systemTests, check______SuccesscaseComponentsCalled)
 {
 	systemTestsUtils::startAPIMock();
 
@@ -25,4 +47,8 @@ TEST(systemTests, check______Successcase)
 	ASSERT_EXIT(entrypoint::entrypoint(words.size(), n_argv, LOCALHOST, PORT),
 		::testing::ExitedWithCode(EXIT_SUCCESS), ".*"
 	);
-}
+
+	std::vector<std::string> outputLines = ;
+
+	EXPECT_TRUE(systemTestsUtils::parserCalled(outputLines));
+}*/

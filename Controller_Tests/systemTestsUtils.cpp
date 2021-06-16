@@ -9,8 +9,13 @@ Utrecht University within the Software Project course.
 
 // Controller includes. 
 #include "databaseAPIMock.h"
+#include "entryPoint.h"
 #include "systemTestsUtils.h"
 #include "utils.h"
+
+// External includes.
+#include <iostream>
+#include <fstream>
 
 
 void systemTestsUtils::startAPIMock() 
@@ -32,6 +37,30 @@ char** systemTestsUtils::getArgv(std::vector<std::string> &words, std::string pa
 	n_argv[words.size()] = nullptr;
 
 	return n_argv;
+}
+
+void systemTestsUtils::resetLogFiles() 
+{
+	remove("logs/searchseco_all.log");
+	remove("logs/searchseco_low_verbosity.log");
+}
+
+std::vector<std::string> systemTestsUtils::readAllLogLines() 
+{
+	std::string logs;
+
+	std::ifstream ReadLogFile("logs/searchseco_all.log");
+	if (!ReadLogFile.is_open()) 
+	{
+		print::printline("Unable to open log file");
+	}
+
+	while (std::getline(ReadLogFile, logs))
+	{
+		continue;
+	}
+
+	return utils::split(logs, '\n');
 }
 
 bool componentCalled(std::string component, std::vector<std::string> lines) 

@@ -16,7 +16,7 @@ Utrecht University within the Software Project course.
 #include <vector>
 
 
-#define CONFIGURATION_FILE "\\cfg\\config.txt"
+#define CONFIGURATION_FILE "cfg/config.txt"
 
 Input::Input(int argc, char* argv[]) 
 	: flags()
@@ -142,7 +142,9 @@ void Input::applyDefaults()
 	std::map<std::string, std::string> fullArgs = {};
 	this->flagSource = {};
 
-	auto configpath = this->executablePath + std::string(CONFIGURATION_FILE);
+	auto configpath = (std::filesystem::path(this->executablePath) / std::string(CONFIGURATION_FILE))
+		.make_preferred()
+		.string();
 
 	print::debug("Reading config file at " + configpath, __FILE__, __LINE__);
 	std::map<std::string, std::string> configDefaults = Flags::parseConfig(configpath);

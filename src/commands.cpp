@@ -1,7 +1,7 @@
 /*
 This program has been developed by students from the bachelor Computer Science at
 Utrecht University within the Software Project course.
-© Copyright Utrecht University (Department of Information and Computing Sciences)
+Â© Copyright Utrecht University (Department of Information and Computing Sciences)
 */
 
 // Controller includes.
@@ -55,7 +55,7 @@ void Start::logPostExecutionMessage(const char* file, int line)
 	print::log("Successfully terminated the worker node", file, line);
 }
 
-void Start::execute(Flags flags)
+void Start::execute(Flags flags, std::string apiIP, std::string apiPort)
 {
 	if (flags.flag_github_token == "" || flags.flag_github_user == "")
 	{
@@ -69,7 +69,7 @@ void Start::execute(Flags flags)
 	std::thread t(&Start::readCommandLine, this);
 	while (!s)
 	{
-		std::string job = DatabaseRequests::getNextJob();
+		std::string job = DatabaseRequests::getNextJob(apiIP, apiPort);
 
 		std::vector<std::string> splitted = utils::split(job, INNER_DELIMITER);
 		if (splitted.size() < 1)
@@ -78,11 +78,11 @@ void Start::execute(Flags flags)
 		}
 		if (splitted[0] == "Spider")
 		{
-			handleSpiderRequest(splitted, flags);
+			handleSpiderRequest(splitted, flags, apiIP, apiPort);
 		}
 		else if (splitted[0] == "Crawl")
 		{
-			handleCrawlRequest(splitted, flags);
+			handleCrawlRequest(splitted, flags, apiIP, apiPort);
 		}
 		else if (splitted[0] == "NoJob")
 		{
@@ -103,7 +103,7 @@ void Start::execute(Flags flags)
 	logPostExecutionMessage(__FILE__, __LINE__);
 }
 
-void Start::handleCrawlRequest(std::vector<std::string>& splitted, Flags flags)
+void Start::handleCrawlRequest(std::vector<std::string> &splitted, Flags flags, std::string apiIP, std::string apiPort)
 {
 	print::log("Start crawling", __FILE__, __LINE__);
 	if (splitted.size() < 2)
@@ -111,10 +111,10 @@ void Start::handleCrawlRequest(std::vector<std::string>& splitted, Flags flags)
 		error::errInvalidDatabaseAnswer(__FILE__, __LINE__);
 	}
 	CrawlData crawled = moduleFacades::crawlRepositories(std::stoi(splitted[1]), flags);
-	DatabaseRequests::addCrawledJobs(crawled);
+	DatabaseRequests::addCrawledJobs(crawled, apiIP, apiPort);
 }
 
-void Start::handleSpiderRequest(std::vector<std::string>& splitted, Flags flags)
+void Start::handleSpiderRequest(std::vector<std::string> &splitted, Flags flags, std::string apiIP, std::string apiPort)
 {
 	print::log("Start parsing and uploading " + splitted[1], __FILE__, __LINE__);
 	Upload upload = Upload();
@@ -151,7 +151,7 @@ void Start::handleSpiderRequest(std::vector<std::string>& splitted, Flags flags)
 		return;
 	}
 	// Uploading the hashes.
-	print::printline(DatabaseRequests::uploadHashes(hashes, meta, authorData));
+	print::printline(DatabaseRequests::uploadHashes(hashes, meta, authorData, apiIP, apiPort));
 }
 
 void Start::readCommandLine()
@@ -200,7 +200,7 @@ void Check::logPostExecutionMessage(std::string url, const char* file, int line)
 	print::log("Successfully checked" + Check::partialLogMessage(url), file, line);
 }
 
-void Check::execute(Flags flags)
+void Check::execute(Flags flags, std::string apiIP, std::string apiPort)
 {
 	auto url = flags.mandatoryArgument;
 
@@ -218,7 +218,18 @@ void Check::execute(Flags flags)
 	}
 
 	// Calling the function that will print all the matches for us.
-	printMatches::printHashMatches(hashes, DatabaseRequests::findMatches(hashes), authorData, url);
+	printMatches::printHashMatches(
+		hashes, 
+		DatabaseRequests::findMatches(
+			hashes, 
+			apiIP, 
+			apiPort
+		), 
+		authorData, 
+		apiIP, 
+		apiPort, 
+		url
+	);
 	//TODO: delete temp folder.
 
 	this->logPostExecutionMessage(url, __FILE__, __LINE__);
@@ -253,7 +264,7 @@ void Upload::logPostExecutionMessage(std::string url, const char* file, int line
 	print::log("Successfully uploaded" + Upload::partialLogMessage(url), file, line);
 }
 
-void Upload::execute(Flags flags)
+void Upload::execute(Flags flags, std::string apiIP, std::string apiPort)
 {
 	if (flags.flag_github_token == "" || flags.flag_github_user == "")
 	{
@@ -281,7 +292,8 @@ void Upload::execute(Flags flags)
 	{
 		termination::failureCrawler(__FILE__, __LINE__);
 	}
-	print::printline(DatabaseRequests::uploadHashes(hashes, meta, authorData));
+
+	print::printline(DatabaseRequests::uploadHashes(hashes, meta, authorData, apiIP, apiPort));
 
 	this->logPostExecutionMessage(url, __FILE__, __LINE__);
 }
@@ -301,7 +313,7 @@ CheckUpload::CheckUpload()
 			-s --save: Save the parser results for later use.)";
 }
 
-void CheckUpload::execute(Flags flags)
+void CheckUpload::execute(Flags flags, std::string apiIP, std::string apiPort)
 {
 	if (flags.flag_github_token == "" || flags.flag_github_user == "")
 	{
@@ -337,11 +349,13 @@ void CheckUpload::execute(Flags flags)
 
 	printMatches::printHashMatches(
 		hashes, 
-		DatabaseRequests::checkUploadHashes(hashes, metaData, authorData), 
+		DatabaseRequests::checkUploadHashes(hashes, metaData, authorData, apiIP, apiPort), 
 		authorData, 
+		apiIP, 
+		apiPort, 
 		url
 	);
-
+	
 	Upload::logPostExecutionMessage(url, __FILE__, __LINE__);
 }
 

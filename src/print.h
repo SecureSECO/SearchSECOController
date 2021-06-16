@@ -106,6 +106,8 @@ public:
 		std::vector<HashData>& hashes, 
 		std::string databaseOutput, 
 		AuthorData &authordata, 
+		std::string apiIP, 
+		std::string apiPort,
 		std::string url
 	);
 
@@ -146,7 +148,9 @@ private:
 	static void getDatabaseAuthorAndProjectData(std::map<std::pair<std::string, std::string>, int>& projects,
 		std::map<std::string, int>& dbAuthors,
 		std::map<std::string, std::vector<std::string>>& dbProjects,
-		std::map<std::string, std::vector<std::string>>& authorIdToName);
+		std::map<std::string, std::vector<std::string>>& authorIdToName, 
+		std::string apiIP, 
+		std::string apiPort);
 
 	/// <summary>
 	/// Prints a match for a given hash.

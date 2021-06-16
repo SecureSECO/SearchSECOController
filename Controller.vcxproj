@@ -178,6 +178,7 @@ call copy_versions.bat</Command>
     <ClCompile Include="src\commandFactory.cpp" />
     <ClCompile Include="src\commands.cpp" />
     <ClCompile Include="src\databaseRequests.cpp" />
+    <ClCompile Include="src\entrypoint.cpp" />
     <ClCompile Include="src\error.cpp" />
     <ClCompile Include="src\flags.cpp" />
     <ClCompile Include="src\input.cpp" />
@@ -205,6 +206,7 @@ call copy_versions.bat</Command>
     <ClInclude Include="src\commandFactory.h" />
     <ClInclude Include="src\commands.h" />
     <ClInclude Include="src\databaseRequests.h" />
+    <ClInclude Include="src\entrypoint.h" />
     <ClInclude Include="src\flags.h" />
     <ClInclude Include="src\input.h" />
     <ClInclude Include="src\moduleFacades.h" />

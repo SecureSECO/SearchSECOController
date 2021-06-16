@@ -20,6 +20,8 @@ TEST(integrationCrawler, basic)
 {
 	Flags flags;
 	std::string url = "https://github.com/zavg/linux-0.01";
+	flags.flag_github_user = "NoUser";
+	flags.flag_github_token = "NoToken";
 	ProjectMetaData pmd = moduleFacades::getProjectMetadata(url, flags);
 	EXPECT_EQ(pmd.url, url);
 	EXPECT_EQ(pmd.name, "linux-0.01");
@@ -33,6 +35,11 @@ TEST(integrationCrawler, incorrectURLFailurecase)
 {
 	Flags flags;
 	std::string url = "https://secureseco.org";
+	flags.flag_github_user = "user";
+	flags.flag_github_token = "token";
 
-	EXPECT_DEATH(moduleFacades::getProjectMetadata(url, flags), ".*");
+	errno = 0;
+	moduleFacades::getProjectMetadata(url, flags);
+	std::cout << errno << "\n";
+	EXPECT_TRUE(errno != 0);
 }

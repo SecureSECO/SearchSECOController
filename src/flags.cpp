@@ -117,6 +117,7 @@ std::map<std::string, std::string> Flags::parseConfig(std::string configPath)
 	{
 		++lines;
 		if  (line[0] == '#' ||
+			 line[0] == '\r' ||
 			 line == "")
 		{
 			continue;

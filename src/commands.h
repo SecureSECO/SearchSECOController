@@ -71,6 +71,9 @@ private:
 	void handleSpiderRequest(std::vector<std::string> &splitted, Flags flags);
 
 	void versionProcessing(std::vector<std::string> &splitted, Flags flags);
+
+	void downloadTagged(Flags flags, std::string prevTag, std::string curTag, ProjectMetaData meta);
+
 	/// <summary>
 	/// Reads the command line.
 	/// </summary>

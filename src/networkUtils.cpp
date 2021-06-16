@@ -219,7 +219,7 @@ const char* NetworkUtils::getUploadCrawlRequest(const CrawlData& urls, int& size
 }
 
 const char* NetworkUtils::getAllDataFromHashes(std::vector<HashData>& data, int& size,
-	std::string header, AuthorData& authors)
+	std::string header, AuthorData& authors, std::vector<std::string> unchangedFiles)
 {
 	// For getting the corresponding authors for each method,
 	// we first need to transform the list of hashes a bit.
@@ -228,7 +228,14 @@ const char* NetworkUtils::getAllDataFromHashes(std::vector<HashData>& data, int&
 	std::map<HashData, std::vector<std::string>> authorSendData;
 	// Calcutating the eventual size of the string before hand, 
 	// so that we don't have to increase the size of the buffer.
-	size = header.size() + 1 + getAuthors(authorSendData, transformedHashes, authors);
+	size = header.size() + 1 + getAuthors(authorSendData, transformedHashes, authors) \
+		+ 1;
+	
+	for (std::string s : unchangedFiles)
+	{
+		size += 1 + s.length();
+	}
+	
 	for (HashData hd : data)
 	{
 		size += hd.fileName.length() + 
@@ -246,10 +253,18 @@ const char* NetworkUtils::getAllDataFromHashes(std::vector<HashData>& data, int&
 	addStringToBuffer(buffer, pos, header);
 	buffer[pos++] = ENTRY_DELIMITER;
 
+	for (std::string s : unchangedFiles)
+	{
+		addStringToBuffer(buffer, pos, s);
+		buffer[pos++] = INNER_DELIMITER;
+	}
+	buffer[pos++] = ENTRY_DELIMITER;
+
 	for (HashData hd : data)
 	{
 		addHashDataToBuffer(buffer, pos, hd, authorSendData);
 	}
+	
 	return buffer;
 }
 

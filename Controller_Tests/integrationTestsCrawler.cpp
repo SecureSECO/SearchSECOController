@@ -25,7 +25,7 @@ TEST(integrationCrawler, basic)
 	EXPECT_EQ(pmd.authorName, "zavg");
 	EXPECT_EQ(pmd.authorMail, "");
 	EXPECT_EQ(pmd.license, "");
-	EXPECT_EQ(pmd.version, "1380815862000");
+	EXPECT_EQ(pmd.versionTime, "1380815862000");
 }
 
 TEST(integrationCrawler, incorrectURLFailurecase)

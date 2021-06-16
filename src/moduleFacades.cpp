@@ -57,6 +57,8 @@ ProjectMetaData moduleFacades::getProjectMetadata(std::string url, Flags flags)
 
 	ProjectMetadata pmd = RunCrawler::findMetadata(url, flags.flag_github_user, flags.flag_github_token);
 
+	std::string versionHash = ""; // TODO get commit hash from spider
+
 	int er = errno;
 	// TODO: very temporary hashing.
 	std::string id = pmd.authorMail + pmd.authorName + pmd.version;
@@ -67,6 +69,7 @@ ProjectMetaData moduleFacades::getProjectMetadata(std::string url, Flags flags)
 	}
 	ProjectMetaData pm = ProjectMetaData(std::to_string(hash),
 		std::to_string(utils::getIntegerTimeFromString(pmd.version)),
+		versionHash,
 		pmd.license,
 		pmd.name,
 		pmd.url,

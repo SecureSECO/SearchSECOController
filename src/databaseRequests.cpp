@@ -17,12 +17,13 @@ Utrecht University within the Software Project course.
 
 std::string DatabaseRequests::uploadHashes(std::vector<HashData> &hashes, 
 	ProjectMetaData metaData, 
-	AuthorData &authorData, 
+	AuthorData &authorData,
+	std::vector<std::string> unchangedFiles, 
 	std::string apiIP, 
 	std::string apiPort)
 {
 	int dataSize = 0;
-	const char* rawData = NetworkUtils::getAllDataFromHashes(hashes, dataSize, metaData.getAsHeader(), authorData);
+	const char* rawData = NetworkUtils::getAllDataFromHashes(hashes, dataSize, metaData.getAsHeader(), authorData, unchangedFiles);
 	return execRequest(DATABASE_UPLOAD_REQUEST, rawData, dataSize, apiIP, apiPort);
 }
 
@@ -36,12 +37,13 @@ std::string DatabaseRequests::findMatches(std::vector<HashData> &hashes, std::st
 
 std::string DatabaseRequests::checkUploadHashes(std::vector<HashData> &hashes,
 	ProjectMetaData metaData, 
-	AuthorData &authorData, 
+	AuthorData &authorData,
+	std::vector<std::string> unchangedFiles,
 	std::string apiIP, 
 	std::string apiPort)
 {
 	int dataSize = 0;
-	const char* rawData = NetworkUtils::getAllDataFromHashes(hashes, dataSize, metaData.getAsHeader(), authorData);
+	const char* rawData = NetworkUtils::getAllDataFromHashes(hashes, dataSize, metaData.getAsHeader(), authorData, unchangedFiles);
 
 	return execRequest(DATABASE_CHECK_UPLOAD_REQUEST, rawData, dataSize, apiIP, apiPort);
 }

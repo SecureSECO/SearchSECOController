@@ -173,55 +173,114 @@ void Start::readCommandLine()
 
 void Start::versionProcessing(std::vector<std::string>& splitted, Flags flags)
 {
-	std::string startingTag = ""; // Tag to start from
-	bool startingTagReached = false;
-	if (startingTag == "")
+	print::log("Start parsing and uploading " + splitted[1], __FILE__, __LINE__);
+	if (splitted.size() < 2 || splitted[1] == "")
 	{
-		startingTagReached = true;
+		error::errInvalidDatabaseAnswer(__FILE__, __LINE__);
+	}
+	flags.mandatoryArgument = splitted[1];
+
+	std::string startingTime = ""; // Time to start from
+	if (splitted.size() > 2)
+	{
+		startingTime = splitted[3];
 	}
 
+	// Get project metadata.
+	ProjectMetaData meta = moduleFacades::getProjectMetadata(flags.mandatoryArgument, flags);
+	if (errno != 0)
+	{
+		errno = 0;
+		print::warn("Error getting project meta data, moving on to the next job.", __FILE__, __LINE__);
+		return;
+	}
+	flags.flag_branch = meta.defaultBranch;
+
+	// Download most recent commit, to retrieve tags.
 	AuthorData authorData = moduleFacades::downloadRepository(flags.mandatoryArgument, flags, DOWNLOAD_LOCATION);
+	if (errno != 0)
+	{
+		errno = 0;
+		print::warn("Error downloading project, moving on to the next job.", __FILE__, __LINE__);
+		return;
+	}
+	
+	// Get tags of previous versions.
 	std::vector<std::pair<std::string, long long>> tags = moduleFacades::getRepositoryTags(DOWNLOAD_LOCATION);
+	if (errno != 0)
+	{
+		errno = 0;
+		print::warn("Error retrieving tags for project, just using most recent version.", __FILE__, __LINE__);
+		tags = std::vector<std::pair<std::string, long long>>();
+	}
+
+	// This is the first version and there are no tags, 
+	// we just need to parse the most recent version we downloaded earlier.
+	if (startingTime == "" && tags.size() == 0) 
+	{		
+		std::vector<HashData> hashes = moduleFacades::parseRepository(DOWNLOAD_LOCATION, flags);
+		if (errno != 0)
+		{
+			errno = 0;
+			print::warn("Error parsing project, moving on to the next job.", __FILE__, __LINE__);
+			return;
+		}
+		if (hashes.size() == 0)
+		{
+			return;
+		}
+		print::printline(DatabaseRequests::uploadHashes(hashes, meta, authorData));
+	}
 
 	std::string prevTag = "";
 
 	for (int i = tags.size() - 1; i >= 0; i--)
 	{
 		std::string curTag = tags[i].first;
+		meta.versionTime = tags[i].second; // Update the time of this commit.
+		// Get version hash for tag from spider, put in meta
 
-		if (!startingTagReached && curTag != startingTag)
+		// Skip tags before the starting time.
+		if (meta.versionTime <= startingTime)
 		{
+			prevTag = curTag;
 			continue;
 		}
-		else if (curTag == startingTag)
-		{
-			startingTagReached = true;
-		}
-
-		AuthorData authorData = moduleFacades::downloadRepository(flags.mandatoryArgument, flags, DOWNLOAD_LOCATION, prevTag, curTag);
-		if (errno != 0)
-		{
-			errno = 0;
-			print::warn("Error downloading tagged version of project, moving on to the next tag.", __FILE__, __LINE__);
-			continue;
-		}
-		std::vector<HashData> hashes = moduleFacades::parseRepository(DOWNLOAD_LOCATION, flags);
-		if (errno != 0)
-		{
-			errno = 0;
-			print::warn("Error parsing tagged version of project, moving on to the next tag.", __FILE__, __LINE__);
-			continue;
-		}
-		if (hashes.size() == 0)
-		{
-			continue;
-		}
-		//handling unchanged files?
-
-		// Uploading the hashes.
-
+		
+		downloadTagged(flags, prevTag, curTag, meta);
+		
 		prevTag = curTag;
 	}
+}
+
+void Start::downloadTagged(Flags flags, std::string prevTag, std::string curTag, ProjectMetaData meta)
+{
+
+	AuthorData authorData = moduleFacades::downloadRepository(flags.mandatoryArgument, flags, DOWNLOAD_LOCATION, prevTag, curTag);
+	if (errno != 0)
+	{
+		errno = 0;
+		print::warn("Error downloading tagged version of project, moving on to the next tag.", __FILE__, __LINE__);
+		return;
+	}
+	std::vector<HashData> hashes = moduleFacades::parseRepository(DOWNLOAD_LOCATION, flags);
+	if (errno != 0)
+	{
+		errno = 0;
+		print::warn("Error parsing tagged version of project, moving on to the next tag.", __FILE__, __LINE__);
+		return;
+	}
+	if (hashes.size() == 0)
+	{
+		return;
+	}
+
+	//handling unchanged files?
+
+
+	// Uploading the hashes.
+	print::printline(DatabaseRequests::uploadHashes(hashes, meta, authorData));
+
 }
 
 #pragma endregion Start

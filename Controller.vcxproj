@@ -167,6 +167,7 @@ call copy_versions.bat</Command>
     </Link>
     <PostBuildEvent>
       <Command>copy /Y "$(SolutionDir)parser\antlr\lib\release\antlr4-runtime.dll" "$(TargetDir)antlr4-runtime.dll"
+copy /Y "$(SolutionDir)Executable\.env" "$(TargetDir).env"
 call copy_versions.bat</Command>
     </PostBuildEvent>
     <Bscmake>

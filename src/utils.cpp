@@ -122,28 +122,28 @@ std::string utils::getExecutablePath()
 	// https://stackoverflow.com/questions/18783087/how-to-properly-use-getmodulefilename, and
 	// https://stackoverflow.com/questions/23943239/how-to-get-path-to-current-exe-file-on-linux
 
-	std::string path;
+	std::filesystem::path path;
 
 	#if defined(WIN32) || defined(_WIN32) || defined(__WIN32) && !defined(__CYGWIN__)
 	// Windows
 	wchar_t buffer[MAX_PATH];
 	GetModuleFileName(NULL, buffer, MAX_PATH);
 	std::wstring ws(buffer);
-	path = std::filesystem::path(std::string(ws.begin(), ws.end()))
-		.parent_path()
-		.string();
+	path = std::filesystem::path(std::string(ws.begin(), ws.end()));
 	#else
 	// Unix
 	char buffer[PATH_MAX];
 	ssize_t count = readlink("/proc/self/exe", buffer, PATH_MAX);
-	path = std::filesystem::path(std::string(buffer, (count > 0) ? count : 0))
-		.parent_path()
-		.string();
+	path = std::filesystem::path(std::string(buffer, (count > 0) ? count : 0));
 	#endif
 
-	print::debug("Found executable path as " + print::quote(path), __FILE__, __LINE__);
+	auto str = path
+		.parent_path()
+		.string();
+
+	print::debug("Found executable path as " + print::quote(str), __FILE__, __LINE__);
 	
-	return path;
+	return str;
 }
 
 #pragma endregion utils

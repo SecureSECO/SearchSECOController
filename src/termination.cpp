@@ -17,10 +17,10 @@ void termination::successful()
 	exit(0);
 }
 
-void termination::failure()
+void termination::failure(int code)
 {
 	print::loguruSetSilent();
-	exit(1);
+	exit(code);
 }
 
 void termination::failureCrawler(const char* file, int line)

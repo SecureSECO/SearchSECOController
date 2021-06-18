@@ -5,6 +5,7 @@ Utrecht University within the Software Project course.
 */
 
 // Controller includes
+#include "print.h"
 #include "projectMetadata.h"
 #include "utils.h"
 
@@ -16,6 +17,7 @@ Utrecht University within the Software Project course.
 #include <iostream>
 #include <map>
 #include <sstream>
+#include <thread>
 
 
 std::vector<std::string> utils::split(std::string str, char delimiter)
@@ -69,6 +71,10 @@ std::string utils::padLeft(std::string src, char pad, int length)
 
 long long utils::getIntegerTimeFromString(std::string time)
 {
+	// Somehow, sleeping for 0 milliseconds fixed this conversion. Without this sleep, the integration test fails.
+	std::this_thread::sleep_for(std::chrono::milliseconds(0));
+
+
 	// Used https://stackoverflow.com/questions/4781852/how-to-convert-a-string-to-datetime-in-c for this convertion.
 	static const std::string dateTimeFormat{ "%Y-%m-%dT%H:%M:%SZ" };
 	std::stringstream ss{ time };

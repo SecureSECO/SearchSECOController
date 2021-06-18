@@ -196,13 +196,10 @@ TEST(regex, parseFlargsFailurecase___fatal)
 
 	std::map<std::string, std::string> output;
 
-	for (int i = 0; i < testcasec; ++i)
-	{
-		auto input = testcases[i];
-
-		// Act & Assert
-		ASSERT_EXIT(regex::parseFlargPairs(input, output), ::testing::ExitedWithCode(EXIT_FAILURE), ".*");
-	}
+	ASSERT_EXIT(regex::parseFlargPairs(testcases[0], output), ::testing::ExitedWithCode(12), ".*");
+	ASSERT_EXIT(regex::parseFlargPairs(testcases[1], output), ::testing::ExitedWithCode(11), ".*");
+	ASSERT_EXIT(regex::parseFlargPairs(testcases[2], output), ::testing::ExitedWithCode(13), ".*");
+	
 }
 
 TEST(regex, parseFlargsFailurecaseNonfatal)

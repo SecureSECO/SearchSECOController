@@ -244,7 +244,7 @@ void err(errCode code, std::string* strs, const char* file, int line, std::strin
 
 	delete[] strs;
 
-	termination::failure();
+	termination::failure(code);
 }
 
 #pragma region Specific_error_handlers

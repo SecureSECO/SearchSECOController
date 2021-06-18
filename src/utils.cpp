@@ -124,22 +124,22 @@ std::string utils::getExecutablePath()
 
 	std::string path;
 
-#if defined(WIN32) || defined(_WIN32) || defined(__WIN32) && !defined(__CYGWIN__)
-// Windows
+	#if defined(WIN32) || defined(_WIN32) || defined(__WIN32) && !defined(__CYGWIN__)
+	// Windows
 	wchar_t buffer[MAX_PATH];
 	GetModuleFileName(NULL, buffer, MAX_PATH);
 	std::wstring ws(buffer);
 	path = std::filesystem::path(std::string(ws.begin(), ws.end()))
 		.parent_path()
 		.string();
-#else
-// Unix
+	#else
+	// Unix
 	char buffer[PATH_MAX];
 	ssize_t count = readlink("/proc/self/exe", buffer, PATH_MAX);
 	path = std::filesystem::path(std::string(buffer, (count > 0) ? count : 0))
 		.parent_path()
 		.string();
-#endif
+	#endif
 
 	print::debug("Found executable path as " + print::quote(path), __FILE__, __LINE__);
 	

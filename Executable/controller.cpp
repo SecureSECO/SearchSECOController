@@ -10,5 +10,7 @@ Utrecht University within the Software Project course.
 
 int main(int argc, char* argv[]) 
 {
-	return entrypoint::entrypoint(argc, argv);
+	entrypoint::entrypoint(argc, argv);
+
+	return 0;
 }

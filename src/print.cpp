@@ -247,11 +247,11 @@ void printMatches::parseDatabaseHashes(
 		std::vector<std::string> entrySplitted = utils::split(entry, INNER_DELIMITER);
 
 		receivedHashes[entrySplitted[0]] = entrySplitted;
-		if (entrySplitted.size() < 7)
+		if (entrySplitted.size() < 10)
 		{
 			continue;
 		}
-		for (int i = 7; i < 7 + std::stoi(entrySplitted[6]); i++)
+		for (int i = 10; i < 10 + std::stoi(entrySplitted[9]); i++)
 		{
 			dbAuthors[entrySplitted[i]]++;
 		}
@@ -307,8 +307,8 @@ void printMatches::printMatch(
 	std::vector<std::string> dbEntry = receivedHashes[hash.hash];
 	print::printAndWriteToFile("\n" + hash.functionName + " in file " + hash.fileName + " line "
 		+ std::to_string(hash.lineNumber) + " was found in our database: ", report);
-	print::printAndWriteToFile("Function " + dbEntry[3] + " in project " + dbProjects[dbEntry[1]][3]
-		+ " in file " + dbEntry[4] + " line " + dbEntry[5], report);
+	print::printAndWriteToFile("Function " + dbEntry[6] + " in project " + dbProjects[dbEntry[1]][4]
+		+ " in file " + dbEntry[7] + " line " + dbEntry[8], report);
 	print::printAndWriteToFile("Authors of local function: ", report);
 	for (std::string s : authors[hash])
 	{
@@ -318,7 +318,7 @@ void printMatches::printMatch(
 	}
 	print::printAndWriteToFile("Authors of function found in database: ", report);
 	
-	for (int i = 7; i < 7 + std::stoi(dbEntry[6]); i++)
+	for (int i = 10; i < 10 + std::stoi(dbEntry[9]); i++)
 	{
 		if (authorIdToName.count(dbEntry[i]) > 0)
 		{

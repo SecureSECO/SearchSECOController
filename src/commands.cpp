@@ -181,10 +181,6 @@ void Start::versionProcessing(std::vector<std::string>& splitted, Flags flags)
 	flags.mandatoryArgument = splitted[1];
 
 	long long startingTime = 0; // Time to start from, request from db
-	if (splitted.size() > 2 && false)
-	{
-		startingTime = std::stoll(splitted[3]);
-	}
 
 	// Get project metadata.
 	ProjectMetaData meta = moduleFacades::getProjectMetadata(flags.mandatoryArgument, flags);
@@ -195,6 +191,15 @@ void Start::versionProcessing(std::vector<std::string>& splitted, Flags flags)
 		return;
 	}
 	flags.flag_branch = meta.defaultBranch;
+
+	std::map<std::pair<std::string, std::string>, int> project;
+	std::pair<std::string, std::string> pair;
+	pair.first = meta.id;
+	pair.second = meta.versionTime;
+	project[pair] = 0;
+	std::vector<std::string> projectEntries =
+		utils::split(DatabaseRequests::getProjectData(project), ENTRY_DELIMITER);
+
 
 	// Download most recent commit, to retrieve tags.
 	auto [authorData, commitHash, unchangedFiles] = moduleFacades::downloadRepository(flags.mandatoryArgument, flags, DOWNLOAD_LOCATION);

@@ -33,7 +33,7 @@ Flags::Flags()
 
 	this->flag_help = false;
 	this->flag_version = false;
-	this->flag_branch = "master";
+	this->flag_branch = "";
 
 	this->flag_github_user = "";
 	this->flag_github_token = "";

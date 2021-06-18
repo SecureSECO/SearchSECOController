@@ -77,5 +77,5 @@ TEST(integrationDatabaseAPI, wrongPortCheck)
 	ConnectionHandler* connectionHandler = new ConnectionHandler();
 	std::thread* t1 = new std::thread(&ConnectionHandler::StartListen, connectionHandler);
 
-	EXPECT_THROW(DatabaseRequests::findMatches(dummyHashes, LOCALHOST, "wrongport"), std::runtime_error);
+	EXPECT_EXIT(DatabaseRequests::findMatches(dummyHashes, LOCALHOST, "wrongport"), testing::ExitedWithCode(400), "");
 }

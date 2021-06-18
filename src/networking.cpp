@@ -11,6 +11,7 @@ Utrecht University within the Software Project course.
 // External includes
 #include <boost/array.hpp>
 #include <fstream>
+#include <filesystem>
 #include <iostream>
 
 
@@ -116,8 +117,11 @@ std::string NetworkHandler::receiveData()
 
 void NetworkHandler::readEnvFile()
 {
+	auto path = (std::filesystem::path(utils::getExecutablePath()) / ".env")
+		.string();
+
 	std::ifstream fileHandler;
-	fileHandler.open(".env");
+	fileHandler.open(path);
 
 	if (!fileHandler.is_open())
 	{

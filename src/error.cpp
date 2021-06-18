@@ -211,6 +211,7 @@ std::string descSubmoduleFailureParser(std::string* strs)
 	return "The Parser ran into a fatal error. Terminating execution.";
 }
 
+// no strs
 std::string descErrInvalidDatabaseAnswer(std::string* strs)
 {
 	return "Invalid database response.";

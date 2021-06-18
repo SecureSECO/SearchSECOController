@@ -72,7 +72,6 @@ std::string utils::padLeft(std::string src, char pad, int length)
 long long utils::getIntegerTimeFromString(std::string time)
 {
 	// Somehow, sleeping for 0 milliseconds fixed this conversion. Without this sleep, the integration test fails.
-	// No I don't know why.
 	std::this_thread::sleep_for(std::chrono::milliseconds(0));
 
 

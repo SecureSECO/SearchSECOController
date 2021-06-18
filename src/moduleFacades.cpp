@@ -17,6 +17,7 @@ Utrecht University within the Software Project course.
 
 // Spider includes.
 #include "RunSpider.h"
+#include <iostream>
 
 
 AuthorData moduleFacades::downloadRepository(std::string repository, Flags flags, std::string downloadPath)
@@ -48,9 +49,10 @@ ProjectMetaData moduleFacades::getProjectMetadata(std::string url, Flags flags)
 	print::debug("Calling the crawler to get the metadata from a project", __FILE__, __LINE__);
 
 	ProjectMetadata pmd = RunCrawler::findMetadata(url, flags.flag_github_user, flags.flag_github_token);
+	int er = errno;
+	std::cout << errno << "\n";
 	print::loguruResetThreadName();
 
-	int er = errno;
 	// TODO: very temporary hashing.
 	std::string id = pmd.authorMail + pmd.authorName + pmd.version;
 	long long hash = 0;

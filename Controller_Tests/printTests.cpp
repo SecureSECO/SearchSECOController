@@ -244,58 +244,58 @@ int* test_ints = new int[test_intc]
 
 TEST(errorDeathTests, errCmdIncorrectArguments)
 {
-	ASSERT_EXIT(error::errCmdIncorrectArguments(GENERIC_STRING, 1,2, __FILE__, __LINE__), ::testing::ExitedWithCode(EXIT_FAILURE), ".*");
+	ASSERT_DEATH(error::errCmdIncorrectArguments(GENERIC_STRING, 1,2, __FILE__, __LINE__), ".*");
 }
 
 TEST(errorDeathTests, errFlagNotExist)
 {
-	ASSERT_EXIT(error::errFlagNotExist(GENERIC_STRING, true, __FILE__, __LINE__), ::testing::ExitedWithCode(EXIT_FAILURE), ".*");
-	ASSERT_EXIT(error::errFlagNotExist(GENERIC_STRING, false, __FILE__, __LINE__), ::testing::ExitedWithCode(EXIT_FAILURE), ".*");
+	ASSERT_DEATH(error::errFlagNotExist(GENERIC_STRING, true, __FILE__, __LINE__), ".*");
+	ASSERT_DEATH(error::errFlagNotExist(GENERIC_STRING, false, __FILE__, __LINE__), ".*");
 }
 
 TEST(errorDeathTests, errFlagInvalidArg)
 {
-	ASSERT_EXIT(error::errFlagInvalidArg(GENERIC_STRING, GENERIC_STRING, true, __FILE__, __LINE__), ::testing::ExitedWithCode(EXIT_FAILURE), ".*");
-	ASSERT_EXIT(error::errFlagInvalidArg(GENERIC_STRING, GENERIC_STRING, false, __FILE__, __LINE__), ::testing::ExitedWithCode(EXIT_FAILURE), ".*");
+	ASSERT_DEATH(error::errFlagInvalidArg(GENERIC_STRING, GENERIC_STRING, true, __FILE__, __LINE__), ".*");
+	ASSERT_DEATH(error::errFlagInvalidArg(GENERIC_STRING, GENERIC_STRING, false, __FILE__, __LINE__), ".*");
 }
 
 TEST(errorDeathTests, errCmdNotFound)
 {
-	ASSERT_EXIT(error::errCmdNotFound(__FILE__, __LINE__), ::testing::ExitedWithCode(EXIT_FAILURE), ".*");
+	ASSERT_DEATH(error::errCmdNotFound(__FILE__, __LINE__), ".*");
 }
 
 TEST(errorDeathTests, errCmdNotExist)
 {
-	ASSERT_EXIT(error::errCmdNotExist(GENERIC_STRING, __FILE__, __LINE__), ::testing::ExitedWithCode(EXIT_FAILURE), ".*");
+	ASSERT_DEATH(error::errCmdNotExist(GENERIC_STRING, __FILE__, __LINE__), ".*");
 }
 
 TEST(errorDeathTests, errParseCallSyntaxError)
 {
-	ASSERT_EXIT(error::errParseCallSyntaxError(GENERIC_STRING, __FILE__, __LINE__), ::testing::ExitedWithCode(EXIT_FAILURE), ".*");
+	ASSERT_DEATH(error::errParseCallSyntaxError(GENERIC_STRING, __FILE__, __LINE__), ".*");
 }
 
 TEST(errorDeathTests, errParseIncorrectShorthandFlag)
 {
-	ASSERT_EXIT(error::errParseIncorrectShorthandFlag(GENERIC_STRING, __FILE__, __LINE__), ::testing::ExitedWithCode(EXIT_FAILURE), ".*");
+	ASSERT_DEATH(error::errParseIncorrectShorthandFlag(GENERIC_STRING, __FILE__, __LINE__), ".*");
 }
 
 TEST(errorDeathTests, errParseIncorrectLonghandFlag)
 {
-	ASSERT_EXIT(error::errParseIncorrectLonghandFlag(GENERIC_STRING, __FILE__, __LINE__), ::testing::ExitedWithCode(EXIT_FAILURE), ".*");
+	ASSERT_DEATH(error::errParseIncorrectLonghandFlag(GENERIC_STRING, __FILE__, __LINE__), ".*");
 }
 
 TEST(errorDeathTests, errParseCouldNotParseFlag)
 {
-	ASSERT_EXIT(error::errParseCouldNotParseFlag(GENERIC_STRING, __FILE__, __LINE__), ::testing::ExitedWithCode(EXIT_FAILURE), ".*");
+	ASSERT_DEATH(error::errParseCouldNotParseFlag(GENERIC_STRING, __FILE__, __LINE__), ".*");
 }
 
 TEST(errorDeathTests, errInvalidUrl)
 {
-	ASSERT_EXIT(error::errInvalidUrl(GENERIC_STRING, __FILE__, __LINE__), ::testing::ExitedWithCode(EXIT_FAILURE), ".*");
+	ASSERT_DEATH(error::errInvalidUrl(GENERIC_STRING, __FILE__, __LINE__), ".*");
 }
 
 TEST(errorDeathTests, errNotImplemented)
 {
-	ASSERT_EXIT(error::errNotImplemented(GENERIC_STRING, __FILE__, __LINE__), ::testing::ExitedWithCode(EXIT_FAILURE), ".*");
+	ASSERT_DEATH(error::errNotImplemented(GENERIC_STRING, __FILE__, __LINE__), ".*");
 }
 

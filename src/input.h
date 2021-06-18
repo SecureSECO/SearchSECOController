@@ -49,10 +49,6 @@ private:
 	/// </summary>
 	void parseCliInput(int argc, char* argv[]);
 	/// <summary>
-	/// Extracts the path to the executable.
-	/// </summary>
-	void getExecutablePath();
-	/// <summary>
 	/// Parses and extracts the optional flags entered by the user.
 	/// </summary>
 	/// <param name="flargs"></param>

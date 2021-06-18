@@ -109,6 +109,18 @@ std::string descErrCmdNotExist(std::string* strs)
 	return "Command " + print::quote(strs[0]) + " does not exist.";
 }
 
+// no strs
+std::string descNoEnvFile(std::string* strs)
+{
+	return "Unable to open .env file.";
+}
+
+// no strs
+std::string descNoIpsInEnvFile(std::string* strs)
+{
+	return "No IPs found in .env file. IPs should be in format API_IPS=ip1?port1,ip2?port2";
+}
+
 // strs: [funcname]
 std::string descErrNotImplemented(std::string* strs)
 {
@@ -219,6 +231,8 @@ std::map <int, std::function<std::string(std::string*)>> errDesc =
 	{submoduleFailureCrawler, descSubmoduleFailureCrawler},
 	{submoduleFailureSpider, descSubmoduleFailureSpider},
 	{submoduleFailureParser, descSubmoduleFailureParser},
+	{noEnvFile, descNoEnvFile},
+	{noIpsInEnvFile, descNoIpsInEnvFile},
 	{notImplemented, descErrNotImplemented},
 	{dbConnection, descConnectionError},
 	{dbBadRequest, descDBBadRequest},
@@ -366,13 +380,13 @@ void error::errSubmoduleFatalFailureParser(const char* file, int line)
 void error::errNoEnvFile(const char* file, int line)
 {
 	err(noEnvFile,
-		new std::string[1]{ "Unable to open .env file." }, file, line);
+		{}, file, line);
 }
 
 void error::errNoIpsInEnvFile(const char* file, int line)
 {
 	err(noIpsInEnvFile,
-		new std::string[1]{ "No IPs found in .env file. IPs should be in format API_IPS=ip1?port1,ip2?port2" }, 
+		{},
 		file, line);
 }
 

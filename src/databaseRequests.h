@@ -46,9 +46,10 @@ public:
 	/// </summary>
 	/// <param name="hashes">The hashes to be uploaded.</param>
 	/// <returns>The string that the database send back.</returns>
-	static std::string uploadHashes(std::vector<HashData> &hashes, 
-		ProjectMetaData metaData, 
-		AuthorData &authorData, 
+	static std::string uploadHashes(std::vector<HashData>& hashes,
+		ProjectMetaData metaData,
+		AuthorData& authorData,
+		std::string prevCommitTime = "",
 		std::vector<std::string> unchangedFiles = std::vector<std::string>(),
 		std::string apiIP = DATABASE_API_IP, 
 		std::string apiPort = DATABASE_API_PORT);
@@ -70,6 +71,7 @@ public:
 	static std::string checkUploadHashes(std::vector<HashData> &hashes,
 		ProjectMetaData metaData, 
 		AuthorData &authorData,
+		std::string prevCommitTime = "",
 		std::vector<std::string> unchangedFiles = std::vector<std::string>(),
 		std::string apiIP = DATABASE_API_IP, 
 		std::string apiPort = DATABASE_API_PORT);

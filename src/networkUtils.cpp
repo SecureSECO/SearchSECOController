@@ -219,7 +219,7 @@ const char* NetworkUtils::getUploadCrawlRequest(const CrawlData& urls, int& size
 }
 
 const char* NetworkUtils::getAllDataFromHashes(std::vector<HashData>& data, int& size,
-	std::string header, AuthorData& authors, std::vector<std::string> unchangedFiles)
+	std::string header, AuthorData& authors, std::string prevCommitTime, std::vector<std::string> unchangedFiles)
 {
 	// For getting the corresponding authors for each method,
 	// we first need to transform the list of hashes a bit.
@@ -229,7 +229,7 @@ const char* NetworkUtils::getAllDataFromHashes(std::vector<HashData>& data, int&
 	// Calcutating the eventual size of the string before hand, 
 	// so that we don't have to increase the size of the buffer.
 	size = header.size() + 1 + getAuthors(authorSendData, transformedHashes, authors) \
-		+ 1;
+		+ 1 + 1 + prevCommitTime.size();
 	
 	for (std::string s : unchangedFiles)
 	{
@@ -251,6 +251,9 @@ const char* NetworkUtils::getAllDataFromHashes(std::vector<HashData>& data, int&
 	char* buffer = new char[size];
 	int pos = 0;
 	addStringToBuffer(buffer, pos, header);
+	buffer[pos++] = ENTRY_DELIMITER;
+
+	addStringToBuffer(buffer, pos, prevCommitTime);
 	buffer[pos++] = ENTRY_DELIMITER;
 
 	for (std::string s : unchangedFiles)

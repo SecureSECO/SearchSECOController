@@ -34,6 +34,7 @@ TEST(integrationDatabaseAPI, upload)
 		dummyHashes,
 		ProjectMetaData("5", "2", "hash", "Lyzenze", "ProjectName", "url.com", "authorName", "author@mail.com", "master"), 
 		ad,
+		"",
 		std::vector<std::string>(),
 		LOCALHOST,
 		PORT
@@ -66,6 +67,7 @@ TEST(integrationDatabaseAPI, checkUpload)
 		dummyHashes,
 		ProjectMetaData("5", "2", "hash", "Lyzenze", "ProjectName", "url.com", "authorName", "author@mail.com", "master"), 
 		ad,
+		"",
 		std::vector<std::string>(),
 		LOCALHOST, 
 		PORT

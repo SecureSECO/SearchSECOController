@@ -72,7 +72,7 @@ private:
 
 	void versionProcessing(std::vector<std::string> &splitted, Flags flags);
 
-	void downloadTagged(Flags flags, std::string prevTag, std::string curTag, ProjectMetaData meta);
+	void downloadTagged(Flags flags, std::string prevTag, std::string curTag, ProjectMetaData meta, std::string prevVersionTime);
 
 	/// <summary>
 	/// Reads the command line.

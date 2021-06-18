@@ -245,6 +245,7 @@ void Start::versionProcessing(std::vector<std::string>& splitted, Flags flags)
 	}
 
 	std::string prevTag = tags[tags.size()-1].first;
+	std::string prevVersionTime = "";
 
 	for (int i = tags.size() - 1; i >= 0; i--)
 	{
@@ -255,18 +256,20 @@ void Start::versionProcessing(std::vector<std::string>& splitted, Flags flags)
 		if (versionTime <= startingTime)
 		{
 			prevTag = curTag;
+			prevVersionTime = versionTime;
 			continue;
 		}
 
 		meta.versionTime = versionTime;
 
-		downloadTagged(flags, prevTag, curTag, meta);
+		downloadTagged(flags, prevTag, curTag, meta, prevVersionTime);
 		
 		prevTag = curTag;
+		prevVersionTime = versionTime;
 	}
 }
 
-void Start::downloadTagged(Flags flags, std::string prevTag, std::string curTag, ProjectMetaData meta)
+void Start::downloadTagged(Flags flags, std::string prevTag, std::string curTag, ProjectMetaData meta, std::string prevVersionTime)
 {
 	auto [authorData, commitHash, unchangedFiles] = moduleFacades::downloadRepository(flags.mandatoryArgument, flags, DOWNLOAD_LOCATION, prevTag, curTag);
 	if (errno != 0)
@@ -290,7 +293,7 @@ void Start::downloadTagged(Flags flags, std::string prevTag, std::string curTag,
 	meta.versionHash = commitHash;
 
 	// Uploading the hashes.
-	print::printline(DatabaseRequests::uploadHashes(hashes, meta, authorData, unchangedFiles));
+	print::printline(DatabaseRequests::uploadHashes(hashes, meta, authorData, prevVersionTime, unchangedFiles));
 
 }
 

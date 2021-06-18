@@ -26,7 +26,7 @@ TEST(networkingGet_AllDataFromHashesTests, basic)
 	AuthorData authordata;
 	int size;
 	const char* buffer = NetworkUtils::getAllDataFromHashes(hashes, size, "HEADER", authordata);
-	std::string target = "HEADER\n\nHASH?FUNCTION?FILENAME?5?0\n";
+	std::string target = "HEADER\n\n\nHASH?FUNCTION?FILENAME?5?0\n";
 	EXPECT_EQ(target, std::string(buffer, buffer + size));
 	EXPECT_EQ(size, target.size());
 }
@@ -65,7 +65,7 @@ TEST(networkingGet_AllDataFromHashesTests, basicAuthor)
 
 	int size;
 	const char* buffer = NetworkUtils::getAllDataFromHashes(hashes, size, "HEADER", authordata);
-	std::string target = "HEADER\n\nHASH?FUNCTION?FILENAME?5?1?Author?author@mail.com\n";
+	std::string target = "HEADER\n\n\nHASH?FUNCTION?FILENAME?5?1?Author?author@mail.com\n";
 	EXPECT_EQ(target, std::string(buffer, buffer + size));
 	EXPECT_EQ(size, target.size());
 }
@@ -104,7 +104,7 @@ TEST(networkingGet_AllDataFromHashesTests, multipleAuthor)
 
 	int size;
 	const char* buffer = NetworkUtils::getAllDataFromHashes(hashes, size, "HEADER", authordata);
-	std::string target = "HEADER\n\nHASH?FUNCTION?FILENAME?2?2?Author?author@mail.com?Author2?author2@mail.com\n";
+	std::string target = "HEADER\n\n\nHASH?FUNCTION?FILENAME?2?2?Author?author@mail.com?Author2?author2@mail.com\n";
 	EXPECT_EQ(target, std::string(buffer, buffer + size));
 	EXPECT_EQ(size, target.size());
 }
@@ -143,7 +143,7 @@ TEST(networkingGet_AllDataFromHashesTests, bigCommit)
 
 	int size;
 	const char* buffer = NetworkUtils::getAllDataFromHashes(hashes, size, "HEADER", authordata);
-	std::string target = "HEADER\n\nHASH?FUNCTION?FILENAME?5?1?Author?author@mail.com\n";
+	std::string target = "HEADER\n\n\nHASH?FUNCTION?FILENAME?5?1?Author?author@mail.com\n";
 	EXPECT_EQ(target, std::string(buffer, buffer + size));
 	EXPECT_EQ(size, target.size());
 }
@@ -164,7 +164,7 @@ TEST(networkingGet_AllDataFromHashesTests, bigCommit2)
 
 	int size;
 	const char* buffer = NetworkUtils::getAllDataFromHashes(hashes, size, "HEADER", authordata);
-	std::string target = "HEADER\n\nHASH?FUNCTION?FILENAME?5?1?Author?author@mail.com\nHASH1?FUNCTION?FILENAME?8?1?Author?author@mail.com\nHASH2?FUNCTION?FILENAME?11?1?Author?author@mail.com\n";
+	std::string target = "HEADER\n\n\nHASH?FUNCTION?FILENAME?5?1?Author?author@mail.com\nHASH1?FUNCTION?FILENAME?8?1?Author?author@mail.com\nHASH2?FUNCTION?FILENAME?11?1?Author?author@mail.com\n";
 	EXPECT_EQ(target, std::string(buffer, buffer + size));
 	EXPECT_EQ(size, target.size());
 }
@@ -175,7 +175,7 @@ TEST(networkingGet_AllDataFromHashesTests, empty)
 	AuthorData authordata;
 	int size;
 	const char* buffer = NetworkUtils::getAllDataFromHashes(hashes, size, "HEADER", authordata);
-	std::string target = "HEADER\n\n";
+	std::string target = "HEADER\n\n\n";
 	EXPECT_EQ(target, std::string(buffer, buffer + size));
 	EXPECT_EQ(size, target.size());
 }
@@ -186,7 +186,7 @@ TEST(networkingGet_AllDataFromHashesTests, bigger)
 	AuthorData authordata;
 	int size;
 	const char* buffer = NetworkUtils::getAllDataFromHashes(hashes, size, "HEADER", authordata);
-	std::string target = "HEADER\n\nHASH?FUNCTION?FILENAME?5?0\nHASH?FUNCTION?FILENAME?2?0\nHASH?FUNCTION?FILENAME?1?0\n";
+	std::string target = "HEADER\n\n\nHASH?FUNCTION?FILENAME?5?0\nHASH?FUNCTION?FILENAME?2?0\nHASH?FUNCTION?FILENAME?1?0\n";
 	EXPECT_EQ(target, std::string(buffer, buffer + size));
 	EXPECT_EQ(size, target.size());
 }
@@ -226,7 +226,7 @@ TEST(networkingGet_AllDataFromHashesTests, biggerAuthor)
 
 	int size;
 	const char* buffer = NetworkUtils::getAllDataFromHashes(hashes, size, "HEADER", authordata);
-	std::string target = "HEADER\n\nHASH?FUNCTION?FILENAME?1?2?Author?author@mail.com?Author2?author2@mail.com\nHASH?FUNCTION?FILENAME?5?1?Author2?author2@mail.com\nHASH?FUNCTION?FILENAME?10?1?Author3?author3@mail.com\n";
+	std::string target = "HEADER\n\n\nHASH?FUNCTION?FILENAME?1?2?Author?author@mail.com?Author2?author2@mail.com\nHASH?FUNCTION?FILENAME?5?1?Author2?author2@mail.com\nHASH?FUNCTION?FILENAME?10?1?Author3?author3@mail.com\n";
 	
 	EXPECT_EQ(target, std::string(buffer, buffer + size));
 	EXPECT_EQ(size, target.size());
@@ -267,7 +267,7 @@ TEST(networkingGet_AllDataFromHashesTests, biggerAuthorWrongOrder)
 
 	int size;
 	const char* buffer = NetworkUtils::getAllDataFromHashes(hashes, size, "HEADER", authordata);
-	std::string target = "HEADER\n\nHASH?FUNCTION?FILENAME?5?1?Author2?author2@mail.com\nHASH?FUNCTION?FILENAME?1?2?Author?author@mail.com?Author2?author2@mail.com\nHASH?FUNCTION?FILENAME?10?1?Author3?author3@mail.com\n";
+	std::string target = "HEADER\n\n\nHASH?FUNCTION?FILENAME?5?1?Author2?author2@mail.com\nHASH?FUNCTION?FILENAME?1?2?Author?author@mail.com?Author2?author2@mail.com\nHASH?FUNCTION?FILENAME?10?1?Author3?author3@mail.com\n";
 
 	EXPECT_EQ(target, std::string(buffer, buffer + size));
 	EXPECT_EQ(size, target.size());
@@ -276,11 +276,12 @@ TEST(networkingGet_AllDataFromHashesTests, biggerAuthorWrongOrder)
 TEST(networkingGet_AllDataFromHashesTests, unchangedFiles)
 {
 	std::vector<HashData> hashes = { HashData("HASH", "FUNCTION", "FILENAME", 5, 7) };
+	std::string prevCommitVersionTime = "123459";
 	AuthorData authordata;
 	int size;
 	std::vector<std::string> unchangedFiles = { "file1","file2","file3" };
-	const char* buffer = NetworkUtils::getAllDataFromHashes(hashes, size, "HEADER", authordata, unchangedFiles);
-	std::string target = "HEADER\nfile1?file2?file3?\nHASH?FUNCTION?FILENAME?5?0\n";
+	const char* buffer = NetworkUtils::getAllDataFromHashes(hashes, size, "HEADER", authordata, prevCommitVersionTime, unchangedFiles);
+	std::string target = "HEADER\n123459\nfile1?file2?file3?\nHASH?FUNCTION?FILENAME?5?0\n";
 	EXPECT_EQ(target, std::string(buffer, buffer + size));
 	EXPECT_EQ(size, target.size());
 }

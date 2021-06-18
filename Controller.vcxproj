@@ -144,6 +144,7 @@
     <PostBuildEvent>
       <Command>mkdir "$(TargetDir)cfg"
 copy /Y "$(SolutionDir)parser\antlr\lib\debug\antlr4-runtime.dll" "$(TargetDir)antlr4-runtime.dll"
+copy /Y "$(SolutionDir)Executable\.env" "$(TargetDir).env"
 copy /Y "$(SolutionDir)Executable\cfg\config.txt" "$(TargetDir)cfg\config.txt"
 call copy_versions.bat</Command>
     </PostBuildEvent>

@@ -15,7 +15,7 @@ namespace termination
 	/// <summary>
 	/// Terminates the program with status code 1 (failure).
 	/// </summary>
-	void failure();
+	void failure(int code);
 
 	/// <summary>
 	/// Handles retrying functionality when the Crawler failed, and terminates when we ran into a fatal failure.

@@ -68,10 +68,14 @@ add_library(controller
 target_link_libraries(controller spider parser crawler ${Boost_LIBRARIES})
 target_include_directories(controller PUBLIC "${PROJECT_BINARY_DIR}" ../parser/Parser ../spider-revisited/Spider-Revisited ../crawler/Crawler ${Boost_INCLUDE_DIRS})
 
-# copy version files
+# copy version and configuration files
 if (WIN32)
   execute_process(COMMAND CMD /c cd ../bin && copy_versions.bat && cd ../build)
+  execute_process(COMMAND CMD /c mkdir cfg)
+  execute_process(COMMAND CMD /c copy "..\\Executable\\cfg\\config.txt" "cfg\\config.txt")
 endif (WIN32)
 if (UNIX)
   execute_process(COMMAND bash "../bin/copy_versions.sh")
+  execute_process(COMMAND mkdir cfg)
+  execute_process(COMMAND cp "../Executable/cfg/config.txt" "cfg/config.txt")
 endif (UNIX)

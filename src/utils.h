@@ -81,6 +81,11 @@ public:
 	static void replace(std::string& string, char replace, char with);
 
 	/// <summary>
+	/// Gets the path to the running executable.
+	/// </summary>
+	static std::string getExecutablePath();
+
+	/// <summary>
 	/// Randomly shuffles a list.
 	/// </summary>
 	template <class C>

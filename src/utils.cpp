@@ -5,17 +5,29 @@ Utrecht University within the Software Project course.
 */
 
 // Controller includes
+#include "print.h"
 #include "projectMetadata.h"
 #include "utils.h"
 
 // External includes
 #include <chrono>
 #include <ctime>
+#include <filesystem>
 #include <fstream>
 #include <iomanip>
 #include <iostream>
 #include <map>
 #include <sstream>
+
+// OS Dependent includes
+#if defined(WIN32) || defined(_WIN32) || defined(__WIN32) && !defined(__CYGWIN__)
+// Windows
+#include <Windows.h>
+#else
+// Unix
+#include <unistd.h>
+#include <linux/limits.h>
+#endif
 
 
 std::vector<std::string> utils::split(std::string str, char delimiter)
@@ -102,7 +114,36 @@ void utils::replace(std::string& string, char replace, char with)
 			string[i] = with;
 		}
 	}
+}
 
+std::string utils::getExecutablePath()
+{
+	// Code borrowed from https://stackoverflow.com/a/1528493,
+	// https://stackoverflow.com/questions/18783087/how-to-properly-use-getmodulefilename, and
+	// https://stackoverflow.com/questions/23943239/how-to-get-path-to-current-exe-file-on-linux
+
+	std::string path;
+
+#if defined(WIN32) || defined(_WIN32) || defined(__WIN32) && !defined(__CYGWIN__)
+// Windows
+	wchar_t buffer[MAX_PATH];
+	GetModuleFileName(NULL, buffer, MAX_PATH);
+	std::wstring ws(buffer);
+	path = std::filesystem::path(std::string(ws.begin(), ws.end()))
+		.parent_path()
+		.string();
+#else
+// Unix
+	char buffer[PATH_MAX];
+	ssize_t count = readlink("/proc/self/exe", buffer, PATH_MAX);
+	path = std::filesystem::path(std::string(buffer, (count > 0) ? count : 0))
+		.parent_path()
+		.string();
+#endif
+
+	print::debug("Found executable path as " + print::quote(path), __FILE__, __LINE__);
+	
+	return path;
 }
 
 #pragma endregion utils

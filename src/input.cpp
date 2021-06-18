@@ -15,15 +15,6 @@ Utrecht University within the Software Project course.
 #include <regex>
 #include <vector>
 
-// OS Dependent includes
-#if defined(WIN32) || defined(_WIN32) || defined(__WIN32) && !defined(__CYGWIN__)
-// Windows
-#include <Windows.h>
-#else
-// Unix
-#include <unistd.h>
-#endif
-
 
 #define CONFIGURATION_FILE "cfg/config.txt"
 
@@ -77,39 +68,13 @@ void Input::parseCliInput(int argc, char* argv[])
 	}
 
 	print::debug("Finding executable path", __FILE__, __LINE__);
-	Input::getExecutablePath();
+	this->executablePath = utils::getExecutablePath();
 
 	print::debug("Parsing optionals", __FILE__, __LINE__);
 	Input::parseOptionals(flargs);
 
 	print::debug("Mapping shorthand flags to longer versions", __FILE__, __LINE__);
 	Flags::mapShortFlagToLong(this->optionalArguments);
-}
-
-void Input::getExecutablePath()
-{
-	// Code borrowed from https://stackoverflow.com/a/1528493,
-	// https://stackoverflow.com/questions/18783087/how-to-properly-use-getmodulefilename, and
-	// https://stackoverflow.com/questions/23943239/how-to-get-path-to-current-exe-file-on-linux
-
-	#if defined(WIN32) || defined(_WIN32) || defined(__WIN32) && !defined(__CYGWIN__)
-	// Windows
-	wchar_t buffer[MAX_PATH];
-	GetModuleFileName(NULL, buffer, MAX_PATH);
-	std::wstring ws(buffer);
-	this->executablePath = std::filesystem::path(std::string(ws.begin(), ws.end()))
-		.parent_path()
-		.string();
-	#else
-	// Unix
-	char buffer[PATH_MAX];
-	ssize_t count = readlink("/proc/self/exe", buffer, PATH_MAX);
-	this->executablePath = std::filesystem::path(std::string(buffer, (count > 0) ? count : 0))
-		.parent_path()
-		.string();
-	#endif
-
-	print::debug("Found executable path as " + print::quote(this->executablePath), __FILE__, __LINE__);
 }
 
 void Input::parseOptionals(std::string call)

@@ -33,6 +33,7 @@ set(CONTROLLER_HEADER_LIST
   commandFactory.h
   commands.h
   databaseRequests.h
+  dto.h
   entrypoint.h
   flags.h
   input.h

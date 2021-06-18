@@ -290,7 +290,7 @@ TEST(networkingGetHashDataFromHashesTests, basic)
 	std::vector<HashData> hashes = { HashData("HASH0", "", "", 0, 7) };
 	int size;
 	const char* buffer = NetworkUtils::getHashDataFromHashes(hashes, size);
-	std::string target = std::to_string(Parser::getHashVersion()) + "\nHASH0\n";
+	std::string target = "HASH0\n";
 	EXPECT_EQ(target, std::string(buffer, buffer + size));
 	EXPECT_EQ(size, target.size());
 }
@@ -300,7 +300,7 @@ TEST(networkingGetHashDataFromHashesTests, empty)
 	std::vector<HashData> hashes = { };
 	int size;
 	const char* buffer = NetworkUtils::getHashDataFromHashes(hashes, size);
-	std::string target = std::to_string(Parser::getHashVersion()) + "\n";
+	std::string target = "";
 	EXPECT_EQ(target, std::string(buffer, buffer + size));
 	EXPECT_EQ(size, target.size());
 }
@@ -310,7 +310,7 @@ TEST(networkingGetHashDataFromHashesTests, bigger)
 	std::vector<HashData> hashes = { HashData("HASH0", "", "", 0, 7), HashData("HASH1", "", "", 0, 7), HashData("HASH2", "", "", 0, 7), HashData("HASH3", "", "", 0, 7) };
 	int size;
 	const char* buffer = NetworkUtils::getHashDataFromHashes(hashes, size);
-	std::string target = std::to_string(Parser::getHashVersion()) + "\nHASH0\nHASH1\nHASH2\nHASH3\n";
+	std::string target = "HASH0\nHASH1\nHASH2\nHASH3\n";
 	EXPECT_EQ(target, std::string(buffer, buffer + size));
 	EXPECT_EQ(target.size(), size);
 }

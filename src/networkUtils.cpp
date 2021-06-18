@@ -272,7 +272,7 @@ const char* NetworkUtils::getHashDataFromHashes(std::vector<HashData>& data, int
 {
 	// Calcutating the eventual size of the string before hand, 
 	// so that we don't have to increase the size of the buffer.
-	size = 1 + std::to_string(Parser::getHashVersion()).length();
+	size = 0;
 	for (HashData hd : data)
 	{
 		size += hd.hash.length();
@@ -282,9 +282,6 @@ const char* NetworkUtils::getHashDataFromHashes(std::vector<HashData>& data, int
 	// Filling the buffer by first adding the header, and then each entry.
 	char* buffer = new char[size];
 	int pos = 0;
-
-	addStringToBuffer(buffer, pos, std::to_string(Parser::getHashVersion()));
-	buffer[pos++] = ENTRY_DELIMITER;
 
 	for (HashData hd : data)
 	{

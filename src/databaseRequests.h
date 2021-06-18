@@ -94,6 +94,14 @@ public:
 		std::string apiPort = DATABASE_API_PORT);
 
 	/// <summary>
+	/// Sends a request to the database to get information of the newest version of a project.
+	/// </summary>
+	/// <returns>The string that the database send back.</returns>
+	static long long getProjectVersion(const std::pair<std::string, std::string>& project,
+		std::string apiIP = DATABASE_API_IP,
+		std::string apiPort = DATABASE_API_PORT);
+
+	/// <summary>
 	/// Sends a get next job request to the api.
 	/// </summary>
 	/// <returns>The next job the worked node should do.</returns>

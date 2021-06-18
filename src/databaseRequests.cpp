@@ -68,6 +68,34 @@ std::string DatabaseRequests::getProjectData(const std::map<std::pair<std::strin
 	return execRequest(DATABASE_GET_PROJECT_DATA, rawData, dataSize, apiIP, apiPort);
 }
 
+long long DatabaseRequests::getProjectVersion(const std::pair<std::string, std::string>& project,
+	std::string apiIP, std::string apiPort)
+{
+	int dataSize = 0;
+	const char* rawData = NetworkUtils::getProjectRequest(project, dataSize);
+
+	std::string response = execRequest(DATABASE_GET_MOST_RECENT_VERSION_PROJECT, rawData, dataSize, apiIP, apiPort);
+	
+	if (response == "") // TODO insert message when no project found
+	{
+		return 0;
+	}
+	else
+	{
+		long long version = 0;
+		try
+		{
+			version = std::stoll(utils::split(utils::split(response, ENTRY_DELIMITER)[0], INNER_DELIMITER)[1]);
+		}
+		catch (const std::exception& e)
+		{
+			print::warn("Something went wrong while retrieving version of project from database, returning versiontime of 0.", __FILE__, __LINE__);
+			version = 0;
+		}
+		return version;
+	}
+}
+
 std::string DatabaseRequests::getNextJob(std::string apiIP, std::string apiPort)
 {
 	return execRequest(DATABASE_GET_NEXT_JOB, nullptr, 0, apiIP, apiPort);

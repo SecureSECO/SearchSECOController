@@ -79,7 +79,7 @@ void Start::execute(Flags flags)
 		}
 		if (splitted[0] == "Spider")
 		{
-			handleSpiderRequest(splitted, flags);
+			versionProcessing(splitted, flags);
 		}
 		else if (splitted[0] == "Crawl")
 		{
@@ -192,14 +192,9 @@ void Start::versionProcessing(std::vector<std::string>& splitted, Flags flags)
 	}
 	flags.flag_branch = meta.defaultBranch;
 
-	std::map<std::pair<std::string, std::string>, int> project;
-	std::pair<std::string, std::string> pair;
-	pair.first = meta.id;
-	pair.second = meta.versionTime;
-	project[pair] = 0;
-	std::vector<std::string> projectEntries =
-		utils::split(DatabaseRequests::getProjectData(project), ENTRY_DELIMITER);
-
+	
+	std::pair<std::string, std::string> project{ meta.id, meta.versionTime };
+	startingTime = DatabaseRequests::getProjectVersion(project);
 
 	// Download most recent commit, to retrieve tags.
 	auto [authorData, commitHash, unchangedFiles] = moduleFacades::downloadRepository(flags.mandatoryArgument, flags, DOWNLOAD_LOCATION);

@@ -171,6 +171,20 @@ const char* NetworkUtils::getProjectsRequest(const std::map<std::pair<std::strin
 	return data;
 }
 
+const char* NetworkUtils::getProjectRequest(const std::pair<std::string, std::string>& project, int& size)
+{
+	// First, calculate the size, so we don't have to expand it later.
+	size = project.first.length() + project.second.length() + 2;
+	char* data = new char[size];
+	// Create the string.
+	int pos = 0;
+	addStringToBuffer(data, pos, project.first);
+	data[pos++] = INNER_DELIMITER;
+	addStringToBuffer(data, pos, project.second);
+	data[pos++] = ENTRY_DELIMITER;
+	return data;
+}
+
 const char* NetworkUtils::getJobsRequest(const std::vector<std::string>& urls, int& size)
 {
 	// First, calculate the size, so we don't have to expand it later.

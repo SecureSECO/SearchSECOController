@@ -127,7 +127,7 @@ private:
 	/// Checks if the database returns a valid response code and handles potential errors.
 	/// </summary>
 	/// <returns> The data it receives minus the status code it checked. </returns>
-	static std::string checkResponseCode(std::string data, std::string command);
+	static std::tuple<bool, std::string> checkResponseCode(std::string data, std::string command);
 
 	/// <summary>
 	/// Will open a connection with the database API. 

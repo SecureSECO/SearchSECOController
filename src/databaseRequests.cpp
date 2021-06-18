@@ -14,6 +14,14 @@ Utrecht University within the Software Project course.
 // Parser includes
 #include "Parser.h"
 
+// External includes.
+#include "chrono"
+#include <math.h>
+#include "thread"
+
+
+#define REQUEST_RETRIES 3
+#define BASE_RETRY_WAIT 1000
 
 std::string DatabaseRequests::uploadHashes(std::vector<HashData> &hashes, 
 	ProjectMetaData metaData, 
@@ -108,10 +116,35 @@ std::string DatabaseRequests::execRequest(
 	delete[] rawData;
 	delete networkHandler;
 
-	return checkResponseCode(output, env->commandString);
+	// Handle the response code.
+	std::tuple<bool, std::string> tuple = checkResponseCode(output, env->commandString);
+	auto retries = 0;
+	
+	while (!std::get<0>(tuple) && retries < REQUEST_RETRIES)
+	{
+		auto waitFor = (int)pow(2, retries++) * BASE_RETRY_WAIT;
+		print::warn(
+			"Retrying in " + 
+			std::to_string(waitFor / 1000) + 
+			" seconds... (" + std::to_string(REQUEST_RETRIES - retries) + 
+			" left)"
+			, __FILE__, __LINE__);
+
+		std::this_thread::sleep_for(
+			std::chrono::milliseconds(waitFor)
+			);
+		tuple = checkResponseCode(output, env->commandString);
+	}
+
+	if (!std::get<0>(tuple)) 
+	{
+		print::warn("Ran out of retries. Skipping project...", __FILE__, __LINE__);
+	}
+
+	return std::get<1>(tuple);
 }
 
-std::string DatabaseRequests::checkResponseCode(std::string data, std::string command)
+std::tuple<bool, std::string> DatabaseRequests::checkResponseCode(std::string data, std::string command)
 {
 	std::string statusCode = utils::split(data, '\n')[0];
 	
@@ -123,20 +156,47 @@ std::string DatabaseRequests::checkResponseCode(std::string data, std::string co
 
 	if (statusCode == "200") 
 	{
-		print::log("Database request successful.", __FILE__, __LINE__);
-		return info;
+		print::log("Database request successful", __FILE__, __LINE__);
+		return std::make_tuple(true, info);
 	}
 	else if (statusCode == "400") 
 	{
-		error::errDBBadRequest(info, __FILE__, __LINE__);
+		if (command == "start")
+		{
+			print::warn("Sent bad request to database (error 400)", 
+				__FILE__, __LINE__);
+			return std::make_tuple(true, info);
+		}
+		else
+		{
+			error::errDBBadRequest(info, __FILE__, __LINE__);
+		}
 	}
 	else if (statusCode == "500") 
 	{
-		error::errDBInternalError(info, __FILE__, __LINE__);
+		if (command == "start")
+		{
+			print::warn("Internal error occurred in the database API (error 500)", 
+				__FILE__, __LINE__);
+			return std::make_tuple(false, info);
+		}
+		else
+		{
+			error::errDBInternalError(info, __FILE__, __LINE__);
+		}
 	}
 	else 
 	{
-		error::errDBUnknownResponse(__FILE__, __LINE__);
+		if (command == "start")
+		{
+			print::warn("Database responded in an unexpected way", 
+				__FILE__, __LINE__);
+			return std::make_tuple(false, info);
+		}
+		else
+		{
+			error::errDBUnknownResponse(__FILE__, __LINE__);
+		}
 	}
 }
 

@@ -34,8 +34,10 @@ void entrypoint::entrypoint(int argc, char* argv[], std::string apiIP, std::stri
 	}
 	else
 	{
+		auto env = new EnvironmentDTO(apiIP, apiPort, userInput.command);
+
 		auto command = commandFactory->getCommand(userInput.command);
-		command->execute(flags, apiIP, apiPort);
+		command->execute(flags, env);
 	}
 
 	termination::successful();

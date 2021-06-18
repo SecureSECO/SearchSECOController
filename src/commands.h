@@ -7,6 +7,7 @@ Utrecht University within the Software Project course.
 #pragma once
 
 // Controller includes
+#include "dto.h"
 #include "flags.h"
 
 // Parser includes
@@ -35,9 +36,10 @@ public:
 	/// </summary>
 	/// <param name="command">The command you want to execute.</param>
 	/// <param name="flags">The flags with which you want to execute the command.</param>
-	virtual void execute(Flags flags, 
-		std::string apiIP, 
-		std::string apiPort) = 0;
+	virtual void execute(
+		Flags flags, 
+		EnvironmentDTO *env
+		) = 0;
 
 protected:
 	std::string helpMessageText;
@@ -51,9 +53,10 @@ public:
 	/// <summary>
 	/// Starts the worker node.
 	/// </summary>
-	void execute(Flags flags, 
-		std::string apiIP, 
-		std::string apiPort) override;
+	void execute(
+		Flags flags, 
+		EnvironmentDTO *env
+		) override;
 
 	/// <summary>
 	/// Logs the pre-execution message.
@@ -68,18 +71,18 @@ private:
 	/// <summary>
 	/// Handles crawl requests.
 	/// </summary>
-	void handleCrawlRequest(std::vector<std::string> &splitted, 
+	void handleCrawlRequest(
+		std::vector<std::string> &splitted, 
 		Flags flags, 
-		std::string apiIP, 
-		std::string apiPort);
+		EnvironmentDTO *env);
 
 	/// <summary>
 	/// Handles spider requests.
 	/// </summary>
-	void handleSpiderRequest(std::vector<std::string> &splitted, 
+	void handleSpiderRequest(
+		std::vector<std::string> &splitted, 
 		Flags flags, 
-		std::string apiIP, 
-		std::string apiPort);
+		EnvironmentDTO *env);
 
 	/// <summary>
 	/// Reads the command line.
@@ -97,9 +100,10 @@ public:
 	/// <summary>
 	/// Checks matches with the database for the given repository.
 	/// </summary>
-	void execute(Flags flags, 
-		std::string apiIP, 
-		std::string apiPort) override;
+	void execute(
+		Flags flags, 
+		EnvironmentDTO *env
+		) override;
 
 	/// <summary>
 	/// Logs the pre-execution message.
@@ -126,9 +130,10 @@ public:
 	/// <summary>
 	/// Uploads given repository.
 	/// </summary>
-	void execute(Flags flags, 
-		std::string apiIP, 
-		std::string apiPort) override;
+	void execute(
+		Flags flags, 
+		EnvironmentDTO *env
+		) override;
 
 	/// <summary>
 	/// Logs the pre-execution message.
@@ -157,6 +162,6 @@ public:
 	/// </summary>
 	void execute(
 		Flags flags,
-		std::string apiIP, 
-		std::string apiPort) override;
+		EnvironmentDTO *env
+		) override;
 };

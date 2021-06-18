@@ -54,6 +54,8 @@
     <ClCompile Include="src\loguru\loguru.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\regexWrapper.h" />
+    <ClCompile Include="src\loguru\loguru.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\commandFactory.h">
@@ -89,16 +91,13 @@
     <ClInclude Include="src\projectMetadata.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\regexWrapper.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="src\termination.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\utils.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\loguru\loguru.hpp">
+    <ClInclude Include="src\dto.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

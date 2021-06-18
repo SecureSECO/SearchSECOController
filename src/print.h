@@ -7,6 +7,7 @@ Utrecht University within the Software Project course.
 #pragma once
 
 // Controller includes.
+#include "dto.h"
 #include "utils.h"
 
 // Parser includes.
@@ -106,8 +107,7 @@ public:
 		std::vector<HashData>& hashes, 
 		std::string databaseOutput, 
 		AuthorData &authordata, 
-		std::string apiIP, 
-		std::string apiPort,
+		EnvironmentDTO *env,
 		std::string url
 	);
 
@@ -149,8 +149,7 @@ private:
 		std::map<std::string, int>& dbAuthors,
 		std::map<std::string, std::vector<std::string>>& dbProjects,
 		std::map<std::string, std::vector<std::string>>& authorIdToName, 
-		std::string apiIP, 
-		std::string apiPort);
+		EnvironmentDTO *env);
 
 	/// <summary>
 	/// Prints a match for a given hash.

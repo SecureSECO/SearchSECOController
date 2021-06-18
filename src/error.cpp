@@ -211,6 +211,11 @@ std::string descSubmoduleFailureParser(std::string* strs)
 	return "The Parser ran into a fatal error. Terminating execution.";
 }
 
+std::string descErrInvalidDatabaseAnswer(std::string* strs)
+{
+	return "Invalid database response.";
+}
+
 // Maps an error code to a description.
 std::map <int, std::function<std::string(std::string*)>> errDesc =
 {
@@ -237,8 +242,8 @@ std::map <int, std::function<std::string(std::string*)>> errDesc =
 	{dbConnection, descConnectionError},
 	{dbBadRequest, descDBBadRequest},
 	{dbInternalError, descDBInternalError},
-	{dbUnknownResponse, descDBUnkownResponse}
-	
+	{dbUnknownResponse, descDBUnkownResponse},
+	{invalidDatabaseAnswer, descErrInvalidDatabaseAnswer}
 };
 
 #pragma endregion Descriptions
@@ -430,7 +435,7 @@ void error::errDBUnknownResponse(const char* file, int line)
 void error::errInvalidDatabaseAnswer(const char* file, int line)
 {
 	err(invalidDatabaseAnswer,
-		new std::string[1]{ "Invalid database response." },
+		{},
 		file, line
 	);
 }

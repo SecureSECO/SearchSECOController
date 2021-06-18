@@ -110,17 +110,45 @@ std::map<std::string, std::string> Flags::parseConfig(std::string configPath)
 	std::string arg;
 
 	std::map<std::string, std::string> configFlagArgs = {};
+	int success = 0,
+		lines = 0;
 
 	while (std::getline(configFile, line))
 	{
+		++lines;
+		if  (line[0] == '#' ||
+			 line[0] == '\r' ||
+			 line == "")
+		{
+			continue;
+		}
+
 		flagArg = utils::split(line, ':');
+		if (flagArg.size() != 2)
+		{
+			print::warn(
+				"Could not parse the configuration file at " 
+				+ print::quote(configPath)
+				+ " at line " + std::to_string(lines)
+				+ ". Skipping configuration file parsing",
+				__FILE__, __LINE__
+			);
+			return {};
+		}
+
 		flag = utils::trimWhiteSpaces(flagArg[0]);
 		arg = utils::trimWhiteSpaces(flagArg[1]);
 
 		configFlagArgs[flag] = arg;
+		++success;
 	}
 
 	configFile.close();
+
+	if (success == 0)
+	{
+		print::warn("No or empty configuration file was found at " + print::quote(configPath), __FILE__, __LINE__);
+	}
 
 	return configFlagArgs;
 }

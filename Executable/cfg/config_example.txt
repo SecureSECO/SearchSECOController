@@ -1,2 +1,0 @@
-github_username : username
-github_token : token

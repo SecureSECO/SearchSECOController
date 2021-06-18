@@ -171,9 +171,8 @@ void print::versionFull()
 void printMatches::printHashMatches(
 	std::vector<HashData> &hashes, 
 	std::string databaseOutput, 
-	AuthorData &authordata, 
-	std::string apiIP, 
-	std::string apiPort,
+	AuthorData &authordata,
+	EnvironmentDTO *env,
 	std::string url)
 {
 	std::map<std::string, std::vector<std::string>> receivedHashes = {};
@@ -187,7 +186,7 @@ void printMatches::printHashMatches(
 	std::vector<std::string> dbentries = utils::split(databaseOutput, ENTRY_DELIMITER);
 	parseDatabaseHashes(dbentries, receivedHashes, projects, dbAuthors);
 	
-	getDatabaseAuthorAndProjectData(projects, dbAuthors, dbProjects, authorIdToName, apiIP, apiPort);
+	getDatabaseAuthorAndProjectData(projects, dbAuthors, dbProjects, authorIdToName, env);
 
 	// Author data.
 	std::map<std::string, std::vector<HashData*>> transformedList;
@@ -271,14 +270,13 @@ void printMatches::getDatabaseAuthorAndProjectData(
 	std::map<std::string, int> &dbAuthors,
 	std::map<std::string, std::vector<std::string>>& dbProjects,
 	std::map<std::string, std::vector<std::string>>& authorIdToName, 
-	std::string apiIP, 
-	std::string apiPort)
+	EnvironmentDTO *env)
 {
 	// Database requests.
 	std::vector<std::string> authorEntries =
-		utils::split(DatabaseRequests::getAuthor(dbAuthors, apiIP, apiPort), ENTRY_DELIMITER);
+		utils::split(DatabaseRequests::getAuthor(dbAuthors, env), ENTRY_DELIMITER);
 	std::vector<std::string> projectEntries =
-		utils::split(DatabaseRequests::getProjectData(projects, apiIP, apiPort), ENTRY_DELIMITER);
+		utils::split(DatabaseRequests::getProjectData(projects, env), ENTRY_DELIMITER);
 
 	// Getting the project data out of it.
 	for (int i = 0; i < projectEntries.size(); i++)

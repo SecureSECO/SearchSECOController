@@ -7,6 +7,7 @@ Utrecht University within the Software Project course.
 #pragma once
 
 // Controller includes
+#include "dto.h"
 #include "projectMetadata.h"
 
 // Crawler includes
@@ -44,8 +45,7 @@ public:
 	static std::string uploadHashes(std::vector<HashData> &hashes, 
 		ProjectMetaData metaData, 
 		AuthorData &authorData, 
-		std::string apiIP, 
-		std::string apiPort);
+		EnvironmentDTO *env);
 
 	/// <summary>
 	/// Sends a request to the database to find matching hashes in the database.
@@ -53,8 +53,7 @@ public:
 	/// <param name="hashes">The hashes you want to find in the database.</param>
 	/// <returns>The matches that the database gives back.</returns>
 	static std::string findMatches(std::vector<HashData> &hashes,
-		std::string apiIP, 
-		std::string apiPort);
+		EnvironmentDTO *env);
 
 	/// <summary>
 	/// Sends a request to the database to upload and check the given hashes.
@@ -64,48 +63,47 @@ public:
 	static std::string checkUploadHashes(std::vector<HashData> &hashes,
 		ProjectMetaData metaData, 
 		AuthorData &authorData, 
-		std::string apiIP, 
-		std::string apiPort);
+		EnvironmentDTO *env);
 
 	/// <summary>
 	/// Sends a request to the database get the author name and mail from the given author ids.
 	/// </summary>
 	/// <param name="authors">The authors you want the data from.</param>
 	/// <returns>The string that the database send back.</returns>
-	static std::string getAuthor(const std::map<std::string, int> &authors,
-		std::string apiIP,
-		std::string apiPort);
+	static std::string getAuthor(
+		const std::map<std::string, int> &authors,
+		EnvironmentDTO *env);
 
 	/// <summary>
 	/// Sends a request to the database to upload and check the given hashes.
 	/// </summary>
 	/// <returns>The string that the database send back.</returns>
-	static std::string getProjectData(const std::map<std::pair<std::string, std::string>, int> &projects,
-		std::string apiIP,
-		std::string apiPort);
+	static std::string getProjectData(
+		const std::map<
+			std::pair<std::string, std::string>, 
+			int> &projects,
+		EnvironmentDTO *env);
 
 	/// <summary>
 	/// Sends a get next job request to the api.
 	/// </summary>
 	/// <returns>The next job the worked node should do.</returns>
-	static std::string getNextJob(std::string apiIP,
-		std::string apiPort);
+	static std::string getNextJob(EnvironmentDTO *env);
 
 	/// <summary>
 	/// Sends a request to the api to add the given jobs to the job queue.
 	/// </summary>
-	static std::string addJobs(const std::vector<std::string>& jobs,
-		std::string apiIP,
-		std::string apiPort);
+	static std::string addJobs(
+		const std::vector<std::string>& jobs,
+		EnvironmentDTO *env);
 
 	/// <summary>
 	/// Adds the jobs the crawler found to the job queue.
 	/// </summary>
 	/// <param name="jobs">The jobs to be added.</param>
-	/// <param name="crawlid">The crawler id the crawler returns.</param>
-	static std::string addCrawledJobs(const CrawlData& jobs,
-		std::string apiIP,
-		std::string apiPort);
+	static std::string addCrawledJobs(
+		const CrawlData& jobs,
+		EnvironmentDTO *env);
 private:
 	/// <summary>
 	/// The logic for sending a request to the database.
@@ -115,7 +113,7 @@ private:
 	///		3: Receiving the data the API returns.
 	/// </summary>
 	/// <param name="request">The request we are sending to the API</param>
-	/// <param name="rawData">THIS DATA WILL BE AUTOMATICLY DELETED AFTER IT HAS BEEN SEND BY THIS FUNCTION.
+	/// <param name="rawData">THIS DATA WILL BE AUTOMATICALLY DELETED AFTER IT HAS BEEN SENT BY THIS FUNCTION.
 	/// The data we want to send to the API. 
 	/// This data can most likely be generated with a function in NetworkUtils like getAllDataFromHashes.</param>
 	/// <param name="dataSize">How much data we are sending.</param>
@@ -123,14 +121,13 @@ private:
 	static std::string execRequest(std::string request, 
 		const char* rawData, 
 		int dataSize, 
-		std::string apiIP, 
-		std::string apiPort);
+		EnvironmentDTO *env);
 
 	/// <summary>
 	/// Checks if the database returns a valid response code and handles potential errors.
 	/// </summary>
 	/// <returns> The data it receives minus the status code it checked. </returns>
-	static std::string checkResponseCode(std::string data);
+	static std::tuple<bool, std::string> checkResponseCode(std::string data, std::string command);
 
 	/// <summary>
 	/// Will open a connection with the database API. 

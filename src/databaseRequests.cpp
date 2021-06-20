@@ -82,7 +82,7 @@ long long DatabaseRequests::getProjectVersion(const std::pair<std::string, std::
 
 	std::string response = execRequest(DATABASE_GET_MOST_RECENT_VERSION_PROJECT, rawData, dataSize, env);
 	
-	if (response == "") // TODO insert message when no project found
+	if (response == "No results found.") // TODO insert message when no project found
 	{
 		return 0;
 	}

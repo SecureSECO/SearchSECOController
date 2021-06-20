@@ -250,16 +250,15 @@ void Start::versionProcessing(std::vector<std::string>& splitted, Flags flags, E
 		if (versionTime <= startingTime)
 		{
 			prevTag = curTag;
-			prevVersionTime = versionTime;
+			prevVersionTime = std::to_string(versionTime);
 			continue;
 		}
-
 		meta.versionTime = std::to_string(versionTime);
 
 		downloadTagged(flags, prevTag, curTag, meta, prevVersionTime, env);
 		
 		prevTag = curTag;
-		prevVersionTime = versionTime;
+		prevVersionTime = std::to_string(versionTime);
 	}
 }
 
@@ -277,10 +276,6 @@ void Start::downloadTagged(Flags flags, std::string prevTag, std::string curTag,
 	{
 		errno = 0;
 		print::warn("Error parsing tagged version of project, moving on to the next tag.", __FILE__, __LINE__);
-		return;
-	}
-	if (hashes.size() == 0)
-	{
 		return;
 	}
 

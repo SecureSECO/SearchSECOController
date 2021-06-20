@@ -43,7 +43,7 @@ public:
 	/// 
 	/// <returns>A char pointer to string with all the data in it.</returns>
 	static const char* getAllDataFromHashes(std::vector<HashData> &data, int& size,
-		std::string header, AuthorData& authors);
+		std::string header, AuthorData& authors, std::string prevCommitTime = "", std::vector<std::string> unchangedFiles = std::vector<std::string>());
 
 	/// <summary>
 	/// This function will only copy the actual hash into a string.
@@ -109,6 +109,17 @@ public:
 	/// The initial value that you give it will be ignored.</param>
 	/// <returns>A char pointer to string with all the data in it.</returns>
 	static const char* getProjectsRequest(const std::map<std::pair<std::string, std::string>, int>& projects, int& size);
+
+	/// <summary>
+	/// Converts a project into a string that can be send to the database,
+	/// to get the project data of the project.
+	/// </summary>
+	/// <param name="project">The project.</param>
+	/// <param name="size">This is basically a second return value. 
+	/// The size of the string that is returned will be put in here. 
+	/// The initial value that you give it will be ignored.</param>
+	/// <returns>A char pointer to string with all the data in it.</returns>
+	static const char* getProjectRequest(const std::pair<std::string, std::string>& project, int& size);
 
 	/// <summary>
 	/// Converts the list of urls into a string that can be send to the database,

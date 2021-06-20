@@ -171,6 +171,20 @@ const char* NetworkUtils::getProjectsRequest(const std::map<std::pair<std::strin
 	return data;
 }
 
+const char* NetworkUtils::getProjectRequest(const std::pair<std::string, std::string>& project, int& size)
+{
+	// First, calculate the size, so we don't have to expand it later.
+	size = project.first.length() + project.second.length() + 2;
+	char* data = new char[size];
+	// Create the string.
+	int pos = 0;
+	addStringToBuffer(data, pos, project.first);
+	data[pos++] = INNER_DELIMITER;
+	addStringToBuffer(data, pos, project.second);
+	data[pos++] = ENTRY_DELIMITER;
+	return data;
+}
+
 const char* NetworkUtils::getJobsRequest(const std::vector<std::string>& urls, int& size)
 {
 	// First, calculate the size, so we don't have to expand it later.
@@ -219,7 +233,7 @@ const char* NetworkUtils::getUploadCrawlRequest(const CrawlData& urls, int& size
 }
 
 const char* NetworkUtils::getAllDataFromHashes(std::vector<HashData>& data, int& size,
-	std::string header, AuthorData& authors)
+	std::string header, AuthorData& authors, std::string prevCommitTime, std::vector<std::string> unchangedFiles)
 {
 	// For getting the corresponding authors for each method,
 	// we first need to transform the list of hashes a bit.
@@ -228,7 +242,14 @@ const char* NetworkUtils::getAllDataFromHashes(std::vector<HashData>& data, int&
 	std::map<HashData, std::vector<std::string>> authorSendData;
 	// Calcutating the eventual size of the string before hand, 
 	// so that we don't have to increase the size of the buffer.
-	size = header.size() + 1 + getAuthors(authorSendData, transformedHashes, authors);
+	size = header.size() + 1 + getAuthors(authorSendData, transformedHashes, authors) \
+		+ 1 + 1 + prevCommitTime.size();
+	
+	for (std::string s : unchangedFiles)
+	{
+		size += 1 + s.length();
+	}
+	
 	for (HashData hd : data)
 	{
 		size += hd.fileName.length() + 
@@ -246,10 +267,21 @@ const char* NetworkUtils::getAllDataFromHashes(std::vector<HashData>& data, int&
 	addStringToBuffer(buffer, pos, header);
 	buffer[pos++] = ENTRY_DELIMITER;
 
+	addStringToBuffer(buffer, pos, prevCommitTime);
+	buffer[pos++] = ENTRY_DELIMITER;
+
+	for (std::string s : unchangedFiles)
+	{
+		addStringToBuffer(buffer, pos, s);
+		buffer[pos++] = INNER_DELIMITER;
+	}
+	buffer[pos++] = ENTRY_DELIMITER;
+
 	for (HashData hd : data)
 	{
 		addHashDataToBuffer(buffer, pos, hd, authorSendData);
 	}
+	
 	return buffer;
 }
 

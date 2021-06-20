@@ -78,7 +78,7 @@ void Start::execute(Flags flags, EnvironmentDTO *env)
 		}
 		if (splitted[0] == "Spider")
 		{
-			handleSpiderRequest(splitted, flags, env);
+			versionProcessing(splitted, flags, env);
 		}
 		else if (splitted[0] == "Crawl")
 		{
@@ -132,7 +132,7 @@ void Start::handleSpiderRequest(std::vector<std::string> &splitted, Flags flags,
 		return;
 	}
 	flags.flag_branch = meta.defaultBranch;
-	AuthorData authorData = moduleFacades::downloadRepository(flags.mandatoryArgument, flags, DOWNLOAD_LOCATION);
+	auto [authorData, commitHash, unchangedFiles] = moduleFacades::downloadRepository(flags.mandatoryArgument, flags, DOWNLOAD_LOCATION);
 	if (errno != 0)
 	{
 		errno = 0;
@@ -168,6 +168,122 @@ void Start::readCommandLine()
 			break;
 		}
 	}
+}
+
+void Start::versionProcessing(std::vector<std::string>& splitted, Flags flags, EnvironmentDTO* env)
+{
+	print::log("Start parsing and uploading " + splitted[1], __FILE__, __LINE__);
+	if (splitted.size() < 2 || splitted[1] == "")
+	{
+		error::errInvalidDatabaseAnswer(__FILE__, __LINE__);
+	}
+	flags.mandatoryArgument = splitted[1];
+
+	long long startingTime = 0; // Time to start from, request from db
+
+	// Get project metadata.
+	ProjectMetaData meta = moduleFacades::getProjectMetadata(flags.mandatoryArgument, flags);
+	if (errno != 0)
+	{
+		errno = 0;
+		print::warn("Error getting project meta data, moving on to the next job.", __FILE__, __LINE__);
+		return;
+	}
+	flags.flag_branch = meta.defaultBranch;
+
+	
+	std::pair<std::string, std::string> project{ meta.id, meta.versionTime };
+	startingTime = DatabaseRequests::getProjectVersion(project, env);
+
+	// Download most recent commit, to retrieve tags.
+	auto [authorData, commitHash, unchangedFiles] = moduleFacades::downloadRepository(flags.mandatoryArgument, flags, DOWNLOAD_LOCATION);
+	if (errno != 0)
+	{
+		errno = 0;
+		print::warn("Error downloading project, moving on to the next job.", __FILE__, __LINE__);
+		return;
+	}
+	// Set commit hash of retrieved commit.
+	meta.versionHash = commitHash;
+	
+	// Get tags of previous versions.
+	std::vector<std::pair<std::string, long long>> tags = moduleFacades::getRepositoryTags(DOWNLOAD_LOCATION);
+	if (errno != 0)
+	{
+		errno = 0;
+		print::warn("Error retrieving tags for project, just using most recent version.", __FILE__, __LINE__);
+		tags = std::vector<std::pair<std::string, long long>>();
+	}
+
+	// This is the first version and there are no tags, 
+	// we just need to parse the most recent version we downloaded earlier.
+	if (std::stoll(meta.versionTime) > startingTime && tags.size() == 0) 
+	{		
+		std::vector<HashData> hashes = moduleFacades::parseRepository(DOWNLOAD_LOCATION, flags);
+		if (errno != 0)
+		{
+			errno = 0;
+			print::warn("Error parsing project, moving on to the next job.", __FILE__, __LINE__);
+			return;
+		}
+		if (hashes.size() == 0)
+		{
+			return;
+		}
+		print::printline(DatabaseRequests::uploadHashes(hashes, meta, authorData, env));
+		return;
+	} // There is a version in the database, we can't find any tags, and the HEAD is not newer than what is in the database.
+	else if (tags.size() == 0) 
+	{
+		return;
+	}
+
+	std::string prevTag = tags[tags.size()-1].first;
+	std::string prevVersionTime = "";
+
+	for (int i = tags.size() - 1; i >= 0; i--)
+	{
+		std::string curTag = tags[i].first;
+		long long versionTime = tags[i].second; // Update the time of this commit.
+
+		// Skip tags before the starting time.
+		if (versionTime <= startingTime)
+		{
+			prevTag = curTag;
+			prevVersionTime = std::to_string(versionTime);
+			continue;
+		}
+		meta.versionTime = std::to_string(versionTime);
+
+		downloadTagged(flags, prevTag, curTag, meta, prevVersionTime, env);
+		
+		prevTag = curTag;
+		prevVersionTime = std::to_string(versionTime);
+	}
+}
+
+void Start::downloadTagged(Flags flags, std::string prevTag, std::string curTag, ProjectMetaData meta, std::string prevVersionTime, EnvironmentDTO* env)
+{
+	auto [authorData, commitHash, unchangedFiles] = moduleFacades::downloadRepository(flags.mandatoryArgument, flags, DOWNLOAD_LOCATION, prevTag, curTag);
+	if (errno != 0)
+	{
+		errno = 0;
+		print::warn("Error downloading tagged version of project, moving on to the next tag.", __FILE__, __LINE__);
+		return;
+	}
+	std::vector<HashData> hashes = moduleFacades::parseRepository(DOWNLOAD_LOCATION, flags);
+	if (errno != 0)
+	{
+		errno = 0;
+		print::warn("Error parsing tagged version of project, moving on to the next tag.", __FILE__, __LINE__);
+		return;
+	}
+
+	meta.versionHash = commitHash;
+
+	// Uploading the hashes.
+	print::printline(DatabaseRequests::uploadHashes(hashes, meta, authorData, env, prevVersionTime, unchangedFiles));
+
 }
 
 #pragma endregion Start
@@ -206,7 +322,7 @@ void Check::execute(Flags flags, EnvironmentDTO *env)
 
 	this->logPreExecutionMessage(url, __FILE__, __LINE__);
 
-	AuthorData authorData = moduleFacades::downloadRepository(url, flags, DOWNLOAD_LOCATION);
+	auto [authorData, commitHash, unchangedFiles] = moduleFacades::downloadRepository(url, flags, DOWNLOAD_LOCATION);
 	if (errno != 0)
 	{
 		termination::failureSpider(__FILE__, __LINE__);
@@ -274,7 +390,7 @@ void Upload::execute(Flags flags, EnvironmentDTO *env)
 
 	this->logPreExecutionMessage(url, __FILE__, __LINE__);
 
-	AuthorData authorData = moduleFacades::downloadRepository(url, flags, DOWNLOAD_LOCATION);
+	auto [authorData, commitHash, unchangedFiles] = moduleFacades::downloadRepository(url, flags, DOWNLOAD_LOCATION);
 	if (errno != 0)
 	{
 		termination::failureSpider(__FILE__, __LINE__);
@@ -290,7 +406,7 @@ void Upload::execute(Flags flags, EnvironmentDTO *env)
 	{
 		termination::failureCrawler(__FILE__, __LINE__);
 	}
-
+	meta.versionHash = commitHash;
 	print::printline(DatabaseRequests::uploadHashes(hashes, meta, authorData, env));
 
 	this->logPostExecutionMessage(url, __FILE__, __LINE__);
@@ -323,7 +439,7 @@ void CheckUpload::execute(Flags flags, EnvironmentDTO *env)
 
 	Check::logPreExecutionMessage(url, __FILE__, __LINE__);
 
-	AuthorData authorData = moduleFacades::downloadRepository(url, flags, DOWNLOAD_LOCATION);
+	auto [authorData, commitHash, unchangedFiles] = moduleFacades::downloadRepository(url, flags, DOWNLOAD_LOCATION);
 	if (errno != 0)
 	{
 		termination::failureSpider(__FILE__, __LINE__);
@@ -344,6 +460,7 @@ void CheckUpload::execute(Flags flags, EnvironmentDTO *env)
 	{
 		termination::failureCrawler(__FILE__, __LINE__);
 	}
+	metaData.versionHash = commitHash;
 
 	printMatches::printHashMatches(
 		hashes, 

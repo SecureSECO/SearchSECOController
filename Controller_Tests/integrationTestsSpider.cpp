@@ -20,7 +20,7 @@ NOTE: These tests depend on the used GitHub repositories. If a test fails, make 
 #include <filesystem>
 #include <map>
 #include <string>
-
+#include "print.h"
 
 using recursive_directory_iterator = std::filesystem::recursive_directory_iterator;
 
@@ -29,7 +29,7 @@ using recursive_directory_iterator = std::filesystem::recursive_directory_iterat
 #define LINUX0DOT01_FILECOUNT 162
 #define CPP_FILECOUNT 76
 #define PHP_FILECOUNT 0
-#define JS_FILECOUNT 0
+#define JS_FILECOUNT 4
 
 
 int cloneAndCheck(std::map<std::string, bool> &dict, std::string url)
@@ -113,7 +113,7 @@ TEST(integrationSpider, php)
 
     int count = cloneAndCheck(files, "https://github.com/PHP-DI/demo");
    
-
+    
     for (auto const &[key, val] : files)
     {
         EXPECT_TRUE(val);
@@ -145,7 +145,9 @@ TEST(integrationSpider, wrongURLFailurecase)
     Flags spiderFlags;
     std::string url = "https://secureseco.org";
 
-    AuthorData result = moduleFacades::downloadRepository(url, spiderFlags, TEMPPATH);
+    auto[ result, commithash, unchangedFiles ] = moduleFacades::downloadRepository(url, spiderFlags, TEMPPATH);
 
     EXPECT_EQ(result.size(), 0);
+    EXPECT_EQ(commithash, "");
+    EXPECT_EQ(unchangedFiles.size(), 0);
 }

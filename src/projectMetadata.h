@@ -21,7 +21,8 @@ public:
 	/// Basic constructor. All things that this constructor asks for should be provided by the spider.
 	/// </summary>
 	ProjectMetaData(std::string id,
-		std::string version,
+		std::string versionTime,
+		std::string versionHash,
 		std::string license,
 		std::string name,
 		std::string url,
@@ -30,7 +31,8 @@ public:
 		std::string defaultBranch)
 	{
 		this->id = id;
-		this->version = version;
+		this->versionTime = versionTime;
+		this->versionHash = versionHash;
 		this->license = license;
 		this->name = name;
 		this->url = url;
@@ -44,12 +46,13 @@ public:
 	/// </summary>
 	std::string getAsHeader()
 	{
-		std::vector<std::string> header = { id, version, license, name, url, authorName, authorMail };
+		std::vector<std::string> header = { id, versionTime, versionHash, license, name, url, authorName, authorMail, std::to_string(Parser::getHashVersion()) };
 		return NetworkUtils::generateHeader(header);
 	};
 
 	std::string id;
-	std::string version;
+	std::string versionTime;
+	std::string versionHash;
 	std::string license;
 	std::string name;
 	std::string url;

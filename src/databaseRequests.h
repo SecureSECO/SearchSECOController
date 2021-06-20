@@ -31,6 +31,7 @@ Utrecht University within the Software Project course.
 #define DATABASE_ADD_JOB "upjb"
 #define DATABASE_CRAWL_DATA "upcd"
 #define DATABASE_GET_NEXT_JOB "gtjb"
+#define DATABASE_GET_MOST_RECENT_VERSION_PROJECT "gppr"
 
 class NetworkHandler;
 
@@ -42,10 +43,12 @@ public:
 	/// </summary>
 	/// <param name="hashes">The hashes to be uploaded.</param>
 	/// <returns>The string that the database send back.</returns>
-	static std::string uploadHashes(std::vector<HashData> &hashes, 
-		ProjectMetaData metaData, 
-		AuthorData &authorData, 
-		EnvironmentDTO *env);
+	static std::string uploadHashes(std::vector<HashData>& hashes,
+		ProjectMetaData metaData,
+		AuthorData& authorData,
+		EnvironmentDTO* env,
+		std::string prevCommitTime = "",
+		std::vector<std::string> unchangedFiles = std::vector<std::string>());
 
 	/// <summary>
 	/// Sends a request to the database to find matching hashes in the database.
@@ -62,8 +65,10 @@ public:
 	/// <returns>The string that the database send back.</returns>
 	static std::string checkUploadHashes(std::vector<HashData> &hashes,
 		ProjectMetaData metaData, 
-		AuthorData &authorData, 
-		EnvironmentDTO *env);
+		AuthorData &authorData,
+		EnvironmentDTO* env,
+		std::string prevCommitTime = "",
+		std::vector<std::string> unchangedFiles = std::vector<std::string>());
 
 	/// <summary>
 	/// Sends a request to the database get the author name and mail from the given author ids.
@@ -83,6 +88,13 @@ public:
 			std::pair<std::string, std::string>, 
 			int> &projects,
 		EnvironmentDTO *env);
+
+	/// <summary>
+	/// Sends a request to the database to get information of the newest version of a project.
+	/// </summary>
+	/// <returns>The string that the database send back.</returns>
+	static long long getProjectVersion(const std::pair<std::string, std::string>& project,
+		EnvironmentDTO* env);
 
 	/// <summary>
 	/// Sends a get next job request to the api.

@@ -255,7 +255,7 @@ void Start::versionProcessing(std::vector<std::string>& splitted, Flags flags)
 			continue;
 		}
 
-		meta.versionTime = versionTime;
+		meta.versionTime = std::to_string(versionTime);
 
 		downloadTagged(flags, prevTag, curTag, meta, prevVersionTime);
 		

@@ -16,6 +16,8 @@ Utrecht University within the Software Project course.
 #include <vector>
 
 
+#define CONFIGURATION_FILE "cfg/config.txt"
+
 Input::Input(int argc, char* argv[]) 
 	: flags()
 {
@@ -66,20 +68,13 @@ void Input::parseCliInput(int argc, char* argv[])
 	}
 
 	print::debug("Finding executable path", __FILE__, __LINE__);
-	Input::getExecutablePath();
+	this->executablePath = utils::getExecutablePath();
 
 	print::debug("Parsing optionals", __FILE__, __LINE__);
 	Input::parseOptionals(flargs);
 
 	print::debug("Mapping shorthand flags to longer versions", __FILE__, __LINE__);
 	Flags::mapShortFlagToLong(this->optionalArguments);
-}
-
-void Input::getExecutablePath()
-{
-	this->executablePath = std::filesystem::current_path().string();
-
-	print::debug("Found executable path as " + print::quote(this->executablePath), __FILE__, __LINE__);
 }
 
 void Input::parseOptionals(std::string call)
@@ -140,7 +135,9 @@ void Input::applyDefaults()
 	std::map<std::string, std::string> fullArgs = {};
 	this->flagSource = {};
 
-	auto configpath = this->executablePath + "/cfg/config.txt";
+	auto configpath = (std::filesystem::path(this->executablePath) / std::string(CONFIGURATION_FILE))
+		.make_preferred()
+		.string();
 
 	print::debug("Reading config file at " + configpath, __FILE__, __LINE__);
 	std::map<std::string, std::string> configDefaults = Flags::parseConfig(configpath);

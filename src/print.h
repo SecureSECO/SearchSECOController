@@ -7,6 +7,7 @@ Utrecht University within the Software Project course.
 #pragma once
 
 // Controller includes.
+#include "dto.h"
 #include "utils.h"
 
 // Parser includes.
@@ -106,6 +107,7 @@ public:
 		std::vector<HashData>& hashes, 
 		std::string databaseOutput, 
 		AuthorData &authordata, 
+		EnvironmentDTO *env,
 		std::string url
 	);
 
@@ -146,7 +148,8 @@ private:
 	static void getDatabaseAuthorAndProjectData(std::map<std::pair<std::string, std::string>, int>& projects,
 		std::map<std::string, int>& dbAuthors,
 		std::map<std::string, std::vector<std::string>>& dbProjects,
-		std::map<std::string, std::vector<std::string>>& authorIdToName);
+		std::map<std::string, std::vector<std::string>>& authorIdToName, 
+		EnvironmentDTO *env);
 
 	/// <summary>
 	/// Prints a match for a given hash.
@@ -276,6 +279,16 @@ namespace error
 	/// Signals a fatal failure occurred in the crawler submodule.
 	/// </summary>
 	void errSubmoduleFatalFailureDatabase(const char* file, int line);
+
+	/// <summary>
+	/// Throws the error if the database API responds in an unexpected manner.
+	/// </summary>
+	void errNoEnvFile(const char* file, int line);
+
+	/// <summary>
+	/// Throws the error if the database API responds in an unexpected manner.
+	/// </summary>
+	void errNoIpsInEnvFile(const char* file, int line);
 
 	/// <summary>
 	/// Throws the "Not Implemented" error.

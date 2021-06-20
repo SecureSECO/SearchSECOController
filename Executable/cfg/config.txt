@@ -1,0 +1,11 @@
+# GitHub credentials
+github_username : username
+github_token : token
+
+# Default verbosity level (1 = Silent, 2 = Errors Only, 3 = Warnings & Errors, 4 = Everything, 5 = Debug)
+verbose : 4
+# Default branch to pull
+branch : master
+
+# By default, the system uses half the computer's available cores. Uncomment the line below to change this default behaviour.
+# cpu : 4

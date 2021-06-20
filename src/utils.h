@@ -79,4 +79,25 @@ public:
 	/// <param name="replace"></param>
 	/// <param name="with"></param>
 	static void replace(std::string& string, char replace, char with);
+
+	/// <summary>
+	/// Gets the path to the running executable.
+	/// </summary>
+	static std::string getExecutablePath();
+
+	/// <summary>
+	/// Randomly shuffles a list.
+	/// </summary>
+	template <class C>
+	static void shuffle(std::vector<C> &list) 
+	{
+		int size = list.size();
+		for (int i = 0; i < size - 1; i++)
+		{
+			int r = i + (rand() % (size - i));
+			C temp = list[r];
+			list[r] = list[i];
+			list[i] = temp;
+		}
+	};
 };

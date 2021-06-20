@@ -29,15 +29,16 @@ TEST(integrationDatabaseAPI, upload)
 	ConnectionHandler *connectionHandler = new ConnectionHandler();
 	std::thread *t1 = new std::thread(&ConnectionHandler::StartListen, connectionHandler);
 
+	EnvironmentDTO* env = new EnvironmentDTO(LOCALHOST, PORT, "");
+
 	AuthorData ad = {};
 	std::string result = DatabaseRequests::uploadHashes(
 		dummyHashes,
 		ProjectMetaData("5", "2", "hash", "Lyzenze", "ProjectName", "url.com", "authorName", "author@mail.com", "master"), 
 		ad,
+		env,
 		"",
-		std::vector<std::string>(),
-		LOCALHOST,
-		PORT
+		std::vector<std::string>()
 	);
 	EXPECT_EQ(result, "Request received from upld");
 }
@@ -48,10 +49,11 @@ TEST(integrationDatabaseAPI, check)
 	ConnectionHandler *connectionHandler = new ConnectionHandler();
 	std::thread *t1 = new std::thread(&ConnectionHandler::StartListen, connectionHandler);
 
+	EnvironmentDTO* env = new EnvironmentDTO(LOCALHOST, PORT, "");
+
 	std::string result = DatabaseRequests::findMatches(
 		dummyHashes,
-		LOCALHOST, 
-		PORT
+		env
 	);
 	EXPECT_EQ(result, "Request received from chck");
 }
@@ -62,15 +64,16 @@ TEST(integrationDatabaseAPI, checkUpload)
 	ConnectionHandler* connectionHandler = new ConnectionHandler();
 	std::thread* t1 = new std::thread(&ConnectionHandler::StartListen, connectionHandler);
 	
+	EnvironmentDTO* env = new EnvironmentDTO(LOCALHOST, PORT, "");
+
 	AuthorData ad = {};
 	std::string result = DatabaseRequests::checkUploadHashes(
 		dummyHashes,
 		ProjectMetaData("5", "2", "hash", "Lyzenze", "ProjectName", "url.com", "authorName", "author@mail.com", "master"), 
 		ad,
+		env,
 		"",
-		std::vector<std::string>(),
-		LOCALHOST, 
-		PORT
+		std::vector<std::string>()
 	);
 	EXPECT_EQ(result, "Request received from chup");
 }
@@ -81,5 +84,7 @@ TEST(integrationDatabaseAPI, wrongPortCheck)
 	ConnectionHandler* connectionHandler = new ConnectionHandler();
 	std::thread* t1 = new std::thread(&ConnectionHandler::StartListen, connectionHandler);
 
-	EXPECT_THROW(DatabaseRequests::findMatches(dummyHashes, LOCALHOST, "wrongport"), std::runtime_error);
+	EnvironmentDTO* env = new EnvironmentDTO(LOCALHOST, "wrongport", "");
+
+	EXPECT_EXIT(DatabaseRequests::findMatches(dummyHashes, env), testing::ExitedWithCode(400), "");
 }

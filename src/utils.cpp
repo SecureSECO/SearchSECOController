@@ -5,17 +5,30 @@ Utrecht University within the Software Project course.
 */
 
 // Controller includes
+#include "print.h"
 #include "projectMetadata.h"
 #include "utils.h"
 
 // External includes
 #include <chrono>
 #include <ctime>
+#include <filesystem>
 #include <fstream>
 #include <iomanip>
 #include <iostream>
 #include <map>
 #include <sstream>
+#include <thread>
+
+// OS Dependent includes
+#if defined(WIN32) || defined(_WIN32) || defined(__WIN32) && !defined(__CYGWIN__)
+// Windows
+#include <Windows.h>
+#else
+// Unix
+#include <unistd.h>
+#include <linux/limits.h>
+#endif
 
 
 std::vector<std::string> utils::split(std::string str, char delimiter)
@@ -69,6 +82,10 @@ std::string utils::padLeft(std::string src, char pad, int length)
 
 long long utils::getIntegerTimeFromString(std::string time)
 {
+	// Somehow, sleeping for 0 milliseconds fixed this conversion. Without this sleep, the integration test fails.
+	std::this_thread::sleep_for(std::chrono::milliseconds(0));
+
+
 	// Used https://stackoverflow.com/questions/4781852/how-to-convert-a-string-to-datetime-in-c for this convertion.
 	static const std::string dateTimeFormat{ "%Y-%m-%dT%H:%M:%SZ" };
 	std::stringstream ss{ time };
@@ -102,7 +119,36 @@ void utils::replace(std::string& string, char replace, char with)
 			string[i] = with;
 		}
 	}
+}
 
+std::string utils::getExecutablePath()
+{
+	// Code borrowed from https://stackoverflow.com/a/1528493,
+	// https://stackoverflow.com/questions/18783087/how-to-properly-use-getmodulefilename, and
+	// https://stackoverflow.com/questions/23943239/how-to-get-path-to-current-exe-file-on-linux
+
+	std::filesystem::path path;
+
+	#if defined(WIN32) || defined(_WIN32) || defined(__WIN32) && !defined(__CYGWIN__)
+	// Windows
+	wchar_t buffer[MAX_PATH];
+	GetModuleFileName(NULL, buffer, MAX_PATH);
+	std::wstring ws(buffer);
+	path = std::filesystem::path(std::string(ws.begin(), ws.end()));
+	#else
+	// Unix
+	char buffer[PATH_MAX];
+	ssize_t count = readlink("/proc/self/exe", buffer, PATH_MAX);
+	path = std::filesystem::path(std::string(buffer, (count > 0) ? count : 0));
+	#endif
+
+	auto str = path
+		.parent_path()
+		.string();
+
+	print::debug("Found executable path as " + print::quote(str), __FILE__, __LINE__);
+	
+	return str;
 }
 
 #pragma endregion utils

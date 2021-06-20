@@ -1,12 +1,13 @@
 /*
 This program has been developed by students from the bachelor Computer Science at
 Utrecht University within the Software Project course.
-� Copyright Utrecht University (Department of Information and Computing Sciences)
+© Copyright Utrecht University (Department of Information and Computing Sciences)
 */
 
 #pragma once
 
 // Controller includes
+#include "dto.h"
 #include "flags.h"
 
 // Parser includes
@@ -35,7 +36,10 @@ public:
 	/// </summary>
 	/// <param name="command">The command you want to execute.</param>
 	/// <param name="flags">The flags with which you want to execute the command.</param>
-	virtual void execute(Flags flags) = 0;
+	virtual void execute(
+		Flags flags, 
+		EnvironmentDTO *env
+		) = 0;
 
 protected:
 	std::string helpMessageText;
@@ -49,7 +53,10 @@ public:
 	/// <summary>
 	/// Starts the worker node.
 	/// </summary>
-	void execute(Flags flags) override;
+	void execute(
+		Flags flags, 
+		EnvironmentDTO *env
+		) override;
 
 	/// <summary>
 	/// Logs the pre-execution message.
@@ -64,15 +71,28 @@ private:
 	/// <summary>
 	/// Handles crawl requests.
 	/// </summary>
-	void handleCrawlRequest(std::vector<std::string> &splitted, Flags flags);
+	void handleCrawlRequest(
+		std::vector<std::string> &splitted, 
+		Flags flags, 
+		EnvironmentDTO *env);
+
 	/// <summary>
 	/// Handles spider requests.
 	/// </summary>
-	void handleSpiderRequest(std::vector<std::string> &splitted, Flags flags);
+	void handleSpiderRequest(
+		std::vector<std::string> &splitted, 
+		Flags flags,
+		EnvironmentDTO* env);
 
-	void versionProcessing(std::vector<std::string> &splitted, Flags flags);
+	void versionProcessing(std::vector<std::string> &splitted, Flags flags, EnvironmentDTO* env);
 
-	void downloadTagged(Flags flags, std::string prevTag, std::string curTag, ProjectMetaData meta, std::string prevVersionTime);
+	void downloadTagged(
+		Flags flags, 
+		std::string prevTag, 
+		std::string curTag, 
+		ProjectMetaData meta,
+		std::string prevVersionTime, 
+		EnvironmentDTO* env);
 
 	/// <summary>
 	/// Reads the command line.
@@ -90,7 +110,10 @@ public:
 	/// <summary>
 	/// Checks matches with the database for the given repository.
 	/// </summary>
-	void execute(Flags flags) override;
+	void execute(
+		Flags flags, 
+		EnvironmentDTO *env
+		) override;
 
 	/// <summary>
 	/// Logs the pre-execution message.
@@ -117,7 +140,10 @@ public:
 	/// <summary>
 	/// Uploads given repository.
 	/// </summary>
-	void execute(Flags flags) override;
+	void execute(
+		Flags flags, 
+		EnvironmentDTO *env
+		) override;
 
 	/// <summary>
 	/// Logs the pre-execution message.
@@ -144,5 +170,8 @@ public:
 	/// <summary>
 	/// Does both check and upload for a given repository.
 	/// </summary>
-	void execute(Flags flags) override;
+	void execute(
+		Flags flags,
+		EnvironmentDTO *env
+		) override;
 };

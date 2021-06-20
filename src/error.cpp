@@ -41,6 +41,8 @@ enum errCode
 	submoduleFailureCrawler,
 	submoduleFailureSpider,
 	submoduleFailureParser,
+	noEnvFile,
+	noIpsInEnvFile,
 	notImplemented,
 	// Database related errors start at 400.
 	dbConnection = 400,
@@ -105,6 +107,18 @@ std::string descErrCmdNotFound(std::string* strs)
 std::string descErrCmdNotExist(std::string* strs)
 {
 	return "Command " + print::quote(strs[0]) + " does not exist.";
+}
+
+// no strs
+std::string descNoEnvFile(std::string* strs)
+{
+	return "Unable to open .env file.";
+}
+
+// no strs
+std::string descNoIpsInEnvFile(std::string* strs)
+{
+	return "No IPs found in .env file. IPs should be in format API_IPS=ip1?port1,ip2?port2";
 }
 
 // strs: [funcname]
@@ -197,6 +211,12 @@ std::string descSubmoduleFailureParser(std::string* strs)
 	return "The Parser ran into a fatal error. Terminating execution.";
 }
 
+// no strs
+std::string descErrInvalidDatabaseAnswer(std::string* strs)
+{
+	return "Invalid database response.";
+}
+
 // Maps an error code to a description.
 std::map <int, std::function<std::string(std::string*)>> errDesc =
 {
@@ -217,12 +237,14 @@ std::map <int, std::function<std::string(std::string*)>> errDesc =
 	{submoduleFailureCrawler, descSubmoduleFailureCrawler},
 	{submoduleFailureSpider, descSubmoduleFailureSpider},
 	{submoduleFailureParser, descSubmoduleFailureParser},
+	{noEnvFile, descNoEnvFile},
+	{noIpsInEnvFile, descNoIpsInEnvFile},
 	{notImplemented, descErrNotImplemented},
 	{dbConnection, descConnectionError},
 	{dbBadRequest, descDBBadRequest},
 	{dbInternalError, descDBInternalError},
-	{dbUnknownResponse, descDBUnkownResponse}
-	
+	{dbUnknownResponse, descDBUnkownResponse},
+	{invalidDatabaseAnswer, descErrInvalidDatabaseAnswer}
 };
 
 #pragma endregion Descriptions
@@ -242,7 +264,7 @@ void err(errCode code, std::string* strs, const char* file, int line, std::strin
 
 	delete[] strs;
 
-	termination::failure();
+	termination::failure(code);
 }
 
 #pragma region Specific_error_handlers
@@ -361,6 +383,19 @@ void error::errSubmoduleFatalFailureParser(const char* file, int line)
 		{}, file, line);
 }
 
+void error::errNoEnvFile(const char* file, int line)
+{
+	err(noEnvFile,
+		{}, file, line);
+}
+
+void error::errNoIpsInEnvFile(const char* file, int line)
+{
+	err(noIpsInEnvFile,
+		{},
+		file, line);
+}
+
 void error::errNotImplemented(std::string funcname, const char* file, int line)
 {
 	err(notImplemented,
@@ -401,7 +436,7 @@ void error::errDBUnknownResponse(const char* file, int line)
 void error::errInvalidDatabaseAnswer(const char* file, int line)
 {
 	err(invalidDatabaseAnswer,
-		new std::string[1]{ "Invalid database response." },
+		{},
 		file, line
 	);
 }

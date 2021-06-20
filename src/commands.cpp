@@ -1,7 +1,7 @@
 /*
 This program has been developed by students from the bachelor Computer Science at
 Utrecht University within the Software Project course.
-© Copyright Utrecht University (Department of Information and Computing Sciences)
+Â© Copyright Utrecht University (Department of Information and Computing Sciences)
 */
 
 // Controller includes.
@@ -52,11 +52,10 @@ void Start::logPreExecutionMessage(int fCPU, const char* file, int line)
 
 void Start::logPostExecutionMessage(const char* file, int line)
 {
-	print::loguruResetThreadName();
 	print::log("Successfully terminated the worker node", file, line);
 }
 
-void Start::execute(Flags flags)
+void Start::execute(Flags flags, EnvironmentDTO *env)
 {
 	if (flags.flag_github_token == "" || flags.flag_github_user == "")
 	{
@@ -70,7 +69,7 @@ void Start::execute(Flags flags)
 	std::thread t(&Start::readCommandLine, this);
 	while (!s)
 	{
-		std::string job = DatabaseRequests::getNextJob();
+		std::string job = DatabaseRequests::getNextJob(env);
 
 		std::vector<std::string> splitted = utils::split(job, INNER_DELIMITER);
 		if (splitted.size() < 1)
@@ -79,11 +78,11 @@ void Start::execute(Flags flags)
 		}
 		if (splitted[0] == "Spider")
 		{
-			versionProcessing(splitted, flags);
+			versionProcessing(splitted, flags, env);
 		}
 		else if (splitted[0] == "Crawl")
 		{
-			handleCrawlRequest(splitted, flags);
+			handleCrawlRequest(splitted, flags, env);
 		}
 		else if (splitted[0] == "NoJob")
 		{
@@ -104,7 +103,7 @@ void Start::execute(Flags flags)
 	logPostExecutionMessage(__FILE__, __LINE__);
 }
 
-void Start::handleCrawlRequest(std::vector<std::string>& splitted, Flags flags)
+void Start::handleCrawlRequest(std::vector<std::string> &splitted, Flags flags, EnvironmentDTO *env)
 {
 	print::log("Start crawling", __FILE__, __LINE__);
 	if (splitted.size() < 2)
@@ -112,10 +111,10 @@ void Start::handleCrawlRequest(std::vector<std::string>& splitted, Flags flags)
 		error::errInvalidDatabaseAnswer(__FILE__, __LINE__);
 	}
 	CrawlData crawled = moduleFacades::crawlRepositories(std::stoi(splitted[1]), flags);
-	DatabaseRequests::addCrawledJobs(crawled);
+	DatabaseRequests::addCrawledJobs(crawled, env);
 }
 
-void Start::handleSpiderRequest(std::vector<std::string>& splitted, Flags flags)
+void Start::handleSpiderRequest(std::vector<std::string> &splitted, Flags flags, EnvironmentDTO *env)
 {
 	print::log("Start parsing and uploading " + splitted[1], __FILE__, __LINE__);
 	Upload upload = Upload();
@@ -152,7 +151,7 @@ void Start::handleSpiderRequest(std::vector<std::string>& splitted, Flags flags)
 		return;
 	}
 	// Uploading the hashes.
-	print::printline(DatabaseRequests::uploadHashes(hashes, meta, authorData));
+	print::printline(DatabaseRequests::uploadHashes(hashes, meta, authorData, env));
 }
 
 void Start::readCommandLine()
@@ -171,7 +170,7 @@ void Start::readCommandLine()
 	}
 }
 
-void Start::versionProcessing(std::vector<std::string>& splitted, Flags flags)
+void Start::versionProcessing(std::vector<std::string>& splitted, Flags flags, EnvironmentDTO* env)
 {
 	print::log("Start parsing and uploading " + splitted[1], __FILE__, __LINE__);
 	if (splitted.size() < 2 || splitted[1] == "")
@@ -194,7 +193,7 @@ void Start::versionProcessing(std::vector<std::string>& splitted, Flags flags)
 
 	
 	std::pair<std::string, std::string> project{ meta.id, meta.versionTime };
-	startingTime = DatabaseRequests::getProjectVersion(project);
+	startingTime = DatabaseRequests::getProjectVersion(project, env);
 
 	// Download most recent commit, to retrieve tags.
 	auto [authorData, commitHash, unchangedFiles] = moduleFacades::downloadRepository(flags.mandatoryArgument, flags, DOWNLOAD_LOCATION);
@@ -231,7 +230,7 @@ void Start::versionProcessing(std::vector<std::string>& splitted, Flags flags)
 		{
 			return;
 		}
-		print::printline(DatabaseRequests::uploadHashes(hashes, meta, authorData));
+		print::printline(DatabaseRequests::uploadHashes(hashes, meta, authorData, env));
 		return;
 	} // There is a version in the database, we can't find any tags, and the HEAD is not newer than what is in the database.
 	else if (tags.size() == 0) 
@@ -257,14 +256,14 @@ void Start::versionProcessing(std::vector<std::string>& splitted, Flags flags)
 
 		meta.versionTime = std::to_string(versionTime);
 
-		downloadTagged(flags, prevTag, curTag, meta, prevVersionTime);
+		downloadTagged(flags, prevTag, curTag, meta, prevVersionTime, env);
 		
 		prevTag = curTag;
 		prevVersionTime = versionTime;
 	}
 }
 
-void Start::downloadTagged(Flags flags, std::string prevTag, std::string curTag, ProjectMetaData meta, std::string prevVersionTime)
+void Start::downloadTagged(Flags flags, std::string prevTag, std::string curTag, ProjectMetaData meta, std::string prevVersionTime, EnvironmentDTO* env)
 {
 	auto [authorData, commitHash, unchangedFiles] = moduleFacades::downloadRepository(flags.mandatoryArgument, flags, DOWNLOAD_LOCATION, prevTag, curTag);
 	if (errno != 0)
@@ -288,7 +287,7 @@ void Start::downloadTagged(Flags flags, std::string prevTag, std::string curTag,
 	meta.versionHash = commitHash;
 
 	// Uploading the hashes.
-	print::printline(DatabaseRequests::uploadHashes(hashes, meta, authorData, prevVersionTime, unchangedFiles));
+	print::printline(DatabaseRequests::uploadHashes(hashes, meta, authorData, env, prevVersionTime, unchangedFiles));
 
 }
 
@@ -319,11 +318,10 @@ void Check::logPreExecutionMessage(std::string url, const char* file, int line)
 
 void Check::logPostExecutionMessage(std::string url, const char* file, int line)
 {
-	print::loguruResetThreadName();
 	print::log("Successfully checked" + Check::partialLogMessage(url), file, line);
 }
 
-void Check::execute(Flags flags)
+void Check::execute(Flags flags, EnvironmentDTO *env)
 {
 	auto url = flags.mandatoryArgument;
 
@@ -341,7 +339,16 @@ void Check::execute(Flags flags)
 	}
 
 	// Calling the function that will print all the matches for us.
-	printMatches::printHashMatches(hashes, DatabaseRequests::findMatches(hashes), authorData, url);
+	printMatches::printHashMatches(
+		hashes, 
+		DatabaseRequests::findMatches(
+			hashes, 
+			env
+		), 
+		authorData, 
+		env,
+		url
+	);
 	//TODO: delete temp folder.
 
 	this->logPostExecutionMessage(url, __FILE__, __LINE__);
@@ -373,11 +380,10 @@ void Upload::logPreExecutionMessage(std::string url, const char* file, int line)
 
 void Upload::logPostExecutionMessage(std::string url, const char* file, int line)
 {
-	print::loguruResetThreadName();
 	print::log("Successfully uploaded" + Upload::partialLogMessage(url), file, line);
 }
 
-void Upload::execute(Flags flags)
+void Upload::execute(Flags flags, EnvironmentDTO *env)
 {
 	if (flags.flag_github_token == "" || flags.flag_github_user == "")
 	{
@@ -406,7 +412,7 @@ void Upload::execute(Flags flags)
 		termination::failureCrawler(__FILE__, __LINE__);
 	}
 	meta.versionHash = commitHash;
-	print::printline(DatabaseRequests::uploadHashes(hashes, meta, authorData));
+	print::printline(DatabaseRequests::uploadHashes(hashes, meta, authorData, env));
 
 	this->logPostExecutionMessage(url, __FILE__, __LINE__);
 }
@@ -426,7 +432,7 @@ CheckUpload::CheckUpload()
 			-s --save: Save the parser results for later use.)";
 }
 
-void CheckUpload::execute(Flags flags)
+void CheckUpload::execute(Flags flags, EnvironmentDTO *env)
 {
 	if (flags.flag_github_token == "" || flags.flag_github_user == "")
 	{
@@ -463,11 +469,12 @@ void CheckUpload::execute(Flags flags)
 
 	printMatches::printHashMatches(
 		hashes, 
-		DatabaseRequests::checkUploadHashes(hashes, metaData, authorData),
-		authorData,
+		DatabaseRequests::checkUploadHashes(hashes, metaData, authorData, env), 
+		authorData, 
+		env,
 		url
 	);
-
+	
 	Upload::logPostExecutionMessage(url, __FILE__, __LINE__);
 }
 

@@ -153,6 +153,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <None Include=".env" />
     <None Include="extensions">
       <DeploymentContent>true</DeploymentContent>
     </None>

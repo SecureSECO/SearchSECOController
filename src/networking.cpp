@@ -10,8 +10,12 @@ Utrecht University within the Software Project course.
 
 // External includes
 #include <boost/array.hpp>
+#include <fstream>
+#include <filesystem>
 #include <iostream>
 
+
+std::vector<std::pair<std::string, std::string>> NetworkHandler::ips = {};
 
 // https://www.boost.org/doc/libs/1_75_0/doc/html/boost_asio/tutorial.html was used as a base.
 boost::asio::io_context NetworkHandler::ioContext;
@@ -19,10 +23,47 @@ boost::asio::io_context NetworkHandler::ioContext;
 void NetworkHandler::openConnection(std::string server, std::string port)
 {
 	print::debug("Opening a new connection", __FILE__, __LINE__);
-	std::string serverApi = server;
 
+	if (server == "-1" && port == "-1")
+	{
+		if (ips.size() == 0)
+		{
+			readEnvFile();
+		}
+		auto ipList = ips;
+		utils::shuffle(ipList);
+		for (auto server : ipList)
+		{
+			try
+			{
+				print::log("Connecting with " + server.first, __FILE__, __LINE__);
+				connect(server.first, server.second);
+				return;
+			}
+			catch (std::exception const& ex)
+			{
+				print::warn("Could not establish a connection with " + server.first, __FILE__, __LINE__);
+			}
+		}
+		error::errDBConnection("No connection could be established.", __FILE__, __LINE__);
+	}
+	else
+	{
+		try
+		{
+			connect(server, port);
+		}
+		catch (std::exception const& ex)
+		{
+			error::errDBConnection("Could not astablish a connection with " + server, __FILE__, __LINE__);
+		}
+	}
+}
+
+void NetworkHandler::connect(std::string server, std::string port)
+{
 	tcp::resolver resolver(ioContext);
-	tcp::resolver::results_type endpoints = resolver.resolve(serverApi, port);
+	tcp::resolver::results_type endpoints = resolver.resolve(server, port);
 
 	boost::asio::connect(socket, endpoints);
 }
@@ -72,4 +113,43 @@ std::string NetworkHandler::receiveData()
 
 	}
 	return std::string(ret.begin(), ret.end());
+}
+
+void NetworkHandler::readEnvFile()
+{
+	auto path = (std::filesystem::path(utils::getExecutablePath()) / ".env")
+		.string();
+
+	std::ifstream fileHandler;
+	fileHandler.open(path);
+
+	if (!fileHandler.is_open())
+	{
+		error::errNoEnvFile(__FILE__, __LINE__);
+		return;
+	}
+	std::string line;
+	ips = std::vector<std::pair<std::string, std::string>>();
+	while (std::getline(fileHandler, line))
+	{
+		auto lineSplitted = utils::split(line, '=');
+		if (lineSplitted.size() >= 2 && lineSplitted[0] == "API_IPS")
+		{
+			auto ipsSplitted = utils::split(lineSplitted[1], ',');
+			for (std::string ip : ipsSplitted)
+			{
+				auto ipSplitted = utils::split(ip, '?');
+				if (ipSplitted.size() < 2)
+				{
+					continue;
+				}
+				ips.push_back(std::pair<std::string, std::string>(ipSplitted[0], ipSplitted[1]));
+			}
+			if (ips.size() > 0)
+			{
+				return;
+			}
+		}
+	}
+	error::errNoIpsInEnvFile(__FILE__, __LINE__);
 }

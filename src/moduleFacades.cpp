@@ -17,6 +17,7 @@ Utrecht University within the Software Project course.
 
 // Spider includes.
 #include "RunSpider.h"
+#include <iostream>
 
 
 std::tuple<AuthorData, std::string, std::vector<std::string>> moduleFacades::downloadRepository(std::string repository, Flags flags,
@@ -25,6 +26,7 @@ std::tuple<AuthorData, std::string, std::vector<std::string>> moduleFacades::dow
 	print::debug("Calling the spider to download a repository", __FILE__, __LINE__);
 
 	std::tuple<AuthorData, std::string, std::vector<std::string>> authorData = RunSpider::runSpider(repository, downloadPath, flags.flag_cpu, tag, nextTag, flags.flag_branch);
+	print::loguruResetThreadName();
 
 	return authorData;
 }
@@ -43,6 +45,7 @@ std::vector<HashData> moduleFacades::parseRepository(std::string repository, Fla
 	print::debug("Calling the parser to parse a repository", __FILE__, __LINE__);
 
 	auto hashes = Parser::parse(repository, flags.flag_cpu);
+	print::loguruResetThreadName();
 
 	for (int i = 0; i < hashes.size(); i++)
 	{
@@ -56,10 +59,11 @@ ProjectMetaData moduleFacades::getProjectMetadata(std::string url, Flags flags)
 	print::debug("Calling the crawler to get the metadata from a project", __FILE__, __LINE__);
 
 	ProjectMetadata pmd = RunCrawler::findMetadata(url, flags.flag_github_user, flags.flag_github_token);
+	int er = errno;
+	print::loguruResetThreadName();
 
 	std::string versionHash = ""; // TODO get commit hash from spider
 
-	int er = errno;
 	// TODO: very temporary hashing.
 	std::string id = pmd.authorMail + pmd.authorName + pmd.version;
 	long long hash = 0;
@@ -83,6 +87,9 @@ ProjectMetaData moduleFacades::getProjectMetadata(std::string url, Flags flags)
 CrawlData moduleFacades::crawlRepositories(int startId, Flags flags)
 {
 	print::debug("Calling the crawler to crawl a repositories", __FILE__, __LINE__);
+
 	auto urls = RunCrawler::crawlRepositories("https://github.com/", startId, flags.flag_github_user, flags.flag_github_token);
+	print::loguruResetThreadName();
+
 	return urls;
 }

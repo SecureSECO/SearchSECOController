@@ -84,8 +84,19 @@ private:
 		Flags flags,
 		EnvironmentDTO* env);
 
+	/// <summary>
+	/// Handles a spider request. 
+	/// Will spider the given job and parse all tags in the repository by calling downloadTagged.
+	/// </summary>
 	void versionProcessing(std::vector<std::string> &splitted, Flags flags, EnvironmentDTO* env);
 
+	/// <summary>
+	/// Parses and uploads a signle tag of a repository.
+	/// </summary>
+	/// <param name="prevTag">The tag we parsed before this.</param>
+	/// <param name="curTag">The tag we are parsing.</param>
+	/// <param name="meta">The meta data for the repository.</param>
+	/// <param name="prevVersionTime">The time for the previous tag.</param>
 	void downloadTagged(
 		Flags flags, 
 		std::string prevTag, 

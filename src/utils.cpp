@@ -195,7 +195,6 @@ long long utils::getIdFromPMD(ProjectMetadata pmd)
 	{
 		hash = -hash;
 	}
-	print::printline("HASH: " + std::to_string(hash));
 	return hash;
 }
 

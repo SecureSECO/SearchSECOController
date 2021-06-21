@@ -102,5 +102,8 @@ public:
 		}
 	};
 
+	/// <summary>
+	/// Generates a project id for the given project meta data using md5.
+	/// </summary>
 	static long long getIdFromPMD(ProjectMetadata pmd);
 };

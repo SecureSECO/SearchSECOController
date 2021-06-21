@@ -9,6 +9,12 @@ Utrecht University within the Software Project course.
 #include "projectMetadata.h"
 #include "utils.h"
 
+// Crawler includes
+#include "ProjectMetadata.h"
+
+// Parser includes
+#include "md5/md5.h"
+
 // External includes
 #include <chrono>
 #include <ctime>
@@ -149,6 +155,47 @@ std::string utils::getExecutablePath()
 	print::debug("Found executable path as " + print::quote(str), __FILE__, __LINE__);
 	
 	return str;
+}
+
+long long utils::getIdFromPMD(ProjectMetadata pmd)
+{
+
+	std::string id = pmd.authorMail + pmd.authorName + pmd.version;
+	std::string md5hash = md5(id);
+	long long hash = 0;
+	for (int i = 0; i < 16; i++)
+	{
+		int num = 0;
+		switch (md5hash[i])
+		{
+		case 'a':
+			num = 10;
+			break;
+		case 'b':
+			num = 11;
+			break;
+		case 'c':
+			num = 12;
+			break;
+		case 'd':
+			num = 13;
+			break;
+		case 'e':
+			num = 14;
+			break;
+		case 'f':
+			num = 15;
+			break;
+		default:
+			num = std::stoi(std::string(1, md5hash[i]));
+		}
+		hash += num << (i * 4);
+	}
+	if (hash < 0)
+	{
+		hash = -hash;
+	}
+	return hash;
 }
 
 #pragma endregion utils

@@ -14,6 +14,7 @@ Utrecht University within the Software Project course.
 
 
 struct ProjectMetaData;
+struct ProjectMetadata;
 
 class utils
 {
@@ -100,4 +101,9 @@ public:
 			list[i] = temp;
 		}
 	};
+
+	/// <summary>
+	/// Generates a project id for the given project meta data using md5.
+	/// </summary>
+	static long long getIdFromPMD(ProjectMetadata pmd);
 };

@@ -34,13 +34,10 @@ std::string Command::helpMessage()
 Start::Start()
 {
 	this->helpMessageText = R"(
-	start: Starts a workernode.
-		Arguments:
-		Storage size(in GB)
-			Location where the local database is stored.
-			Optionals :
-			-c --cpu : Number of threads used(minimum 2, default half)
-			-r --ram : RAM cap(in GB) (default no cap))";
+	start: Starts a workernode which will repeatedly execute jobs from the job queue.
+	Can be stopped by typing "stop" in the command line. The worker node exits once it's done with its current job.
+		Optionals :
+			-c --cpu : Number of threads used by the worker node (minimum 2, default half).)";
 }
 
 void Start::logPreExecutionMessage(int fCPU, const char* file, int line)
@@ -293,12 +290,13 @@ void Start::downloadTagged(Flags flags, std::string prevTag, std::string curTag,
 Check::Check()
 {
 	this->helpMessageText = R"(
-	check: Takes a github url, downloads it and parses it. After that it will check for matches with the database.  
+	check: Hashes all methods from a github repository, and check for matches with the database.
+	A Summary will be printed to the console and written to a file.
 		Arguments:
 			Url to a github repository.
-		Optionals:
-			-o --output: Console to print to the console, else you can give a file path.  
-			-s --save: Save the parser results for later use.)";
+		Optionals :
+			-b --branch : The branch to parse.
+			-c --cpu : Number of threads used (minimum 2, default half).)";
 }
 
 std::string Check::partialLogMessage(std::string url)
@@ -356,11 +354,12 @@ void Check::execute(Flags flags, EnvironmentDTO *env)
 Upload::Upload()
 {
 	this->helpMessageText = R"(
-	upload: Takes a github url, downloads it and parses it. Results are sent to the database.
+	check: Hashes all methods from a github repository, and uploads them to the database.
 		Arguments:
-			Url to a github repository.  
-		Optionals:
-			-s --save: Save the parser results for later use.)";
+			Url to a github repository.
+		Optionals :
+			-b --branch : The branch to parse.
+			-c --cpu : Number of threads used (minimum 2, default half).)";
 }
 
 std::string Upload::partialLogMessage(std::string url)
@@ -419,12 +418,12 @@ void Upload::execute(Flags flags, EnvironmentDTO *env)
 CheckUpload::CheckUpload()
 {
 	this->helpMessageText = R"(
-	checkupload: Takes a github url, and does both the check and upload.
+	checkupload: Hashes all methods from a github repository, and both checks and uploads them.
 		Arguments:
 			Url to a github repository.
-		Optionals:
-			-o --output: Console to print to the console, else you can give a file path.  
-			-s --save: Save the parser results for later use.)";
+		Optionals :
+			-b --branch : The branch to parse.
+			-c --cpu : Number of threads used (minimum 2, default half).)";
 }
 
 void CheckUpload::execute(Flags flags, EnvironmentDTO *env)

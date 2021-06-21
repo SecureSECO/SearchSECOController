@@ -23,6 +23,8 @@ Utrecht University within the Software Project course.
 #include <vector>
 #include <mutex>
 
+#define warnAndReturnIfErrno(message) if (errno != 0){errno = 0;print::warn(message, __FILE__, __LINE__);return;}
+
 class Command
 {
 public:

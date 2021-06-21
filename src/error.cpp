@@ -58,13 +58,15 @@ enum errCode
 // strs: [commandname, expected_num_args, received_num_args]
 std::string descCmdIncorrectArguments(std::string* strs)
 {
-	return strs[1] + print::plural(" argument", std::stoi(strs[1])) + " expected for command " + print::quote(strs[0]) + ", received " + strs[2] + '.';
+	return strs[1] + print::plural(" argument", std::stoi(strs[1])) + 
+		" expected for command " + print::quote(strs[0]) + ", received " + strs[2] + '.';
 }
 
 // strs: [commandname, expected_num_args, received_num_args]
 std::string descFlagIncorrectArguments(std::string* strs)
 {
-	return strs[1] + print::plural(" argument", std::stoi(strs[1])) + " expected for flag " + print::quote("--" + strs[0]) + ", received " + strs[2] + '.';
+	return strs[1] + print::plural(" argument", std::stoi(strs[1])) + 
+		" expected for flag " + print::quote("--" + strs[0]) + ", received " + strs[2] + '.';
 }
 
 // strs: [flagname]
@@ -82,13 +84,15 @@ std::string descErrFlagNotExistCfg(std::string* strs)
 // strs: [flagname, argname]
 std::string descErrFlagInvalidArg(std::string* strs)
 {
-	return "Argument " + print::quote(strs[1]) + " is invalid for the flag " + print::quote("--" + strs[0]) + ". See --help (-h) for valid value ranges.";
+	return "Argument " + print::quote(strs[1]) + " is invalid for the flag " + 
+		print::quote("--" + strs[0]) + ". See --help (-h) for valid value ranges.";
 }
 
 // strs: [flagname, argname]
 std::string descErrFlagInvalidArgCfg(std::string* strs)
 {
-	return "Argument " + print::quote(strs[1]) + " is invalid for the flag " + print::quote("--" + strs[0]) + " (configuration file).\n" + ". See --help (-h) for valid value ranges.";
+	return "Argument " + print::quote(strs[1]) + " is invalid for the flag " + 
+		print::quote("--" + strs[0]) + " (configuration file).\n" + ". See --help (-h) for valid value ranges.";
 }
 
 // no strs

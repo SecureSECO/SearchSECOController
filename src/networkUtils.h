@@ -42,8 +42,13 @@ public:
 	/// Even if the header is empty, it will still put an end line in the beginning.</param>
 	/// 
 	/// <returns>A char pointer to string with all the data in it.</returns>
-	static const char* getAllDataFromHashes(std::vector<HashData> &data, int& size,
-		std::string header, AuthorData& authors, std::string prevCommitTime = "", std::vector<std::string> unchangedFiles = std::vector<std::string>());
+	static const char* getAllDataFromHashes(
+		std::vector<HashData> &data, 
+		int& size,
+		std::string header, 
+		AuthorData& authors, 
+		std::string prevCommitTime = "", 
+		std::vector<std::string> unchangedFiles = std::vector<std::string>());
 
 	/// <summary>
 	/// This function will only copy the actual hash into a string.
@@ -72,8 +77,10 @@ public:
 	/// </summary>
 	/// <param name="hashes">The original hashes.</param>
 	/// <param name="output">The new map.</param>
-	static void transformHashList(std::vector<HashData>& hashes,
-		std::map<std::string, std::vector<HashData*>>& output);
+	static void transformHashList(
+		std::vector<HashData>& hashes,
+		std::map<std::string, 
+		std::vector<HashData*>>& output);
 
 	/// <summary>
 	/// Will match the inputlist rawData with inputlist hashes to give where they overlap.
@@ -85,8 +92,12 @@ public:
 	/// <param name="hashes">The function we want to find the corresponding authors for.</param>
 	/// <param name="rawData">The raw author data which we are going to match with the hashes.</param>
 	/// <returns>The size of all the author strings.</returns>
-	static int getAuthors(std::map<HashData, std::vector<std::string>>& authors,
-		std::map<std::string, std::vector<HashData*>>& hashes, AuthorData& rawData);
+	static int getAuthors(
+		std::map<HashData, 
+		std::vector<std::string>>& authors,
+		std::map<std::string, 
+		std::vector<HashData*>>& hashes, 
+		AuthorData& rawData);
 
 	/// <summary>
 	/// Converts the list of authors that the print matches function generates,
@@ -108,7 +119,9 @@ public:
 	/// The size of the string that is returned will be put in here. 
 	/// The initial value that you give it will be ignored.</param>
 	/// <returns>A char pointer to string with all the data in it.</returns>
-	static const char* getProjectsRequest(const std::map<std::pair<std::string, std::string>, int>& projects, int& size);
+	static const char* getProjectsRequest(
+		const std::map<std::pair<std::string, std::string>, int>& projects, 
+		int& size);
 
 	/// <summary>
 	/// Converts a project into a string that can be send to the database,

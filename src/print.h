@@ -145,7 +145,8 @@ private:
 	/// <param name="authorIdToName">The key will be the id of the author,
 	/// the value is a list of all the things the database gave us about the author,
 	/// in the same order as we got it.</param>
-	static void getDatabaseAuthorAndProjectData(std::map<std::pair<std::string, std::string>, int>& projects,
+	static void getDatabaseAuthorAndProjectData(
+		std::map<std::pair<std::string, std::string>, int>& projects,
 		std::map<std::string, int>& dbAuthors,
 		std::map<std::string, std::vector<std::string>>& dbProjects,
 		std::map<std::string, std::vector<std::string>>& authorIdToName, 
@@ -168,7 +169,8 @@ private:
 	/// <summary>
 	/// Prints a summary for all the matches found.
 	/// </summary>
-	static void printSummary(std::map<std::string, int> &authorCopiedForm, 
+	static void printSummary(
+		std::map<std::string, int> &authorCopiedForm, 
 		std::map<std::string, int> &authorsCopied, 
 		int matches, int methods,
 		std::map<std::string, std::vector<std::string>>& dbProjects,
@@ -201,7 +203,8 @@ namespace error
 	/// Throws the "Flag Does Not Exist" error.
 	/// </summary>
 	/// <param name="flag">The flag that does not exist.</param>
-	/// <param name="from_config">Whether this flag appeared in the config file (true) or was entered in the command line (false).</param>
+	/// <param name="from_config">Whether this flag appeared in the config file (true) 
+	/// or was entered in the command line (false).</param>
 	void errFlagNotExist(std::string flag, bool from_config, const char* file, int line);
 
 	/// <summary>
@@ -209,7 +212,8 @@ namespace error
 	/// </summary>
 	/// <param name="flag">The flag that had an invalid argument.</param>
 	/// <param name="arg">The (invalid) argument.</param>
-	/// <param name="from_config">Whether this flag appeared in the config file (true) or was entered in the command line (false).</param>
+	/// <param name="from_config">Whether this flag appeared in the config file (true) 
+	/// or was entered in the command line (false).</param>
 	void errFlagInvalidArg(std::string flag, std::string arg, bool from_config, const char* file, int line);
 
 	/// <summary>

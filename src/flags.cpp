@@ -104,14 +104,11 @@ std::map<std::string, std::string> Flags::parseConfig(std::string configPath)
 {
 	std::ifstream configFile(configPath);
 
-	std::string line;
+	std::string line, flag, arg;
 	std::vector<std::string> flagArg;
-	std::string flag;
-	std::string arg;
 
 	std::map<std::string, std::string> configFlagArgs = {};
-	int success = 0,
-		lines = 0;
+	int success = 0, lines = 0;
 
 	while (std::getline(configFile, line))
 	{

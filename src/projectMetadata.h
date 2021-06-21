@@ -46,7 +46,17 @@ public:
 	/// </summary>
 	std::string getAsHeader()
 	{
-		std::vector<std::string> header = { id, versionTime, versionHash, license, name, url, authorName, authorMail, std::to_string(Parser::getHashVersion()) };
+		std::vector<std::string> header = { 
+			id, 
+			versionTime, 
+			versionHash, 
+			license, 
+			name, 
+			url, 
+			authorName, 
+			authorMail, 
+			std::to_string(Parser::getHashVersion()) 
+		};
 		return NetworkUtils::generateHeader(header);
 	};
 

@@ -31,7 +31,13 @@ std::string DatabaseRequests::uploadHashes(std::vector<HashData> &hashes,
 	std::vector<std::string> unchangedFiles)
 {
 	int dataSize = 0;
-	const char* rawData = NetworkUtils::getAllDataFromHashes(hashes, dataSize, metaData.getAsHeader(), authorData, prevCommitTime, unchangedFiles);
+	const char* rawData = NetworkUtils::getAllDataFromHashes(
+		hashes, 
+		dataSize, 
+		metaData.getAsHeader(), 
+		authorData, 
+		prevCommitTime, 
+		unchangedFiles);
 	return execRequest(DATABASE_UPLOAD_REQUEST, rawData, dataSize, env);
 }
 
@@ -51,7 +57,13 @@ std::string DatabaseRequests::checkUploadHashes(std::vector<HashData> &hashes,
 	std::vector<std::string> unchangedFiles)
 {
 	int dataSize = 0;
-	const char* rawData = NetworkUtils::getAllDataFromHashes(hashes, dataSize, metaData.getAsHeader(), authorData, prevCommitTime, unchangedFiles);
+	const char* rawData = NetworkUtils::getAllDataFromHashes(
+		hashes, 
+		dataSize,
+		metaData.getAsHeader(), 
+		authorData,
+		prevCommitTime,
+		unchangedFiles);
 
 	return execRequest(DATABASE_CHECK_UPLOAD_REQUEST, rawData, dataSize, env);
 }
@@ -95,7 +107,10 @@ long long DatabaseRequests::getProjectVersion(const std::pair<std::string, std::
 		}
 		catch (const std::exception& e)
 		{
-			print::warn("Something went wrong while retrieving version of project from database, returning versiontime of 0.", __FILE__, __LINE__);
+			print::warn(
+				"Something went wrong while retrieving version of project from database, returning versiontime of 0.",
+				__FILE__, 
+				__LINE__);
 			version = 0;
 		}
 		return version;
@@ -199,10 +214,7 @@ std::tuple<bool, std::string> DatabaseRequests::checkResponseCode(std::string da
 				__FILE__, __LINE__);
 			return std::make_tuple(true, info);
 		}
-		else
-		{
-			error::errDBBadRequest(info, __FILE__, __LINE__);
-		}
+		error::errDBBadRequest(info, __FILE__, __LINE__);
 	}
 	else if (statusCode == "500") 
 	{
@@ -212,10 +224,7 @@ std::tuple<bool, std::string> DatabaseRequests::checkResponseCode(std::string da
 				__FILE__, __LINE__);
 			return std::make_tuple(false, info);
 		}
-		else
-		{
-			error::errDBInternalError(info, __FILE__, __LINE__);
-		}
+		error::errDBInternalError(info, __FILE__, __LINE__);
 	}
 	else 
 	{
@@ -225,10 +234,7 @@ std::tuple<bool, std::string> DatabaseRequests::checkResponseCode(std::string da
 				__FILE__, __LINE__);
 			return std::make_tuple(false, info);
 		}
-		else
-		{
-			error::errDBUnknownResponse(__FILE__, __LINE__);
-		}
+		error::errDBUnknownResponse(__FILE__, __LINE__);
 	}
 }
 

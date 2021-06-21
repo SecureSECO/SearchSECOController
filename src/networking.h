@@ -19,12 +19,14 @@ class NetworkHandler
 {
 public:
 	static NetworkHandler* createHandler();
+
 	/// <summary>
 	/// Send data to the database.
 	/// </summary>
 	/// <param name="data">The data to be send.</param>
 	/// <param name="dataSize">The size of the data array in bytes.</param>
 	void sendData(const char* data, int dataSize);
+
 	/// <summary>
 	/// Send data to the database.
 	/// </summary>
@@ -40,8 +42,10 @@ public:
 
 	std::string receiveData();
 private:
+
 	static boost::asio::io_context ioContext;
 	static std::vector<std::pair<std::string, std::string>> ips;
+
 	/// <summary>
 	/// Basic constructor which initializes the socket with the given context.
 	/// </summary>

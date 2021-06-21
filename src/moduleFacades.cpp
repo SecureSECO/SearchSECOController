@@ -21,12 +21,18 @@ Utrecht University within the Software Project course.
 #include <iostream>
 
 
-std::tuple<AuthorData, std::string, std::vector<std::string>> moduleFacades::downloadRepository(std::string repository, Flags flags,
-	std::string downloadPath, std::string tag, std::string nextTag)
+std::tuple<AuthorData, std::string, std::vector<std::string>> moduleFacades::downloadRepository(
+	std::string repository, 
+	Flags flags,
+	std::string downloadPath, 
+	std::string tag, 
+	std::string nextTag)
 {
 	print::debug("Calling the spider to download a repository", __FILE__, __LINE__);
 
-	std::tuple<AuthorData, std::string, std::vector<std::string>> authorData = RunSpider::runSpider(repository, downloadPath, flags.flag_cpu, tag, nextTag, flags.flag_branch);
+	std::tuple<AuthorData, std::string, std::vector<std::string>> authorData = 
+		RunSpider::runSpider(repository, downloadPath, flags.flag_cpu, tag, nextTag, flags.flag_branch);
+
 	print::loguruResetThreadName();
 
 	return authorData;
@@ -84,7 +90,11 @@ CrawlData moduleFacades::crawlRepositories(int startId, Flags flags)
 {
 	print::debug("Calling the crawler to crawl a repositories", __FILE__, __LINE__);
 
-	auto urls = RunCrawler::crawlRepositories("https://github.com/", startId, flags.flag_github_user, flags.flag_github_token);
+	auto urls = RunCrawler::crawlRepositories(
+		"https://github.com/", 
+		startId, 
+		flags.flag_github_user, 
+		flags.flag_github_token);
 	print::loguruResetThreadName();
 
 	return urls;

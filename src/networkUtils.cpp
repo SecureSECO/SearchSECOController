@@ -47,7 +47,12 @@ void NetworkUtils::addStringsToBuffer(char* buffer, int& pos, std::vector<std::s
 	}
 }
 
-void NetworkUtils::addHashDataToBuffer(char* buffer, int& pos, HashData& hd, std::map<HashData, std::vector<std::string>>& authors)
+void NetworkUtils::addHashDataToBuffer(
+	char* buffer,
+	int& pos, 
+	HashData& hd, 
+	std::map<HashData, 
+	std::vector<std::string>>& authors)
 {
 	// Hash|functionName|fileLocation|lineNumber|number_of_authors|author1_name|author1_mail|...
 	addStringToBuffer(buffer, pos, hd.hash);
@@ -63,7 +68,10 @@ void NetworkUtils::addHashDataToBuffer(char* buffer, int& pos, HashData& hd, std
 	buffer[pos++] = ENTRY_DELIMITER;
 }
 
-void NetworkUtils::transformHashList(std::vector<HashData>& hashes, std::map<std::string, std::vector<HashData*>> &output)
+void NetworkUtils::transformHashList(
+	std::vector<HashData>& hashes, 
+	std::map<std::string, 
+	std::vector<HashData*>> &output)
 {
 	for (int i = 0; i < hashes.size(); i++)
 	{
@@ -87,14 +95,15 @@ void NetworkUtils::transformHashList(std::vector<HashData>& hashes, std::map<std
 	}
 }
 
-int NetworkUtils::getAuthors(std::map<HashData, std::vector<std::string>>& authors, std::map<std::string, std::vector<HashData*>>& hashes, AuthorData& rawData)
+int NetworkUtils::getAuthors(
+	std::map<HashData, std::vector<std::string>>& authors, 
+	std::map<std::string, std::vector<HashData*>>& hashes, 
+	AuthorData& rawData)
 {
 	int authorSize = 0;
 	for (auto const& key : rawData)
 	{
-		int currentEnd = -1;
-		int hashesIndex = -1;
-		int authorIndex = 0;
+		int currentEnd = -1, hashesIndex = -1, authorIndex = 0;
 		std::map<std::string, int> dupes;
 		
 		while (hashesIndex < (int)hashes[key.first].size() || authorIndex < (int)rawData[key.first].size())
@@ -150,7 +159,10 @@ const char* NetworkUtils::getAuthorStringToSend(const std::map<std::string, int>
 	return data;
 }
 
-const char* NetworkUtils::getProjectsRequest(const std::map<std::pair<std::string, std::string>, int>& projects, int& size)
+const char* NetworkUtils::getProjectsRequest(
+	const std::map<std::pair<std::string, std::string>,
+	int>& projects, 
+	int& size)
 {
 	// First, calculate the size, so we don't have to expand it later.
 	size = 0;
@@ -242,7 +254,7 @@ const char* NetworkUtils::getAllDataFromHashes(std::vector<HashData>& data, int&
 	std::map<HashData, std::vector<std::string>> authorSendData;
 	// Calcutating the eventual size of the string before hand, 
 	// so that we don't have to increase the size of the buffer.
-	size = header.size() + 1 + getAuthors(authorSendData, transformedHashes, authors) \
+	size = header.size() + 1 + getAuthors(authorSendData, transformedHashes, authors) 
 		+ 1 + 1 + prevCommitTime.size();
 	
 	for (std::string s : unchangedFiles)

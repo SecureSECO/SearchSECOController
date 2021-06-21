@@ -60,7 +60,6 @@ void Start::execute(Flags flags, EnvironmentDTO *env)
 	if (flags.flag_github_token == "" || flags.flag_github_user == "")
 	{
 		error::errMissingGithubAuth(__FILE__, __LINE__);
-		return;
 	}
 
 	logPreExecutionMessage(flags.flag_cpu, __FILE__, __LINE__);
@@ -125,27 +124,18 @@ void Start::handleSpiderRequest(std::vector<std::string> &splitted, Flags flags,
 	flags.mandatoryArgument = splitted[1];
 	errno = 0;
 	ProjectMetaData meta = moduleFacades::getProjectMetadata(flags.mandatoryArgument, flags);
-	if (errno != 0)
-	{
-		errno = 0;
-		print::warn("Error getting project meta data, moving on to the next job.", __FILE__, __LINE__);
-		return;
-	}
+	
+	warnAndReturnIfErrno("Error getting project meta data, moving on to the next job.");
+
 	flags.flag_branch = meta.defaultBranch;
 	auto [authorData, commitHash, unchangedFiles] = moduleFacades::downloadRepository(flags.mandatoryArgument, flags, DOWNLOAD_LOCATION);
-	if (errno != 0)
-	{
-		errno = 0;
-		print::warn("Error downloading project, moving on to the next job.", __FILE__, __LINE__);
-		return;
-	}
+	
+	warnAndReturnIfErrno("Error downloading project, moving on to the next job.");
+	
 	std::vector<HashData> hashes = moduleFacades::parseRepository(DOWNLOAD_LOCATION, flags);
-	if (errno != 0)
-	{
-		errno = 0;
-		print::warn("Error parsing project, moving on to the next job.", __FILE__, __LINE__);
-		return;
-	}
+	
+	warnAndReturnIfErrno("Error parsing project, moving on to the next job.");
+	
 	if (hashes.size() == 0)
 	{
 		return;
@@ -183,12 +173,9 @@ void Start::versionProcessing(std::vector<std::string>& splitted, Flags flags, E
 
 	// Get project metadata.
 	ProjectMetaData meta = moduleFacades::getProjectMetadata(flags.mandatoryArgument, flags);
-	if (errno != 0)
-	{
-		errno = 0;
-		print::warn("Error getting project meta data, moving on to the next job.", __FILE__, __LINE__);
-		return;
-	}
+	
+	warnAndReturnIfErrno("Error getting project meta data, moving on to the next job.");
+	
 	flags.flag_branch = meta.defaultBranch;
 
 	
@@ -197,35 +184,25 @@ void Start::versionProcessing(std::vector<std::string>& splitted, Flags flags, E
 
 	// Download most recent commit, to retrieve tags.
 	auto [authorData, commitHash, unchangedFiles] = moduleFacades::downloadRepository(flags.mandatoryArgument, flags, DOWNLOAD_LOCATION);
-	if (errno != 0)
-	{
-		errno = 0;
-		print::warn("Error downloading project, moving on to the next job.", __FILE__, __LINE__);
-		return;
-	}
+	
+	warnAndReturnIfErrno("Error downloading project, moving on to the next job.");
+	
 	// Set commit hash of retrieved commit.
 	meta.versionHash = commitHash;
 	
 	// Get tags of previous versions.
 	std::vector<std::pair<std::string, long long>> tags = moduleFacades::getRepositoryTags(DOWNLOAD_LOCATION);
-	if (errno != 0)
-	{
-		errno = 0;
-		print::warn("Error retrieving tags for project, just using most recent version.", __FILE__, __LINE__);
-		tags = std::vector<std::pair<std::string, long long>>();
-	}
-
+	
+	warnAndReturnIfErrno("Error retrieving tags for project, just using most recent version.");
+	
 	// This is the first version and there are no tags, 
 	// we just need to parse the most recent version we downloaded earlier.
 	if (std::stoll(meta.versionTime) > startingTime && tags.size() == 0) 
 	{		
 		std::vector<HashData> hashes = moduleFacades::parseRepository(DOWNLOAD_LOCATION, flags);
-		if (errno != 0)
-		{
-			errno = 0;
-			print::warn("Error parsing project, moving on to the next job.", __FILE__, __LINE__);
-			return;
-		}
+		
+		warnAndReturnIfErrno("Error parsing project, moving on to the next job.");
+		
 		if (hashes.size() == 0)
 		{
 			return;
@@ -265,19 +242,13 @@ void Start::versionProcessing(std::vector<std::string>& splitted, Flags flags, E
 void Start::downloadTagged(Flags flags, std::string prevTag, std::string curTag, ProjectMetaData meta, std::string prevVersionTime, EnvironmentDTO* env)
 {
 	auto [authorData, commitHash, unchangedFiles] = moduleFacades::downloadRepository(flags.mandatoryArgument, flags, DOWNLOAD_LOCATION, prevTag, curTag);
-	if (errno != 0)
-	{
-		errno = 0;
-		print::warn("Error downloading tagged version of project, moving on to the next tag.", __FILE__, __LINE__);
-		return;
-	}
+	
+	warnAndReturnIfErrno("Error downloading tagged version of project, moving on to the next tag.");
+	
 	std::vector<HashData> hashes = moduleFacades::parseRepository(DOWNLOAD_LOCATION, flags);
-	if (errno != 0)
-	{
-		errno = 0;
-		print::warn("Error parsing tagged version of project, moving on to the next tag.", __FILE__, __LINE__);
-		return;
-	}
+	
+	warnAndReturnIfErrno("Error parsing tagged version of project, moving on to the next tag.");
+	
 
 	meta.versionHash = commitHash;
 

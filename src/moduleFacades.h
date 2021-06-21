@@ -26,8 +26,12 @@ namespace moduleFacades
 	/// <summary>
 	/// Will call the spider to download a given repository.
 	/// </summary>
-	std::tuple<AuthorData, std::string, std::vector<std::string>> downloadRepository(std::string repository, Flags flags,
-		std::string downloadPath, std::string tag = "HEAD", std::string nextTag = "");
+	std::tuple<AuthorData, std::string, std::vector<std::string>> downloadRepository(
+		std::string repository, 
+		Flags flags,
+		std::string downloadPath, 
+		std::string tag = "HEAD", 
+		std::string nextTag = "");
 	
 	/// <summary>
 	/// Will call the spider to download a given repository.

@@ -14,6 +14,7 @@ Utrecht University within the Software Project course.
 
 
 struct ProjectMetaData;
+struct ProjectMetadata;
 
 class utils
 {
@@ -100,4 +101,6 @@ public:
 			list[i] = temp;
 		}
 	};
+
+	static long long getIdFromPMD(ProjectMetadata pmd);
 };

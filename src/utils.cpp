@@ -160,7 +160,7 @@ std::string utils::getExecutablePath()
 long long utils::getIdFromPMD(ProjectMetadata pmd)
 {
 
-	std::string id = pmd.name + pmd.authorName;
+	std::string id = pmd.name + pmd.authorName + pmd.url;
 	std::string md5hash = md5(id);
 	long long hash = 0;
 	for (int i = 0; i < 16; i++)

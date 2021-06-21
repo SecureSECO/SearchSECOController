@@ -65,9 +65,7 @@ ProjectMetaData moduleFacades::getProjectMetadata(std::string url, Flags flags)
 
 	std::string versionHash = ""; // TODO get commit hash from spider
 
-	// TODO: very temporary hashing.
 	long long hash = utils::getIdFromPMD(pmd);
-
 
 	ProjectMetaData pm = ProjectMetaData(std::to_string(hash),
 		std::to_string(utils::getIntegerTimeFromString(pmd.version)),

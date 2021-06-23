@@ -140,8 +140,9 @@ void Start::handleSpiderRequest(std::vector<std::string> &splitted, Flags flags,
 	{
 		return;
 	}
+
 	// Uploading the hashes.
-	print::printline(DatabaseRequests::uploadHashes(hashes, meta, authorData, env));
+	print::log(DatabaseRequests::uploadHashes(hashes, meta, authorData, env), __FILE__, __LINE__);
 }
 
 void Start::readCommandLine()
@@ -217,7 +218,8 @@ void Start::parseLatest(ProjectMetaData& meta, AuthorData& authorData, Flags& fl
 	{
 		return;
 	}
-	print::printline(DatabaseRequests::uploadHashes(hashes, meta, authorData, env));
+
+	print::log(DatabaseRequests::uploadHashes(hashes, meta, authorData, env), __FILE__, __LINE__);
 }
 
 void Start::loopThroughTags(
@@ -265,7 +267,8 @@ void Start::downloadTagged(Flags flags, std::string prevTag, std::string curTag,
 	meta.versionHash = commitHash;
 
 	// Uploading the hashes.
-	print::printline(DatabaseRequests::uploadHashes(hashes, meta, authorData, env, prevVersionTime, unchangedFiles));
+	print::log(DatabaseRequests::uploadHashes(hashes, meta, authorData, env, prevVersionTime, unchangedFiles),
+		__FILE__, __LINE__);
 
 }
 
@@ -389,7 +392,7 @@ void Upload::execute(Flags flags, EnvironmentDTO *env)
 		termination::failureCrawler(__FILE__, __LINE__);
 	}
 	meta.versionHash = commitHash;
-	print::printline(DatabaseRequests::uploadHashes(hashes, meta, authorData, env));
+	print::log(DatabaseRequests::uploadHashes(hashes, meta, authorData, env), __FILE__, __LINE__);
 
 	this->logPostExecutionMessage(url, __FILE__, __LINE__);
 }

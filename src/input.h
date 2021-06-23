@@ -48,6 +48,7 @@ private:
 	/// Parses the CLI string. Performs regex to extract the command, flags, and executable path.
 	/// </summary>
 	void parseCliInput(int argc, char* argv[]);
+
 	/// <summary>
 	/// Parses and extracts the optional flags entered by the user.
 	/// </summary>

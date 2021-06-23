@@ -29,14 +29,13 @@ class Command
 {
 public:
 	/// <summary>
-	/// Prints the help message corresponding to this command.
+	/// Returns the help message corresponding to this command.
 	/// </summary>
 	std::string helpMessage();
 
 	/// <summary>
 	/// Will execute the given command with the flags you give it.
 	/// </summary>
-	/// <param name="command">The command you want to execute.</param>
 	/// <param name="flags">The flags with which you want to execute the command.</param>
 	virtual void execute(
 		Flags flags, 

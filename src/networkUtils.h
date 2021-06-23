@@ -41,6 +41,10 @@ public:
 	/// <param name="header">The header that you want infront of the string. 
 	/// Even if the header is empty, it will still put an end line in the beginning.</param>
 	/// 
+	/// <param name="authors">Author data that the spider returns.</param>
+	/// <param name="prevCommitTime">Time of the commmit before the version we parsed now.</param>
+	/// <param name="unchangedFiles">The files we did not change from the previous version.</param>
+	/// 
 	/// <returns>A char pointer to string with all the data in it.</returns>
 	static const char* getAllDataFromHashes(
 		std::vector<HashData> &data, 
@@ -151,7 +155,6 @@ public:
 	/// This one is used for the automatic crawling.
 	/// </summary>
 	/// <param name="url">The list of urls.</param>
-	/// <param name="crawlid">The crawl id from where the next crawler is going to crawl.</parmam>
 	/// <param name="size">This is basically a second return value. 
 	/// The size of the string that is returned will be put in here. 
 	/// The initial value that you give it will be ignored.</param>
@@ -161,16 +164,26 @@ private:
 	/// <summary>
 	/// Adds a string to a char* buffer.
 	/// </summary>
+	/// <param name="buffer">The buffer the string needs to be added to.</param>
+	/// <param name="pos">The current end of the buffer. Will be moved back by this function</param>
+	/// <param name="adding">The string to be added.</param>
 	static void addStringToBuffer(char* buffer, int& pos, std::string adding);
 
 	/// <summary>
-	/// Adds multiple strings to a char* buffer.
+	/// Adds a string to a char* buffer.
 	/// </summary>
+	/// <param name="buffer">The buffer the string needs to be added to.</param>
+	/// <param name="pos">The current end of the buffer. Will be moved back by this function</param>
+	/// <param name="adding">The strings to be added.</param>
 	static void addStringsToBuffer(char* buffer, int& pos, std::vector<std::string> adding);
 
 	/// <summary>
-	/// Adds a hash and its authors to a buffer.
+	/// Adds a string to a char* buffer.
 	/// </summary>
+	/// <param name="buffer">The buffer the hash needs to be added to.</param>
+	/// <param name="pos">The current end of the buffer. Will be moved back by this function</param>
+	/// <param name="hd">The hash to be added.</param>
+	/// <param name="authors">Authors per method hash.</param>
 	static void addHashDataToBuffer(char* buffer, int& pos, HashData& hd,
 		std::map<HashData, std::vector<std::string>>& authors);
 

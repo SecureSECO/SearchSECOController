@@ -103,6 +103,9 @@ public:
 	/// <summary>
 	/// Prints information about the hash matches that were found in the database.
 	/// </summary>
+	/// <param name="hashes">The hashes found locally.</param>
+	/// <param name="databaseOutput">The matches found by the database.</param>
+	/// <param name="authordata">The author data for the project we parsed locally.</param>
 	static void printHashMatches(
 		std::vector<HashData>& hashes, 
 		std::string databaseOutput, 

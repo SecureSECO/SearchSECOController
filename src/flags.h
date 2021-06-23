@@ -51,8 +51,6 @@ public:
 	/// <summary>
 	/// Checks if a given flag is represented as its long name.
 	/// </summary>
-	/// <param name="flag"></param>
-	/// <returns></returns>
 	static bool isLongFlag(std::string flag);
 
 	/// <summary>

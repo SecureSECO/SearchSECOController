@@ -41,7 +41,6 @@ public:
 	/// <summary>
 	/// Sends a request to the database to upload the hashes given.
 	/// </summary>
-	/// <param name="hashes">The hashes to be uploaded.</param>
 	/// <returns>The string that the database send back.</returns>
 	static std::string uploadHashes(std::vector<HashData>& hashes,
 		ProjectMetaData metaData,
@@ -53,7 +52,6 @@ public:
 	/// <summary>
 	/// Sends a request to the database to find matching hashes in the database.
 	/// </summary>
-	/// <param name="hashes">The hashes you want to find in the database.</param>
 	/// <returns>The matches that the database gives back.</returns>
 	static std::string findMatches(std::vector<HashData> &hashes,
 		EnvironmentDTO *env);
@@ -61,7 +59,6 @@ public:
 	/// <summary>
 	/// Sends a request to the database to upload and check the given hashes.
 	/// </summary>
-	/// <param name="hashes">The hashes to be uploaded.</param>
 	/// <returns>The string that the database send back.</returns>
 	static std::string checkUploadHashes(std::vector<HashData> &hashes,
 		ProjectMetaData metaData, 
@@ -73,7 +70,6 @@ public:
 	/// <summary>
 	/// Sends a request to the database get the author name and mail from the given author ids.
 	/// </summary>
-	/// <param name="authors">The authors you want the data from.</param>
 	/// <returns>The string that the database send back.</returns>
 	static std::string getAuthor(
 		const std::map<std::string, int> &authors,

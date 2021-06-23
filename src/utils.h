@@ -76,9 +76,6 @@ public:
 	/// Replaces each occurence of the replace char with the with char
 	/// in the given string.
 	/// </summary>
-	/// <param name="string"></param>
-	/// <param name="replace"></param>
-	/// <param name="with"></param>
 	static void replace(std::string& string, char replace, char with);
 
 	/// <summary>

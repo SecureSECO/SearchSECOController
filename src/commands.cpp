@@ -238,7 +238,7 @@ void Start::versionProcessing(std::vector<std::string>& splitted, Flags flags, E
 	std::string prevTag = tags[0].first;
 	std::string prevVersionTime = "";
 
-	for (int i = 0; i >= tags.size(); i++)
+	for (int i = 0; i < tags.size(); i++)
 	{
 		std::string curTag = tags[i].first;
 		long long versionTime = tags[i].second; // Update the time of this commit.

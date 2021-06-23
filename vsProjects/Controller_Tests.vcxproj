@@ -33,28 +33,28 @@
   <ImportGroup Label="PropertySheets" />
   <PropertyGroup Label="UserMacros" />
   <ItemGroup>
-    <ClInclude Include="databaseAPIMock.h" />
-    <ClInclude Include="pch.h" />
-    <ClInclude Include="systemTestsUtils.h" />
+    <ClInclude Include="..\tests\databaseAPIMock.h" />
+    <ClInclude Include="..\tests\pch.h" />
+    <ClInclude Include="..\tests\systemTestsUtils.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="databaseAPIMock.cpp" />
-    <ClCompile Include="integrationTestsCrawler.cpp" />
-    <ClCompile Include="integrationTestsDatabaseAPI.cpp" />
-    <ClCompile Include="integrationTestsParser.cpp" />
-    <ClCompile Include="integrationTestsSpider.cpp" />
-    <ClCompile Include="networkUtilsTests.cpp" />
-    <ClCompile Include="printTests.cpp" />
-    <ClCompile Include="regexTests.cpp" />
-    <ClCompile Include="systemTestsCheck.cpp" />
-    <ClCompile Include="systemTestsCheckUpload.cpp" />
-    <ClCompile Include="systemTestsHelp.cpp" />
-    <ClCompile Include="systemTestsStart.cpp" />
-    <ClCompile Include="systemTestsUpload.cpp" />
-    <ClCompile Include="systemTestsUtils.cpp" />
-    <ClCompile Include="systemTestsVersion.cpp" />
-    <ClCompile Include="utilsTests.cpp" />
-    <ClCompile Include="pch.cpp">
+    <ClCompile Include="..\tests\databaseAPIMock.cpp" />
+    <ClCompile Include="..\tests\integrationTestsCrawler.cpp" />
+    <ClCompile Include="..\tests\integrationTestsDatabaseAPI.cpp" />
+    <ClCompile Include="..\tests\integrationTestsParser.cpp" />
+    <ClCompile Include="..\tests\integrationTestsSpider.cpp" />
+    <ClCompile Include="..\tests\networkUtilsTests.cpp" />
+    <ClCompile Include="..\tests\printTests.cpp" />
+    <ClCompile Include="..\tests\regexTests.cpp" />
+    <ClCompile Include="..\tests\systemTestsCheck.cpp" />
+    <ClCompile Include="..\tests\systemTestsCheckUpload.cpp" />
+    <ClCompile Include="..\tests\systemTestsHelp.cpp" />
+    <ClCompile Include="..\tests\systemTestsStart.cpp" />
+    <ClCompile Include="..\tests\systemTestsUpload.cpp" />
+    <ClCompile Include="..\tests\systemTestsUtils.cpp" />
+    <ClCompile Include="..\tests\systemTestsVersion.cpp" />
+    <ClCompile Include="..\tests\utilsTests.cpp" />
+    <ClCompile Include="..\tests\pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
@@ -68,7 +68,7 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Controller.vcxproj">
+    <ProjectReference Include="Controller.vcxproj">
       <Project>{2b4653d9-dea6-40bb-a27f-15fa59f843b8}</Project>
     </ProjectReference>
   </ItemGroup>

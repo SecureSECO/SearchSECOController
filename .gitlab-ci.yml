@@ -24,7 +24,7 @@ google-tests:
     - cd controller_test_build
     - cmake ../tests
     - cmake --build .
-    - ./tests --gtest_output="xml:report.xml"
+    - ./controller_tests --gtest_output="xml:report.xml"
 
 
 linting:

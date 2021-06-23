@@ -9,7 +9,7 @@ project(searchseco)
 
 configure_file(".env" ".env" COPYONLY)
 
-add_subdirectory(../src ./src)
+add_subdirectory(../libSearchSECOController ./libSearchSECOController)
 
 set(EXECUTABLE_PROCESS searchseco)
 
@@ -27,4 +27,4 @@ if(CMAKE_DL_LIBS)
     target_link_libraries(${EXECUTABLE_PROCESS} ${CMAKE_DL_LIBS})
 endif()
 
-target_include_directories(${EXECUTABLE_PROCESS} PUBLIC "${PROJECT_BINARY_DIR}" ../src)
+target_include_directories(${EXECUTABLE_PROCESS} PUBLIC "${PROJECT_BINARY_DIR}" ../libSearchSECOController)

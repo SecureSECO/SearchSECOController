@@ -6,7 +6,7 @@
 cmake_minimum_required(VERSION 3.13)
 project(controller)
 
-add_subdirectory(../src ./src)
+add_subdirectory(../libSearchSECOController ./libSearchSECOController)
 
 include(FetchContent)
 FetchContent_Declare(
@@ -45,7 +45,7 @@ if(CMAKE_DL_LIBS)
     target_link_libraries(${TEST_NAME} ${CMAKE_DL_LIBS})
 endif()
 
-target_include_directories(${TEST_NAME} PUBLIC "${PROJECT_BINARY_DIR}" ../src)
+target_include_directories(${TEST_NAME} PUBLIC "${PROJECT_BINARY_DIR}" ../libSearchSECOController)
 
 enable_testing()
 include(GoogleTest)

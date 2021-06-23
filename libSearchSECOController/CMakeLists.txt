@@ -11,8 +11,8 @@ set(CMAKE_CXX_STANDARD 17)
 message("Building the controller...")
 if(NOT DEFINED LOGURU_INCLUDED)
    set(LOGURU_FILES
-   loguru/loguru.hpp
-   loguru/loguru.cpp
+   ../external/loguru/loguru.hpp
+   ../external/loguru/loguru.cpp
    )
    set(LOGURU_INCLUDED true)
    message("Including loguru files...")
@@ -73,10 +73,10 @@ target_include_directories(controller PUBLIC "${PROJECT_BINARY_DIR}" ../parser/P
 if (WIN32)
   execute_process(COMMAND CMD /c cd ../bin && copy_versions.bat && cd ../build)
   execute_process(COMMAND CMD /c mkdir cfg)
-  execute_process(COMMAND CMD /c copy "..\\Executable\\cfg\\config.txt" "cfg\\config.txt")
+  execute_process(COMMAND CMD /c copy "..\\SearchSECOController\\cfg\\config.txt" "cfg\\config.txt")
 endif (WIN32)
 if (UNIX)
   execute_process(COMMAND bash "../bin/copy_versions.sh")
   execute_process(COMMAND mkdir cfg)
-  execute_process(COMMAND cp "../Executable/cfg/config.txt" "cfg/config.txt")
+  execute_process(COMMAND cp "../SearchSECOController/cfg/config.txt" "cfg/config.txt")
 endif (UNIX)

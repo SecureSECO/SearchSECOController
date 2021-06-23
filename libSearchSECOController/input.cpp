@@ -14,8 +14,8 @@ Utrecht University within the Software Project course.
 #include <filesystem>
 #include <iostream>
 
-
 #define CONFIGURATION_FILE "cfg/config.txt"
+
 
 Input::Input(int argc, char* argv[]) 
 	: flags()

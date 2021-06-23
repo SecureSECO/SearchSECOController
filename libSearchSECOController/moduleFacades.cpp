@@ -9,9 +9,6 @@ Utrecht University within the Software Project course.
 #include "print.h"
 #include "utils.h"
 
-// Parser includes.
-#include "Parser.h"
-
 // Spider includes.
 #include "RunSpider.h"
 

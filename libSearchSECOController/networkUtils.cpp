@@ -6,7 +6,7 @@ Utrecht University within the Software Project course.
 
 // Controller includes.
 #include "networkUtils.h"
-#include "print.h"
+
 
 inline
 bool operator<(HashData const& lhs, HashData const& rhs)
@@ -29,7 +29,6 @@ bool operator<(HashData const& lhs, HashData const& rhs)
 	}
 	return lhs.lineNumberEnd < rhs.lineNumberEnd;
 }
-
 
 void NetworkUtils::addStringToBuffer(char* buffer, int& pos, std::string adding)
 {

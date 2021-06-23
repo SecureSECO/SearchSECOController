@@ -14,6 +14,7 @@ Utrecht University within the Software Project course.
 
 // External includes.
 #include <iostream>
+#include <thread>
 
 #define DOWNLOAD_LOCATION "spiderDownloads"
 

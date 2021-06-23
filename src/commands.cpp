@@ -216,6 +216,7 @@ void Start::versionProcessing(std::vector<std::string>& splitted, Flags flags, E
 	// we just need to parse the most recent version we downloaded earlier.
 	if (std::stoll(meta.versionTime) > startingTime && tags.size() == 0) 
 	{		
+		print::log("No tags found for project, just looking at HEAD.",__FILE__, __LINE__);
 		std::vector<HashData> hashes = moduleFacades::parseRepository(DOWNLOAD_LOCATION, flags);
 		if (errno != 0)
 		{
@@ -232,13 +233,16 @@ void Start::versionProcessing(std::vector<std::string>& splitted, Flags flags, E
 	} // There is a version in the database, we can't find any tags, and the HEAD is not newer than what is in the database.
 	else if (tags.size() == 0) 
 	{
+		print::log("No tags found for project, and project already in database, skipping.", __FILE__, __LINE__);
 		return;
 	}
 
-	std::string prevTag = tags[tags.size()-1].first;
+	std::string prevTag = tags[0].first;
 	std::string prevVersionTime = "";
 
-	for (int i = tags.size() - 1; i >= 0; i--)
+	print::log("Found " + std::to_string(tags.size()) +" tags, starting with: " + prevTag + ".", __FILE__, __LINE__);
+
+	for (int i = 0; i < tags.size(); i++)
 	{
 		std::string curTag = tags[i].first;
 		long long versionTime = tags[i].second; // Update the time of this commit.
@@ -251,6 +255,8 @@ void Start::versionProcessing(std::vector<std::string>& splitted, Flags flags, E
 			continue;
 		}
 		meta.versionTime = std::to_string(versionTime);
+
+		print::log("Comparing tags: " + prevTag + " and " + curTag + ".", __FILE__, __LINE__);
 
 		downloadTagged(flags, prevTag, curTag, meta, prevVersionTime, env);
 		

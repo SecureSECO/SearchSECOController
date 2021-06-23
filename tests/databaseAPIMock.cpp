@@ -28,7 +28,7 @@ void ConnectionHandler::StartListen()
 
 std::string RequestHandler::HandleRequest(std::string sender, std::string request)
 {
-    return "200\nRequest received from " + sender;
+	return "200\nRequest received from " + sender;
 }	
 
 
@@ -41,27 +41,27 @@ tcp_connection::pointer tcp_connection::create(boost::asio::io_context& io_conte
 void tcp_connection::start(RequestHandler handler)
 {
 
-    std::vector<char> request = std::vector<char>();
-    boost::system::error_code error;
+	std::vector<char> request = std::vector<char>();
+	boost::system::error_code error;
 
-    size_t len = boost::asio::read_until(socket_, boost::asio::dynamic_buffer(request), '\n');
+	size_t len = boost::asio::read_until(socket_, boost::asio::dynamic_buffer(request), '\n');
 
-    std::string r(request.begin(), request.begin() + len - 1);
+	std::string r(request.begin(), request.begin() + len - 1);
 
-    std::string length = r.substr(4);
+	std::string length = r.substr(4);
 
-    int size = stoi(length) - (request.size() - len);
-    std::vector<char> data(size);
-    if (size > 0)
-    {
-        socket_.read_some(boost::asio::buffer(data), error);
-    }
+	int size = stoi(length) - (request.size() - len);
+	std::vector<char> data(size);
+	if (size > 0)
+	{
+		socket_.read_some(boost::asio::buffer(data), error);
+	}
 
-    std::string d(data.begin(), data.end());
+	std::string d(data.begin(), data.end());
 
-    std::string result = handler.HandleRequest(r.substr(0, 4), std::string(request.begin() + len, request.end()) + d);
-    std::cout << "sending " << result << "\n";
-    boost::asio::write(socket_, boost::asio::buffer(result), error);
+	std::string result = handler.HandleRequest(r.substr(0, 4), std::string(request.begin() + len, request.end()) + d);
+	std::cout << "sending " << result << "\n";
+	boost::asio::write(socket_, boost::asio::buffer(result), error);
 
 
 }

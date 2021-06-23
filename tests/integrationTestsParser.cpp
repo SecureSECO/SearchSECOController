@@ -23,53 +23,53 @@ Flags parserFlags;
 
 TEST(integrationParser, basic)
 {
-    std::vector<HashData> expected = 
-    {
-        {HashData("", "scrup", "kernel\\console.c", 67, 111)},
-        {HashData("", "rw_hd", "kernel\\hd.c", 101, 117)},
-    };
+	std::vector<HashData> expected = 
+	{
+		{HashData("", "scrup", "kernel\\console.c", 67, 111)},
+		{HashData("", "rw_hd", "kernel\\hd.c", 101, 117)},
+	};
 
-    moduleFacades::downloadRepository("https://github.com/zavg/linux-0.01", parserFlags, TEMPPATH);
-    auto hashes = moduleFacades::parseRepository(TEMPPATH, parserFlags);
+	moduleFacades::downloadRepository("https://github.com/zavg/linux-0.01", parserFlags, TEMPPATH);
+	auto hashes = moduleFacades::parseRepository(TEMPPATH, parserFlags);
 
-    int count = 0;
-    for(HashData hd : hashes) 
-    {
-        for(HashData expectedHd : expected) 
-        {
-            if (expectedHd.fileName == hd.fileName && expectedHd.functionName == hd.functionName)
-            {
-                EXPECT_EQ(expectedHd.fileName, hd.fileName);
-                EXPECT_EQ(expectedHd.functionName, hd.functionName);
-                EXPECT_EQ(expectedHd.lineNumber, hd.lineNumber);
-                EXPECT_EQ(expectedHd.lineNumberEnd, hd.lineNumberEnd);
-                count++;
-            }
-        }
-    }
-    EXPECT_EQ(count, expected.size());
+	int count = 0;
+	for(HashData hd : hashes) 
+	{
+		for(HashData expectedHd : expected) 
+		{
+			if (expectedHd.fileName == hd.fileName && expectedHd.functionName == hd.functionName)
+			{
+				EXPECT_EQ(expectedHd.fileName, hd.fileName);
+				EXPECT_EQ(expectedHd.functionName, hd.functionName);
+				EXPECT_EQ(expectedHd.lineNumber, hd.lineNumber);
+				EXPECT_EQ(expectedHd.lineNumberEnd, hd.lineNumberEnd);
+				count++;
+			}
+		}
+	}
+	EXPECT_EQ(count, expected.size());
 }
 
 TEST(integrationParser, failurecase)
 {
-    std::vector<HashData> expected = {
-    };
+	std::vector<HashData> expected = {
+	};
 
-    moduleFacades::downloadRepository("https://github.com/zavg/linux-0.01", parserFlags, TEMPPATH);
-    auto hashes = moduleFacades::parseRepository("wrongpath", parserFlags);
+	moduleFacades::downloadRepository("https://github.com/zavg/linux-0.01", parserFlags, TEMPPATH);
+	auto hashes = moduleFacades::parseRepository("wrongpath", parserFlags);
 
-    int count = 0;
-    for (HashData hd : hashes)
-    {
-        for (HashData expectedHd : expected)
-        {
-            if (expectedHd.fileName == hd.fileName && expectedHd.functionName == hd.functionName)
-            {
-                count++;
-            }
-        }
-    }
-    
-    EXPECT_EQ(hashes.size(), expected.size());
-    EXPECT_EQ(count, expected.size());
+	int count = 0;
+	for (HashData hd : hashes)
+	{
+		for (HashData expectedHd : expected)
+		{
+			if (expectedHd.fileName == hd.fileName && expectedHd.functionName == hd.functionName)
+			{
+				count++;
+			}
+		}
+	}
+	
+	EXPECT_EQ(hashes.size(), expected.size());
+	EXPECT_EQ(count, expected.size());
 }

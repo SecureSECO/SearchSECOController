@@ -14,7 +14,7 @@ Utrecht University within the Software Project course.
 void systemTestsUtils::startAPIMock() 
 {
 	ConnectionHandler *connectionHandler = new ConnectionHandler();
-    std::thread *t1 = new std::thread(&ConnectionHandler::StartListen, connectionHandler);
+	std::thread *t1 = new std::thread(&ConnectionHandler::StartListen, connectionHandler);
 }
 
 

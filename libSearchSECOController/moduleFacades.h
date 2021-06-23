@@ -16,6 +16,9 @@ Utrecht University within the Software Project course.
 #include "RunCrawler.h"
 #include "ProjectMetadata.h"
 
+// Parser includes.
+#include "HashData.h"
+
 
 namespace moduleFacades
 {

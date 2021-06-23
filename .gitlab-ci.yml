@@ -22,9 +22,9 @@ google-tests:
   script:
     - mkdir controller_test_build
     - cd controller_test_build
-    - cmake ../Controller_Tests
+    - cmake ../tests
     - cmake --build .
-    - ./controller_tests --gtest_output="xml:report.xml"
+    - ./tests --gtest_output="xml:report.xml"
 
 
 linting:

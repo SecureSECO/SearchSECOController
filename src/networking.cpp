@@ -4,11 +4,11 @@ Utrecht University within the Software Project course.
 © Copyright Utrecht University (Department of Information and Computing Sciences)
 */
 
-// Controller includes
+// Controller includes.
 #include "networking.h"
 #include "print.h"
 
-// External includes
+// External includes.
 #include <boost/array.hpp>
 #include <fstream>
 #include <filesystem>

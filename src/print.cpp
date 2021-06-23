@@ -137,7 +137,6 @@ void print::versionFull()
 		"parser",
 		"crawler",
 		"spider",
-		//"database_api"
 	};
 
 	std::ifstream versionFile;

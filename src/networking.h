@@ -6,10 +6,10 @@ Utrecht University within the Software Project course.
 
 #pragma once
 
-// Parser includes
+// Parser includes.
 #include "HashData.h"
 
-// External includes
+// External includes.
 #include <boost/asio.hpp>
 
 

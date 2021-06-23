@@ -6,7 +6,7 @@ Utrecht University within the Software Project course.
 
 #pragma once
 
-// External includes
+// External includes.
 #include <algorithm>
 #include <map>
 #include <string>

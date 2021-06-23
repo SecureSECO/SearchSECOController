@@ -4,12 +4,12 @@ Utrecht University within the Software Project course.
 © Copyright Utrecht University (Department of Information and Computing Sciences)
 */
 
-// Controller includes
+// Controller includes.
 #include "print.h"
 #include "regexWrapper.h"
 #include "utils.h"
 
-// External includes
+// External includes.
 #include <boost/regex.hpp>
 #include <functional>
 
@@ -39,9 +39,9 @@ void regex::parseFlargPairs(std::string flargStr, std::map<std::string, std::str
 {
 	std::map<std::string, std::function<void(std::string, const char*, int)>> failureExpressions =
 	{
-		{ "(?<!-)-([^\\s-]{2,})", error::errParseIncorrectLonghandFlag }, // -wrong
-		{ "--([^-])(?:\\s|$)", error::errParseIncorrectShorthandFlag },   // --w rong
-		{ "(-{3,}\\S+)", error::errParseCouldNotParseFlag },             // ---wrong
+		{ "(?<!-)-([^\\s-]{2,})", error::errParseIncorrectLonghandFlag }, // -wrong.
+		{ "--([^-])(?:\\s|$)", error::errParseIncorrectShorthandFlag },   // --w rong.
+		{ "(-{3,}\\S+)", error::errParseCouldNotParseFlag },             // ---wrong.
 	};
 
 	std::string::const_iterator
@@ -62,7 +62,7 @@ void regex::parseFlargPairs(std::string flargStr, std::map<std::string, std::str
 		}
 	}
 
-	// Parse the well-formed flag-argument pairs
+	// Parse the well-formed flag-argument pairs.
 	result = {};
 	
 	boost::regex expr("(?:(?:-([^-\\s]+)))\\s?([^-\\s]+)?");
@@ -83,7 +83,7 @@ void regex::parseFlargPairs(std::string flargStr, std::map<std::string, std::str
 
 bool regex::validateURL(std::string url)
 {
-	// Regular expression borrowed from StackOverflow: https://stackoverflow.com/a/17773849
+	// Regular expression borrowed from StackOverflow: https://stackoverflow.com/a/17773849.
 	boost::regex expr("^(http:\\/\\/www\\.|https:\\/\\/www\\.|http:\\/\\/|https:\\/\\/)?[a-z0-9]+([\\-\\.]{1}[a-z0-9]+)*\\.[a-z]{2,5}(:[0-9]{1,5})?(\\/.*)?$");
 	boost::smatch match;
 	

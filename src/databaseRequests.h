@@ -6,20 +6,20 @@ Utrecht University within the Software Project course.
 
 #pragma once
 
-// Controller includes
+// Controller includes.
 #include "dto.h"
 #include "projectMetadata.h"
 
-// Crawler includes
+// Crawler includes.
 #include "RunCrawler.h"
 
-// Parser includes
+// Parser includes.
 #include "HashData.h"
 
-// Spider includes
+// Spider includes.
 #include "CodeBlock.h"
 
-// External includes
+// External includes.
 #include <string>
 #include <vector>
 
@@ -124,7 +124,7 @@ private:
 	///		2: sending the data for the request.
 	///		3: Receiving the data the API returns.
 	/// </summary>
-	/// <param name="request">The request we are sending to the API</param>
+	/// <param name="request">The request we are sending to the API.</param>
 	/// <param name="rawData">THIS DATA WILL BE AUTOMATICALLY DELETED AFTER IT HAS BEEN SENT BY THIS FUNCTION.
 	/// The data we want to send to the API. 
 	/// This data can most likely be generated with a function in NetworkUtils like getAllDataFromHashes.</param>
@@ -138,7 +138,7 @@ private:
 	/// <summary>
 	/// Checks if the database returns a valid response code and handles potential errors.
 	/// </summary>
-	/// <returns> The data it receives minus the status code it checked. </returns>
+	/// <returns> The data it receives minus the status code it checked.</returns>
 	static std::tuple<bool, std::string> checkResponseCode(std::string data, std::string command);
 
 	/// <summary>

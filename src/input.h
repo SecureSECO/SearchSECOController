@@ -6,11 +6,11 @@ Utrecht University within the Software Project course.
 
 #pragma once
 
-// Controller includes
+// Controller includes.
 #include "flags.h"
 #include "utils.h"
 
-// External includes
+// External includes.
 #include <climits>
 #include <map>
 #include <string>

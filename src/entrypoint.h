@@ -6,14 +6,14 @@ Utrecht University within the Software Project course.
 
 #pragma once
 
-// Controller includes
+// Controller includes.
 #include "commandFactory.h"
 #include "dto.h"
 #include "input.h"
 #include "print.h"
 #include "termination.h"
 
-// External includes
+// External includes.
 #include "loguru/loguru.hpp"
 #include <functional>
 #include <iostream>

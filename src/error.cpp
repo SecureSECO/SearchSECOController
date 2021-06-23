@@ -4,12 +4,12 @@ Utrecht University within the Software Project course.
 © Copyright Utrecht University (Department of Information and Computing Sciences)
 */
 
-// Controller includes
+// Controller includes.
 #include "print.h"
 #include "termination.h"
 #include "utils.h"
 
-// External includes
+// External includes.
 #include <fstream>
 #include <functional>
 #include <iostream>
@@ -55,121 +55,121 @@ enum errCode
 // Descriptions of the error messages.
 #pragma region Descriptions
 
-// strs: [commandname, expected_num_args, received_num_args]
+// strs: [commandname, expected_num_args, received_num_args].
 std::string descCmdIncorrectArguments(std::string* strs)
 {
 	return strs[1] + print::plural(" argument", std::stoi(strs[1])) + 
 		" expected for command " + print::quote(strs[0]) + ", received " + strs[2] + '.';
 }
 
-// strs: [commandname, expected_num_args, received_num_args]
+// strs: [commandname, expected_num_args, received_num_args].
 std::string descFlagIncorrectArguments(std::string* strs)
 {
 	return strs[1] + print::plural(" argument", std::stoi(strs[1])) + 
 		" expected for flag " + print::quote("--" + strs[0]) + ", received " + strs[2] + '.';
 }
 
-// strs: [flagname]
+// strs: [flagname].
 std::string descErrFlagNotExist(std::string* strs)
 {
 	return "The flag " + print::quote(strs[0]) + " does not exist.";
 }
 
-// strs: [flagname]
+// strs: [flagname].
 std::string descErrFlagNotExistCfg(std::string* strs)
 {
 	return "The flag " + print::quote(strs[0]) + " does not exist (configuration file).";
 }
 
-// strs: [flagname, argname]
+// strs: [flagname, argname].
 std::string descErrFlagInvalidArg(std::string* strs)
 {
 	return "Argument " + print::quote(strs[1]) + " is invalid for the flag " + 
 		print::quote("--" + strs[0]) + ". See --help (-h) for valid value ranges.";
 }
 
-// strs: [flagname, argname]
+// strs: [flagname, argname].
 std::string descErrFlagInvalidArgCfg(std::string* strs)
 {
 	return "Argument " + print::quote(strs[1]) + " is invalid for the flag " + 
 		print::quote("--" + strs[0]) + " (configuration file).\n" + ". See --help (-h) for valid value ranges.";
 }
 
-// no strs
+// no strs.
 std::string descGithubMissingAuth(std::string* strs)
 {
 	return "Missing github authentication details, add them to the config file to Crawl";
 }
 
-// no strs
+// no strs.
 std::string descErrCmdNotFound(std::string* strs)
 {
 	return "No command was entered.";
 }
 
-// strs: [commandname]
+// strs: [commandname].
 std::string descErrCmdNotExist(std::string* strs)
 {
 	return "Command " + print::quote(strs[0]) + " does not exist.";
 }
 
-// no strs
+// no strs.
 std::string descNoEnvFile(std::string* strs)
 {
 	return "Unable to open .env file.";
 }
 
-// no strs
+// no strs.
 std::string descNoIpsInEnvFile(std::string* strs)
 {
 	return "No IPs found in .env file. IPs should be in format API_IPS=ip1?port1,ip2?port2";
 }
 
-// strs: [funcname]
+// strs: [funcname].
 std::string descErrNotImplemented(std::string* strs)
 {
 	return "The function " + print::quote(strs[0]) + " is not yet implemented.";
 }
 
-// strs: [callstring]
+// strs: [callstring].
 std::string descParseCallSyntaxError(std::string* strs)
 {
 	return "Error while parsing call string " + print::quote(strs[0]);
 }
 
-// strs: [flagname]
+// strs: [flagname].
 std::string descParseIncorrectShorthandFlag(std::string* strs)
 {
 	return "Flag " + print::quote("--" + strs[0]) + " was incorrectly entered as if it were a full-length flag (" 
 		"suggestion: " + print::quote("-" + strs[0]) + ")";
 }
 
-// strs: [flagname]
+// strs: [flagname].
 std::string descParseIncorrectLonghandFlag(std::string* strs)
 {
 	return "Flag " + print::quote("-" + strs[0]) + " was incorrectly entered as if it were a shorthand flag ("
 		"suggestion: " + print::quote("--" + strs[0]) + ")";
 }
 
-// strs: [url]
+// strs: [url].
 std::string descInvalidUrl(std::string* strs)
 {
 	return print::quote(strs[0]) + " is not a valid URL";
 }
 
-// strs: [flagname]
+// strs: [flagname].
 std::string descParseCouldNotParseFlag(std::string* strs)
 {
 	return strs[0] + " could not be parsed";
 }
 
-// strs: [message]
+// strs: [message].
 std::string descConnectionError(std::string* strs) 
 {
 	return "Database connection terminated with the following message: " + strs[0];
 }
 
-// strs: [message]
+// strs: [message].
 std::string descDBBadRequest(std::string* strs) 
 {
 	if (strs[0] == "") 
@@ -180,7 +180,7 @@ std::string descDBBadRequest(std::string* strs)
 	return "Something was wrong with the request. Following error occured in the database: " + strs[0];
 }
 
-// strs: [message]
+// strs: [message].
 std::string descDBInternalError(std::string* strs) 
 {
 	if (strs[0] == "") 
@@ -191,31 +191,31 @@ std::string descDBInternalError(std::string* strs)
 	return "Something went wrong in the database. Following error occured in the database: " + strs[0];
 }
 
-// no strs
+// no strs.
 std::string descDBUnkownResponse(std::string* strs)
 {
 	return "Database responded in an unexpected way. Please try again later.";
 }
 
-// no strs
+// no strs.
 std::string descSubmoduleFailureCrawler(std::string* strs)
 {
 	return "The Crawler ran into a fatal error. Terminating execution.";
 }
 
-// no strs
+// no strs.
 std::string descSubmoduleFailureSpider(std::string* strs)
 {
 	return "The Spider ran into a fatal error. Terminating execution.";
 }
 
-// no strs
+// no strs.
 std::string descSubmoduleFailureParser(std::string* strs)
 {
 	return "The Parser ran into a fatal error. Terminating execution.";
 }
 
-// no strs
+// no strs.
 std::string descErrInvalidDatabaseAnswer(std::string* strs)
 {
 	return "Invalid database response.";
@@ -253,7 +253,7 @@ std::map <int, std::function<std::string(std::string*)>> errDesc =
 
 #pragma endregion Descriptions
 
-// MAIN ERROR FUNCTION
+// MAIN ERROR FUNCTION.
 // Displays the actual error message, defined by its code, and then exits the program.
 void err(errCode code, std::string* strs, const char* file, int line, std::string extraMsg = "")
 {

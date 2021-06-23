@@ -4,17 +4,14 @@ Utrecht University within the Software Project course.
 © Copyright Utrecht University (Department of Information and Computing Sciences)
 */
 
-// Controller includes
+// Controller includes.
 #include "flags.h"
 #include "print.h"
 #include "utils.h"
 
-// External includes
+// External includes.
 #include <fstream>
 #include <thread>
-
-
-#define RAM_DEFAULT 8 // TODO What amount of ram makes sense
 
 std::map<std::string, std::string> Flags::shorthandFlagToLong =
 {

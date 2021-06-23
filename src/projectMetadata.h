@@ -6,10 +6,10 @@ Utrecht University within the Software Project course.
 
 #pragma once
 
-// Controller includes
+// Controller includes.
 #include "networkUtils.h"
 
-// External includes
+// External includes.
 #include <string>
 #include <vector>
 

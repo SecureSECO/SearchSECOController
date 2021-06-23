@@ -4,12 +4,12 @@ Utrecht University within the Software Project course.
 © Copyright Utrecht University (Department of Information and Computing Sciences)
 */
 
-// Controller includes
+// Controller includes.
 #include "input.h"
 #include "print.h"
 #include "regexWrapper.h"
 
-// External includes
+// External includes.
 #include <filesystem>
 #include <iostream>
 #include <regex>
@@ -226,11 +226,11 @@ void Input::sanitizeVerboseFlag(std::string arg, bool fromConfig)
 
 	std::map<int, loguru::Verbosity> verbosityMap =
 	{
-		{1, loguru::Verbosity_OFF},			// Quiet
-		{2, loguru::Verbosity_ERROR},		// Only errors
-		{3, loguru::Verbosity_WARNING},		// Errors & Warnings
-		{4, loguru::Verbosity_INFO},		// All user-relevant logs
-		{5, loguru::Verbosity_1},			// Everything, including debug messages
+		{1, loguru::Verbosity_OFF},			// Quiet.
+		{2, loguru::Verbosity_ERROR},		// Only errors.
+		{3, loguru::Verbosity_WARNING},		// Errors & Warnings.
+		{4, loguru::Verbosity_INFO},		// All user-relevant logs.
+		{5, loguru::Verbosity_1},			// Everything, including debug messages.
 	};
 
 	Input::validateInteger(
@@ -267,7 +267,6 @@ void Input::sanitizeBranchFlag(std::string arg, bool fromConfig)
 	print::debug(msg, __FILE__, __LINE__);
 	Input::requireNArguments(1, "branch", arg);
 
-	// TODO: Maybe check if this is something which could be a legal branch?
 	this->flags.flag_branch = arg;
 }
 

@@ -6,16 +6,16 @@ Utrecht University within the Software Project course.
 
 #pragma once
 
-// Crawler includes
+// Crawler includes.
 #include "RunCrawler.h"
 
-// Parser includes
+// Parser includes.
 #include "Parser.h"
 
-// Spider includes
+// Spider includes.
 #include "CodeBlock.h"
 
-// External includes
+// External includes.
 #include <string>
 #include <vector>
 
@@ -52,7 +52,7 @@ public:
 
 	/// <summary>
 	/// This function will only copy the actual hash into a string.
-	/// The hashes will be seperated by a new line
+	/// The hashes will be seperated by a new line.
 	/// </summary>
 	/// 
 	/// <param name="data">The hashes you want to put in the string.</param>

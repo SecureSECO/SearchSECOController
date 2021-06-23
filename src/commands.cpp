@@ -169,7 +169,7 @@ void Start::versionProcessing(std::vector<std::string>& splitted, Flags flags, E
 	}
 	flags.mandatoryArgument = splitted[1];
 
-	long long startingTime = 0; // Time to start from, request from db
+	long long startingTime = 0; // Time to start from, request from db.
 
 	// Get project metadata.
 	ProjectMetaData meta = moduleFacades::getProjectMetadata(flags.mandatoryArgument, flags);
@@ -327,7 +327,6 @@ void Check::execute(Flags flags, EnvironmentDTO *env)
 		env,
 		url
 	);
-	//TODO: delete temp folder.
 
 	this->logPostExecutionMessage(url, __FILE__, __LINE__);
 }

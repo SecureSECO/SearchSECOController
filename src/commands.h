@@ -6,17 +6,17 @@ Utrecht University within the Software Project course.
 
 #pragma once
 
-// Controller includes
+// Controller includes.
 #include "dto.h"
 #include "flags.h"
 
-// Parser includes
+// Parser includes.
 #include "HashData.h"
 
-// Spider includes
+// Spider includes.
 #include "CodeBlock.h"
 
-// External includes
+// External includes.
 #include <functional>
 #include <map>
 #include <string>

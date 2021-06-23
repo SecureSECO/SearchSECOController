@@ -4,14 +4,14 @@ Utrecht University within the Software Project course.
 © Copyright Utrecht University (Department of Information and Computing Sciences)
 */
 
-// Controller includes
+// Controller includes.
 #include "databaseRequests.h"
 #include "networkUtils.h"
 #include "networking.h"
 #include "print.h"
 #include "utils.h"
 
-// Parser includes
+// Parser includes.
 #include "Parser.h"
 
 // External includes.
@@ -94,7 +94,7 @@ long long DatabaseRequests::getProjectVersion(const std::pair<std::string, std::
 
 	std::string response = execRequest(DATABASE_GET_MOST_RECENT_VERSION_PROJECT, rawData, dataSize, env);
 	
-	if (response == "No results found.") // TODO insert message when no project found
+	if (response == "No results found.")
 	{
 		return 0;
 	}

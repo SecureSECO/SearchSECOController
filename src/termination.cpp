@@ -4,11 +4,11 @@ Utrecht University within the Software Project course.
 © Copyright Utrecht University (Department of Information and Computing Sciences)
 */
 
-// Controller includes
+// Controller includes.
 #include "print.h"
 #include "termination.h"
 
-// External includes
+// External includes.
 #include <iostream>
 
 void termination::successful()

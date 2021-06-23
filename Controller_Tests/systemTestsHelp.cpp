@@ -15,7 +15,7 @@ Utrecht University within the Software Project course.
 TEST(systemTests, help_______Successcase)
 {
 	std::string command = "searchseco -h";
-	std::vector<std::string> words = utils::split(command, ' ');
+	std::vector<std::string> words = Utils::split(command, ' ');
 
 	auto n_argv = systemTestsUtils::getArgv(words);
 

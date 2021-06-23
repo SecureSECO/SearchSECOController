@@ -31,7 +31,7 @@ bool regex::validateSyntax(std::string callStr, std::tuple<std::string, std::str
 		return false;
 	}
 
-	result = std::make_tuple(match[1], match[2], utils::trimWhiteSpaces(match[3]));
+	result = std::make_tuple(match[1], match[2], Utils::trimWhiteSpaces(match[3]));
 	return true;
 }
 

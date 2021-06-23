@@ -18,7 +18,7 @@ TEST(systemTests, start______Failurecase)
 	systemTestsUtils::startAPIMock();
 
 	std::string command = "searchseco start --cpu nocores";
-	std::vector<std::string> words = utils::split(command, ' ');
+	std::vector<std::string> words = Utils::split(command, ' ');
 
 	auto n_argv = systemTestsUtils::getArgv(words);
 

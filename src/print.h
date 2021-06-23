@@ -97,7 +97,7 @@ namespace print
 
 }
 
-class printMatches
+class PrintMatches
 {
 public:
 	/// <summary>

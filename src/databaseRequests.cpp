@@ -103,7 +103,7 @@ long long DatabaseRequests::getProjectVersion(const std::pair<std::string, std::
 		long long version = 0;
 		try
 		{
-			version = std::stoll(utils::split(utils::split(response, ENTRY_DELIMITER)[0], INNER_DELIMITER)[1]);
+			version = std::stoll(Utils::split(Utils::split(response, ENTRY_DELIMITER)[0], INNER_DELIMITER)[1]);
 		}
 		catch (const std::exception& e)
 		{
@@ -193,7 +193,7 @@ std::string DatabaseRequests::execRequest(
 
 std::tuple<bool, std::string> DatabaseRequests::checkResponseCode(std::string data, std::string command)
 {
-	std::string statusCode = utils::split(data, '\n')[0];
+	std::string statusCode = Utils::split(data, '\n')[0];
 	
 	std::string info = "";
 	if (data.length() >= 4) 

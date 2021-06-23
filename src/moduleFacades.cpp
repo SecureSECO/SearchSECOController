@@ -56,7 +56,7 @@ std::vector<HashData> moduleFacades::parseRepository(std::string repository, Fla
 
 	for (int i = 0; i < hashes.size(); i++)
 	{
-		utils::replace(hashes[i].fileName, '/', '\\');
+		Utils::replace(hashes[i].fileName, '/', '\\');
 	}
 	return hashes;
 }
@@ -71,10 +71,10 @@ ProjectMetaData moduleFacades::getProjectMetadata(std::string url, Flags flags)
 
 	std::string versionHash = ""; // TODO get commit hash from spider.
 
-	long long hash = utils::getIdFromPMD(pmd);
+	long long hash = Utils::getIdFromPMD(pmd);
 
 	ProjectMetaData pm = ProjectMetaData(std::to_string(hash),
-		std::to_string(utils::getIntegerTimeFromString(pmd.version)),
+		std::to_string(Utils::getIntegerTimeFromString(pmd.version)),
 		versionHash,
 		pmd.license,
 		pmd.name,

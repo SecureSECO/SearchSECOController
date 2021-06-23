@@ -41,7 +41,7 @@ void Input::parseCliInput(int argc, char* argv[])
         print::warn("Local debugging detected", __FILE__, __LINE__);
 		std::string s;
 		std::getline(std::cin, s);
-		std::vector<std::string> temp = utils::split(s, ' ');
+		std::vector<std::string> temp = Utils::split(s, ' ');
 		delete[] args;
 		args = new std::string[1 + temp.size()]();
 		args[0] = argv[0];
@@ -68,7 +68,7 @@ void Input::parseCliInput(int argc, char* argv[])
 	}
 
 	print::debug("Finding executable path", __FILE__, __LINE__);
-	this->executablePath = utils::getExecutablePath();
+	this->executablePath = Utils::getExecutablePath();
 
 	print::debug("Parsing optionals", __FILE__, __LINE__);
 	Input::parseOptionals(flargs);
@@ -313,7 +313,7 @@ void Input::requireNArguments(int n, std::string flag, std::string argument)
 template <typename callbackFunction, typename errorFunction>
 void Input::validateInteger(std::string argument, callbackFunction callback, errorFunction error, int min, int max)
 {
-	if (utils::isNumber(argument))
+	if (Utils::isNumber(argument))
 	{
 		int flagInt = std::stoi(argument);
 		if (flagInt < min || flagInt > max) 

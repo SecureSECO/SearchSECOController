@@ -31,7 +31,7 @@ void NetworkHandler::openConnection(std::string server, std::string port)
 			readEnvFile();
 		}
 		auto ipList = ips;
-		utils::shuffle(ipList);
+		Utils::shuffle(ipList);
 		for (auto server : ipList)
 		{
 			try
@@ -117,7 +117,7 @@ std::string NetworkHandler::receiveData()
 
 void NetworkHandler::readEnvFile()
 {
-	auto path = (std::filesystem::path(utils::getExecutablePath()) / ".env")
+	auto path = (std::filesystem::path(Utils::getExecutablePath()) / ".env")
 		.string();
 
 	std::ifstream fileHandler;
@@ -132,13 +132,13 @@ void NetworkHandler::readEnvFile()
 	ips = std::vector<std::pair<std::string, std::string>>();
 	while (std::getline(fileHandler, line))
 	{
-		auto lineSplitted = utils::split(line, '=');
+		auto lineSplitted = Utils::split(line, '=');
 		if (lineSplitted.size() >= 2 && lineSplitted[0] == "API_IPS")
 		{
-			auto ipsSplitted = utils::split(lineSplitted[1], ',');
+			auto ipsSplitted = Utils::split(lineSplitted[1], ',');
 			for (std::string ip : ipsSplitted)
 			{
-				auto ipSplitted = utils::split(ip, '?');
+				auto ipSplitted = Utils::split(ip, '?');
 				if (ipSplitted.size() < 2)
 				{
 					continue;

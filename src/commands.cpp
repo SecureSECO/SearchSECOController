@@ -70,7 +70,7 @@ void Start::execute(Flags flags, EnvironmentDTO *env)
 	{
 		std::string job = DatabaseRequests::getNextJob(env);
 
-		std::vector<std::string> splitted = utils::split(job, INNER_DELIMITER);
+		std::vector<std::string> splitted = Utils::split(job, INNER_DELIMITER);
 		if (splitted.size() < 1)
 		{
 			error::errInvalidDatabaseAnswer(__FILE__, __LINE__);
@@ -317,7 +317,7 @@ void Check::execute(Flags flags, EnvironmentDTO *env)
 	}
 
 	// Calling the function that will print all the matches for us.
-	printMatches::printHashMatches(
+	PrintMatches::printHashMatches(
 		hashes, 
 		DatabaseRequests::findMatches(
 			hashes, 
@@ -444,7 +444,7 @@ void CheckUpload::execute(Flags flags, EnvironmentDTO *env)
 	}
 	metaData.versionHash = commitHash;
 
-	printMatches::printHashMatches(
+	PrintMatches::printHashMatches(
 		hashes, 
 		DatabaseRequests::checkUploadHashes(hashes, metaData, authorData, env), 
 		authorData, 

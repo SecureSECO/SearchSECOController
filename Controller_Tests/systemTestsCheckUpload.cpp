@@ -18,7 +18,7 @@ TEST(systemTests, checkuploadSuccesscase)
 	systemTestsUtils::startAPIMock();
 
 	std::string command = "searchseco checkupload https://github.com/zavg/linux-0.01";
-	std::vector<std::string> words = utils::split(command, ' ');
+	std::vector<std::string> words = Utils::split(command, ' ');
 
 	auto n_argv = systemTestsUtils::getArgv(words);
 

@@ -117,7 +117,7 @@ std::map<std::string, std::string> Flags::parseConfig(std::string configPath)
 			continue;
 		}
 
-		flagArg = utils::split(line, ':');
+		flagArg = Utils::split(line, ':');
 		if (flagArg.size() != 2)
 		{
 			print::warn(
@@ -130,8 +130,8 @@ std::map<std::string, std::string> Flags::parseConfig(std::string configPath)
 			return {};
 		}
 
-		flag = utils::trimWhiteSpaces(flagArg[0]);
-		arg = utils::trimWhiteSpaces(flagArg[1]);
+		flag = Utils::trimWhiteSpaces(flagArg[0]);
+		arg = Utils::trimWhiteSpaces(flagArg[1]);
 
 		configFlagArgs[flag] = arg;
 		++success;

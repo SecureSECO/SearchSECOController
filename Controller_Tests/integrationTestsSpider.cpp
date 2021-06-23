@@ -41,7 +41,7 @@ int cloneAndCheck(std::map<std::string, bool> &dict, std::string url)
     int count = 0;
     for (const auto &dirEntry : recursive_directory_iterator(TEMPPATH))
     {
-        if (utils::split(dirEntry.path().string(), '\\')[1] == ".git") 
+        if (Utils::split(dirEntry.path().string(), '\\')[1] == ".git") 
         {
             continue;
         }

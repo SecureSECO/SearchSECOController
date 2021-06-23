@@ -37,7 +37,7 @@ Utrecht University within the Software Project course.
 #endif
 
 
-std::vector<std::string> utils::split(std::string str, char delimiter)
+std::vector<std::string> Utils::split(std::string str, char delimiter)
 {
 	int pivot = str.find(delimiter);
 	std::string rest = str;
@@ -53,19 +53,19 @@ std::vector<std::string> utils::split(std::string str, char delimiter)
 	return out;
 }
 
-std::string utils::trim(std::string str, std::string delimiters)
+std::string Utils::trim(std::string str, std::string delimiters)
 {
 	str.erase(0, str.find_first_not_of(delimiters));
 	str.erase(str.find_last_not_of(delimiters)+1);
 	return str;
 }
 
-std::string utils::trimWhiteSpaces(std::string str)
+std::string Utils::trimWhiteSpaces(std::string str)
 {
-	return utils::trim(str, " \t\n\r");
+	return Utils::trim(str, " \t\n\r");
 }
 
-bool utils::isNumber(std::string str)
+bool Utils::isNumber(std::string str)
 {
 	std::string::const_iterator it = str.begin();
 	while (it != str.end() && std::isdigit(*it))
@@ -75,7 +75,7 @@ bool utils::isNumber(std::string str)
 	return !str.empty() && it == str.end();
 }
 
-std::string utils::padLeft(std::string src, char pad, int length)
+std::string Utils::padLeft(std::string src, char pad, int length)
 
 {
 	while(src.length() < length)
@@ -86,7 +86,7 @@ std::string utils::padLeft(std::string src, char pad, int length)
 	return src;
 }
 
-long long utils::getIntegerTimeFromString(std::string time)
+long long Utils::getIntegerTimeFromString(std::string time)
 {
 	// Somehow, sleeping for 0 milliseconds fixed this conversion. Without this sleep, the integration test fails.
 	std::this_thread::sleep_for(std::chrono::milliseconds(0));
@@ -116,7 +116,7 @@ long long utils::getIntegerTimeFromString(std::string time)
 	std::chrono::milliseconds s = std::chrono::duration_cast<std::chrono::milliseconds>(diff);
 	return s.count();
 }
-void utils::replace(std::string& string, char replace, char with)
+void Utils::replace(std::string& string, char replace, char with)
 {
 	for (int i = 0; i < string.size(); i++)
 	{
@@ -127,7 +127,7 @@ void utils::replace(std::string& string, char replace, char with)
 	}
 }
 
-std::string utils::getExecutablePath()
+std::string Utils::getExecutablePath()
 {
 	// Code borrowed from https://stackoverflow.com/a/1528493,
 	// https://stackoverflow.com/questions/18783087/how-to-properly-use-getmodulefilename, and
@@ -157,7 +157,7 @@ std::string utils::getExecutablePath()
 	return str;
 }
 
-long long utils::getIdFromPMD(ProjectMetadata pmd)
+long long Utils::getIdFromPMD(ProjectMetadata pmd)
 {
 
 	std::string id = pmd.name + pmd.authorName + pmd.url;

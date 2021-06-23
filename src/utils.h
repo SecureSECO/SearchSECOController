@@ -16,7 +16,7 @@ Utrecht University within the Software Project course.
 struct ProjectMetaData;
 struct ProjectMetadata;
 
-class utils
+class Utils
 {
 public:
 

@@ -167,7 +167,7 @@ void print::versionFull()
 
 #pragma region Matches
 
-void printMatches::printHashMatches(
+void PrintMatches::printHashMatches(
 	std::vector<HashData> &hashes, 
 	std::string databaseOutput, 
 	AuthorData &authordata,
@@ -182,7 +182,7 @@ void printMatches::printHashMatches(
 	std::map<std::string, std::vector<std::string>> authorIdToName;
 
 	// Seperate the response we got into its individual entries.
-	std::vector<std::string> dbentries = utils::split(databaseOutput, ENTRY_DELIMITER);
+	std::vector<std::string> dbentries = Utils::split(databaseOutput, ENTRY_DELIMITER);
 	parseDatabaseHashes(dbentries, receivedHashes, projects, dbAuthors);
 	
 	getDatabaseAuthorAndProjectData(projects, dbAuthors, dbProjects, authorIdToName, env);
@@ -193,7 +193,7 @@ void printMatches::printHashMatches(
 	NetworkUtils::transformHashList(hashes, transformedList);
 	NetworkUtils::getAuthors(authors, transformedList, authordata);
 
-	auto report = printMatches::setupOutputReport(url);
+	auto report = PrintMatches::setupOutputReport(url);
 
 	int matches = 0;
 	std::map<std::string, int> authorCopiedForm;
@@ -232,7 +232,7 @@ void printMatches::printHashMatches(
 	report.close();
 }
 
-void printMatches::parseDatabaseHashes(
+void PrintMatches::parseDatabaseHashes(
 	std::vector<std::string>& dbentries,
 	std::map<std::string, std::vector<std::string>>& receivedHashes,
 	std::map<std::pair<std::string, std::string>, int> &projects,
@@ -244,7 +244,7 @@ void printMatches::parseDatabaseHashes(
 		{
 			continue;
 		}
-		std::vector<std::string> entrySplitted = utils::split(entry, INNER_DELIMITER);
+		std::vector<std::string> entrySplitted = Utils::split(entry, INNER_DELIMITER);
 
 		if (entrySplitted.size() < 7) 
 		{
@@ -264,7 +264,7 @@ void printMatches::parseDatabaseHashes(
 	}
 }
 
-void printMatches::getDatabaseAuthorAndProjectData(
+void PrintMatches::getDatabaseAuthorAndProjectData(
 	std::map<std::pair<std::string, std::string>, int>& projects,
 	std::map<std::string, int> &dbAuthors,
 	std::map<std::string, std::vector<std::string>>& dbProjects,
@@ -273,14 +273,14 @@ void printMatches::getDatabaseAuthorAndProjectData(
 {
 	// Database requests.
 	std::vector<std::string> authorEntries =
-		utils::split(DatabaseRequests::getAuthor(dbAuthors, env), ENTRY_DELIMITER);
+		Utils::split(DatabaseRequests::getAuthor(dbAuthors, env), ENTRY_DELIMITER);
 	std::vector<std::string> projectEntries =
-		utils::split(DatabaseRequests::getProjectData(projects, env), ENTRY_DELIMITER);
+		Utils::split(DatabaseRequests::getProjectData(projects, env), ENTRY_DELIMITER);
 
 	// Getting the project data out of it.
 	for (int i = 0; i < projectEntries.size(); i++)
 	{
-		auto splitted = utils::split(projectEntries[i], INNER_DELIMITER);
+		auto splitted = Utils::split(projectEntries[i], INNER_DELIMITER);
 		if (splitted.size() == 1)
 		{
 			continue;
@@ -290,7 +290,7 @@ void printMatches::getDatabaseAuthorAndProjectData(
 	// Getting the author data out of it.
 	for (int i = 0; i < authorEntries.size(); i++)
 	{
-		auto splitted = utils::split(authorEntries[i], INNER_DELIMITER);
+		auto splitted = Utils::split(authorEntries[i], INNER_DELIMITER);
 		if (splitted.size() == 1)
 		{
 			continue;
@@ -299,7 +299,7 @@ void printMatches::getDatabaseAuthorAndProjectData(
 	}
 }
 
-void printMatches::printMatch(
+void PrintMatches::printMatch(
 	HashData hash, 
 	std::map<std::string, std::vector<std::string>>& receivedHashes, 
 	std::map<HashData, std::vector<std::string>>& authors, 
@@ -318,7 +318,7 @@ void printMatches::printMatch(
 	print::printAndWriteToFile("Authors of local function: ", report);
 	for (std::string s : authors[hash])
 	{
-		utils::replace(s, INNER_DELIMITER, '\t');
+		Utils::replace(s, INNER_DELIMITER, '\t');
 		print::printAndWriteToFile(s, report);
 		authorsCopied[s]++;
 	}
@@ -336,7 +336,7 @@ void printMatches::printMatch(
 	}
 }
 
-void printMatches::printSummary(std::map<std::string, int> &authorCopiedForm,
+void PrintMatches::printSummary(std::map<std::string, int> &authorCopiedForm,
 	std::map<std::string, int> &authorsCopied,
 	int matches, int methods,
 	std::map<std::string, std::vector<std::string>>& dbProjects,
@@ -377,9 +377,9 @@ void printMatches::printSummary(std::map<std::string, int> &authorCopiedForm,
 	}
 }
 
-std::ofstream printMatches::setupOutputReport(std::string url)
+std::ofstream PrintMatches::setupOutputReport(std::string url)
 {
-	auto projectName = utils::split(url, '/').back();
+	auto projectName = Utils::split(url, '/').back();
 
 	std::ofstream report;
 	auto filename = "reports/" + projectName + ".txt";

@@ -54,7 +54,7 @@ std::vector<std::string> systemTestsUtils::readAllLogLines()
 		logs += line;
 	}
 
-	return utils::split(logs, '\n');
+	return Utils::split(logs, '\n');
 }
 
 bool componentCalled(std::string component, std::vector<std::string> lines) 
@@ -64,12 +64,12 @@ bool componentCalled(std::string component, std::vector<std::string> lines)
 	for (int i = 0; i < lines.size(); i++)
 	{
 		line = lines[i];
-		utils::replace(line, ']', '[');
-		words = utils::split(line, '[');
+		Utils::replace(line, ']', '[');
+		words = Utils::split(line, '[');
 
 		for (int j = 0; j < words.size(); j++) 
 		{
-			std::string word = utils::trimWhiteSpaces(words[j]);
+			std::string word = Utils::trimWhiteSpaces(words[j]);
 			if (word == component) 
 			{
 				return true;

@@ -6,7 +6,6 @@ Utrecht University within the Software Project course.
 
 // Controller includes.
 #include "print.h"
-#include "projectMetadata.h"
 #include "utils.h"
 
 // Crawler includes.
@@ -16,14 +15,7 @@ Utrecht University within the Software Project course.
 #include "md5/md5.h"
 
 // External includes.
-#include <chrono>
-#include <ctime>
 #include <filesystem>
-#include <fstream>
-#include <iomanip>
-#include <iostream>
-#include <map>
-#include <sstream>
 #include <thread>
 
 // OS Dependent includes.

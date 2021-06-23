@@ -6,14 +6,7 @@ Utrecht University within the Software Project course.
 
 // Controller includes.
 #include "commandFactory.h"
-#include "databaseRequests.h"
 #include "print.h"
-
-// Parser includes.
-#include "Parser.h"
-
-// Spider includes.
-#include "RunSpider.h"
 
 
 CommandFactory::CommandFactory()

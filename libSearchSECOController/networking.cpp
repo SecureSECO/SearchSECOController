@@ -7,12 +7,12 @@ Utrecht University within the Software Project course.
 // Controller includes.
 #include "networking.h"
 #include "print.h"
+#include "utils.h"
 
 // External includes.
 #include <boost/array.hpp>
 #include <fstream>
 #include <filesystem>
-#include <iostream>
 
 
 std::vector<std::pair<std::string, std::string>> NetworkHandler::ips = {};

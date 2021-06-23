@@ -6,13 +6,10 @@ Utrecht University within the Software Project course.
 
 #pragma once
 
-// Controller includes.
-#include "utils.h"
-
 // External includes.
-#include <map>
 #include "loguru/loguru.hpp"
 #include <string>
+#include <map>
 
 
 class Flags

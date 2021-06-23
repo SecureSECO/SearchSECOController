@@ -10,15 +10,6 @@ Utrecht University within the Software Project course.
 #include "dto.h"
 #include "projectMetadata.h"
 
-// Crawler includes.
-#include "RunCrawler.h"
-
-// Parser includes.
-#include "HashData.h"
-
-// Spider includes.
-#include "CodeBlock.h"
-
 // External includes.
 #include <string>
 #include <vector>
@@ -32,6 +23,7 @@ Utrecht University within the Software Project course.
 #define DATABASE_CRAWL_DATA "upcd"
 #define DATABASE_GET_NEXT_JOB "gtjb"
 #define DATABASE_GET_MOST_RECENT_VERSION_PROJECT "gppr"
+
 
 class NetworkHandler;
 

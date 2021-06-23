@@ -6,22 +6,13 @@ Utrecht University within the Software Project course.
 
 // Controller includes.
 #include "databaseRequests.h"
-#include "networkUtils.h"
 #include "networking.h"
 #include "print.h"
 #include "utils.h"
 
-// Parser includes.
-#include "Parser.h"
-
-// External includes.
-#include "chrono"
-#include <math.h>
-#include "thread"
-
-
 #define REQUEST_RETRIES 3
 #define BASE_RETRY_WAIT 1000
+
 
 std::string DatabaseRequests::uploadHashes(std::vector<HashData> &hashes, 
 	ProjectMetaData metaData, 

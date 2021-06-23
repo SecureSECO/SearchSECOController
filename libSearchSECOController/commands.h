@@ -9,19 +9,13 @@ Utrecht University within the Software Project course.
 // Controller includes.
 #include "dto.h"
 #include "flags.h"
-
-// Parser includes.
-#include "HashData.h"
-
-// Spider includes.
-#include "CodeBlock.h"
+#include "projectMetadata.h"
 
 // External includes.
-#include <functional>
-#include <vector>
 #include <mutex>
 
 #define warnAndReturnIfErrno(message) if (errno != 0){errno = 0;print::warn(message, __FILE__, __LINE__);return;}
+
 
 class Command
 {

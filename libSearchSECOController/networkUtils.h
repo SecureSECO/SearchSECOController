@@ -22,6 +22,7 @@ Utrecht University within the Software Project course.
 #define ENTRY_DELIMITER '\n'
 #define INNER_DELIMITER '?'
 
+
 class NetworkUtils
 {
 public:

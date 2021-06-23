@@ -7,18 +7,13 @@ Utrecht University within the Software Project course.
 // Controller includes.
 #include "moduleFacades.h"
 #include "print.h"
-#include "termination.h"
-
-// Crawler includes
-#include "RunCrawler.h"
+#include "utils.h"
 
 // Parser includes.
-#include "md5/md5.h"
 #include "Parser.h"
 
 // Spider includes.
 #include "RunSpider.h"
-#include <iostream>
 
 
 std::tuple<AuthorData, std::string, std::vector<std::string>> moduleFacades::downloadRepository(

@@ -9,9 +9,6 @@ Utrecht University within the Software Project course.
 // Controller includes.
 #include "flags.h"
 
-// External includes.
-#include <climits>
-
 
 class Input
 {

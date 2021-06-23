@@ -7,22 +7,16 @@ Utrecht University within the Software Project course.
 // Controller includes.
 #include "commands.h"
 #include "databaseRequests.h"
-#include "flags.h"
 #include "moduleFacades.h"
 #include "print.h"
-
-// Parser includes.
-#include "Parser.h"
-
-// Spider includes.
-#include "RunSpider.h"
-
-#include <iostream>
-#include <thread>
 #include "termination.h"
+#include "utils.h"
 
+// External includes.
+#include <iostream>
 
 #define DOWNLOAD_LOCATION "spiderDownloads"
+
 
 std::string Command::helpMessage()
 {

@@ -14,6 +14,7 @@ Utrecht University within the Software Project course.
 #include "Parser.h"
 
 // External includes
+#include "loguru/loguru.hpp"
 #include <filesystem>
 #include <fstream>
 #include <functional>
@@ -22,6 +23,7 @@ Utrecht University within the Software Project course.
 #include <stdlib.h>
 #include <StringStream.h>
 #include <iomanip>
+
 
 inline
 bool operator<(HashData const& lhs, HashData const& rhs)

@@ -16,6 +16,7 @@ Utrecht University within the Software Project course.
 #include "md5/md5.h"
 
 // External includes.
+#include <algorithm>
 #include <chrono>
 #include <ctime>
 #include <filesystem>

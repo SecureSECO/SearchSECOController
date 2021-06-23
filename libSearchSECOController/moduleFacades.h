@@ -9,6 +9,9 @@ Utrecht University within the Software Project course.
 // Controller includes.
 #include "flags.h"
 
+// Spider includes.
+#include "CodeBlock.h"
+
 // Crawler includes.
 #include "RunCrawler.h"
 #include "ProjectMetadata.h"

@@ -10,9 +10,7 @@ Utrecht University within the Software Project course.
 #include "utils.h"
 
 // External includes.
-#include <map>
 #include "loguru/loguru.hpp"
-#include <string>
 
 
 class Flags

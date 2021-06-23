@@ -14,10 +14,7 @@ Utrecht University within the Software Project course.
 
 // External includes.
 #include "loguru/loguru.hpp"
-#include <functional>
 #include <iostream>
-#include <map>
-#include <string>
 
 // Database info.
 #define DATABASE_API_IP "-1"

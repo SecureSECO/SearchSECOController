@@ -11,8 +11,6 @@ Utrecht University within the Software Project course.
 
 // External includes.
 #include <climits>
-#include <map>
-#include <string>
 
 
 class Input

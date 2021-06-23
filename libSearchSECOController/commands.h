@@ -18,8 +18,6 @@ Utrecht University within the Software Project course.
 
 // External includes.
 #include <functional>
-#include <map>
-#include <string>
 #include <vector>
 #include <mutex>
 

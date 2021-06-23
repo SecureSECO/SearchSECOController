@@ -199,25 +199,37 @@ void Start::versionProcessing(std::vector<std::string>& splitted, Flags flags, E
 	// we just need to parse the most recent version we downloaded earlier.
 	if (std::stoll(meta.versionTime) > startingTime && tags.size() == 0) 
 	{		
-		std::vector<HashData> hashes = moduleFacades::parseRepository(DOWNLOAD_LOCATION, flags);
-		
-		warnAndReturnIfErrno("Error parsing project, moving on to the next job.");
-		
-		if (hashes.size() == 0)
-		{
-			return;
-		}
-		print::printline(DatabaseRequests::uploadHashes(hashes, meta, authorData, env));
-		return;
-	} // There is a version in the database, we can't find any tags, and the HEAD is not newer than what is in the database.
-	else if (tags.size() == 0) 
+		parseLatest(meta, authorData, flags, env);
+	} 
+	else if (tags.size() != 0) 
+	{
+		loopThroughTags(tags, meta, startingTime, flags, env);
+	}
+}
+
+void Start::parseLatest(ProjectMetaData& meta, AuthorData& authorData, Flags& flags, EnvironmentDTO* env)
+{
+	std::vector<HashData> hashes = moduleFacades::parseRepository(DOWNLOAD_LOCATION, flags);
+
+	warnAndReturnIfErrno("Error parsing project, moving on to the next job.");
+
+	if (hashes.size() == 0)
 	{
 		return;
 	}
+	print::printline(DatabaseRequests::uploadHashes(hashes, meta, authorData, env));
+}
 
-	std::string prevTag = tags[tags.size()-1].first;
+void Start::loopThroughTags(
+	std::vector<std::pair<std::string, long long>>& tags,
+	ProjectMetaData &meta,
+	long long startingTime,
+	Flags &flags,
+	EnvironmentDTO* env)
+{
+
+	std::string prevTag = tags[tags.size() - 1].first;
 	std::string prevVersionTime = "";
-
 	for (int i = tags.size() - 1; i >= 0; i--)
 	{
 		std::string curTag = tags[i].first;
@@ -233,7 +245,7 @@ void Start::versionProcessing(std::vector<std::string>& splitted, Flags flags, E
 		meta.versionTime = std::to_string(versionTime);
 
 		downloadTagged(flags, prevTag, curTag, meta, prevVersionTime, env);
-		
+
 		prevTag = curTag;
 		prevVersionTime = std::to_string(versionTime);
 	}

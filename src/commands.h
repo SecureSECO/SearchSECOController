@@ -93,6 +93,25 @@ private:
 	void versionProcessing(std::vector<std::string> &splitted, Flags flags, EnvironmentDTO* env);
 
 	/// <summary>
+	/// Used by version processing. Will parse and upload the latest version of the project.
+	/// </summary>
+	void parseLatest(
+		ProjectMetaData& meta,
+		AuthorData& authorData,
+		Flags& flags,
+		EnvironmentDTO* env);
+
+	/// <summary>
+	/// Loops through all tags of a project and calls download tagged for each of them.
+	/// </summary>
+	void loopThroughTags(
+		std::vector<std::pair<std::string, long long>> &tags, 
+		ProjectMetaData &meta, 
+		long long startingTime,
+		Flags &flags, 
+		EnvironmentDTO* env);
+
+	/// <summary>
 	/// Parses and uploads a signle tag of a repository.
 	/// </summary>
 	/// <param name="prevTag">The tag we parsed before this.</param>

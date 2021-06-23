@@ -10,10 +10,6 @@ Utrecht University within the Software Project course.
 #include "dto.h"
 #include "projectMetadata.h"
 
-// External includes.
-#include <string>
-#include <vector>
-
 #define DATABASE_UPLOAD_REQUEST "upld"
 #define DATABASE_CHECK_UPLOAD_REQUEST "chup"
 #define DATABASE_CHECK_REQUEST "chck"

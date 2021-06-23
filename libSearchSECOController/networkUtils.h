@@ -10,7 +10,7 @@ Utrecht University within the Software Project course.
 #include "RunCrawler.h"
 
 // Parser includes.
-#include "Parser.h"
+#include "HashData.h"
 
 // Spider includes.
 #include "CodeBlock.h"

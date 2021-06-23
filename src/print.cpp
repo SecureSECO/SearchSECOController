@@ -253,11 +253,11 @@ void printMatches::parseDatabaseHashes(
 		}
 
 		receivedHashes[entrySplitted[0]] = entrySplitted;
-		if (entrySplitted.size() < 10)
+		if (entrySplitted.size() < 11)
 		{
 			continue;
 		}
-		for (int i = 10; i < 10 + std::stoi(entrySplitted[9]); i++)
+		for (int i = 11; i < 11 + std::stoi(entrySplitted[10]); i++)
 		{
 			dbAuthors[entrySplitted[i]]++;
 		}
@@ -325,7 +325,7 @@ void printMatches::printMatch(
 	}
 	print::printAndWriteToFile("Authors of function found in database: ", report);
 	
-	for (int i = 10; i < 10 + std::stoi(dbEntry[9]); i++)
+	for (int i = 11; i < 11 + std::stoi(dbEntry[10]); i++)
 	{
 		if (authorIdToName.count(dbEntry[i]) > 0)
 		{

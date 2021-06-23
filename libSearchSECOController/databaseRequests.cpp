@@ -167,6 +167,7 @@ std::string DatabaseRequests::execRequest(
 	std::tuple<bool, std::string> tuple = checkResponseCode(output, env->commandString);
 	auto retries = 0;
 	
+	// Retry if failed.
 	while (!std::get<0>(tuple) && retries < REQUEST_RETRIES)
 	{
 		auto waitFor = (int)pow(2, retries++) * BASE_RETRY_WAIT;

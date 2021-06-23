@@ -66,6 +66,8 @@ void Start::execute(Flags flags, EnvironmentDTO *env)
 
 	bool s = stop;
 	std::thread t(&Start::readCommandLine, this);
+
+	// Ask for jobs as long as the user does not want to stop.
 	while (!s)
 	{
 		std::string job = DatabaseRequests::getNextJob(env);

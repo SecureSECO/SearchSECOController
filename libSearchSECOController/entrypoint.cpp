@@ -8,6 +8,7 @@ Utrecht University within the Software Project course.
 
 void entrypoint::entrypoint(int argc, char* argv[], std::string apiIP, std::string apiPort)
 {
+	// Loguru setup.
 	loguru::g_stderr_verbosity = loguru::Verbosity_OFF;
 
 	loguru::init(argc, argv, { nullptr, "controller" });
@@ -16,12 +17,14 @@ void entrypoint::entrypoint(int argc, char* argv[], std::string apiIP, std::stri
 
 	loguru::g_stderr_verbosity = loguru::Verbosity_WARNING;
 
+	// Get user input.
 	Input userInput(argc, argv);
 	auto flags = userInput.flags;
 
 	loguru::g_stderr_verbosity = flags.flag_verbose;
 	print::debug("Parsed and sanitized the user input", __FILE__, __LINE__);
 
+	// Execute command.
 	auto commandFactory = new CommandFactory();
 
 	if (flags.flag_help) 

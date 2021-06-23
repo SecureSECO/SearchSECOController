@@ -24,6 +24,7 @@ void NetworkHandler::openConnection(std::string server, std::string port)
 {
 	print::debug("Opening a new connection", __FILE__, __LINE__);
 
+	// If both server and port are both -1, we will read the .env file to find the servers we want to connect to.
 	if (server == "-1" && port == "-1")
 	{
 		if (ips.size() == 0)
@@ -31,6 +32,7 @@ void NetworkHandler::openConnection(std::string server, std::string port)
 			readEnvFile();
 		}
 		auto ipList = ips;
+		// Shuffle so we always connect to a random one first.
 		Utils::shuffle(ipList);
 		for (auto server : ipList)
 		{
@@ -117,6 +119,7 @@ std::string NetworkHandler::receiveData()
 
 void NetworkHandler::readEnvFile()
 {
+	// Opening file.
 	auto path = (std::filesystem::path(Utils::getExecutablePath()) / ".env")
 		.string();
 
@@ -128,6 +131,8 @@ void NetworkHandler::readEnvFile()
 		error::errNoEnvFile(__FILE__, __LINE__);
 		return;
 	}
+
+	// Read line by line.
 	std::string line;
 	ips = std::vector<std::pair<std::string, std::string>>();
 	while (std::getline(fileHandler, line))
@@ -145,6 +150,7 @@ void NetworkHandler::readEnvFile()
 				}
 				ips.push_back(std::pair<std::string, std::string>(ipSplitted[0], ipSplitted[1]));
 			}
+			// If the ips is not empty, then that means we have read the API_IPS line and can return.
 			if (ips.size() > 0)
 			{
 				return;

@@ -333,7 +333,6 @@ std::string NetworkUtils::generateHeader(std::vector<std::string> &components)
 	{
 		if (components[i] == "")
 		{
-			// TODO: we might want to change this later, dependent on what the database wants.
 			components[i] = "-";
 		}
 		output.append(INNER_DELIMITER + components[i]);

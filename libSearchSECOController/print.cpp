@@ -6,22 +6,15 @@ Utrecht University within the Software Project course.
 
 // Controller includes.
 #include "databaseRequests.h"
-#include "networkUtils.h"
 #include "print.h"
 #include "utils.h"
 
-// Parser includes.
-#include "Parser.h"
-
 // External includes
+#include "loguru/loguru.hpp"
 #include <filesystem>
 #include <fstream>
-#include <functional>
 #include <iostream>
-#include <map>
-#include <stdlib.h>
-#include <StringStream.h>
-#include <iomanip>
+
 
 inline
 bool operator<(HashData const& lhs, HashData const& rhs)

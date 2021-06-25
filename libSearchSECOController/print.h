@@ -8,18 +8,12 @@ Utrecht University within the Software Project course.
 
 // Controller includes.
 #include "dto.h"
-#include "utils.h"
 
 // Parser includes.
 #include "HashData.h"
 
 // Spider includes.
 #include "CodeBlock.h"
-
-// External includes.
-#include "loguru/loguru.hpp"
-#include <string>
-#include <vector>
 
 
 namespace print

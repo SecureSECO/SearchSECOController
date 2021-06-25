@@ -8,15 +8,14 @@ Utrecht University within the Software Project course.
 #include "input.h"
 #include "print.h"
 #include "regexWrapper.h"
+#include "utils.h"
 
 // External includes.
 #include <filesystem>
 #include <iostream>
-#include <regex>
-#include <vector>
-
 
 #define CONFIGURATION_FILE "cfg/config.txt"
+
 
 Input::Input(int argc, char* argv[]) 
 	: flags()

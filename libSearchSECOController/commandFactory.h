@@ -8,11 +8,7 @@ Utrecht University within the Software Project course.
 
 // Controller includes.
 #include "commands.h"
-#include "flags.h"
 
-// External includes.
-#include <map>
-#include <string>
 
 class CommandFactory
 {

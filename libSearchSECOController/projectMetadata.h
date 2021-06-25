@@ -9,6 +9,9 @@ Utrecht University within the Software Project course.
 // Controller includes.
 #include "networkUtils.h"
 
+// Parser includes.
+#include "Parser.h"
+
 // External includes.
 #include <string>
 #include <vector>

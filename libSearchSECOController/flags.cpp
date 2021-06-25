@@ -13,6 +13,7 @@ Utrecht University within the Software Project course.
 #include <fstream>
 #include <thread>
 
+
 std::map<std::string, std::string> Flags::shorthandFlagToLong =
 {
 	{"h", "help"},

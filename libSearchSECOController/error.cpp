@@ -10,11 +10,8 @@ Utrecht University within the Software Project course.
 #include "utils.h"
 
 // External includes.
-#include <fstream>
+#include "loguru/loguru.hpp"
 #include <functional>
-#include <iostream>
-#include <map>
-#include <stdlib.h>
 
 
 #pragma region Error_messages

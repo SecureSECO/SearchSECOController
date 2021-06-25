@@ -30,7 +30,7 @@ namespace moduleFacades
 		std::string repository, 
 		Flags flags,
 		std::string downloadPath, 
-		std::string tag = "HEAD", 
+		std::string tag = "", 
 		std::string nextTag = "");
 	
 	/// <summary>

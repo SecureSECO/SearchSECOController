@@ -119,7 +119,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>..\src;..\parser\Parser\;..\spider-revisited\Spider-Revisited\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\libSearchSECOController;..\parser\Parser\;..\spider-revisited\Spider-Revisited\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -148,7 +148,7 @@
     <ClCompile Include="..\SearchSECOController\controller.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="Controller.vcxproj">
+    <ProjectReference Include="libSearchSECOController.vcxproj">
       <Project>{2b4653d9-dea6-40bb-a27f-15fa59f843b8}</Project>
     </ProjectReference>
   </ItemGroup>

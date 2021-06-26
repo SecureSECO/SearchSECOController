@@ -3,13 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.31019.35
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Controller", "vsProjects\Controller.vcxproj", "{2B4653D9-DEA6-40BB-A27F-15FA59F843B8}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "libSearchSECOController", "vsProjects\libSearchSECOController.vcxproj", "{2B4653D9-DEA6-40BB-A27F-15FA59F843B8}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Parser", "parser\Parser\Parser.vcxproj", "{0B2ABD3C-F7B7-4BF9-ACDE-BA39C1D9EF30}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Controller_Tests", "vsProjects\Controller_Tests.vcxproj", "{0F931C71-7EF8-43DC-B675-1C6D5989351E}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "tests", "vsProjects\tests.vcxproj", "{0F931C71-7EF8-43DC-B675-1C6D5989351E}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Executable", "vsProjects\Executable.vcxproj", "{A886EC61-40B0-4DA5-8832-8D0528071DB6}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SearchSECOController", "vsProjects\SearchSECOController.vcxproj", "{A886EC61-40B0-4DA5-8832-8D0528071DB6}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Spider-Revisited", "spider-revisited\Spider-Revisited\Spider-Revisited.vcxproj", "{1CA7580E-B483-4C24-AC1C-00327D39CDC9}"
 EndProject

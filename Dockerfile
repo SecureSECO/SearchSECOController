@@ -10,6 +10,6 @@ COPY . /controller
 RUN cd controller && \
 	mkdir build && \
 	cd build && \
-	cmake ../Executable && \
+	cmake ../SearchSECOController && \
 	cmake --build .
 ENTRYPOINT ["./controller/build/searchseco", "start"]

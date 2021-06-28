@@ -12,7 +12,7 @@ copy "VERSION" "x64/Debug/VERSION"
 
 mkdir "x64/Debug/SearchSECOSpider"
 mkdir "x64/Debug/SearchSECOParser"
-mkdir "x64/Debug/crawler"
+mkdir "x64/Debug/SearchSECOCrawler"
 
 more "SearchSECOSpider/VERSION" > "x64/Debug/SearchSECOSpider/VERSION"
 more "SearchSECOParser/VERSION" > "x64/Debug/SearchSECOParser/VERSION"

@@ -61,7 +61,7 @@ ProjectMetaData moduleFacades::getProjectMetadata(std::string url, Flags flags)
 	int er = errno;
 	print::loguruResetThreadName();
 
-	std::string versionHash = ""; // TODO get commit hash from spider.
+	std::string versionHash = "";
 
 	long long hash = Utils::getIdFromPMD(pmd);
 

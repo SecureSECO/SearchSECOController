@@ -34,7 +34,7 @@ namespace regex
 	);
 
 	/// <summary>
-	/// Validates a string is formatted as a valid URL.
+	/// Validates if a string is formatted as a valid URL.
 	/// </summary>
 	bool validateURL(std::string url);
 };

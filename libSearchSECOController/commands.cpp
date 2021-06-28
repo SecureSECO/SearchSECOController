@@ -279,7 +279,7 @@ void Start::downloadTagged(Flags flags, std::string prevTag, std::string curTag,
 Check::Check()
 {
 	this->helpMessageText = R"(
-	check: Hashes all methods from a github repository, and check for matches with the database.
+	check: Hashes all methods from a github repository, and checks for matches with the database.
 	A Summary will be printed to the console and written to a file.
 		Arguments:
 			Url to a github repository.

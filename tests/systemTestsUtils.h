@@ -4,9 +4,6 @@ Utrecht University within the Software Project course.
 © Copyright Utrecht University (Department of Information and Computing Sciences)
 */
 
-
-
-
 // Controller includes. 
 #include "databaseAPIMock.h"
 #include "entrypoint.h"

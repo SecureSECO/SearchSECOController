@@ -2,9 +2,9 @@
 # Utrecht University within the Software Project course.
 # © Copyright Utrecht University (Department of Information and Computing Sciences)
 
-add_subdirectory(../parser/Parser ./Parser)
-add_subdirectory(../spider-revisited/Spider-Revisited ./Spider-Revisited)
-add_subdirectory(../crawler/Crawler ./Crawler)
+add_subdirectory(../parser/libSearchSECOParser ./Parser)
+add_subdirectory(../spider-revisited/libSearchSECOSpider ./Spider-Revisited)
+add_subdirectory(../crawler/libSearchSECOCrawler ./Crawler)
 
 set(CMAKE_CXX_STANDARD 17)
 
@@ -67,7 +67,7 @@ add_library(controller
 )
 
 target_link_libraries(controller spider parser crawler ${Boost_LIBRARIES})
-target_include_directories(controller PUBLIC "${PROJECT_BINARY_DIR}" ../parser/Parser ../spider-revisited/Spider-Revisited ../crawler/Crawler ${Boost_INCLUDE_DIRS})
+target_include_directories(controller PUBLIC "${PROJECT_BINARY_DIR}" ../parser/libSearchSECOParser ../spider-revisited/libSearchSECOSpider ../crawler/libSearchSECOCrawler ${Boost_INCLUDE_DIRS})
 
 # copy version and configuration files
 if (WIN32)

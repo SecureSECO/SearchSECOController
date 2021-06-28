@@ -30,7 +30,7 @@ Make sure [CMake](https://cmake.org/download) is installed.
 - In the root of the project, run
 ```
 > mkdir build && cd build
-> cmake ../libSearchSECOController
+> cmake ../SearchSECOController
 > cmake --build .
 ```
 - Verify the install was successful by running

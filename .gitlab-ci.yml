@@ -22,7 +22,7 @@ google-tests:
   script:
     - mkdir controller_test_build
     - cd controller_test_build
-    - cmake ../Controller_Tests
+    - cmake ../tests
     - cmake --build .
     - ./controller_tests --gtest_output="xml:report.xml"
 
@@ -33,6 +33,6 @@ linting:
   variables:
     DEBIAN_FRONTEND: noninteractive
   script:
-    - cd src
+    - cd libSearchSECOController
     - clang-tidy *.cpp --extra-arg=-std=c++20 -- -I../parser/Parser/ -I../spider-revisited/Spider-Revisited/ -I../crawler/Crawler/
     - clang *.cpp -I../parser/Parser/ -I../spider-revisited/Spider-Revisited/ -I../crawler/Crawler/ -fsyntax-only -std=c++20

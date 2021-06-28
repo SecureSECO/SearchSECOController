@@ -276,6 +276,7 @@ void PrintMatches::getDatabaseAuthorAndProjectData(
 		auto splitted = Utils::split(projectEntries[i], INNER_DELIMITER);
 		if (splitted.size() == 1)
 		{
+		print::printline(projectEntries[i]);
 			continue;
 		}
 		dbProjects[splitted[0]] = splitted;
@@ -348,8 +349,8 @@ void PrintMatches::printSummary(std::map<std::string, int> &authorCopiedForm,
 	for (const auto& x : projects)
 	{
 		print::printAndWriteToFile(
-			"\t" + dbProjects[x.first.first][3] + ": " + std::to_string(x.second)
-			+ " (" + dbProjects[x.first.first][4] + ")", 
+			"\t" + dbProjects[x.first.first][4] + ": " + std::to_string(x.second)
+			+ " (" + dbProjects[x.first.first][5] + ")", 
 			report
 		);
 	}

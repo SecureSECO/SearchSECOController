@@ -348,8 +348,8 @@ void PrintMatches::printSummary(std::map<std::string, int> &authorCopiedForm,
 	for (const auto& x : projects)
 	{
 		print::printAndWriteToFile(
-			"\t" + dbProjects[x.first.first][3] + ": " + std::to_string(x.second)
-			+ " (" + dbProjects[x.first.first][4] + ")", 
+			"\t" + dbProjects[x.first.first][4] + ": " + std::to_string(x.second)
+			+ " (" + dbProjects[x.first.first][5] + ")", 
 			report
 		);
 	}

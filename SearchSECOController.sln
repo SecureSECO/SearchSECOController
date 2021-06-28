@@ -9,11 +9,11 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "tests", "vsProjects\tests.v
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SearchSECOController", "vsProjects\SearchSECOController.vcxproj", "{A886EC61-40B0-4DA5-8832-8D0528071DB6}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "libSearchSECOCrawler", "crawler\vsProjects\libSearchSECOCrawler.vcxproj", "{5CD94DA9-B893-4439-8F37-55DF86CD1399}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "libSearchSECOCrawler", "SearchSECOCrawler\vsProjects\libSearchSECOCrawler.vcxproj", "{5CD94DA9-B893-4439-8F37-55DF86CD1399}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "libSearchSECOParser", "parser\vsProjects\libSearchSECOParser.vcxproj", "{0B2ABD3C-F7B7-4BF9-ACDE-BA39C1D9EF30}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "libSearchSECOParser", "SearchSECOParser\vsProjects\libSearchSECOParser.vcxproj", "{0B2ABD3C-F7B7-4BF9-ACDE-BA39C1D9EF30}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "libSearchSECOSpider", "spider-revisited\vsProjects\libSearchSECOSpider.vcxproj", "{1CA7580E-B483-4C24-AC1C-00327D39CDC9}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "libSearchSECOSpider", "SearchSECOSpider\vsProjects\libSearchSECOSpider.vcxproj", "{1CA7580E-B483-4C24-AC1C-00327D39CDC9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

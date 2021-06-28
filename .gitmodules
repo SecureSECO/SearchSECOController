@@ -1,12 +1,13 @@
-[submodule "parser"]
-  path = parser
-  url = ../parser.git
-  branch = development
-[submodule "spider-revisited"]
-  path = spider-revisited
-  url = ../spider-revisited.git
-  branch = development
-[submodule "crawler"]
-  path = crawler
-  url = ../crawler.git
-  branch = development
+[submodule "SearchSECOCrawler"]
+	path = SearchSECOCrawler
+	url = ../crawler.git	
+	branch = master
+[submodule "SearchSECOParser"]
+	path = SearchSECOParser
+	url = ../parser.git	
+	branch = master
+[submodule "SearchSECOSpider"]
+	path = SearchSECOSpider
+	url = ../spider-revisited.git	
+	branch = master
+

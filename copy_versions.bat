@@ -1,19 +1,19 @@
 copy "VERSION" "x64/Release/VERSION"
 
-mkdir "x64/Release/spider"
-mkdir "x64/Release/parser"
-mkdir "x64/Release/crawler"
+mkdir "x64/Release/SearchSECOSpider"
+mkdir "x64/Release/SearchSECOParser"
+mkdir "x64/Release/SearchSECOCrawler"
 
-more "spider-revisited/VERSION" > "x64/Release/spider/VERSION"
-more "parser/VERSION" > "x64/Release/parser/VERSION"
-more "crawler/VERSION" > "x64/Release/crawler/VERSION"
+more "SearchSECOSpider/VERSION" > "x64/Release/SearchSECOSpider/VERSION"
+more "SearchSECOParser/VERSION" > "x64/Release/SearchSECOParser/VERSION"
+more "SearchSECOCrawler/VERSION" > "x64/Release/SearchSECOCrawler/VERSION"
 
 copy "VERSION" "x64/Debug/VERSION"
 
-mkdir "x64/Debug/spider"
-mkdir "x64/Debug/parser"
-mkdir "x64/Debug/crawler"
+mkdir "x64/Debug/SearchSECOSpider"
+mkdir "x64/Debug/SearchSECOParser"
+mkdir "x64/Debug/SearchSECOCrawler"
 
-more "spider-revisited/VERSION" > "x64/Debug/spider/VERSION"
-more "parser/VERSION" > "x64/Debug/parser/VERSION"
-more "crawler/VERSION" > "x64/Debug/crawler/VERSION"
+more "SearchSECOSpider/VERSION" > "x64/Debug/SearchSECOSpider/VERSION"
+more "SearchSECOParser/VERSION" > "x64/Debug/SearchSECOParser/VERSION"
+more "SearchSECOCrawler/VERSION" > "x64/Debug/SearchSECOCrawler/VERSION"

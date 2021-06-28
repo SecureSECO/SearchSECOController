@@ -2,13 +2,13 @@
 # Utrecht University within the Software Project course.
 # © Copyright Utrecht University (Department of Information and Computing Sciences)
 
-add_subdirectory(../parser/Parser ./Parser)
-add_subdirectory(../spider-revisited/Spider-Revisited ./Spider-Revisited)
-add_subdirectory(../crawler/Crawler ./Crawler)
+add_subdirectory(../SearchSECOParser/libSearchSECOParser ./libSearchSECOParser)
+add_subdirectory(../SearchSECOSpider/libSearchSECOSpider ./libSearchSECOSpider)
+add_subdirectory(../SearchSECOCrawler/libSearchSECOCrawler ./libSearchSECOCrawler)
 
 set(CMAKE_CXX_STANDARD 17)
 
-message("Building the controller...")
+message("Building SearchSECOController...")
 if(NOT DEFINED LOGURU_INCLUDED)
    set(LOGURU_FILES
    ../external/loguru/loguru.hpp
@@ -66,8 +66,8 @@ add_library(controller
   ${LOGURU_FILES}
 )
 
-target_link_libraries(controller spider parser crawler ${Boost_LIBRARIES})
-target_include_directories(controller PUBLIC "${PROJECT_BINARY_DIR}" ../parser/Parser ../spider-revisited/Spider-Revisited ../crawler/Crawler ${Boost_INCLUDE_DIRS})
+target_link_libraries(controller spider libSearchSECOParser crawler ${Boost_LIBRARIES})
+target_include_directories(controller PUBLIC "${PROJECT_BINARY_DIR}" ../SearchSECOParser/libSearchSECOParser ../SearchSECOSpider/libSearchSECOSpider ../SearchSECOCrawler/libSearchSECOCrawler ${Boost_INCLUDE_DIRS})
 
 # copy version and configuration files
 if (WIN32)

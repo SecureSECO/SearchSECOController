@@ -8,6 +8,7 @@ Utrecht University within the Software Project course.
 // Google test header file.
 #include "pch.h"
 
+#include "print.h"
 #include "systemTestsUtils.h"
 
 

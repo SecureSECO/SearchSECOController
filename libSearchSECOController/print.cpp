@@ -276,7 +276,6 @@ void PrintMatches::getDatabaseAuthorAndProjectData(
 		auto splitted = Utils::split(projectEntries[i], INNER_DELIMITER);
 		if (splitted.size() == 1)
 		{
-		print::printline(projectEntries[i]);
 			continue;
 		}
 		dbProjects[splitted[0]] = splitted;

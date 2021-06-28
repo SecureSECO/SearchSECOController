@@ -144,7 +144,7 @@
     </Link>
     <PostBuildEvent>
       <Command>mkdir "$(TargetDir)cfg"
-copy /Y "$(SolutionDir)parser\antlr\lib\debug\antlr4-runtime.dll" "$(TargetDir)antlr4-runtime.dll"
+copy /Y "$(SolutionDir)parser\external\antlr\lib\debug\antlr4-runtime.dll" "$(TargetDir)antlr4-runtime.dll"
 copy /Y "$(SolutionDir)Executable\.env" "$(TargetDir).env"
 copy /Y "$(SolutionDir)Executable\cfg\config.txt" "$(TargetDir)cfg\config.txt"
 cd ..
@@ -172,7 +172,7 @@ call copy_versions.bat</Command>
     </Link>
     <PostBuildEvent>
       <Command>if not exist "$(TargetDir)cfg" mkdir "$(TargetDir)cfg"
-copy /Y "$(SolutionDir)parser\antlr\lib\release\antlr4-runtime.dll" "$(TargetDir)antlr4-runtime.dll"
+copy /Y "$(SolutionDir)parser\external\antlr\lib\release\antlr4-runtime.dll" "$(TargetDir)antlr4-runtime.dll"
 copy /Y "$(SolutionDir)SearchSECOController\.env" "$(TargetDir).env"
 copy /Y "$(SolutionDir)SearchSECOController\cfg\config.txt" "$(TargetDir)cfg\config.txt"
 cd ..

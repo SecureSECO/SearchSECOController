@@ -76,6 +76,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
+    <TargetName>searchseco</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
@@ -91,7 +92,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>..\parser\Parser;..\spider-revisited\Spider-Revisited;..\crawler\Crawler;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\parser\libSearchSECOParser;..\spider-revisited\libSearchSECOSpider;..\crawler\libSearchSECOCrawler;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -111,7 +112,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>..\parser\Parser;..\spider-revisited\Spider-Revisited;..\crawler\Crawler;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\parser\libSearchSECOParser;..\spider-revisited\libSearchSECOSpider;..\crawler\libSearchSECOCrawler;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
@@ -132,7 +133,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>..\parser\Parser;..\spider-revisited\Spider-Revisited;..\crawler\Crawler;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\parser\libSearchSECOParser;..\spider-revisited\libSearchSECOSpider;..\crawler\libSearchSECOCrawler;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
@@ -158,7 +159,7 @@ call copy_versions.bat</Command>
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>..\parser\Parser;..\spider-revisited\Spider-Revisited;..\crawler\Crawler;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\parser\libSearchSECOParser;..\spider-revisited\libSearchSECOSpider;..\crawler\libSearchSECOCrawler;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
@@ -199,17 +200,6 @@ call copy_versions.bat</Command>
     <ClCompile Include="..\external\loguru\loguru.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\crawler\Crawler\Crawler.vcxproj">
-      <Project>{5cd94da9-b893-4439-8f37-55df86cd1399}</Project>
-    </ProjectReference>
-    <ProjectReference Include="..\parser\Parser\Parser.vcxproj">
-      <Project>{0b2abd3c-f7b7-4bf9-acde-ba39c1d9ef30}</Project>
-    </ProjectReference>
-    <ProjectReference Include="..\spider-revisited\Spider-Revisited\Spider-Revisited.vcxproj">
-      <Project>{1ca7580e-b483-4c24-ac1c-00327d39cdc9}</Project>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <ClInclude Include="..\libSearchSECOController\commandFactory.h" />
     <ClInclude Include="..\libSearchSECOController\commands.h" />
     <ClInclude Include="..\libSearchSECOController\databaseRequests.h" />
@@ -229,6 +219,17 @@ call copy_versions.bat</Command>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\crawler\vsProjects\libSearchSECOCrawler.vcxproj">
+      <Project>{5cd94da9-b893-4439-8f37-55df86cd1399}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\parser\vsProjects\libSearchSECOParser.vcxproj">
+      <Project>{0b2abd3c-f7b7-4bf9-acde-ba39c1d9ef30}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\spider-revisited\vsProjects\libSearchSECOSpider.vcxproj">
+      <Project>{1ca7580e-b483-4c24-ac1c-00327d39cdc9}</Project>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

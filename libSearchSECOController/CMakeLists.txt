@@ -2,9 +2,9 @@
 # Utrecht University within the Software Project course.
 # © Copyright Utrecht University (Department of Information and Computing Sciences)
 
-add_subdirectory(../parser/libSearchSECOParser ./Parser)
-add_subdirectory(../spider-revisited/libSearchSECOSpider ./Spider-Revisited)
-add_subdirectory(../crawler/libSearchSECOCrawler ./Crawler)
+add_subdirectory(../parser/libSearchSECOParser ./libSearchSECOParser)
+add_subdirectory(../spider-revisited/libSearchSECOSpider ./libSearchSECOSpider)
+add_subdirectory(../crawler/libSearchSECOCrawler ./libSearchSECOCrawler)
 
 set(CMAKE_CXX_STANDARD 17)
 

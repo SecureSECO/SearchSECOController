@@ -60,5 +60,16 @@ This will start the container in detached mode and it will restart automatically
 `docker run --name=controller-container --network=host -i controller-image`
 
 # License
+
+This project is licensed under the GNU Affero General Public License v3.0. See [LICENSE](LICENSE) for more info.
+
 This program has been developed by students from the bachelor Computer Science at Utrecht University within the Software Project course.
 © Copyright Utrecht University (Department of Information and Computing Sciences)
+
+## Licenses for code from other projects
+
+The SearchSECOController does not use licensed external code itself, though the SearchSECO modules do. Please refer to their respective README files:
+
+* [SearchSECOCrawler]()
+* [SearchSECOParser]()
+* [SearchSECODatabaseAPI]()

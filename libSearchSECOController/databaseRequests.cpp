@@ -10,10 +10,6 @@ Utrecht University within the Software Project course.
 #include "print.h"
 #include "utils.h"
 
-#define REQUEST_RETRIES 3
-#define BASE_RETRY_WAIT 1000
-
-
 std::string DatabaseRequests::uploadHashes(std::vector<HashData> &hashes, 
 	ProjectMetaData metaData, 
 	AuthorData &authorData,

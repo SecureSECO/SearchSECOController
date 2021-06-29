@@ -378,7 +378,6 @@ TEST(networkingGetProjectToSend, more_projects)
 
 TEST(networkingGetAddJobRequest, two_jobs)
 {
-	// TODO: Priority, once that has been added.
 	std::vector<std::string> authors = { "url1", "url2" };
 	int size;
 	const char* buffer = NetworkUtils::getJobsRequest(authors, size);
@@ -399,7 +398,6 @@ TEST(networkingGetAddJobRequest, empty)
 
 TEST(networkingGetAddJobRequest, more_jobs)
 {
-	// TODO: Priority, once that has been added.
 	std::vector<std::string> authors = { "url1", "url2", "url3" , "url4" , "url5" };
 	int size;
 	const char* buffer = NetworkUtils::getJobsRequest(authors, size);

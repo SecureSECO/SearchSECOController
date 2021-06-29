@@ -135,7 +135,7 @@ void print::versionFull()
 	std::ifstream versionFile;
 	std::string version;
 
-	// print version of the main program.
+	// Print version of the main program.
 	versionFile.open("VERSION");
 	std::getline(versionFile, version);
 
@@ -174,7 +174,7 @@ void PrintMatches::printHashMatches(
 	std::map<std::string, std::vector<std::string>> dbProjects;
 	std::map<std::string, std::vector<std::string>> authorIdToName;
 
-	// Seperate the response we got into its individual entries.
+	// Separate the response we got into its individual entries.
 	std::vector<std::string> dbentries = Utils::split(databaseOutput, ENTRY_DELIMITER);
 	parseDatabaseHashes(dbentries, receivedHashes, projects, dbAuthors);
 	
@@ -191,7 +191,7 @@ void PrintMatches::printHashMatches(
 	int matches = 0;
 	std::map<std::string, int> authorCopiedForm;
 	std::map<std::string, int> authorsCopied;
-	// Add all hashes we got localy to a map.
+	// Add all hashes we got locally to a map.
 	for (int i = 0; i < hashes.size(); i++)
 	{
 		if (receivedHashes.count(hashes[i].hash) > 0)

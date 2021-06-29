@@ -4,14 +4,14 @@ Utrecht University within the Software Project course.
 © Copyright Utrecht University (Department of Information and Computing Sciences)
 */
 
-// Google test header file
+// Google test header file.
 #include "pch.h"
 
-// Controller includes
+// Controller includes.
 #include "databaseAPIMock.h"
 #include "databaseRequests.h"
 
-// External includes
+// External includes.
 #include <thread>
 
 
@@ -19,7 +19,7 @@ Utrecht University within the Software Project course.
 #define LOCALHOST "127.0.0.1"
 #define PORT "6969"
 
-// Dummies
+// Dummies.
 #define DUMMYHASHES { HashData("hash", "functionname", "filename", 5, 420) }
 
 

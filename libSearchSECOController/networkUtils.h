@@ -28,8 +28,8 @@ class NetworkUtils
 public:
 	/// <summary>
 	/// Converts a list of Hashes into a big string that can be send to the database.
-	/// The individual parts components of each entry will be seperated by a null character.
-	/// The entries will be seperated by a new line.
+	/// The individual parts components of each entry will be separated by a null character.
+	/// The entries will be separated by a new line.
 	/// The first entry will be the header that you give this function.
 	/// </summary>
 	/// 
@@ -39,11 +39,11 @@ public:
 	/// The size of the string that is returned will be put in here. 
 	/// The initial value that you give it will be ignored.</param>
 	/// 
-	/// <param name="header">The header that you want infront of the string. 
+	/// <param name="header">The header that you want in front of the string. 
 	/// Even if the header is empty, it will still put an end line in the beginning.</param>
 	/// 
 	/// <param name="authors">Author data that the spider returns.</param>
-	/// <param name="prevCommitTime">Time of the commmit before the version we parsed now.</param>
+	/// <param name="prevCommitTime">Time of the commit before the version we parsed now.</param>
 	/// <param name="unchangedFiles">The files we did not change from the previous version.</param>
 	/// 
 	/// <returns>A char pointer to string with all the data in it.</returns>
@@ -57,7 +57,7 @@ public:
 
 	/// <summary>
 	/// This function will only copy the actual hash into a string.
-	/// The hashes will be seperated by a new line.
+	/// The hashes will be separated by a new line.
 	/// </summary>
 	/// 
 	/// <param name="data">The hashes you want to put in the string.</param>
@@ -70,7 +70,7 @@ public:
 	static const char* getHashDataFromHashes(std::vector<HashData>& data, int& size);
 
 	/// <summary>
-	/// Will put all the strings that you pass it into a single string seperated by null chars.
+	/// Will put all the strings that you pass it into a single string separated by null chars.
 	/// </summary>
 	static std::string generateHeader(std::vector<std::string> &components);
 
@@ -90,7 +90,7 @@ public:
 	/// <summary>
 	/// Will match the inputlist rawData with inputlist hashes to give where they overlap.
 	/// The output of this function is both the size that the author data will take up
-	/// in when send to the database and the actuall strings that we are going to send.
+	/// in when send to the database and the actual strings that we are going to send.
 	/// </summary>
 	/// <param name="authors">The output map. Will give for each Hash in hashes a list of strings
 	///		which contain who worked on the given function.</param>

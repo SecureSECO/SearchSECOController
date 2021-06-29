@@ -251,7 +251,7 @@ const char* NetworkUtils::getAllDataFromHashes(std::vector<HashData>& data, int&
 	std::map<std::string, std::vector<HashData*>> transformedHashes;
 	transformHashList(data, transformedHashes);
 	std::map<HashData, std::vector<std::string>> authorSendData;
-	// Calcutating the eventual size of the string before hand, 
+	// Calculating the eventual size of the string before hand, 
 	// so that we don't have to increase the size of the buffer.
 	size = header.size() + 1 + getAuthors(authorSendData, transformedHashes, authors) 
 		+ 1 + 1 + prevCommitTime.size();
@@ -298,7 +298,7 @@ const char* NetworkUtils::getAllDataFromHashes(std::vector<HashData>& data, int&
 
 const char* NetworkUtils::getHashDataFromHashes(std::vector<HashData>& data, int& size)
 {
-	// Calcutating the eventual size of the string before hand, 
+	// Calculating the eventual size of the string before hand, 
 	// so that we don't have to increase the size of the buffer.
 	size = 0;
 	for (HashData hd : data)

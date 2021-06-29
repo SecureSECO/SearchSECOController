@@ -16,7 +16,7 @@ public:
 	CommandFactory();
 	
 	/// <summary>
-	/// Returns the command specified by the given string. Will always fail if init() is not called prior.
+	/// Returns the command specified by the given string. Will always fail if init() is not called beforehand.
 	/// </summary>
 	Command* getCommand(std::string commandString);
 	

@@ -4,13 +4,13 @@ Utrecht University within the Software Project course.
 © Copyright Utrecht University (Department of Information and Computing Sciences)
 */
 
-// Google test header file
+// Google test header file.
 #include "pch.h"
 
-// Controller includes
+// Controller includes.
 #include "regexWrapper.h"
 
-// External includes
+// External includes.
 #include <map>
 
 
@@ -30,7 +30,7 @@ std::string *validURLs = new std::string[validURLc]{
 
 TEST(regex, syntaxNoURLSuccesscase)
 {
-	// Arrange
+	// Arrange.
 	std::map<
 		std::string, 
 		std::tuple<
@@ -50,7 +50,7 @@ TEST(regex, syntaxNoURLSuccesscase)
 		{"commandButNoFlags", std::make_tuple("commandButNoFlags", "", "")}
 	};
 
-	// Act 
+	// Act.
 	for (auto const& testcase : testcases)
 	{
 		auto input = testcase.first;
@@ -58,7 +58,7 @@ TEST(regex, syntaxNoURLSuccesscase)
 
 		std::tuple<std::string, std::string, std::string> output;
 
-		// Assert
+		// Assert.
 
 		ASSERT_TRUE(regex::validateSyntax(input, output));
 
@@ -68,7 +68,7 @@ TEST(regex, syntaxNoURLSuccesscase)
 
 TEST(regex, syntax__URLSuccesscase)
 {
-	// Arrange
+	// Arrange.
 	std::map<
 		std::string, 
 		std::tuple<
@@ -87,7 +87,7 @@ TEST(regex, syntax__URLSuccesscase)
 			std::make_tuple("command", validURLs[3], "-V 3")},
 	};
 
-	// Act
+	// Act.
 	for (auto const& testcase : testcases)
 	{
 		auto input = testcase.first;
@@ -95,7 +95,7 @@ TEST(regex, syntax__URLSuccesscase)
 
 		std::tuple<std::string, std::string, std::string> output;
 
-		// Assert
+		// Assert.
 		
 		ASSERT_TRUE(regex::validateSyntax(input, output));
 
@@ -105,21 +105,21 @@ TEST(regex, syntax__URLSuccesscase)
 
 TEST(regex, syntaxNoURLFailurecase)
 {
-	// Arrange
+	// Arrange.
 	int testcasec = 1;
 	std::string *testcases = new std::string[testcasec]
 	{
 		""
 	};
 
-	// Act
+	// Act.
 	for (int i = 0; i < testcasec; ++i)
 	{
 		auto input = testcases[i];
 
 		std::tuple<std::string, std::string, std::string> output;
 
-		// Assert
+		// Assert.
 
 		EXPECT_FALSE(regex::validateSyntax(input, output));
 	}
@@ -130,11 +130,11 @@ TEST(regex, syntaxNoURLFailurecase)
 
 TEST(regex, parseFlargsSuccesscase)
 {
-	// Arrange
-	std::map<std::string,       // Input
+	// Arrange.
+	std::map<std::string,       // Input.
 			 std::map<          // Map of flag-argument pairs:
-				std::string,	//	key   = flag
-				std::string>	//	value = argument
+				std::string,	//	key   = flag.
+				std::string>	//	value = argument.
 			 >
 		testcases = 
 	{
@@ -168,7 +168,7 @@ TEST(regex, parseFlargsSuccesscase)
 
 		std::map<std::string, std::string> output;
 
-		// Act & Assert
+		// Act & Assert.
 		
 		ASSERT_NO_FATAL_FAILURE(regex::parseFlargPairs(input, output));
 
@@ -185,7 +185,7 @@ TEST(regex, parseFlargsSuccesscase)
 
 TEST(regex, parseFlargsFailurecase___fatal)
 {
-	// Arrange
+	// Arrange.
 	int testcasec = 3;
 	std::string *testcases = new std::string[testcasec]
 	{
@@ -204,13 +204,13 @@ TEST(regex, parseFlargsFailurecase___fatal)
 
 TEST(regex, parseFlargsFailurecaseNonfatal)
 {
-	// Arrange
+	// Arrange.
 	int testcasec = 3;
 	std::map<
-		std::string,		// Input
-		std::map<			// Expected Output
-			std::string,	//	Expected Flag
-			std::string>	//	Expected Argument
+		std::string,		// Input.
+		std::map<			// Expected Output.
+			std::string,	//	Expected Flag.
+			std::string>	//	Expected Argument.
 		> testcases = 
 	{
 		{
@@ -240,10 +240,10 @@ TEST(regex, parseFlargsFailurecaseNonfatal)
 		auto input = testcase.first;
 		auto expected_output = testcase.second;
 
-		// Act
+		// Act.
 		regex::parseFlargPairs(input, output);
 
-		// Assert
+		// Assert.
 		ASSERT_EQ(output.size(), expected_output.size());
 		
 		for (auto const& pair : output)
@@ -263,7 +263,7 @@ TEST(regex, urlValidationSuccesscase)
 {
 	// Arrange has been taken care of.
 
-	// Act & Assert 
+	// Act & Assert.
 
 	for (int i = 0; i < validURLc; ++i)
 	{
@@ -275,7 +275,7 @@ TEST(regex, urlValidationSuccesscase)
 
 TEST(regex, urlValidationFailurecase)
 {
-	// Arrange
+	// Arrange.
 	int invalidURLc = 5;
 	std::string *invalidURLs = new std::string[invalidURLc]
 	{
@@ -286,7 +286,7 @@ TEST(regex, urlValidationFailurecase)
 		"www.github"
 	};
 
-	// Act & Assert 
+	// Act & Assert.
 
 	for (int i = 0; i < invalidURLc; ++i)
 	{

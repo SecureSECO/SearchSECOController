@@ -4,15 +4,15 @@ Utrecht University within the Software Project course.
 © Copyright Utrecht University (Department of Information and Computing Sciences)
 */
 
-// Google test header file
+// Google test header file.
 #include "pch.h"
 
-// Controller includes
+// Controller includes.
 #include "error.cpp"
 #include "print.h"
 #include "utils.h"
 
-// External includes
+// External includes.
 #include <climits>
 #include <regex>
 
@@ -20,7 +20,7 @@ Utrecht University within the Software Project course.
 #define GENERIC_STRING "teststring"
 #define GENERIC_INT 1
 
-// testing data
+// Testing data.
 int test_strc = 5;
 std::string* test_strs = new std::string[test_strc]
 {
@@ -31,13 +31,13 @@ std::string* test_strs = new std::string[test_strc]
 	""
 };
 
-// test helper functions
+// Test helper functions.
 bool isSubstring(std::string s1, std::string s2)
 {
 	return s2.find(s1) != std::string::npos;
 }
 
-// print helper functions
+// Print helper functions.
 TEST(tab, single)
 {
 	std::string s = "\t";
@@ -158,7 +158,7 @@ TEST(plural, pluralFailurecase)
 	}
 }
 
-// printing functions
+// Printing functions.
 
 TEST(printline, successcase)
 {
@@ -224,7 +224,7 @@ AuthorData getDummyAuthorData()
 	return authordata;
 }
 
-// ERROR TESTING
+// ERROR TESTING.
 int test_intc = 6;
 int* test_ints = new int[test_intc]
 {

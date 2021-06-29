@@ -339,4 +339,15 @@ ASALocalRun/
 
 # BeatPulse healthcheck temp database
 healthchecksdb
+
+# Download folder
 spiderDownloads/
+
+# Config file (also contains user token)
+Executable/cfg/config.txt
+
+#Reports folder
+reports/
+
+#.env file
+.env

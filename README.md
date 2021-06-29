@@ -20,9 +20,9 @@ After cloning the repository, make sure to initialize and update the submodules 
       > bootstrap.bat
       > b2.exe
       ```
-- [SearchSECOCrawler](https://git.science.uu.nl/searchseco/crawler)
-- [SearchSECOSpider](https://git.science.uu.nl/searchseco/spider-revisited)
-- [SearchSECOParser](https://git.science.uu.nl/searchseco/parser)
+- [SearchSECOCrawler](https://github.com/SecureSECO/SearchSECOCrawler)
+- [SearchSECOSpider](https://github.com/SecureSECO/SearchSECOSpider)
+- [SearchSECOParser](https://github.com/SecureSECO/SearchSECOParser)
 
 ## Building
 ### CMake
@@ -70,6 +70,6 @@ This program has been developed by students from the bachelor Computer Science a
 
 The SearchSECOController does not use licensed external code itself, though the SearchSECO modules do. Please refer to their respective README files:
 
-* [SearchSECOCrawler]()
-* [SearchSECOParser]()
-* [SearchSECODatabaseAPI]()
+* [SearchSECOCrawler](https://github.com/SecureSECO/SearchSECOCrawler#licenses-for-code-from-other-projects)
+* [SearchSECOParser](https://github.com/SecureSECO/SearchSECOParser#licenses-for-code-from-other-projects)
+* [SearchSECODatabaseAPI](https://github.com/SecureSECO/SearchSECODatabaseAPI#licenses-for-code-from-other-projects)

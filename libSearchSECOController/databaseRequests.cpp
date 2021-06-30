@@ -191,7 +191,7 @@ std::tuple<bool, std::string> DatabaseRequests::checkResponseCode(std::string da
 
 	if (statusCode == "200") 
 	{
-		print::log("Database request successful", __FILE__, __LINE__);
+		print::debug("Database request successful", __FILE__, __LINE__);
 		return std::make_tuple(true, info);
 	}
 	else if (statusCode == "400") 

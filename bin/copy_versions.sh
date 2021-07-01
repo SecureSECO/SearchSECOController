@@ -1,4 +1,4 @@
-mkdir -p "../build/SearchSECOParser" "../build/SearchSECOSpider" "../build/crawler"
+mkdir -p "../build/SearchSECOParser" "../build/SearchSECOSpider" "../build/SearchSECOCrawler"
 
 more "../VERSION" > "../build/VERSION"
 more "../SearchSECOParser/VERSION" > "../build/SearchSECOParser/VERSION"

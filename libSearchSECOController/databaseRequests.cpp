@@ -25,6 +25,8 @@ std::string DatabaseRequests::uploadHashes(std::vector<HashData> &hashes,
 		authorData, 
 		prevCommitTime, 
 		unchangedFiles);
+
+	print::log("Uploading " + std::to_string(hashes.size()) + " methods to the database", __FILE__, __LINE__);
 	return execRequest(DATABASE_UPLOAD_REQUEST, rawData, dataSize, env);
 }
 

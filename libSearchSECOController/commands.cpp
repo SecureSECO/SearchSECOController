@@ -71,10 +71,12 @@ void Start::execute(Flags flags, EnvironmentDTO *env)
 		}
 		if (splitted[0] == "Spider")
 		{
+			print::log("New job: Download and parse " + splitted[1], __FILE__, __LINE__);
 			versionProcessing(splitted, flags, env);
 		}
 		else if (splitted[0] == "Crawl")
 		{
+			print::log("New job: Crawl for more repository URLs", __FILE__, __LINE__);
 			handleCrawlRequest(splitted, flags, env);
 		}
 		else if (splitted[0] == "NoJob")
@@ -98,7 +100,6 @@ void Start::execute(Flags flags, EnvironmentDTO *env)
 
 void Start::handleCrawlRequest(std::vector<std::string> &splitted, Flags flags, EnvironmentDTO *env)
 {
-	print::log("Start crawling", __FILE__, __LINE__);
 	if (splitted.size() < 2)
 	{
 		error::errInvalidDatabaseAnswer(__FILE__, __LINE__);
@@ -109,7 +110,6 @@ void Start::handleCrawlRequest(std::vector<std::string> &splitted, Flags flags, 
 
 void Start::handleSpiderRequest(std::vector<std::string> &splitted, Flags flags, EnvironmentDTO *env)
 {
-	print::log("Parsing and uploading " + splitted[1], __FILE__, __LINE__);
 	Upload upload = Upload();
 	if (splitted.size() < 2 || splitted[1] == "")
 	{
@@ -158,7 +158,6 @@ void Start::readCommandLine()
 
 void Start::versionProcessing(std::vector<std::string>& splitted, Flags flags, EnvironmentDTO* env)
 {
-	print::log("Start parsing and uploading " + splitted[1], __FILE__, __LINE__);
 	if (splitted.size() < 2 || splitted[1] == "")
 	{
 		error::errInvalidDatabaseAnswer(__FILE__, __LINE__);

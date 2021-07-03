@@ -194,7 +194,7 @@ void Start::versionProcessing(std::vector<std::string>& splitted, Flags flags, E
 	// we just need to parse the most recent version we downloaded earlier.
 	auto tagc = tags.size();
 
-	print::log("Project has " + std::to_string(tagc) + " tags", __FILE__, __LINE__);
+	print::log("Project has " + std::to_string(tagc) + print::plural(" tag", tagc), __FILE__, __LINE__);
 	if (std::stoll(meta.versionTime) > startingTime && tagc == 0) 
 	{		
 		parseLatest(meta, authorData, flags, env);

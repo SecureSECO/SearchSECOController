@@ -38,7 +38,7 @@ void NetworkHandler::openConnection(std::string server, std::string port)
 		{
 			try
 			{
-				print::log("Connecting with " + server.first, __FILE__, __LINE__);
+				print::debug("Connecting with " + server.first, __FILE__, __LINE__);
 				connect(server.first, server.second);
 				return;
 			}
@@ -77,7 +77,7 @@ NetworkHandler* NetworkHandler::createHandler()
 
 void NetworkHandler::sendData(const char* data, int dataLength)
 {
-	print::log("Sending " + std::to_string(dataLength) + " bytes to database.", __FILE__, __LINE__);
+	print::debug("Sending " + std::to_string(dataLength) + " bytes to database.", __FILE__, __LINE__);
 	boost::asio::write(socket, boost::asio::buffer(data, dataLength));
 }
 
@@ -104,7 +104,7 @@ std::string NetworkHandler::receiveData()
 		if (error == boost::asio::error::eof)
 		{
 			// Connection closed cleanly by peer.
-			print::log("Received data from database.", __FILE__, __LINE__);
+			print::debug("Received data from database.", __FILE__, __LINE__);
 			break;
 		}
 		else if (error)

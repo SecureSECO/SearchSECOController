@@ -25,6 +25,8 @@ std::string DatabaseRequests::uploadHashes(std::vector<HashData> &hashes,
 		authorData, 
 		prevCommitTime, 
 		unchangedFiles);
+
+	print::log("Uploading " + std::to_string(hashes.size()) + " methods to the database", __FILE__, __LINE__);
 	return execRequest(DATABASE_UPLOAD_REQUEST, rawData, dataSize, env);
 }
 
@@ -191,7 +193,7 @@ std::tuple<bool, std::string> DatabaseRequests::checkResponseCode(std::string da
 
 	if (statusCode == "200") 
 	{
-		print::log("Database request successful", __FILE__, __LINE__);
+		print::debug("Database request successful", __FILE__, __LINE__);
 		return std::make_tuple(true, info);
 	}
 	else if (statusCode == "400") 

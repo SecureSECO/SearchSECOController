@@ -71,15 +71,17 @@ void Start::execute(Flags flags, EnvironmentDTO *env)
 		}
 		if (splitted[0] == "Spider")
 		{
+			print::log("New job: Download and parse " + splitted[1], __FILE__, __LINE__);
 			versionProcessing(splitted, flags, env);
 		}
 		else if (splitted[0] == "Crawl")
 		{
+			print::log("New job: Crawl for more repository URLs", __FILE__, __LINE__);
 			handleCrawlRequest(splitted, flags, env);
 		}
 		else if (splitted[0] == "NoJob")
 		{
-			print::log("Waiting for a job to be available", __FILE__, __LINE__);
+			print::debug("Waiting for a job to be available", __FILE__, __LINE__);
 			std::this_thread::sleep_for(std::chrono::milliseconds(5000));
 		}
 		else
@@ -98,7 +100,6 @@ void Start::execute(Flags flags, EnvironmentDTO *env)
 
 void Start::handleCrawlRequest(std::vector<std::string> &splitted, Flags flags, EnvironmentDTO *env)
 {
-	print::log("Start crawling", __FILE__, __LINE__);
 	if (splitted.size() < 2)
 	{
 		error::errInvalidDatabaseAnswer(__FILE__, __LINE__);
@@ -109,7 +110,6 @@ void Start::handleCrawlRequest(std::vector<std::string> &splitted, Flags flags, 
 
 void Start::handleSpiderRequest(std::vector<std::string> &splitted, Flags flags, EnvironmentDTO *env)
 {
-	print::log("Start parsing and uploading " + splitted[1], __FILE__, __LINE__);
 	Upload upload = Upload();
 	if (splitted.size() < 2 || splitted[1] == "")
 	{
@@ -136,7 +136,8 @@ void Start::handleSpiderRequest(std::vector<std::string> &splitted, Flags flags,
 	}
 
 	// Uploading the hashes.
-	print::log(DatabaseRequests::uploadHashes(hashes, meta, authorData, env), __FILE__, __LINE__);
+	print::debug(DatabaseRequests::uploadHashes(hashes, meta, authorData, env), __FILE__, __LINE__);
+	print::log("Finished " + splitted[1], __FILE__, __LINE__);
 }
 
 void Start::readCommandLine()
@@ -157,7 +158,6 @@ void Start::readCommandLine()
 
 void Start::versionProcessing(std::vector<std::string>& splitted, Flags flags, EnvironmentDTO* env)
 {
-	print::log("Start parsing and uploading " + splitted[1], __FILE__, __LINE__);
 	if (splitted.size() < 2 || splitted[1] == "")
 	{
 		error::errInvalidDatabaseAnswer(__FILE__, __LINE__);
@@ -192,7 +192,10 @@ void Start::versionProcessing(std::vector<std::string>& splitted, Flags flags, E
 	
 	// This is the first version and there are no tags, 
 	// we just need to parse the most recent version we downloaded earlier.
-	if (std::stoll(meta.versionTime) > startingTime && tags.size() == 0) 
+	auto tagc = tags.size();
+
+	print::log("Project has " + std::to_string(tagc) + print::plural(" tag", tagc), __FILE__, __LINE__);
+	if (std::stoll(meta.versionTime) > startingTime && tagc == 0) 
 	{		
 		parseLatest(meta, authorData, flags, env);
 	} 
@@ -204,7 +207,7 @@ void Start::versionProcessing(std::vector<std::string>& splitted, Flags flags, E
 
 void Start::parseLatest(ProjectMetaData& meta, AuthorData& authorData, Flags& flags, EnvironmentDTO* env)
 {
-	print::log("No tags found for project, just looking at HEAD.", __FILE__, __LINE__);
+	print::debug("No tags found for project, just looking at HEAD.", __FILE__, __LINE__);
 	std::vector<HashData> hashes = moduleFacades::parseRepository(DOWNLOAD_LOCATION, flags);
 
 	warnAndReturnIfErrno("Error parsing project, moving on to the next job.");
@@ -214,7 +217,7 @@ void Start::parseLatest(ProjectMetaData& meta, AuthorData& authorData, Flags& fl
 		return;
 	}
 
-	print::log(DatabaseRequests::uploadHashes(hashes, meta, authorData, env), __FILE__, __LINE__);
+	print::debug(DatabaseRequests::uploadHashes(hashes, meta, authorData, env), __FILE__, __LINE__);
 }
 
 void Start::loopThroughTags(
@@ -228,7 +231,7 @@ void Start::loopThroughTags(
 	std::string prevTag = tags[0].first;
 	std::string prevVersionTime = "";
 
-	print::log("Found " + std::to_string(tags.size()) +" tags, starting with: " + prevTag + ".", __FILE__, __LINE__);
+	print::debug("Starting with tag: " + prevTag + ".", __FILE__, __LINE__);
 
 	for (int i = 0; i < tags.size(); i++)
 	{
@@ -244,7 +247,7 @@ void Start::loopThroughTags(
 		}
 		meta.versionTime = std::to_string(versionTime);
 
-		print::log("Comparing tags: " + prevTag + " and " + curTag + ".", __FILE__, __LINE__);
+		print::debug("Comparing tags: " + prevTag + " and " + curTag + ".", __FILE__, __LINE__);
 
 		downloadTagged(flags, prevTag, curTag, meta, prevVersionTime, env);
 
@@ -267,7 +270,7 @@ void Start::downloadTagged(Flags flags, std::string prevTag, std::string curTag,
 	meta.versionHash = commitHash;
 
 	// Uploading the hashes.
-	print::log(DatabaseRequests::uploadHashes(hashes, meta, authorData, env, prevVersionTime, unchangedFiles),
+	print::debug(DatabaseRequests::uploadHashes(hashes, meta, authorData, env, prevVersionTime, unchangedFiles),
 		__FILE__, __LINE__);
 
 }

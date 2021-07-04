@@ -66,7 +66,7 @@ add_library(controller
   ${LOGURU_FILES}
 )
 
-target_link_libraries(controller spider libSearchSECOParser crawler ${Boost_LIBRARIES})
+target_link_libraries(controller libSearchSECOSpider libSearchSECOParser libSearchSECOCrawler ${Boost_LIBRARIES})
 target_include_directories(controller PUBLIC "${PROJECT_BINARY_DIR}" ../SearchSECOParser/libSearchSECOParser ../SearchSECOSpider/libSearchSECOSpider ../SearchSECOCrawler/libSearchSECOCrawler ${Boost_INCLUDE_DIRS})
 
 # copy version and configuration files

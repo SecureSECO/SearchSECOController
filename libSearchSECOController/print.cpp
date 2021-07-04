@@ -121,15 +121,15 @@ std::string print::plural(std::string singular, int n)
 
 void print::versionFull()
 {
-	std::string mainName = "searchseco";
+	std::string mainName = "SearchSECOController";
 
 	// Get subsystem versions.
 	int systemc = 3;
 	std::string* subsystems = new std::string[systemc]
 	{
-		"parser",
-		"crawler",
-		"spider",
+		"SearchSECOCrawler",
+		"SearchSECOSpider",
+		"SearchSECOParser",
 	};
 
 	std::ifstream versionFile;
@@ -139,7 +139,7 @@ void print::versionFull()
 	versionFile.open("VERSION");
 	std::getline(versionFile, version);
 
-	print::printline(mainName + " version " + version);
+	print::printline(mainName + "\tversion " + version);
 	
 	versionFile.close();
 
@@ -151,7 +151,7 @@ void print::versionFull()
 
 		std::getline(versionFile, version);
 
-		print::printline(">> " + system + " version " + version);
+		print::printline(">> " + system + "\tversion " + version);
 		
 		versionFile.close();
 	}

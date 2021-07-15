@@ -14,6 +14,7 @@ Utrecht University within the Software Project course.
 #include <filesystem>
 #include <fstream>
 #include <iostream>
+#include <sstream>
 
 
 inline

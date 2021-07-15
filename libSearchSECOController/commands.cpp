@@ -177,6 +177,12 @@ void Start::versionProcessing(std::vector<std::string>& splitted, Flags flags, E
 	std::pair<std::string, std::string> project{ meta.id, meta.versionTime };
 	startingTime = DatabaseRequests::getProjectVersion(project, env);
 
+	if (std::stoll(meta.versionTime) <= startingTime)
+	{
+		print::log("Most recent version of project already in database.", __FILE__, __LINE__);
+		return;
+	}
+
 	// Download most recent commit, to retrieve tags.
 	auto [authorData, commitHash, unchangedFiles] = moduleFacades::downloadRepository(flags.mandatoryArgument, flags, DOWNLOAD_LOCATION);
 	
@@ -201,6 +207,11 @@ void Start::versionProcessing(std::vector<std::string>& splitted, Flags flags, E
 	} 
 	else if (tags.size() != 0) 
 	{
+		if (tags[tags.size() - 1].second <= startingTime)
+		{
+			print::log("Latest tag of project already in database.", __FILE__, __LINE__);
+			return;
+		}
 		loopThroughTags(tags, meta, startingTime, flags, env);
 	}
 }

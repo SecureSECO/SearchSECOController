@@ -12,6 +12,7 @@ Utrecht University within the Software Project course.
 
 // Spider includes.
 #include "CodeBlock.h"
+#include "Spider.h"
 
 // Crawler includes.
 #include "RunCrawler.h"
@@ -25,17 +26,29 @@ namespace moduleFacades
 	/// <summary>
 	/// Will call the spider to download a given repository.
 	/// </summary>
-	std::tuple<AuthorData, std::string, std::vector<std::string>> downloadRepository(
+	/*std::tuple<AuthorData, std::string, std::vector<std::string>> downloadRepository(
 		std::string repository, 
 		Flags flags,
 		std::string downloadPath, 
 		std::string tag = "", 
-		std::string nextTag = "");
+		std::string nextTag = "");*/
+
+	Spider* setupSpider(std::string repository, Flags flags);
+
+	void downloadRepo(Spider *s, std::string repository, Flags flags, std::string downloadPath);
 	
+	std::vector<std::string> updateVersion(Spider *s, std::string repository, std::string prevTag, std::string newTag);
+
+	void switchVersion(Spider *s, std::string tag, std::string repository);
+
+	AuthorData getAuthors(Spider *s, std::string repository);
+
+	std::string currentVersion(Spider *s, std::string repository);
+
 	/// <summary>
 	/// Will call the spider to download a given repository.
 	/// </summary>
-	std::vector<std::pair<std::string, long long>> getRepositoryTags(std::string downloadPath);
+	std::vector<std::tuple<std::string, long long, std::string>> getRepositoryTags(std::string downloadPath);
 
 	
 	/// <summary>

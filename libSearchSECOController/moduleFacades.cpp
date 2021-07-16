@@ -13,7 +13,7 @@ Utrecht University within the Software Project course.
 #include "RunSpider.h"
 
 
-std::tuple<AuthorData, std::string, std::vector<std::string>> moduleFacades::downloadRepository(
+/*std::tuple<AuthorData, std::string, std::vector<std::string>> moduleFacades::downloadRepository(
 	std::string repository, 
 	Flags flags,
 	std::string downloadPath, 
@@ -28,13 +28,60 @@ std::tuple<AuthorData, std::string, std::vector<std::string>> moduleFacades::dow
 	print::loguruResetThreadName();
 
 	return authorData;
+}*/
+
+Spider* moduleFacades::setupSpider(std::string repository, Flags flags)
+{
+	return RunSpider::setupSpider(repository, flags.flag_cpu);
 }
 
-std::vector<std::pair<std::string, long long>> moduleFacades::getRepositoryTags(std::string downloadPath)
+void moduleFacades::downloadRepo(Spider *s, std::string repository, Flags flags, std::string downloadPath)
+{
+	print::debug("Calling the spider to download a repository", __FILE__, __LINE__);
+
+	RunSpider::downloadRepo(s, repository, downloadPath, flags.flag_branch);
+
+	print::loguruResetThreadName();
+}
+
+std::vector<std::string> moduleFacades::updateVersion(Spider *s, std::string repository, std::string prevTag, std::string newTag)
+{
+	print::debug("Calling the spider to switch from version " + prevTag + " to version " + newTag, __FILE__, __LINE__);
+
+	return RunSpider::updateVersion(s, repository, prevTag, newTag);
+
+	print::loguruResetThreadName();
+}
+
+void moduleFacades::switchVersion(Spider *s, std::string tag, std::string repository)
+{
+	print::debug("Calling the spider to switch to version " + tag,
+				 __FILE__, __LINE__);
+
+	return RunSpider::switchVersion(s, tag, repository);
+
+	print::loguruResetThreadName();
+}
+
+AuthorData moduleFacades::getAuthors(Spider *s, std::string repository)
+{
+	print::debug("Calling the spider to retrieve author data", __FILE__, __LINE__);
+
+	return RunSpider::getAuthors(s, repository);
+
+	print::loguruResetThreadName();
+}
+
+std::string moduleFacades::currentVersion(Spider *s, std::string repository)
+{
+	return RunSpider::getCommitHash("HEAD", repository);
+}
+
+std::vector<std::tuple<std::string, long long, std::string>> moduleFacades::getRepositoryTags(std::string downloadPath)
 {
 	print::debug("Calling the spider to get tags of previous versions", __FILE__, __LINE__);
 
-	std::vector<std::pair<std::string,long long>> tags = RunSpider::getTags(downloadPath);
+	std::vector<std::tuple<std::string, long long, std::string>> tags = RunSpider::getTags(downloadPath);
 
 	return tags;
 }

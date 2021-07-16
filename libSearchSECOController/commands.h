@@ -11,6 +11,9 @@ Utrecht University within the Software Project course.
 #include "flags.h"
 #include "projectMetadata.h"
 
+// Spider includes.
+#include "Spider.h"
+
 // External includes.
 #include <mutex>
 
@@ -70,14 +73,6 @@ private:
 		EnvironmentDTO *env);
 
 	/// <summary>
-	/// Handles spider requests.
-	/// </summary>
-	void handleSpiderRequest(
-		std::vector<std::string> &splitted, 
-		Flags flags,
-		EnvironmentDTO* env);
-
-	/// <summary>
 	/// Handles a spider request. 
 	/// Will spider the given job and parse all tags in the repository by calling downloadTagged.
 	/// </summary>
@@ -87,8 +82,8 @@ private:
 	/// Used by version processing. Will parse and upload the latest version of the project.
 	/// </summary>
 	void parseLatest(
+		Spider* s,
 		ProjectMetaData& meta,
-		AuthorData& authorData,
 		Flags& flags,
 		EnvironmentDTO* env);
 
@@ -96,7 +91,8 @@ private:
 	/// Loops through all tags of a project and calls download tagged for each of them.
 	/// </summary>
 	void loopThroughTags(
-		std::vector<std::pair<std::string, long long>> &tags, 
+		Spider *s,
+		std::vector<std::tuple<std::string, long long, std::string>> &tags,
 		ProjectMetaData &meta, 
 		long long startingTime,
 		Flags &flags, 
@@ -110,6 +106,7 @@ private:
 	/// <param name="meta">The meta data for the repository.</param>
 	/// <param name="prevVersionTime">The time for the previous tag.</param>
 	void downloadTagged(
+		Spider *s,
 		Flags flags, 
 		std::string prevTag, 
 		std::string curTag, 

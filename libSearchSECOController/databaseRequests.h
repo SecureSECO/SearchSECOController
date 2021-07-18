@@ -18,6 +18,7 @@ Utrecht University within the Software Project course.
 #define DATABASE_ADD_JOB "upjb"
 #define DATABASE_CRAWL_DATA "upcd"
 #define DATABASE_GET_NEXT_JOB "gtjb"
+#define DATABASE_GET_IPS "gtip"
 #define DATABASE_GET_MOST_RECENT_VERSION_PROJECT "gppr"
 
 #define REQUEST_RETRIES 3
@@ -90,6 +91,12 @@ public:
 	static std::string getNextJob(EnvironmentDTO *env);
 
 	/// <summary>
+	/// Sends a get next job request to the api.
+	/// </summary>
+	/// <returns>The next job the worked node should do.</returns>
+	static std::string getIPs(EnvironmentDTO *env);
+
+	/// <summary>
 	/// Sends a request to the api to add the given jobs to the job queue.
 	/// </summary>
 	static std::string addJobs(
@@ -132,5 +139,5 @@ private:
 	/// Will open a connection with the database API. 
 	/// You will still need to manually delete the NetworkHandler* to close the connection.
 	/// </summary>
-	static NetworkHandler* startConnection(std::string apiIP, std::string apiPort);
+	static NetworkHandler *startConnection(EnvironmentDTO *env);
 };

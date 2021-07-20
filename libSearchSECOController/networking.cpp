@@ -38,7 +38,6 @@ void NetworkHandler::openConnection(EnvironmentDTO *env)
 			refreshIPs = false;
 			std::string newIPs = DatabaseRequests::getIPs(env);
 			ips = parseIPs(newIPs);
-			print::log(std::to_string(ips.size()), __FILE__, __LINE__);
 			refreshIPs = false;
 		}
 

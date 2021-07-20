@@ -114,7 +114,6 @@ std::string DatabaseRequests::getNextJob(EnvironmentDTO* env)
 std::string DatabaseRequests::getIPs(EnvironmentDTO *env)
 {
 	std::string result = execRequest(DATABASE_GET_IPS, nullptr, 0, env);
-	print::log(result, __FILE__, __LINE__);
 	return result;
 }
 

@@ -111,6 +111,12 @@ std::string DatabaseRequests::getNextJob(EnvironmentDTO* env)
 	return execRequest(DATABASE_GET_NEXT_JOB, nullptr, 0, env);
 }
 
+std::string DatabaseRequests::getIPs(EnvironmentDTO *env)
+{
+	std::string result = execRequest(DATABASE_GET_IPS, nullptr, 0, env);
+	return result;
+}
+
 std::string DatabaseRequests::addJobs(
 	const std::vector<std::string>& jobs,
 	EnvironmentDTO *env)
@@ -136,7 +142,7 @@ std::string DatabaseRequests::execRequest(
 	EnvironmentDTO *env)
 {
 	// First start the connection.
-	NetworkHandler* networkHandler = startConnection(env->databaseAPIIP, env->databaseAPIPort);
+	NetworkHandler* networkHandler = startConnection(env);
 
 	// Then send the header (what request we are doing and how much data we are sending).
 	std::string requestType = request + std::to_string(dataSize) + "\n";
@@ -228,9 +234,9 @@ std::tuple<bool, std::string> DatabaseRequests::checkResponseCode(std::string da
 	}
 }
 
-NetworkHandler* DatabaseRequests::startConnection(std::string apiIP, std::string apiPort)
+NetworkHandler *DatabaseRequests::startConnection(EnvironmentDTO *env)
 {
 	NetworkHandler* nh = NetworkHandler::createHandler();
-	nh->openConnection(apiIP, apiPort);
+	nh->openConnection(env);
 	return nh;
 }

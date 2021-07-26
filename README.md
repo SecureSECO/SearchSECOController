@@ -43,7 +43,7 @@ Make sure [CMake](https://cmake.org/download) is installed.
 Open the solution and simply build the project. When the terminal is started up, you need to only pass the command + flags, without the preceding `searchseco`.
 
 # Usage
-After building you can set a (GitHub) personal access token in `./build/cfg/config.txt`. For info on creating this token click [here](https://docs.github.com/en/github/authenticating-to-github/keeping-your-account-and-data-secure/creating-a-personal-access-token). The token needs no permissions (see step 7 of guide) so it will not be able to interact with your personal GitHub account in any way. Without providing a token, the program will not be able to use the SearchSECOCrawler (making it impossible to crawl repositories or upload projects).
+After building you can set a name for the worker node and a (GitHub) personal access token in `./build/cfg/config.txt`. For info on creating this token click [here](https://docs.github.com/en/github/authenticating-to-github/keeping-your-account-and-data-secure/creating-a-personal-access-token). The token needs no permissions (see step 7 of guide) so it will not be able to interact with your personal GitHub account in any way. Without providing a token, the program will not be able to use the SearchSECOCrawler (making it impossible to crawl repositories or upload projects).
 
 After building the program, it can be called using the following syntax:  
 ```
@@ -58,6 +58,8 @@ This will build the image for the container. After this you can use the followin
 `docker run --name=controller-container --network=host -d --restart=always controller-image`
 This will start the container in detached mode and it will restart automatically. This is perfect for when you just want to start the worker node. If you want to see the console and be able to issue the stop command you should use the following command:
 `docker run --name=controller-container --network=host -i controller-image`
+
+In order to use other commands with Docker you can remove the `, "start"` from the last line of the dockerfile and then use the same build command to build the image and then the interactive run command to run the program. It will then listen for a command input, so any command can be put in.
 
 # License
 

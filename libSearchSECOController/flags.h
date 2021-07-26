@@ -26,6 +26,8 @@ public:
 	std::string flag_github_user;
 	std::string flag_github_token;
 
+	std::string flag_worker_name;
+
 	Flags();
 
 	/// <summary>

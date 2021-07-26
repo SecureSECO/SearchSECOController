@@ -197,6 +197,10 @@ void Input::sanitizeArguments()
 		{
 			Input::sanitizeGithubToken(argument, fromConfig);
 		}
+		else if (flag == "worker_name")
+		{
+			Input::sanitizeWorkerName(argument, fromConfig);
+		}
 	}
 }
 
@@ -293,6 +297,19 @@ void Input::sanitizeGithubToken(std::string arg, bool fromConfig)
 	}
 
 	this->flags.flag_github_token = arg;
+}
+
+void Input::sanitizeWorkerName(std::string arg, bool fromConfig)
+{
+	auto msg = "Sanitizing --worker_name flag";
+
+	print::debug(msg, __FILE__, __LINE__);
+	if (arg == "")
+	{
+		print::warn("Missing worker name, statistics will be limited", __FILE__, __LINE__);
+	}
+
+	this->flags.flag_worker_name = arg;
 }
 #pragma endregion
 

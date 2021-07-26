@@ -145,7 +145,7 @@ std::string DatabaseRequests::execRequest(
 	NetworkHandler* networkHandler = startConnection(env);
 
 	// Then send the header (what request we are doing and how much data we are sending).
-	std::string requestType = request + std::to_string(dataSize) + "\n";
+	std::string requestType = request + INNER_DELIMITER + env->workerName + INNER_DELIMITER + std::to_string(dataSize) + "\n";
 	networkHandler->sendData(requestType);
 
 	// After that we send the data.

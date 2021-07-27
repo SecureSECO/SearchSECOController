@@ -337,17 +337,19 @@ void Check::execute(Flags flags, EnvironmentDTO *env)
 	// Download project.
 	moduleFacades::downloadRepo(s, flags.mandatoryArgument, flags, DOWNLOAD_LOCATION);
 
+	// Parse files.
+	std::vector<HashData> hashes = moduleFacades::parseRepository(DOWNLOAD_LOCATION, flags);
+	if (errno != 0)
+	{
+		termination::failureParser(__FILE__, __LINE__);
+	}
+
 	// Author data.
 	AuthorData authorData = moduleFacades::getAuthors(s, DOWNLOAD_LOCATION);
 
 	if (errno != 0)
 	{
 		termination::failureSpider(__FILE__, __LINE__);
-	}
-	std::vector<HashData> hashes = moduleFacades::parseRepository(DOWNLOAD_LOCATION, flags);
-	if (errno != 0)
-	{
-		termination::failureParser(__FILE__, __LINE__);
 	}
 
 	// Calling the function that will print all the matches for us.

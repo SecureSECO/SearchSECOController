@@ -9,22 +9,20 @@ Utrecht University within the Software Project course.
 // External includes.
 #include <string>
 
-class EnvironmentDTO 
+class EnvironmentDTO
 {
-public:
-	std::string
-		databaseAPIIP,
-		databaseAPIPort,
-		commandString;
+  public:
+	std::string databaseAPIIP, databaseAPIPort, commandString, workerName;
 
 	/// <summary>
 	/// Constructs the DTO. Requires the database IP and Port, and a string
 	/// representing the currently executing command.
 	/// </summary>
-	EnvironmentDTO(std::string ip, std::string port, std::string command)
+	EnvironmentDTO(std::string ip, std::string port, std::string command, std::string name)
 	{
 		this->databaseAPIIP = ip;
 		this->databaseAPIPort = port;
 		this->commandString = command;
+		this->workerName = name;
 	}
 };

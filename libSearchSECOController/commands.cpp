@@ -258,6 +258,9 @@ void Start::loopThroughTags(
 		}
 		meta.versionTime = std::to_string(versionTime);
 
+		print::log("Processing tag: " + curTag + "(" + std::to_string(i + 1) + "/" + std::to_string(tags.size()) + ")",
+				   __FILE__, __LINE__);
+
 		print::debug("Comparing tags: " + prevTag + " and " + curTag + ".", __FILE__, __LINE__);
 
 		downloadTagged(flags, prevTag, curTag, meta, prevVersionTime, env);

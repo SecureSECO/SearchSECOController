@@ -235,41 +235,18 @@ void Start::loopThroughTags(
 
 		meta.versionTime = std::to_string(versionTime);
 		meta.versionHash = versionHash;
-		downloadTagged(s, flags, prevTag, curTag, meta, prevVersionTime, env);
 
-		prevTag = curTag;
-		prevVersionTime = std::to_string(versionTime);
-	}
-	/*
-	std::string prevTag = tags[0].first;
-	std::string prevVersionTime = "";
-
-	print::debug("Starting with tag: " + prevTag + ".", __FILE__, __LINE__);
-
-	for (int i = 0; i < tags.size(); i++)
-	{
-		std::string curTag = tags[i].first;
-		long long versionTime = tags[i].second; // Update the time of this commit.
-
-		// Skip tags before the starting time.
-		if (versionTime <= startingTime)
-		{
-			prevTag = curTag;
-			prevVersionTime = std::to_string(versionTime);
-			continue;
-		}
-		meta.versionTime = std::to_string(versionTime);
-
+		// Log information.
 		print::log("Processing tag: " + curTag + "(" + std::to_string(i + 1) + "/" + std::to_string(tags.size()) + ")",
 				   __FILE__, __LINE__);
 
 		print::debug("Comparing tags: " + prevTag + " and " + curTag + ".", __FILE__, __LINE__);
 
-		downloadTagged(flags, prevTag, curTag, meta, prevVersionTime, env);
+		downloadTagged(s, flags, prevTag, curTag, meta, prevVersionTime, env);
 
 		prevTag = curTag;
 		prevVersionTime = std::to_string(versionTime);
-	}*/
+	}
 }
 
 void Start::downloadTagged(Spider *s, Flags flags, std::string prevTag, std::string curTag, ProjectMetaData meta, std::string prevVersionTime, EnvironmentDTO* env)

@@ -18,10 +18,167 @@ Utrecht University within the Software Project course.
 
 #define DOWNLOAD_LOCATION "spiderDownloads"
 
-
 std::string Command::helpMessage()
 {
 	return helpMessageText;
+}
+
+std::tuple<std::vector<HashData>, AuthorData> Command::parseAndBlame(Spider *s, Flags flags)
+{
+	// Parse all parseable files.
+	std::vector<HashData> hashes = moduleFacades::parseRepository(DOWNLOAD_LOCATION, flags);
+
+	if (errno != 0)
+	{
+		print::warn("Error parsing project.", __FILE__, __LINE__);
+		return std::tuple<std::vector<HashData>, AuthorData>(std::vector<HashData>(), AuthorData());
+	}
+
+	// If no methods were found, we do not need to retrieve any author data.
+	if (hashes.size() == 0)
+	{
+		print::debug("No methods present, skipping authors", __FILE__, __LINE__);
+		return std::tuple<std::vector<HashData>, AuthorData>(hashes, AuthorData());
+	}
+
+	// Retrieve author data.
+	AuthorData authorData = moduleFacades::getAuthors(s, DOWNLOAD_LOCATION);
+
+	if (errno != 0)
+	{
+		print::warn("Error retrieving author data.", __FILE__, __LINE__);
+		return std::tuple<std::vector<HashData>, AuthorData>(std::vector<HashData>(), AuthorData());
+	}
+
+	// Return the extracted data.
+	return std::tuple<std::vector<HashData>, AuthorData>(hashes, authorData);
+}
+
+void Command::uploadProject(Flags flags, EnvironmentDTO *env)
+{
+	long long startingTime = 0; // Time to start from, request from db.
+
+	// Get project metadata.
+	ProjectMetaData meta = moduleFacades::getProjectMetadata(flags.mandatoryArgument, flags);
+
+	warnAndReturnIfErrno("Error getting project meta data, moving on to the next job.");
+
+	// Set default branch.
+	flags.flag_branch = meta.defaultBranch;
+
+	// Find most newest version of project in database.
+	std::pair<std::string, std::string> project{meta.id, meta.versionTime};
+	startingTime = DatabaseRequests::getProjectVersion(project, env);
+
+	if (std::stoll(meta.versionTime) <= startingTime)
+	{
+		print::log("Most recent version of project already in database.", __FILE__, __LINE__);
+		return;
+	}
+
+	// Initialize spider.
+	Spider *s = moduleFacades::setupSpider(flags.mandatoryArgument, flags);
+
+	// Download project, to retrieve tags.
+	moduleFacades::downloadRepo(s, flags.mandatoryArgument, flags, DOWNLOAD_LOCATION);
+
+	meta.versionHash = moduleFacades::currentVersion(s, DOWNLOAD_LOCATION);
+
+	warnAndReturnIfErrno("Error downloading project, moving on to the next job.");
+
+	// Get tags of previous versions.
+	std::vector<std::tuple<std::string, long long, std::string>> tags =
+		moduleFacades::getRepositoryTags(DOWNLOAD_LOCATION);
+
+	warnAndReturnIfErrno("Error retrieving tags for project, just using most recent version.");
+
+	// This is the first version and there are no tags,
+	// we just need to parse the most recent version we downloaded earlier.
+	auto tagc = tags.size();
+
+	print::log("Project has " + std::to_string(tagc) + print::plural(" tag", tagc), __FILE__, __LINE__);
+	if (std::stoll(meta.versionTime) > startingTime && tagc == 0)
+	{
+		parseLatest(s, meta, flags, env);
+	}
+	else if (tagc != 0)
+	{
+		if (std::get<1>(tags[tagc - 1]) <= startingTime)
+		{
+			print::log("Latest tag of project already in database.", __FILE__, __LINE__);
+			return;
+		}
+		loopThroughTags(s, tags, meta, startingTime, flags, env);
+	}
+}
+
+void Command::parseLatest(Spider *s, ProjectMetaData &meta, Flags &flags, EnvironmentDTO *env)
+{
+	print::debug("No tags found for project, just looking at HEAD.", __FILE__, __LINE__);
+
+	auto [hashes, authorData] = Command::parseAndBlame(s, flags);
+	warnAndReturnIfErrno("Skipping project.");
+
+	if (hashes.size() == 0)
+	{
+		return;
+	}
+
+	print::debug(DatabaseRequests::uploadHashes(hashes, meta, authorData, env), __FILE__, __LINE__);
+}
+
+void Command::loopThroughTags(Spider *s, std::vector<std::tuple<std::string, long long, std::string>> &tags,
+							ProjectMetaData &meta, long long startingTime, Flags &flags, EnvironmentDTO *env)
+{
+	// Skip tags before the starting time.
+	int i = 0;
+	while (std::get<1>(tags[i]) <= startingTime)
+	{
+		i++;
+	}
+
+	// Revert to oldest unprocessed tag.
+	std::string prevTag = std::get<0>(tags[i]);
+	std::string prevVersionTime = "";
+
+	moduleFacades::switchVersion(s, "HEAD", DOWNLOAD_LOCATION);
+
+	// Loop through remaining tags.
+	for (; i < tags.size(); i++)
+	{
+		std::string curTag = std::get<0>(tags[i]);
+		long long versionTime = std::get<1>(tags[i]);
+		std::string versionHash = std::get<2>(tags[i]);
+
+		meta.versionTime = std::to_string(versionTime);
+		meta.versionHash = versionHash;
+
+		// Log information.
+		print::log("Processing tag: " + curTag + "(" + std::to_string(i + 1) + "/" + std::to_string(tags.size()) + ")",
+				   __FILE__, __LINE__);
+
+		print::debug("Comparing tags: " + prevTag + " and " + curTag + ".", __FILE__, __LINE__);
+
+		downloadTagged(s, flags, prevTag, curTag, meta, prevVersionTime, env);
+
+		prevTag = curTag;
+		prevVersionTime = std::to_string(versionTime);
+	}
+}
+
+void Command::downloadTagged(Spider *s, Flags flags, std::string prevTag, std::string curTag, ProjectMetaData meta,
+						   std::string prevVersionTime, EnvironmentDTO *env)
+{
+	std::vector<std::string> unchangedFiles = moduleFacades::updateVersion(s, DOWNLOAD_LOCATION, prevTag, curTag);
+
+	warnAndReturnIfErrno("Error downloading tagged version of project, moving on to the next tag.");
+
+	auto [hashes, authorData] = Command::parseAndBlame(s, flags);
+	warnAndReturnIfErrno("Skipping project.");
+
+	// Uploading the hashes.
+	print::debug(DatabaseRequests::uploadHashes(hashes, meta, authorData, env, prevVersionTime, unchangedFiles),
+				 __FILE__, __LINE__);
 }
 
 #pragma region Start
@@ -35,14 +192,13 @@ Start::Start()
 			-c --cpu : Number of threads used by the worker node (minimum 2, default half).)";
 }
 
-void Start::logPreExecutionMessage(int fCPU, const char* file, int line)
+void Start::logPreExecutionMessage(int fCPU, const char *file, int line)
 {
-	auto msg = "Starting a worker node with "
-		+ std::to_string(fCPU) + " cpu cores";
+	auto msg = "Starting a worker node with " + std::to_string(fCPU) + " cpu cores";
 	print::log(msg, file, line);
 }
 
-void Start::logPostExecutionMessage(const char* file, int line)
+void Start::logPostExecutionMessage(const char *file, int line)
 {
 	print::log("Successfully terminated the worker node", file, line);
 }
@@ -124,7 +280,7 @@ void Start::readCommandLine()
 	}
 }
 
-void Start::versionProcessing(std::vector<std::string>& splitted, Flags flags, EnvironmentDTO* env)
+void Start::versionProcessing(std::vector<std::string> &splitted, Flags flags, EnvironmentDTO *env)
 {
 	if (splitted.size() < 2 || splitted[1] == "")
 	{
@@ -132,143 +288,7 @@ void Start::versionProcessing(std::vector<std::string>& splitted, Flags flags, E
 	}
 	flags.mandatoryArgument = splitted[1];
 
-	long long startingTime = 0; // Time to start from, request from db.
-
-	// Get project metadata.
-	ProjectMetaData meta = moduleFacades::getProjectMetadata(flags.mandatoryArgument, flags);
-	
-	warnAndReturnIfErrno("Error getting project meta data, moving on to the next job.");
-	
-	flags.flag_branch = meta.defaultBranch;
-
-	
-	std::pair<std::string, std::string> project{ meta.id, meta.versionTime };
-	startingTime = DatabaseRequests::getProjectVersion(project, env);
-
-	if (std::stoll(meta.versionTime) <= startingTime)
-	{
-		print::log("Most recent version of project already in database.", __FILE__, __LINE__);
-		return;
-	}
-
-	// Initialize spider.
-	Spider *s = moduleFacades::setupSpider(flags.mandatoryArgument, flags);
-
-	// Download project, to retrieve tags.
-	moduleFacades::downloadRepo(s, flags.mandatoryArgument, flags, DOWNLOAD_LOCATION);
-	
-	meta.versionHash = moduleFacades::currentVersion(s, DOWNLOAD_LOCATION);
-
-	warnAndReturnIfErrno("Error downloading project, moving on to the next job.");
-
-	// Get tags of previous versions.
-	std::vector<std::tuple<std::string, long long, std::string>> tags = moduleFacades::getRepositoryTags(DOWNLOAD_LOCATION);
-	
-	warnAndReturnIfErrno("Error retrieving tags for project, just using most recent version.");
-	
-	// This is the first version and there are no tags, 
-	// we just need to parse the most recent version we downloaded earlier.
-	auto tagc = tags.size();
-
-	print::log("Project has " + std::to_string(tagc) + print::plural(" tag", tagc), __FILE__, __LINE__);
-	if (std::stoll(meta.versionTime) > startingTime && tagc == 0) 
-	{		
-		parseLatest(s, meta, flags, env);
-	} 
-	else if (tags.size() != 0) 
-	{
-		if (std::get<1>(tags[tags.size() - 1]) <= startingTime)
-		{
-			print::log("Latest tag of project already in database.", __FILE__, __LINE__);
-			return;
-		}
-		loopThroughTags(s, tags, meta, startingTime, flags, env);
-	}
-}
-
-void Start::parseLatest(Spider *s, ProjectMetaData& meta, Flags& flags, EnvironmentDTO* env)
-{
-	print::debug("No tags found for project, just looking at HEAD.", __FILE__, __LINE__);
-	std::vector<HashData> hashes = moduleFacades::parseRepository(DOWNLOAD_LOCATION, flags);
-
-	warnAndReturnIfErrno("Error parsing project, moving on to the next job.");
-
-	AuthorData authorData = moduleFacades::getAuthors(s, DOWNLOAD_LOCATION);
-
-	warnAndReturnIfErrno("Error retrieving author data, moving on to the next job.");
-
-	if (hashes.size() == 0)
-	{
-		return;
-	}
-
-	print::debug(DatabaseRequests::uploadHashes(hashes, meta, authorData, env), __FILE__, __LINE__);
-}
-
-void Start::loopThroughTags(
-	Spider *s,
-	std::vector<std::tuple<std::string, long long, std::string>>& tags,
-	ProjectMetaData &meta,
-	long long startingTime,
-	Flags &flags,
-	EnvironmentDTO* env)
-{
-	// Skip tags before the starting time.
-	int i = 0;
-	while (std::get<1>(tags[i]) <= startingTime)
-	{
-		i++;
-	}
-
-	// Revert to oldest unprocessed tag.
-	std::string prevTag = std::get<0>(tags[i]);
-	std::string prevVersionTime = "";
-
-	moduleFacades::switchVersion(s, "HEAD", DOWNLOAD_LOCATION);
-
-	// Loop through remaining tags.
-	for (; i < tags.size(); i++)
-	{
-		std::string curTag = std::get<0>(tags[i]);
-		long long versionTime = std::get<1>(tags[i]);
-		std::string versionHash = std::get<2>(tags[i]);
-
-		meta.versionTime = std::to_string(versionTime);
-		meta.versionHash = versionHash;
-
-		// Log information.
-		print::log("Processing tag: " + curTag + "(" + std::to_string(i + 1) + "/" + std::to_string(tags.size()) + ")",
-				   __FILE__, __LINE__);
-
-		print::debug("Comparing tags: " + prevTag + " and " + curTag + ".", __FILE__, __LINE__);
-
-		downloadTagged(s, flags, prevTag, curTag, meta, prevVersionTime, env);
-
-		prevTag = curTag;
-		prevVersionTime = std::to_string(versionTime);
-	}
-}
-
-void Start::downloadTagged(Spider *s, Flags flags, std::string prevTag, std::string curTag, ProjectMetaData meta, std::string prevVersionTime, EnvironmentDTO* env)
-{
-	std::vector<std::string> unchangedFiles = moduleFacades::updateVersion(s, DOWNLOAD_LOCATION, prevTag, curTag);
-	
-	warnAndReturnIfErrno("Error downloading tagged version of project, moving on to the next tag.");
-	
-	// Parse changed files.
-	std::vector<HashData> hashes = moduleFacades::parseRepository(DOWNLOAD_LOCATION, flags);
-	
-	warnAndReturnIfErrno("Error parsing tagged version of project, moving on to the next tag.");
-
-	// Author data.
-	AuthorData authorData = moduleFacades::getAuthors(s, DOWNLOAD_LOCATION);
-
-	warnAndReturnIfErrno("Error retrieving author data, moving on to the next job.");
-
-	// Uploading the hashes.
-	print::debug(DatabaseRequests::uploadHashes(hashes, meta, authorData, env, prevVersionTime, unchangedFiles),
-		__FILE__, __LINE__);
-
+	Command::uploadProject(flags, env);
 }
 
 #pragma endregion Start
@@ -292,12 +312,12 @@ std::string Check::partialLogMessage(std::string url)
 	return " the code from the project at " + url + " against the SearchSECO database";
 }
 
-void Check::logPreExecutionMessage(std::string url, const char* file, int line)
+void Check::logPreExecutionMessage(std::string url, const char *file, int line)
 {
 	print::log("Checking" + Check::partialLogMessage(url), file, line);
 }
 
-void Check::logPostExecutionMessage(std::string url, const char* file, int line)
+void Check::logPostExecutionMessage(std::string url, const char *file, int line)
 {
 	print::log("Successfully checked" + Check::partialLogMessage(url), file, line);
 }
@@ -314,32 +334,11 @@ void Check::execute(Flags flags, EnvironmentDTO *env)
 	// Download project.
 	moduleFacades::downloadRepo(s, flags.mandatoryArgument, flags, DOWNLOAD_LOCATION);
 
-	// Parse files.
-	std::vector<HashData> hashes = moduleFacades::parseRepository(DOWNLOAD_LOCATION, flags);
-	if (errno != 0)
-	{
-		termination::failureParser(__FILE__, __LINE__);
-	}
-
-	// Author data.
-	AuthorData authorData = moduleFacades::getAuthors(s, DOWNLOAD_LOCATION);
-
-	if (errno != 0)
-	{
-		termination::failureSpider(__FILE__, __LINE__);
-	}
+	auto [hashes, authorData] = Command::parseAndBlame(s, flags);
+	warnAndReturnIfErrno("Error processing project.");
 
 	// Calling the function that will print all the matches for us.
-	PrintMatches::printHashMatches(
-		hashes, 
-		DatabaseRequests::findMatches(
-			hashes, 
-			env
-		), 
-		authorData, 
-		env,
-		url
-	);
+	PrintMatches::printHashMatches(hashes, DatabaseRequests::findMatches(hashes, env), authorData, env, url);
 
 	this->logPostExecutionMessage(url, __FILE__, __LINE__);
 }
@@ -364,59 +363,19 @@ std::string Upload::partialLogMessage(std::string url)
 	return " the code from the project at " + url + " to the SearchSECO database";
 }
 
-void Upload::logPreExecutionMessage(std::string url, const char* file, int line)
+void Upload::logPreExecutionMessage(std::string url, const char *file, int line)
 {
 	print::log("Uploading" + Upload::partialLogMessage(url), file, line);
 }
 
-void Upload::logPostExecutionMessage(std::string url, const char* file, int line)
+void Upload::logPostExecutionMessage(std::string url, const char *file, int line)
 {
 	print::log("Successfully uploaded" + Upload::partialLogMessage(url), file, line);
 }
 
 void Upload::execute(Flags flags, EnvironmentDTO *env)
 {
-	if (flags.flag_github_token == "" || flags.flag_github_user == "")
-	{
-		error::errMissingGithubAuth(__FILE__, __LINE__);
-		return;
-	}
-
-	auto url = flags.mandatoryArgument;
-
-	this->logPreExecutionMessage(url, __FILE__, __LINE__);
-
-	// MetaData
-	ProjectMetaData metaData = moduleFacades::getProjectMetadata(url, flags);
-	if (errno != 0)
-	{
-		termination::failureCrawler(__FILE__, __LINE__);
-	}
-
-	// Initialize spider.
-	Spider *s = moduleFacades::setupSpider(flags.mandatoryArgument, flags);
-
-	// Download project.
-	moduleFacades::downloadRepo(s, flags.mandatoryArgument, flags, DOWNLOAD_LOCATION);
-
-	// Author data.
-	AuthorData authorData = moduleFacades::getAuthors(s, DOWNLOAD_LOCATION);
-
-	metaData.versionHash = moduleFacades::currentVersion(s, DOWNLOAD_LOCATION);
-	if (errno != 0)
-	{
-		termination::failureSpider(__FILE__, __LINE__);
-	}
-
-	std::vector<HashData> hashes = moduleFacades::parseRepository(DOWNLOAD_LOCATION, flags);
-	if (errno != 0)
-	{
-		termination::failureParser(__FILE__, __LINE__);
-	}
-
-	print::log(DatabaseRequests::uploadHashes(hashes, metaData, authorData, env), __FILE__, __LINE__);
-
-	this->logPostExecutionMessage(url, __FILE__, __LINE__);
+	Command::uploadProject(flags, env);
 }
 
 #pragma endregion Upload
@@ -435,7 +394,7 @@ CheckUpload::CheckUpload()
 }
 
 void CheckUpload::execute(Flags flags, EnvironmentDTO *env)
-{
+{ /*
 	if (flags.flag_github_token == "" || flags.flag_github_user == "")
 	{
 		error::errMissingGithubAuth(__FILE__, __LINE__);
@@ -460,7 +419,7 @@ void CheckUpload::execute(Flags flags, EnvironmentDTO *env)
 
 	// Author data.
 	AuthorData authorData = moduleFacades::getAuthors(s, DOWNLOAD_LOCATION);
-
+	///wwwwwwww
 	metaData.versionHash = moduleFacades::currentVersion(s, DOWNLOAD_LOCATION);
 	if (errno != 0)
 	{
@@ -475,18 +434,12 @@ void CheckUpload::execute(Flags flags, EnvironmentDTO *env)
 
 	Check::logPostExecutionMessage(url, __FILE__, __LINE__);
 
-
 	Upload::logPreExecutionMessage(url, __FILE__, __LINE__);
 
-	PrintMatches::printHashMatches(
-		hashes, 
-		DatabaseRequests::checkUploadHashes(hashes, metaData, authorData, env), 
-		authorData, 
-		env,
-		url
-	);
-	
-	Upload::logPostExecutionMessage(url, __FILE__, __LINE__);
+	PrintMatches::printHashMatches(hashes, DatabaseRequests::checkUploadHashes(hashes, metaData, authorData, env),
+								   authorData, env, url);
+
+	Upload::logPostExecutionMessage(url, __FILE__, __LINE__);*/
 }
 
 #pragma endregion CheckUpload

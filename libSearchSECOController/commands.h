@@ -39,6 +39,19 @@ public:
 
 protected:
 	std::string helpMessageText;
+
+	std::tuple<std::vector<HashData>, AuthorData> parseAndBlame(Spider *s, Flags flags);
+
+	void uploadProject(Flags flags, EnvironmentDTO *env);
+
+private:
+	void parseLatest(Spider *s, ProjectMetaData &meta, Flags &flags, EnvironmentDTO *env);
+
+	void loopThroughTags(Spider *s, std::vector<std::tuple<std::string, long long, std::string>> &tags,
+						 ProjectMetaData &meta, long long startingTime, Flags &flags, EnvironmentDTO *env);
+
+	void downloadTagged(Spider *s, Flags flags, std::string prevTag, std::string curTag, ProjectMetaData meta,
+						std::string prevVersionTime, EnvironmentDTO *env);
 };
 
 class Start : public Command
@@ -77,7 +90,7 @@ private:
 	/// Will spider the given job and parse all tags in the repository by calling downloadTagged.
 	/// </summary>
 	void versionProcessing(std::vector<std::string> &splitted, Flags flags, EnvironmentDTO* env);
-
+	/*
 	/// <summary>
 	/// Used by version processing. Will parse and upload the latest version of the project.
 	/// </summary>
@@ -113,7 +126,7 @@ private:
 		ProjectMetaData meta,
 		std::string prevVersionTime, 
 		EnvironmentDTO* env);
-
+	*/
 	/// <summary>
 	/// Reads the command line.
 	/// </summary>

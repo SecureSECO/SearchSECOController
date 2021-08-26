@@ -132,8 +132,15 @@ void Command::loopThroughTags(Spider *s, std::vector<std::tuple<std::string, lon
 	}
 
 	// Revert to oldest unprocessed tag.
-	std::string prevTag = std::get<0>(tags[i]);
+	std::string prevTag = "";
 	std::string prevVersionTime = "";
+	std::vector<std::string> prevUnchangedFiles = std::vector<std::string>();
+
+	if (i > 0)
+	{
+		std::string prevTag = std::get<0>(tags[i - 1]);
+		std::string prevVersionTime = std::to_string(std::get<1>(tags[i - 1]));
+	}
 
 	moduleFacades::switchVersion(s, "HEAD", DOWNLOAD_LOCATION);
 
@@ -153,7 +160,7 @@ void Command::loopThroughTags(Spider *s, std::vector<std::tuple<std::string, lon
 
 		print::debug("Comparing tags: " + prevTag + " and " + curTag + ".", __FILE__, __LINE__);
 
-		downloadTagged(s, flags, prevTag, curTag, meta, prevVersionTime, env);
+		downloadTagged(s, flags, prevTag, curTag, meta, prevVersionTime, prevUnchangedFiles, env);
 
 		prevTag = curTag;
 		prevVersionTime = std::to_string(versionTime);
@@ -161,9 +168,11 @@ void Command::loopThroughTags(Spider *s, std::vector<std::tuple<std::string, lon
 }
 
 void Command::downloadTagged(Spider *s, Flags flags, std::string prevTag, std::string curTag, ProjectMetaData meta,
-						   std::string prevVersionTime, EnvironmentDTO *env)
+							 std::string prevVersionTime, std::vector<std::string> &prevUnchangedFiles,
+							 EnvironmentDTO *env)
 {
-	std::vector<std::string> unchangedFiles = moduleFacades::updateVersion(s, DOWNLOAD_LOCATION, prevTag, curTag);
+	std::vector<std::string> unchangedFiles =
+		moduleFacades::updateVersion(s, DOWNLOAD_LOCATION, prevTag, curTag, prevUnchangedFiles);
 
 	warnAndReturnIfErrno("Error downloading tagged version of project, moving on to the next tag.");
 
@@ -173,6 +182,8 @@ void Command::downloadTagged(Spider *s, Flags flags, std::string prevTag, std::s
 	// Uploading the hashes.
 	print::debug(DatabaseRequests::uploadHashes(hashes, meta, authorData, env, prevVersionTime, unchangedFiles),
 				 __FILE__, __LINE__);
+
+	prevUnchangedFiles = unchangedFiles;
 }
 
 #pragma region Start

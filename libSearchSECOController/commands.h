@@ -51,7 +51,7 @@ private:
 						 ProjectMetaData &meta, long long startingTime, Flags &flags, EnvironmentDTO *env);
 
 	void downloadTagged(Spider *s, Flags flags, std::string prevTag, std::string curTag, ProjectMetaData meta,
-						std::string prevVersionTime, EnvironmentDTO *env);
+						std::string prevVersionTime, std::vector<std::string> &prevUnchangedFiles, EnvironmentDTO *env);
 };
 
 class Start : public Command

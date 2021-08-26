@@ -37,7 +37,8 @@ namespace moduleFacades
 
 	void downloadRepo(Spider *s, std::string repository, Flags flags, std::string downloadPath);
 	
-	std::vector<std::string> updateVersion(Spider *s, std::string repository, std::string prevTag, std::string newTag);
+	std::vector<std::string> updateVersion(Spider *s, std::string repository, std::string prevTag,
+										   std::string newTag, std::vector<std::string> prevUnchangedFiles);
 
 	void switchVersion(Spider *s, std::string tag, std::string repository);
 

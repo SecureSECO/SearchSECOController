@@ -44,11 +44,12 @@ void moduleFacades::downloadRepo(Spider *s, std::string repository, Flags flags,
 	print::loguruResetThreadName();
 }
 
-std::vector<std::string> moduleFacades::updateVersion(Spider *s, std::string repository, std::string prevTag, std::string newTag)
+std::vector<std::string> moduleFacades::updateVersion(Spider *s, std::string repository, std::string prevTag,
+													  std::string newTag, std::vector<std::string> prevUnchangedFiles)
 {
 	print::debug("Calling the spider to switch from version " + prevTag + " to version " + newTag, __FILE__, __LINE__);
 
-	return RunSpider::updateVersion(s, repository, prevTag, newTag);
+	return RunSpider::updateVersion(s, repository, prevTag, newTag, prevUnchangedFiles);
 
 	print::loguruResetThreadName();
 }

@@ -54,7 +54,7 @@ std::tuple<std::vector<HashData>, AuthorData> Command::parseAndBlame(Spider *s, 
 	return std::tuple<std::vector<HashData>, AuthorData>(hashes, authorData);
 }
 
-void Command::uploadProject(Flags flags, EnvironmentDTO *env)
+void Command::uploadProject(Spider *s, Flags flags, EnvironmentDTO *env)
 {
 	long long startingTime = 0; // Time to start from, request from db.
 
@@ -75,12 +75,6 @@ void Command::uploadProject(Flags flags, EnvironmentDTO *env)
 		print::log("Most recent version of project already in database.", __FILE__, __LINE__);
 		return;
 	}
-
-	// Initialize spider.
-	Spider *s = moduleFacades::setupSpider(flags.mandatoryArgument, flags);
-
-	// Download project, to retrieve tags.
-	moduleFacades::downloadRepo(s, flags.mandatoryArgument, flags, DOWNLOAD_LOCATION);
 
 	meta.versionHash = moduleFacades::currentVersion(s, DOWNLOAD_LOCATION);
 
@@ -288,7 +282,14 @@ void Start::versionProcessing(std::vector<std::string> &splitted, Flags flags, E
 	}
 	flags.mandatoryArgument = splitted[1];
 
-	Command::uploadProject(flags, env);
+	// Initialize spider.
+	Spider *s = moduleFacades::setupSpider(flags.mandatoryArgument, flags);
+
+	// Download project.
+	moduleFacades::downloadRepo(s, flags.mandatoryArgument, flags, DOWNLOAD_LOCATION);
+
+	// Process and upload project.
+	Command::uploadProject(s, flags, env);
 }
 
 #pragma endregion Start
@@ -329,10 +330,10 @@ void Check::execute(Flags flags, EnvironmentDTO *env)
 	this->logPreExecutionMessage(url, __FILE__, __LINE__);
 
 	// Initialize spider.
-	Spider *s = moduleFacades::setupSpider(flags.mandatoryArgument, flags);
+	Spider *s = moduleFacades::setupSpider(url, flags);
 
 	// Download project.
-	moduleFacades::downloadRepo(s, flags.mandatoryArgument, flags, DOWNLOAD_LOCATION);
+	moduleFacades::downloadRepo(s, url, flags, DOWNLOAD_LOCATION);
 
 	auto [hashes, authorData] = Command::parseAndBlame(s, flags);
 	warnAndReturnIfErrno("Error processing project.");
@@ -375,7 +376,16 @@ void Upload::logPostExecutionMessage(std::string url, const char *file, int line
 
 void Upload::execute(Flags flags, EnvironmentDTO *env)
 {
-	Command::uploadProject(flags, env);
+	this->logPreExecutionMessage(flags.mandatoryArgument, __FILE__, __LINE__);
+	// Initialize spider.
+	Spider *s = moduleFacades::setupSpider(flags.mandatoryArgument, flags);
+
+	// Download project.
+	moduleFacades::downloadRepo(s, flags.mandatoryArgument, flags, DOWNLOAD_LOCATION);
+
+	// Process and upload project.
+	Command::uploadProject(s, flags, env);
+	this->logPostExecutionMessage(flags.mandatoryArgument, __FILE__, __LINE__);
 }
 
 #pragma endregion Upload
@@ -394,52 +404,39 @@ CheckUpload::CheckUpload()
 }
 
 void CheckUpload::execute(Flags flags, EnvironmentDTO *env)
-{ /*
+{
 	if (flags.flag_github_token == "" || flags.flag_github_user == "")
 	{
 		error::errMissingGithubAuth(__FILE__, __LINE__);
 		return;
 	}
+
 	auto url = flags.mandatoryArgument;
 
 	Check::logPreExecutionMessage(url, __FILE__, __LINE__);
 
-	// MetaData
-	ProjectMetaData metaData = moduleFacades::getProjectMetadata(url, flags);
-	if (errno != 0)
-	{
-		termination::failureCrawler(__FILE__, __LINE__);
-	}
-
 	// Initialize spider.
-	Spider *s = moduleFacades::setupSpider(flags.mandatoryArgument, flags);
+	Spider *s = moduleFacades::setupSpider(url, flags);
 
 	// Download project.
-	moduleFacades::downloadRepo(s, flags.mandatoryArgument, flags, DOWNLOAD_LOCATION);
+	moduleFacades::downloadRepo(s, url, flags, DOWNLOAD_LOCATION);
 
-	// Author data.
-	AuthorData authorData = moduleFacades::getAuthors(s, DOWNLOAD_LOCATION);
-	///wwwwwwww
-	metaData.versionHash = moduleFacades::currentVersion(s, DOWNLOAD_LOCATION);
-	if (errno != 0)
-	{
-		termination::failureSpider(__FILE__, __LINE__);
-	}
+	auto [hashes, authorData] = Command::parseAndBlame(s, flags);
+	warnAndReturnIfErrno("Error processing project.");
 
-	std::vector<HashData> hashes = moduleFacades::parseRepository(DOWNLOAD_LOCATION, flags);
-	if (errno != 0)
-	{
-		termination::failureParser(__FILE__, __LINE__);
-	}
+	// Calling the function that will print all the matches for us.
+	PrintMatches::printHashMatches(hashes, DatabaseRequests::findMatches(hashes, env), authorData, env, url);
 
 	Check::logPostExecutionMessage(url, __FILE__, __LINE__);
 
+	// Ugly, but download project again, otherwise we have metadata in the folder already.
+	moduleFacades::downloadRepo(s, url, flags, DOWNLOAD_LOCATION);
+
 	Upload::logPreExecutionMessage(url, __FILE__, __LINE__);
 
-	PrintMatches::printHashMatches(hashes, DatabaseRequests::checkUploadHashes(hashes, metaData, authorData, env),
-								   authorData, env, url);
+	Command::uploadProject(s, flags, env);
 
-	Upload::logPostExecutionMessage(url, __FILE__, __LINE__);*/
+	Upload::logPostExecutionMessage(url, __FILE__, __LINE__);
 }
 
 #pragma endregion CheckUpload

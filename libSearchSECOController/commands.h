@@ -42,7 +42,7 @@ protected:
 
 	std::tuple<std::vector<HashData>, AuthorData> parseAndBlame(Spider *s, Flags flags);
 
-	void uploadProject(Flags flags, EnvironmentDTO *env);
+	void uploadProject(Spider *s, Flags flags, EnvironmentDTO *env);
 
 private:
 	void parseLatest(Spider *s, ProjectMetaData &meta, Flags &flags, EnvironmentDTO *env);

@@ -296,6 +296,8 @@ void Start::versionProcessing(std::vector<std::string> &splitted, Flags flags, E
 	// Initialize spider.
 	Spider *s = moduleFacades::setupSpider(flags.mandatoryArgument, flags);
 
+	warnAndReturnIfErrno("No suitable Spider, skipping project.");
+
 	// Download project.
 	moduleFacades::downloadRepo(s, flags.mandatoryArgument, flags, DOWNLOAD_LOCATION);
 
@@ -350,6 +352,8 @@ void Check::execute(Flags flags, EnvironmentDTO *env)
 
 	// Initialize spider.
 	Spider *s = moduleFacades::setupSpider(url, flags);
+
+	warnAndReturnIfErrno("No suitable Spider, skipping project.");
 
 	// Download project.
 	moduleFacades::downloadRepo(s, url, flags, DOWNLOAD_LOCATION);
@@ -408,6 +412,8 @@ void Upload::execute(Flags flags, EnvironmentDTO *env)
 	// Initialize spider.
 	Spider *s = moduleFacades::setupSpider(flags.mandatoryArgument, flags);
 
+	warnAndReturnIfErrno("No suitable Spider, skipping project.");
+
 	// Download project.
 	moduleFacades::downloadRepo(s, flags.mandatoryArgument, flags, DOWNLOAD_LOCATION);
 
@@ -453,6 +459,8 @@ void CheckUpload::execute(Flags flags, EnvironmentDTO *env)
 
 	// Initialize spider.
 	Spider *s = moduleFacades::setupSpider(url, flags);
+
+	warnAndReturnIfErrno("No suitable Spider, skipping project.");
 
 	// Download project.
 	moduleFacades::downloadRepo(s, url, flags, DOWNLOAD_LOCATION);

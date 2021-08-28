@@ -267,19 +267,14 @@ namespace error
 	void errSubmoduleFatalFailureCrawler(const char* file, int line);
 
 	/// <summary>
-	/// Signals a fatal failure occurred in the crawler submodule.
+	/// Signals a fatal failure occurred in the spider submodule.
 	/// </summary>
 	void errSubmoduleFatalFailureSpider(const char* file, int line);
 
 	/// <summary>
-	/// Signals a fatal failure occurred in the crawler submodule.
+	/// Signals a fatal failure occurred in the parser submodule.
 	/// </summary>
 	void errSubmoduleFatalFailureParser(const char* file, int line);
-
-	/// <summary>
-	/// Signals a fatal failure occurred in the crawler submodule.
-	/// </summary>
-	void errSubmoduleFatalFailureDatabase(const char* file, int line);
 
 	/// <summary>
 	/// Throws the error if the database API responds in an unexpected manner.

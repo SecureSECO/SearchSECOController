@@ -119,7 +119,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>..\libSearchSECOController;..\SearchSECOParser\libSearchSECOParser\;..\SearchSECOParser\libSearchSECOSpider\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\libSearchSECOController;..\SearchSECOParser\libSearchSECOParser\;..\SearchSECOSpider\libSearchSECOSpider\;..\SearchSECOCrawler\libSearchSECOCrawler\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -134,7 +134,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>..\libSearchSECOController;..\parser\libSearchSECOParser\;..\spider-revisited\libSearchSECOSpider\;..\crawler\Crawler;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\libSearchSECOController;..\SearchSECOParser\libSearchSECOParser\;..\SearchSECOSpider\libSearchSECOSpider\;..\SearchSECOCrawler\libSearchSECOCrawler\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>

@@ -28,8 +28,12 @@ add_executable(${TEST_NAME}
   printTests.cpp 
   utilsTests.cpp
   regexTests.cpp
-  #databaseAPIMock.h
-  #databaseAPIMock.cpp
+  databaseAPIMock.h
+  databaseAPIMock.cpp
+  integrationTestsCrawler.cpp
+  integrationTestsDatabaseAPI.cpp
+  integrationTestsParser.cpp
+  integrationTestsSpider.cpp
   #systemTestsUtils.h
   #systemTestsUtils.cpp
   #systemTestsCheck.cpp

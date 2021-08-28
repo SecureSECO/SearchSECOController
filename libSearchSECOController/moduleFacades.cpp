@@ -13,23 +13,6 @@ Utrecht University within the Software Project course.
 #include "RunSpider.h"
 
 
-/*std::tuple<AuthorData, std::string, std::vector<std::string>> moduleFacades::downloadRepository(
-	std::string repository, 
-	Flags flags,
-	std::string downloadPath, 
-	std::string tag, 
-	std::string nextTag)
-{
-	print::debug("Calling the spider to download a repository", __FILE__, __LINE__);
-
-	std::tuple<AuthorData, std::string, std::vector<std::string>> authorData = 
-		RunSpider::runSpider(repository, downloadPath, flags.flag_cpu, tag, nextTag, flags.flag_branch);
-
-	print::loguruResetThreadName();
-
-	return authorData;
-}*/
-
 Spider* moduleFacades::setupSpider(std::string repository, Flags flags)
 {
 	return RunSpider::setupSpider(repository, flags.flag_cpu);

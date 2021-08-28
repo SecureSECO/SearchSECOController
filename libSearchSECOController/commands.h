@@ -40,16 +40,44 @@ public:
 protected:
 	std::string helpMessageText;
 
+	/// <summary>
+	/// Parses and blames local repository.
+	/// </summary>
+	/// <param name="s"> The Spider to use. </param>
+	/// <param name="flags"> Flags to use. </param>
+	/// <returns> Tuple of parsed HashData and AuthorData. </returns>
 	std::tuple<std::vector<HashData>, AuthorData> parseAndBlame(Spider *s, Flags flags);
 
+	/// <summary>
+	/// Processes local project and uploads extracted methods to the database.
+	/// </summary>
+	/// <param name="s"> The Spider to use. </param>
+	/// <param name="flags"> Flags to use. </param>
+	/// <param name="meta"> Metadata for the local project. </param>
 	void uploadProject(Spider *s, Flags flags, ProjectMetaData meta, EnvironmentDTO *env);
 
 private:
+	
+	/// <summary>
+	/// Used by version processing. Will parse and upload the latest version of the project.
+	/// </summary>
 	void parseLatest(Spider *s, ProjectMetaData &meta, Flags &flags, EnvironmentDTO *env);
 
+	/// <summary>
+	/// Loops through all tags of a project and calls downloadTagged for each of them.
+	/// </summary>
 	void loopThroughTags(Spider *s, std::vector<std::tuple<std::string, long long, std::string>> &tags,
 						 ProjectMetaData &meta, long long startingTime, Flags &flags, EnvironmentDTO *env);
 
+	/// <summary>
+	/// Parses and uploads a single tag of a repository.
+	/// </summary>
+	/// <param name="s">The Spider to use.</param>
+	/// <param name="flags">Flags to use.</param>
+	/// <param name="prevTag">The tag we parsed before this.</param>
+	/// <param name="curTag">The tag we are parsing.</param>
+	/// <param name="meta">The meta data for the repository.</param>
+	/// <param name="prevVersionTime">The time for the previous tag.</param>
 	void downloadTagged(Spider *s, Flags flags, std::string prevTag, std::string curTag, ProjectMetaData meta,
 						std::string prevVersionTime, std::vector<std::string> &prevUnchangedFiles, EnvironmentDTO *env);
 };
@@ -90,43 +118,7 @@ private:
 	/// Will spider the given job and parse all tags in the repository by calling downloadTagged.
 	/// </summary>
 	void versionProcessing(std::vector<std::string> &splitted, Flags flags, EnvironmentDTO* env);
-	/*
-	/// <summary>
-	/// Used by version processing. Will parse and upload the latest version of the project.
-	/// </summary>
-	void parseLatest(
-		Spider* s,
-		ProjectMetaData& meta,
-		Flags& flags,
-		EnvironmentDTO* env);
 
-	/// <summary>
-	/// Loops through all tags of a project and calls download tagged for each of them.
-	/// </summary>
-	void loopThroughTags(
-		Spider *s,
-		std::vector<std::tuple<std::string, long long, std::string>> &tags,
-		ProjectMetaData &meta, 
-		long long startingTime,
-		Flags &flags, 
-		EnvironmentDTO* env);
-
-	/// <summary>
-	/// Parses and uploads a signle tag of a repository.
-	/// </summary>
-	/// <param name="prevTag">The tag we parsed before this.</param>
-	/// <param name="curTag">The tag we are parsing.</param>
-	/// <param name="meta">The meta data for the repository.</param>
-	/// <param name="prevVersionTime">The time for the previous tag.</param>
-	void downloadTagged(
-		Spider *s,
-		Flags flags, 
-		std::string prevTag, 
-		std::string curTag, 
-		ProjectMetaData meta,
-		std::string prevVersionTime, 
-		EnvironmentDTO* env);
-	*/
 	/// <summary>
 	/// Reads the command line.
 	/// </summary>

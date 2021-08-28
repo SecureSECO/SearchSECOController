@@ -54,17 +54,9 @@ std::tuple<std::vector<HashData>, AuthorData> Command::parseAndBlame(Spider *s, 
 	return std::tuple<std::vector<HashData>, AuthorData>(hashes, authorData);
 }
 
-void Command::uploadProject(Spider *s, Flags flags, EnvironmentDTO *env)
+void Command::uploadProject(Spider *s, Flags flags, ProjectMetaData meta, EnvironmentDTO *env)
 {
 	long long startingTime = 0; // Time to start from, request from db.
-
-	// Get project metadata.
-	ProjectMetaData meta = moduleFacades::getProjectMetadata(flags.mandatoryArgument, flags);
-
-	warnAndReturnIfErrno("Error getting project meta data, moving on to the next job.");
-
-	// Set default branch.
-	flags.flag_branch = meta.defaultBranch;
 
 	// Find most newest version of project in database.
 	std::pair<std::string, std::string> project{meta.id, meta.versionTime};
@@ -293,6 +285,14 @@ void Start::versionProcessing(std::vector<std::string> &splitted, Flags flags, E
 	}
 	flags.mandatoryArgument = splitted[1];
 
+	// Get project metadata.
+	ProjectMetaData meta = moduleFacades::getProjectMetadata(flags.mandatoryArgument, flags);
+
+	warnAndReturnIfErrno("Error getting project meta data, moving on to the next job.");
+
+	// Set default branch.
+	flags.flag_branch = meta.defaultBranch;
+
 	// Initialize spider.
 	Spider *s = moduleFacades::setupSpider(flags.mandatoryArgument, flags);
 
@@ -300,7 +300,7 @@ void Start::versionProcessing(std::vector<std::string> &splitted, Flags flags, E
 	moduleFacades::downloadRepo(s, flags.mandatoryArgument, flags, DOWNLOAD_LOCATION);
 
 	// Process and upload project.
-	Command::uploadProject(s, flags, env);
+	Command::uploadProject(s, flags, meta, env);
 }
 
 #pragma endregion Start
@@ -339,6 +339,14 @@ void Check::execute(Flags flags, EnvironmentDTO *env)
 	auto url = flags.mandatoryArgument;
 
 	this->logPreExecutionMessage(url, __FILE__, __LINE__);
+
+	// Get project metadata.
+	ProjectMetaData meta = moduleFacades::getProjectMetadata(flags.mandatoryArgument, flags);
+
+	warnAndReturnIfErrno("Error getting project meta data, moving on to the next job.");
+
+	// Set default branch.
+	flags.flag_branch = meta.defaultBranch;
 
 	// Initialize spider.
 	Spider *s = moduleFacades::setupSpider(url, flags);
@@ -388,6 +396,15 @@ void Upload::logPostExecutionMessage(std::string url, const char *file, int line
 void Upload::execute(Flags flags, EnvironmentDTO *env)
 {
 	this->logPreExecutionMessage(flags.mandatoryArgument, __FILE__, __LINE__);
+
+	// Get project metadata.
+	ProjectMetaData meta = moduleFacades::getProjectMetadata(flags.mandatoryArgument, flags);
+
+	warnAndReturnIfErrno("Error getting project meta data, moving on to the next job.");
+
+	// Set default branch.
+	flags.flag_branch = meta.defaultBranch;
+
 	// Initialize spider.
 	Spider *s = moduleFacades::setupSpider(flags.mandatoryArgument, flags);
 
@@ -395,7 +412,7 @@ void Upload::execute(Flags flags, EnvironmentDTO *env)
 	moduleFacades::downloadRepo(s, flags.mandatoryArgument, flags, DOWNLOAD_LOCATION);
 
 	// Process and upload project.
-	Command::uploadProject(s, flags, env);
+	Command::uploadProject(s, flags, meta, env);
 	this->logPostExecutionMessage(flags.mandatoryArgument, __FILE__, __LINE__);
 }
 
@@ -426,6 +443,14 @@ void CheckUpload::execute(Flags flags, EnvironmentDTO *env)
 
 	Check::logPreExecutionMessage(url, __FILE__, __LINE__);
 
+	// Get project metadata.
+	ProjectMetaData meta = moduleFacades::getProjectMetadata(flags.mandatoryArgument, flags);
+
+	warnAndReturnIfErrno("Error getting project meta data, moving on to the next job.");
+
+	// Set default branch.
+	flags.flag_branch = meta.defaultBranch;
+
 	// Initialize spider.
 	Spider *s = moduleFacades::setupSpider(url, flags);
 
@@ -445,7 +470,7 @@ void CheckUpload::execute(Flags flags, EnvironmentDTO *env)
 
 	Upload::logPreExecutionMessage(url, __FILE__, __LINE__);
 
-	Command::uploadProject(s, flags, env);
+	Command::uploadProject(s, flags, meta, env);
 
 	Upload::logPostExecutionMessage(url, __FILE__, __LINE__);
 }

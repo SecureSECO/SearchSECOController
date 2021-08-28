@@ -72,12 +72,12 @@ private:
 	/// <summary>
 	/// Parses and uploads a single tag of a repository.
 	/// </summary>
-	/// <param name="s">The Spider to use.</param>
-	/// <param name="flags">Flags to use.</param>
-	/// <param name="prevTag">The tag we parsed before this.</param>
-	/// <param name="curTag">The tag we are parsing.</param>
-	/// <param name="meta">The meta data for the repository.</param>
-	/// <param name="prevVersionTime">The time for the previous tag.</param>
+	/// <param name="s"> The Spider to use. </param>
+	/// <param name="flags"> Flags to use. </param>
+	/// <param name="prevTag"> The tag we parsed before this. </param>
+	/// <param name="curTag"> The tag we are parsing. </param>
+	/// <param name="meta"> The meta data for the repository. </param>
+	/// <param name="prevVersionTime"> The time for the previous tag. </param>
 	void downloadTagged(Spider *s, Flags flags, std::string prevTag, std::string curTag, ProjectMetaData meta,
 						std::string prevVersionTime, std::vector<std::string> &prevUnchangedFiles, EnvironmentDTO *env);
 };

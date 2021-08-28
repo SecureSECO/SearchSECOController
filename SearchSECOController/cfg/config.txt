@@ -3,7 +3,7 @@ github_username : username
 github_token : token
 
 # Worker name
-worker_name : ""
+worker_name : 
 
 # Default verbosity level (1 = Silent, 2 = Errors Only, 3 = Warnings & Errors, 4 = Everything, 5 = Debug)
 verbose : 4

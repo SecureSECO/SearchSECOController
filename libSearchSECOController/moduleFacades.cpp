@@ -12,6 +12,8 @@ Utrecht University within the Software Project course.
 // Spider includes.
 #include "RunSpider.h"
 
+#include <filesystem>
+
 
 Spider* moduleFacades::setupSpider(std::string repository, Flags flags)
 {
@@ -74,14 +76,21 @@ std::vector<HashData> moduleFacades::parseRepository(std::string repository, Fla
 {
 	print::debug("Calling the parser to parse a repository", __FILE__, __LINE__);
 
-	auto hashes = Parser::parse(repository, flags.flag_cpu);
-	print::loguruResetThreadName();
-
-	for (int i = 0; i < hashes.size(); i++)
+	if (std::filesystem::is_directory(repository))
 	{
-		Utils::replace(hashes[i].fileName, '/', '\\');
+		auto hashes = Parser::parse(repository, flags.flag_cpu);
+		print::loguruResetThreadName();
+
+		for (int i = 0; i < hashes.size(); i++)
+		{
+			Utils::replace(hashes[i].fileName, '/', '\\');
+		}
+		return hashes;
 	}
-	return hashes;
+	else
+	{
+		return std::vector<HashData>();
+	}
 }
 
 ProjectMetaData moduleFacades::getProjectMetadata(std::string url, Flags flags)

@@ -20,7 +20,7 @@ void termination::successful()
 void termination::failure(int code)
 {
 	print::loguruSetSilent();
-	exit(code);
+	exit((int)((std::byte)code));
 }
 
 void termination::failureCrawler(const char* file, int line)

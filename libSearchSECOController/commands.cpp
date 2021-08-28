@@ -183,8 +183,8 @@ void Command::downloadTagged(Spider *s, Flags flags, std::string prevTag, std::s
 Start::Start()
 {
 	this->helpMessageText = R"(
-	start: Starts a workernode which will repeatedly execute jobs from the job queue.
-	Can be stopped by typing "stop" in the command line. The worker node exits once it's done with its current job.
+	start: Starts a worker node which will repeatedly execute jobs from the job queue.
+	Can be stopped by typing "stop" in the command line. The worker node exits once it is done with its current job.
 		Optionals :
 			-c --cpu : Number of threads used by the worker node (minimum 2, default half).)";
 }
@@ -313,7 +313,7 @@ Check::Check()
 {
 	this->helpMessageText = R"(
 	check: Hashes all methods from a github repository, and checks for matches with the database.
-	A Summary will be printed to the console and written to a file.
+	A Summary will be printed to the console and written to a file. Only checks methods in the most recent version of the repository.
 		Arguments:
 			Url to a github repository.
 		Optionals :
@@ -374,7 +374,7 @@ void Check::execute(Flags flags, EnvironmentDTO *env)
 Upload::Upload()
 {
 	this->helpMessageText = R"(
-	check: Hashes all methods from a github repository, and uploads them to the database.
+	upload: Hashes all methods from all versions of a github repository, and uploads them to the database.
 		Arguments:
 			Url to a github repository.
 		Optionals :

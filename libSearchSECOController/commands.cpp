@@ -290,8 +290,11 @@ void Start::versionProcessing(std::vector<std::string> &splitted, Flags flags, E
 
 	warnAndReturnIfErrno("Error getting project meta data, moving on to the next job.");
 
-	// Set default branch.
-	flags.flag_branch = meta.defaultBranch;
+	if (flags.flag_branch == "")
+	{
+		// Set default branch.
+		flags.flag_branch = meta.defaultBranch;
+	}
 
 	// Initialize spider.
 	Spider *s = moduleFacades::setupSpider(flags.mandatoryArgument, flags);
@@ -347,8 +350,11 @@ void Check::execute(Flags flags, EnvironmentDTO *env)
 
 	warnAndReturnIfErrno("Error getting project meta data, moving on to the next job.");
 
-	// Set default branch.
-	flags.flag_branch = meta.defaultBranch;
+	if (flags.flag_branch == "")
+	{
+		// Set default branch.
+		flags.flag_branch = meta.defaultBranch;
+	}
 
 	// Initialize spider.
 	Spider *s = moduleFacades::setupSpider(url, flags);
@@ -406,8 +412,11 @@ void Upload::execute(Flags flags, EnvironmentDTO *env)
 
 	warnAndReturnIfErrno("Error getting project meta data, moving on to the next job.");
 
-	// Set default branch.
-	flags.flag_branch = meta.defaultBranch;
+	if (flags.flag_branch == "")
+	{
+		// Set default branch.
+		flags.flag_branch = meta.defaultBranch;
+	}
 
 	// Initialize spider.
 	Spider *s = moduleFacades::setupSpider(flags.mandatoryArgument, flags);
@@ -454,8 +463,11 @@ void CheckUpload::execute(Flags flags, EnvironmentDTO *env)
 
 	warnAndReturnIfErrno("Error getting project meta data, moving on to the next job.");
 
-	// Set default branch.
-	flags.flag_branch = meta.defaultBranch;
+	if (flags.flag_branch == "")
+	{
+		// Set default branch.
+		flags.flag_branch = meta.defaultBranch;
+	}
 
 	// Initialize spider.
 	Spider *s = moduleFacades::setupSpider(url, flags);

@@ -128,10 +128,11 @@ std::string DatabaseRequests::addJobs(
 
 std::string DatabaseRequests::addCrawledJobs(
 	const CrawlData& jobs,
+	std::string id,
 	EnvironmentDTO *env)
 {
 	int dataSize = 0;
-	const char* rawData = NetworkUtils::getUploadCrawlRequest(jobs, dataSize);
+	const char* rawData = NetworkUtils::getUploadCrawlRequest(jobs, id, dataSize);
 	return execRequest(DATABASE_CRAWL_DATA, rawData, dataSize, env);
 }
 

@@ -109,6 +109,7 @@ public:
 	/// <param name="jobs">The jobs to be added.</param>
 	static std::string addCrawledJobs(
 		const CrawlData& jobs,
+		std::string id,
 		EnvironmentDTO *env);
 private:
 	/// <summary>

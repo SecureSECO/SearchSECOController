@@ -160,7 +160,7 @@ public:
 	/// The size of the string that is returned will be put in here. 
 	/// The initial value that you give it will be ignored.</param>
 	/// <returns>A char pointer to string with all the data in it.</returns>
-	static const char* getUploadCrawlRequest(const CrawlData& urls, int& size);
+	static const char* getUploadCrawlRequest(const CrawlData& urls, std::string id, int& size);
 private:
 	/// <summary>
 	/// Adds a string to a char* buffer.

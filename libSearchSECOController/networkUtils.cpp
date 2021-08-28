@@ -217,11 +217,11 @@ const char* NetworkUtils::getJobsRequest(const std::vector<std::string>& urls, i
 	return data;
 }
 
-const char* NetworkUtils::getUploadCrawlRequest(const CrawlData& urls, int& size)
+const char* NetworkUtils::getUploadCrawlRequest(const CrawlData& urls, std::string id, int& size)
 {
 	// First, calculate the size, so we don't have to expand it later.
 	// Initial size is for the header.
-	size = std::to_string(urls.finalProjectId).length() + 1;
+	size = std::to_string(urls.finalProjectId).length() + id.length() + 2;
 	for (const auto& x : urls.URLImportanceList)
 	{
 		size += x.first.length() + std::to_string(x.second).length() + 2;
@@ -231,6 +231,8 @@ const char* NetworkUtils::getUploadCrawlRequest(const CrawlData& urls, int& size
 	int pos = 0;
 
 	addStringToBuffer(data, pos, std::to_string(urls.finalProjectId));
+	data[pos++] = INNER_DELIMITER;
+	addStringToBuffer(data, pos, id);
 	data[pos++] = ENTRY_DELIMITER;
 
 	for (auto x : urls.URLImportanceList)

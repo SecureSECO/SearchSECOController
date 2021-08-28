@@ -253,12 +253,12 @@ void Start::execute(Flags flags, EnvironmentDTO *env)
 
 void Start::handleCrawlRequest(std::vector<std::string> &splitted, Flags flags, EnvironmentDTO *env)
 {
-	if (splitted.size() < 2)
+	if (splitted.size() < 3)
 	{
 		error::errInvalidDatabaseAnswer(__FILE__, __LINE__);
 	}
 	CrawlData crawled = moduleFacades::crawlRepositories(std::stoi(splitted[1]), flags);
-	DatabaseRequests::addCrawledJobs(crawled, env);
+	DatabaseRequests::addCrawledJobs(crawled, splitted[2], env);
 }
 
 void Start::readCommandLine()

@@ -226,6 +226,10 @@ const char* NetworkUtils::getUploadCrawlRequest(const CrawlData& urls, std::stri
 	{
 		size += x.first.length() + std::to_string(x.second).length() + 2;
 	}
+	for (auto const &language : urls.languages)
+	{
+		size += language.first.length() + std::to_string(language.second).length() + 2;
+	}
 	char* data = new char[size];
 	// Create the string.
 	int pos = 0;
@@ -234,6 +238,16 @@ const char* NetworkUtils::getUploadCrawlRequest(const CrawlData& urls, std::stri
 	data[pos++] = INNER_DELIMITER;
 	addStringToBuffer(data, pos, id);
 	data[pos++] = ENTRY_DELIMITER;
+
+	for (auto const &language : urls.languages)
+	{
+		addStringToBuffer(data,pos, language.first);
+		data[pos++] = INNER_DELIMITER;
+		addStringToBuffer(data, pos, std::to_string(language.second));
+		data[pos++] = INNER_DELIMITER;
+	}
+
+	data[pos - 1] = ENTRY_DELIMITER;
 
 	for (auto x : urls.URLImportanceList)
 	{

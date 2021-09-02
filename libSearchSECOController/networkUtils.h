@@ -156,6 +156,7 @@ public:
 	/// This one is used for the automatic crawling.
 	/// </summary>
 	/// <param name="url">The list of urls.</param>
+	/// <param name="id">The id of the crawl job to send back to the database.</param>
 	/// <param name="size">This is basically a second return value. 
 	/// The size of the string that is returned will be put in here. 
 	/// The initial value that you give it will be ignored.</param>

@@ -107,8 +107,10 @@ public:
 	/// Adds the jobs the crawler found to the job queue.
 	/// </summary>
 	/// <param name="jobs">The jobs to be added.</param>
+	/// <param name="id">The id of the crawl job.</param>
 	static std::string addCrawledJobs(
 		const CrawlData& jobs,
+		std::string id,
 		EnvironmentDTO *env);
 private:
 	/// <summary>

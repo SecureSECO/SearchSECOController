@@ -1,12 +1,12 @@
 [submodule "SearchSECOCrawler"]
 	path = SearchSECOCrawler
 	url = ../SearchSECOCrawler.git	
-	branch = development
+	branch = master
 [submodule "SearchSECOParser"]
 	path = SearchSECOParser
 	url = ../SearchSECOParser.git
-	branch = development
+	branch = master
 [submodule "SearchSECOSpider"]
 	path = SearchSECOSpider
 	url = ../SearchSECOSpider.git
-	branch = development
+	branch = master

@@ -81,10 +81,6 @@ std::vector<HashData> moduleFacades::parseRepository(std::string repository, Fla
 		auto hashes = Parser::parse(repository, flags.flag_cpu);
 		print::loguruResetThreadName();
 
-		for (int i = 0; i < hashes.size(); i++)
-		{
-			Utils::replace(hashes[i].fileName, '/', '\\');
-		}
 		return hashes;
 	}
 	else

@@ -29,7 +29,7 @@ TEST(integrationDatabaseAPI, upload)
 	ConnectionHandler *connectionHandler = new ConnectionHandler();
 	std::thread *t1 = new std::thread(&ConnectionHandler::StartListen, connectionHandler);
 
-	EnvironmentDTO* env = new EnvironmentDTO(LOCALHOST, PORT, "");
+	EnvironmentDTO* env = new EnvironmentDTO(LOCALHOST, PORT, "", "tests");
 
 	AuthorData ad = {};
 	std::string result = DatabaseRequests::uploadHashes(
@@ -49,7 +49,7 @@ TEST(integrationDatabaseAPI, check)
 	ConnectionHandler *connectionHandler = new ConnectionHandler();
 	std::thread *t1 = new std::thread(&ConnectionHandler::StartListen, connectionHandler);
 
-	EnvironmentDTO* env = new EnvironmentDTO(LOCALHOST, PORT, "");
+	EnvironmentDTO *env = new EnvironmentDTO(LOCALHOST, PORT, "", "tests");
 
 	std::string result = DatabaseRequests::findMatches(
 		dummyHashes,
@@ -64,7 +64,7 @@ TEST(integrationDatabaseAPI, checkUpload)
 	ConnectionHandler* connectionHandler = new ConnectionHandler();
 	std::thread* t1 = new std::thread(&ConnectionHandler::StartListen, connectionHandler);
 	
-	EnvironmentDTO* env = new EnvironmentDTO(LOCALHOST, PORT, "");
+	EnvironmentDTO *env = new EnvironmentDTO(LOCALHOST, PORT, "", "tests");
 
 	AuthorData ad = {};
 	std::string result = DatabaseRequests::checkUploadHashes(
@@ -84,7 +84,7 @@ TEST(integrationDatabaseAPI, wrongPortCheck)
 	ConnectionHandler* connectionHandler = new ConnectionHandler();
 	std::thread* t1 = new std::thread(&ConnectionHandler::StartListen, connectionHandler);
 
-	EnvironmentDTO* env = new EnvironmentDTO(LOCALHOST, "wrongport", "");
+	EnvironmentDTO *env = new EnvironmentDTO(LOCALHOST, "wrongport", "", "tests");
 
-	EXPECT_EXIT(DatabaseRequests::findMatches(dummyHashes, env), testing::ExitedWithCode(400), "");
+	EXPECT_EXIT(DatabaseRequests::findMatches(dummyHashes, env), testing::ExitedWithCode(144), "");
 }

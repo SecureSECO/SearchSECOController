@@ -6,6 +6,9 @@ Utrecht University within the Software Project course.
 
 #pragma once
 
+// Controller includes.
+#include "dto.h"
+
 // External includes.
 #include <boost/asio.hpp>
 
@@ -35,7 +38,7 @@ public:
 	/// if -1 is used for port server and port,
 	/// then we will use the list of ips defined in the .env file.
 	/// </summary>
-	void openConnection(std::string server, std::string port);
+	void openConnection(EnvironmentDTO *env);
 
 	std::string receiveData();
 private:
@@ -60,6 +63,11 @@ private:
 	/// Reads the ips for the database api out of the .env file.
 	/// </summary>
 	void readEnvFile();
+
+	/// <summary>
+	/// Parses the string that is retrieved from the database to a list of ips.
+	/// </summary>
+	std::vector<std::pair<std::string, std::string>> parseIPs(std::string newIPs);
 
 	tcp::socket socket;
 };

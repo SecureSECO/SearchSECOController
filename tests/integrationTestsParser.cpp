@@ -13,6 +13,7 @@ NOTE: These tests depend on the Linux0dot01 integration test of the spider.
 
 // Controller includes
 #include "moduleFacades.h"
+#include "Spider.h"
 
 
 //Constants.
@@ -29,7 +30,12 @@ TEST(integrationParser, basic)
 		{HashData("", "rw_hd", "kernel\\hd.c", 101, 117)},
 	};
 
-	moduleFacades::downloadRepository("https://github.com/zavg/linux-0.01", parserFlags, TEMPPATH);
+	std::string url = "https://github.com/zavg/linux-0.01";
+
+	// Initialize spider.
+	Spider *s = moduleFacades::setupSpider(url, parserFlags);
+
+	moduleFacades::downloadRepo(s, url, parserFlags, TEMPPATH);
 	auto hashes = moduleFacades::parseRepository(TEMPPATH, parserFlags);
 
 	int count = 0;
@@ -55,7 +61,12 @@ TEST(integrationParser, failurecase)
 	std::vector<HashData> expected = {
 	};
 
-	moduleFacades::downloadRepository("https://github.com/zavg/linux-0.01", parserFlags, TEMPPATH);
+	std::string url = "https://github.com/zavg/linux-0.01";
+
+	// Initialize spider.
+	Spider *s = moduleFacades::setupSpider(url, parserFlags);
+
+	moduleFacades::downloadRepo(s, url, parserFlags, TEMPPATH);
 	auto hashes = moduleFacades::parseRepository("wrongpath", parserFlags);
 
 	int count = 0;

@@ -8,6 +8,7 @@ Utrecht University within the Software Project course.
 #include "networking.h"
 #include "print.h"
 #include "utils.h"
+#include "databaseRequests.h"
 
 // External includes.
 #include <boost/array.hpp>
@@ -16,21 +17,30 @@ Utrecht University within the Software Project course.
 
 
 std::vector<std::pair<std::string, std::string>> NetworkHandler::ips = {};
+bool refreshIPs = true;
 
 // https://www.boost.org/doc/libs/1_75_0/doc/html/boost_asio/tutorial.html was used as a base.
 boost::asio::io_context NetworkHandler::ioContext;
 
-void NetworkHandler::openConnection(std::string server, std::string port)
+void NetworkHandler::openConnection(EnvironmentDTO *env)
 {
 	print::debug("Opening a new connection", __FILE__, __LINE__);
 
 	// If both server and port are both -1, we will read the .env file to find the servers we want to connect to.
-	if (server == "-1" && port == "-1")
+	if (env->databaseAPIIP == "-1" && env->databaseAPIPort == "-1")
 	{
 		if (ips.size() == 0)
 		{
 			readEnvFile();
 		}
+		if (refreshIPs)
+		{
+			refreshIPs = false;
+			std::string newIPs = DatabaseRequests::getIPs(env);
+			ips = parseIPs(newIPs);
+			refreshIPs = false;
+		}
+
 		auto ipList = ips;
 		// Shuffle so we always connect to a random one first.
 		Utils::shuffle(ipList);
@@ -44,6 +54,7 @@ void NetworkHandler::openConnection(std::string server, std::string port)
 			}
 			catch (std::exception const& ex)
 			{
+				refreshIPs = true;
 				print::warn("Could not establish a connection with " + server.first, __FILE__, __LINE__);
 			}
 		}
@@ -53,11 +64,11 @@ void NetworkHandler::openConnection(std::string server, std::string port)
 	{
 		try
 		{
-			connect(server, port);
+			connect(env->databaseAPIIP, env->databaseAPIPort);
 		}
 		catch (std::exception const& ex)
 		{
-			error::errDBConnection("Could not astablish a connection with " + server, __FILE__, __LINE__);
+			error::errDBConnection("Could not astablish a connection with " + env->databaseAPIIP, __FILE__, __LINE__);
 		}
 	}
 }
@@ -158,4 +169,25 @@ void NetworkHandler::readEnvFile()
 		}
 	}
 	error::errNoIpsInEnvFile(__FILE__, __LINE__);
+}
+
+std::vector<std::pair<std::string, std::string>> NetworkHandler::parseIPs(std::string newIPs)
+{
+	std::vector<std::string> splitted = Utils::split(newIPs, '\n');
+	std::vector<std::pair<std::string, std::string>> result = std::vector<std::pair<std::string, std::string>>();
+	for (std::string ip : splitted)
+	{
+		print::log(ip, __FILE__, __LINE__);
+		if (ip.size() <= 1)
+		{
+			continue;
+		}
+		std::vector<std::string> splittedIP = Utils::split(ip, '?');
+		if (splittedIP.size() < 2)
+		{
+			continue;
+		}
+		result.push_back(std::pair<std::string, std::string>(splittedIP[0], splittedIP[1]));
+	}
+	return result;
 }

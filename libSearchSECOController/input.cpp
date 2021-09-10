@@ -20,7 +20,7 @@ Utrecht University within the Software Project course.
 Input::Input(int argc, char* argv[]) 
 	: flags()
 {
-    print::debug("Parsing CLI input", __FILE__, __LINE__);
+	print::debug("Parsing CLI input", __FILE__, __LINE__);
 	Input::parseCliInput(argc, argv);
 
 	print::debug("Applying default arguments to flags", __FILE__, __LINE__);
@@ -37,7 +37,7 @@ void Input::parseCliInput(int argc, char* argv[])
 	// For debugging in the IDE. Read another line if only 'searchseco' was entered.
 	if (argc == 1)
 	{
-        print::warn("Local debugging detected", __FILE__, __LINE__);
+		print::warn("Local debugging detected", __FILE__, __LINE__);
 		std::string s;
 		std::getline(std::cin, s);
 		std::vector<std::string> temp = Utils::split(s, ' ');
@@ -197,6 +197,10 @@ void Input::sanitizeArguments()
 		{
 			Input::sanitizeGithubToken(argument, fromConfig);
 		}
+		else if (flag == "worker_name")
+		{
+			Input::sanitizeWorkerName(argument, fromConfig);
+		}
 	}
 }
 
@@ -293,6 +297,19 @@ void Input::sanitizeGithubToken(std::string arg, bool fromConfig)
 	}
 
 	this->flags.flag_github_token = arg;
+}
+
+void Input::sanitizeWorkerName(std::string arg, bool fromConfig)
+{
+	auto msg = "Sanitizing --worker_name flag";
+
+	print::debug(msg, __FILE__, __LINE__);
+	if (arg == "")
+	{
+		print::warn("Missing worker name, statistics will be limited", __FILE__, __LINE__);
+	}
+
+	this->flags.flag_worker_name = arg;
 }
 #pragma endregion
 

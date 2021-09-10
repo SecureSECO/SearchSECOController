@@ -1,0 +1,196 @@
+\documentclass[./Main.tex]{subfiles}
+\begin{document}
+
+\section{Code coverage}
+\tocless\subsection{Controller}
+Trying to analyse the code coverage for the Controller Poses a small problem. When the code coverage is ran on the controller, all submodules will also be included. This makes it hard to get a concrete number for the total coverage.\\
+The system tests are also not included in the code coverage, because they do not run in visual studio, which we use to analyse code coverage. Because of this, the command classes Start, Check, Upload and Checkupload are all not covered.\\\\
+Here an overview of the code coverage when all tests except the system tests are ran:\\
+\begin{tabular}{c|c|c|p{8cm}}
+     Class & Blocks & Coverage & Notes \\
+     \hline
+     Check & 65 & 0\% & Is tested in the system tests, which is not included in the code coverage.\\
+     CheckUpload & 64 & 0\% & Is tested in the system tests, which is not included in the code coverage.\\
+     Command & 3 & 0\% & helpMessage not tested.\\
+     CommandFactory & 76 & 0\% & Not enough time to write good tests for this part.\\
+     DatabaseRequests & 237 & 45\% & Has a lot of similar trivial functions of which we only tested two. The main execRequest function is also only covered for 59\% because we did not tests the retry functionality of the function.\\
+     EnvironmentDTO & 11 & 100\% & \\
+     ExecuteCommand & 6 & 100\% & \\
+     ExecuteCommandObj & 6 & 78\% & Some error cases are not tested.\\
+     Flags & 203 & 6\% & Not enough time to write good tests for this part. \\
+     NetworkHandler & 215 & 46\% & Networking part of the network handler is tested. Tests to see if the .env file is read correctly are not written. \\
+     NetworkUtils & 408 & 96\% & Only a test for getProjectRequest is missing.\\
+     PrintMatches & 373 & 0\% & Not enough time to write good tests for this part because of the complexity involved.\\
+     ProjectMetaData & 51 & 100\% & \\
+     Start & 391 & 0\% & Is tested in the system tests, which is not included in the code coverage.\\
+     Upload & 82 & 0\% & Is tested in the system tests, which is not included in the code coverage.\\
+     Utils & 188 & 75\% & No tests written for getExecutablePath and shuffle.\\
+     
+     
+\end{tabular}
+
+
+\tocless\subsection{Parser}
+
+\tocless\subsubsection{Unit tests}
+An overview of the coverage of the unit tests can be seen in Table \ref{tab:parser_unit_test_coverage}. The SrcMLCaller class was not tested using unit tests, as most of its functionality simply calls srcML which we do not want to cover with unit tests.
+
+\begin{table}[]
+    \centering
+    \begin{tabular}{l|c|c|p{7cm}}
+         Class & Blocks & Coverage & Notes \\
+         \hline
+         AbstractSyntaxToHashable & 117 & 78\% & getHashable method has been updated without adapting unit tests, should be improved. \\
+         Logger                   & 29 & 10\% & Most functionality is trivial, and also uses an external library (loguru). \\
+         Node                     & 90 & 96\% &  \\
+         StringStream             & 78 & 82\% &  \\
+         TagData                  & 11 & 100\% &  \\
+         XmlParser                & 311 & 77\% & One edgecase missing in handleUnitTag (unit tag for start of srcML output rather than start of file), handleClosingTag calls other parts of the program and is better tested using integration tests.  \\
+    \end{tabular}
+    \caption{Coverage of unit tests for the SearchSECO Parser.}
+    \label{tab:parser_unit_test_coverage}
+\end{table}
+
+No unit tests where made to test our custom parser, for large parts this would not be feasible as the code uses generated ANTLR files which we do not want to test using unit tests. There are, however, parts of the AntlrParsing class which could be unit tested, but due to time constraints we opted not to do this.
+
+\tocless\subsubsection{Integration tests}
+The integration tests are divided up in 2 tests for each language we support. One of them tests whether the returned meta data for the methods is correct (filename, line numbers). The other checks whether the actual hashes found are correct. This division was made since any changes that would affect the hash should at least still get the same meta data, allowing a check before adapting the hashes in the tests to the new method. An overview of the coverage of the integration tests can be seen in Table \ref{tab:parser_integration_test_coverage}
+
+\begin{table}[h]
+    \centering
+    \begin{tabular}{l|c|c|p{7cm}}
+         Class & Blocks & Coverage & Notes \\
+         \hline
+         AbstractSyntaxToHashable & 117 & 95\% &  \\
+         AntlrParsing & 272 & 82\% & Some edge cases are not being hit, it might be best to tests these using unit tests. \\
+         CustomJavaScriptListener & 247 & 95\% &  \\
+         CustomPython3Listener & 160 & 95\% &  \\
+         JavaScriptAntlrImplementation & 131 & 53\% & A lot of error catching code is not being tested, it would be a good idea to add this to make sure they work. \\
+         Logger                   & 29 & 21\% & Most functionality is trivial, and also uses an external library (loguru). \\
+         Node                     & 90 & 72\% &  \\
+         Python3AntlrImplementation & 117 & 53\% & A lot of error catching code is not being tested, it would be a good idea to add this to make sure they work. \\
+         SrcMLCaller              & 67 & 76\% &  \\
+         StringStream             & 78 & 91\% &  \\
+         TagData                  & 11 & 100\% &  \\
+         XmlParser                & 311 & 83\% & \\
+    \end{tabular}
+    \caption{Coverage of integration tests for the SearchSECO Parser.}
+    \label{tab:parser_integration_test_coverage}
+\end{table}
+
+\newpage
+\tocless\subsection{Crawler}
+The following table is an overview of the code coverage for all the classes of the crawler including both the unit tests and the integration tests.
+
+\begin{table}[h]
+    \centering
+    \begin{tabular}{l|c|c|p{7cm}}
+        Class & Blocks & Coverage & Notes \\
+        \hline
+        EmptyHandler & 2 & 0\% & Nothing to test, really. \\
+        ErrorHandler$<$enum JSONError$>$ & 20 & 100\% & \\
+        ErrorHandler$<$enum githubAPIResponse$>$ & 22 & 95\% & \\
+        GithubClientErrorConverter & 31 & 35\% & Testing the only function in this class would mostly come down to re-implementing that function as the function is a switch that sends a number to a githubAPIResponse. \\
+        GithubCrawler & 375 & 93\% & \\
+        GithubErrorThrowHandler & 34 & 94 \% & \\
+        GithubInterface & 47 & 100\% & \\
+        IndividualErrorHandler & 1 & 0\% & Abstract class, can't be tested.\\
+        JSON & 460 & 79\% & Not tested functions are mainly private functions or things that are hard to test or are (almost) never used. \\
+        JSONErrorHandler & 34 & 97\% & \\
+        JSONSingletonErrorHandler & 10 & 100\% \\
+        LogHandler & 20 & 50\% & This function logs directly to the console and is therefore hard to test. \\
+        LogThrowHandler & 20 & 55 \% & Similar notes as LogHandler. It is tested as far as it can be tested but testing if the text it sends to console is the right text is rather hard. \\
+        LoggerCrawler & 38 & 100\% & \\
+        RunCrawler & 150 & 73\% & Can be tested further using more integration tests. \\
+        Utility & 31 & 77\% & This is code that is mainly copied from Stack Overflow. It could be tested more in the future.
+  \end{tabular}
+\end{table}
+
+
+\newpage
+\tocless\subsection{Spider}
+An overview of the code coverage for the spider can be seen in tables \ref{tab:spider_unit_test_coverage} and \ref{tab:spider_integration_test_coverage}. 
+
+\begin{table}[h]
+    \centering
+    \begin{tabular}{l|c|c|p{7cm}}
+        Class & Blocks & Coverage & Notes \\
+        \hline
+        Error & 3 & 0\% &  \\
+        ExecuteCommand & 5 & 100\% &  \\
+        ExecuteCommandObj & 50 & 50\% & Contains all functions of ExecuteCommand, but not all of those are used. \\ 
+        Filesystem & 14 & 64\% & Remove function isn't tested, but it simply contains a call to a builtin function. \\ 
+        FilesystemImp & 62 & 15\% & Contains all functions of FileSystem, but not all of those are used. \\ 
+        Git & 407 & 77\% &  \\
+        GitSpider & 170 & 85\% &  \\
+        Logger & 32 & 38\% &  \\
+        RunSpider & 148 & 38\% & Functions requiring a git repository to test aren't tested \\
+        Spider & 19 & 68\% &  \\
+  \end{tabular}
+    \caption{Overview of coverage of unit tests for Spider}
+    \label{tab:spider_unit_test_coverage}
+\end{table}
+
+\begin{table}[h]
+    \centering
+    \begin{tabular}{l|c|c|p{7cm}}
+        Class & Blocks & Coverage & Notes \\
+        \hline
+        Error & 3 & 0\% &  \\
+        ExecuteCommand & 5 & 100\% &  \\
+        ExecuteCommandObj & 50 & 78\% &  \\
+        Filesystem & 14 & 86\% &  \\
+        FilesystemImp & 62 & 89\% &  \\
+        Git & 407 & 65\% & Certain settings of the Git class aren't tested, as a single test requires a download of a repository which takes time. \\
+        GitSpider & 170 & 99\% &  \\
+        Logger & 32 & 25\% & Errors and crashes not all covered as reproducing certain errors is hard in integration tests. \\
+        RunSpider & 148 & 55\% & Only runSpider method tested. \\
+        Spider & 19 & 68\% &  \\
+  \end{tabular}
+    \caption{Overview of coverage of integration tests for Spider}
+    \label{tab:spider_integration_test_coverage}
+\end{table}
+
+
+
+\newpage
+\tocless\subsection{Database API}
+An overview of the coverage of the code can be found below in Table \ref{tabledbapi}. We will discuss unit tests and integration tests separately afterwards.
+
+\begin{table}[h]
+    \centering
+    \begin{tabular}{l|c|c|p{7cm}}
+    Class & Lines & Coverage & Notes    \\ \hline
+        DatabaseHandler & 439 & 88\% & Some edge cases are not handled.\\
+        DatabaseRequestHandler & 562 & 93\% & Most edge cases are not tested.\\
+        ConnectionHandler & 75 & 0\% & The tests did not work properly, so we removed them. \\
+        Database-API & 8 & 0\% & Nothing to test, really. \\
+        HTTPStatus & 21 & 95\% & A single edge case is not handled. \\
+        RequestHandler & 76 & 88\% & The connect request for the job request handler is not tested.\\
+        Utility & 49 & 100\% & Fully tested.\\
+        DatabaseConnection & 107 & 76\% & Some edge cases are not handled. \\
+        JobRequestHandler & 102 & 72\% & Mostly unused retry functionality is not tested. Additionally, some edge cases are not handled.\\
+        Networking & 29 & 21\% & Sending and receiving data is not tested. \\
+        RaftConsensus & 188 & 46\% & Some of the tests did not work properly, so we removed them.
+    \end{tabular}
+    \caption{Code coverage for the SearchSECO Database API.}
+    \label{tabledbapi}
+\end{table}
+
+\tocless\subsubsection{Unit tests}
+The functions in the DatabaseRequestHandler, RequestHandler and the JobRequestHandler are almost completely unit tested. The main issue with the tests is that a lot of edge cases are not tested. This could be done using the Database mock. This clarifies percentages like 88\% and 93\% for the DatabaseHandler and the DatabaseRequestHandler respectively.\\
+
+\tocless\subsubsection{Integration tests}
+The classes ConnectionHandler, Networking and RAFTConsensus are not tested properly. We had originally introduced tests to test their functionality, but the tests mostly did not work consistently, so we decided to remove most of the tests. Other parts of the programming, primarily the integration of the request handlers with the database, are tested properly, as far as can be tested.
+
+\section{Unsolved Known Issues}
+\subsection{Controller}
+\newpar{Fatal error with checkupload request}
+If a user sends a checkupload request without arguments, a fatal error occurs. Preferably, we would want to provide the user with a message on how to use the command properly.
+
+\subsection{Database API}
+
+\newpar{Connection from server without open ports result in crash}
+When the database API gets a connect request from a server without open ports the database API crashes. Preferably, the database API should not crash but just continue.
+
+\end{document}

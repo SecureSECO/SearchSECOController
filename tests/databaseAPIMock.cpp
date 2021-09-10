@@ -9,6 +9,8 @@ Utrecht University within the Software Project course.
 
 // Controller includes
 #include "databaseAPIMock.h"
+#include "utils.h"
+#include "networkUtils.h"
 
 
 // Connection Handler Methods
@@ -48,18 +50,22 @@ void tcp_connection::start(RequestHandler handler)
 
 	std::string r(request.begin(), request.begin() + len - 1);
 
-	std::string length = r.substr(4);
+	std::vector<std::string> header = Utils::split(r, INNER_DELIMITER);
 
-	int size = stoi(length) - (request.size() - len);
+	std::string length = header[2];
+	std::string totalData(request.begin() + len, request.end());
+	int size = std::stoi(length) - (request.size() - len);
+
 	std::vector<char> data(size);
-	if (size > 0)
+
+	while (size > 0)
 	{
-		socket_.read_some(boost::asio::buffer(data), error);
+		int prevSize = size;
+		size -= socket_.read_some(boost::asio::buffer(data), error);
+		totalData.append(std::string(data.begin(), data.begin() + prevSize - size));
 	}
 
-	std::string d(data.begin(), data.end());
-
-	std::string result = handler.HandleRequest(r.substr(0, 4), std::string(request.begin() + len, request.end()) + d);
+	std::string result = handler.HandleRequest(header[0], totalData);
 	std::cout << "sending " << result << "\n";
 	boost::asio::write(socket_, boost::asio::buffer(result), error);
 

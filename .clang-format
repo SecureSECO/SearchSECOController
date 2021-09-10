@@ -1,6 +1,7 @@
 ColumnLimit: 120
 IndentWidth: 4
-UseTab: Never
+UseTab: Always
+TabWidth: 4
 BreakBeforeBraces: Allman
 SpaceBeforeParens: ControlStatements
 AllowShortFunctionsOnASingleLine: None

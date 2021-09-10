@@ -111,6 +111,12 @@ std::string DatabaseRequests::getNextJob(EnvironmentDTO* env)
 	return execRequest(DATABASE_GET_NEXT_JOB, nullptr, 0, env);
 }
 
+std::string DatabaseRequests::getIPs(EnvironmentDTO *env)
+{
+	std::string result = execRequest(DATABASE_GET_IPS, nullptr, 0, env);
+	return result;
+}
+
 std::string DatabaseRequests::addJobs(
 	const std::vector<std::string>& jobs,
 	EnvironmentDTO *env)
@@ -122,10 +128,11 @@ std::string DatabaseRequests::addJobs(
 
 std::string DatabaseRequests::addCrawledJobs(
 	const CrawlData& jobs,
+	std::string id,
 	EnvironmentDTO *env)
 {
 	int dataSize = 0;
-	const char* rawData = NetworkUtils::getUploadCrawlRequest(jobs, dataSize);
+	const char* rawData = NetworkUtils::getUploadCrawlRequest(jobs, id, dataSize);
 	return execRequest(DATABASE_CRAWL_DATA, rawData, dataSize, env);
 }
 
@@ -136,10 +143,10 @@ std::string DatabaseRequests::execRequest(
 	EnvironmentDTO *env)
 {
 	// First start the connection.
-	NetworkHandler* networkHandler = startConnection(env->databaseAPIIP, env->databaseAPIPort);
+	NetworkHandler* networkHandler = startConnection(env);
 
 	// Then send the header (what request we are doing and how much data we are sending).
-	std::string requestType = request + std::to_string(dataSize) + "\n";
+	std::string requestType = request + INNER_DELIMITER + env->workerName + INNER_DELIMITER + std::to_string(dataSize) + "\n";
 	networkHandler->sendData(requestType);
 
 	// After that we send the data.
@@ -228,9 +235,9 @@ std::tuple<bool, std::string> DatabaseRequests::checkResponseCode(std::string da
 	}
 }
 
-NetworkHandler* DatabaseRequests::startConnection(std::string apiIP, std::string apiPort)
+NetworkHandler *DatabaseRequests::startConnection(EnvironmentDTO *env)
 {
 	NetworkHandler* nh = NetworkHandler::createHandler();
-	nh->openConnection(apiIP, apiPort);
+	nh->openConnection(env);
 	return nh;
 }

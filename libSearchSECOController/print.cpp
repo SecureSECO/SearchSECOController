@@ -5,8 +5,8 @@ Utrecht University within the Software Project course.
 */
 
 // Controller includes.
-#include "databaseRequests.h"
 #include "print.h"
+#include "databaseRequests.h"
 #include "utils.h"
 
 // External includes
@@ -14,11 +14,10 @@ Utrecht University within the Software Project course.
 #include <filesystem>
 #include <fstream>
 #include <iostream>
+#include <sstream>
 
-
-inline
-bool operator<(HashData const& lhs, HashData const& rhs)
-{ 
+inline bool operator<(HashData const &lhs, HashData const &rhs)
+{
 	if (lhs.hash != rhs.hash)
 	{
 		return lhs.hash < rhs.hash;
@@ -40,17 +39,17 @@ bool operator<(HashData const& lhs, HashData const& rhs)
 
 #pragma region Logging
 
-void print::debug(std::string msg, const char* file, int line)
+void print::debug(std::string msg, const char *file, int line)
 {
 	loguru::log(loguru::Verbosity_1, file, line, "%s", msg.c_str());
 }
 
-void print::log(std::string msg, const char* file, int line)
+void print::log(std::string msg, const char *file, int line)
 {
 	loguru::log(loguru::Verbosity_INFO, file, line, "%s", msg.c_str());
 }
 
-void print::warn(std::string msg, const char* file, int line)
+void print::warn(std::string msg, const char *file, int line)
 {
 	loguru::log(loguru::Verbosity_WARNING, file, line, "%s", msg.c_str());
 }
@@ -60,13 +59,12 @@ void print::loguruSetSilent()
 	loguru::g_stderr_verbosity = loguru::Verbosity_OFF;
 }
 
-void print::loguruResetThreadName() 
+void print::loguruResetThreadName()
 {
 	loguru::set_thread_name("controller");
 }
 
 #pragma endregion
-
 
 #pragma region Print
 std::string line(std::string str)
@@ -79,7 +77,7 @@ void print::printline(std::string str)
 	std::cout << line(str);
 }
 
-void print::writelineToFile(std::string str, std::ofstream& file)
+void print::writelineToFile(std::string str, std::ofstream &file)
 {
 	file << line(str);
 }
@@ -125,8 +123,7 @@ void print::versionFull()
 
 	// Get subsystem versions.
 	int systemc = 3;
-	std::string* subsystems = new std::string[systemc]
-	{
+	std::string *subsystems = new std::string[systemc]{
 		"SearchSECOCrawler",
 		"SearchSECOSpider",
 		"SearchSECOParser",
@@ -140,7 +137,7 @@ void print::versionFull()
 	std::getline(versionFile, version);
 
 	print::printline(mainName + "\tversion " + version);
-	
+
 	versionFile.close();
 
 	// Loop over the subsystems.
@@ -152,7 +149,7 @@ void print::versionFull()
 		std::getline(versionFile, version);
 
 		print::printline(">> " + system + "\tversion " + version);
-		
+
 		versionFile.close();
 	}
 }
@@ -160,12 +157,8 @@ void print::versionFull()
 
 #pragma region Matches
 
-void PrintMatches::printHashMatches(
-	std::vector<HashData> &hashes, 
-	std::string databaseOutput, 
-	AuthorData &authordata,
-	EnvironmentDTO *env,
-	std::string url)
+void PrintMatches::printHashMatches(std::vector<HashData> &hashes, std::string databaseOutput, AuthorData &authordata,
+									EnvironmentDTO *env, std::string url)
 {
 	std::map<std::string, std::vector<std::string>> receivedHashes = {};
 
@@ -177,11 +170,11 @@ void PrintMatches::printHashMatches(
 	// Separate the response we got into its individual entries.
 	std::vector<std::string> dbentries = Utils::split(databaseOutput, ENTRY_DELIMITER);
 	parseDatabaseHashes(dbentries, receivedHashes, projects, dbAuthors);
-	
+
 	getDatabaseAuthorAndProjectData(projects, dbAuthors, dbProjects, authorIdToName, env);
 
 	// Author data.
-	std::map<std::string, std::vector<HashData*>> transformedList;
+	std::map<std::string, std::vector<HashData *>> transformedList;
 	std::map<HashData, std::vector<std::string>> authors;
 	NetworkUtils::transformHashList(hashes, transformedList);
 	NetworkUtils::getAuthors(authors, transformedList, authordata);
@@ -197,39 +190,21 @@ void PrintMatches::printHashMatches(
 		if (receivedHashes.count(hashes[i].hash) > 0)
 		{
 			matches++;
-			printMatch(
-				hashes[i], 
-				receivedHashes, 
-				authors, 
-				authorCopiedForm, 
-				authorsCopied, 
-				dbProjects, 
-				authorIdToName,
-				report
-			);
+			printMatch(hashes[i], receivedHashes, authors, authorCopiedForm, authorsCopied, dbProjects, authorIdToName,
+					   report);
 		}
 	}
 
 	print::writelineToFile("\n\n", report);
 
-	printSummary(
-		authorCopiedForm, 
-		authorsCopied, 
-		matches, 
-		hashes.size(), 
-		dbProjects, 
-		authorIdToName, 
-		projects,
-		report
-	);
+	printSummary(authorCopiedForm, authorsCopied, matches, hashes.size(), dbProjects, authorIdToName, projects, report);
 	report.close();
 }
 
-void PrintMatches::parseDatabaseHashes(
-	std::vector<std::string>& dbentries,
-	std::map<std::string, std::vector<std::string>>& receivedHashes,
-	std::map<std::pair<std::string, std::string>, int> &projects,
-	std::map<std::string, int> &dbAuthors)
+void PrintMatches::parseDatabaseHashes(std::vector<std::string> &dbentries,
+									   std::map<std::string, std::vector<std::string>> &receivedHashes,
+									   std::map<std::pair<std::string, std::string>, int> &projects,
+									   std::map<std::string, int> &dbAuthors)
 {
 	for (std::string entry : dbentries)
 	{
@@ -239,7 +214,7 @@ void PrintMatches::parseDatabaseHashes(
 		}
 		std::vector<std::string> entrySplitted = Utils::split(entry, INNER_DELIMITER);
 
-		if (entrySplitted.size() < 7) 
+		if (entrySplitted.size() < 7)
 		{
 			continue;
 		}
@@ -257,16 +232,14 @@ void PrintMatches::parseDatabaseHashes(
 	}
 }
 
-void PrintMatches::getDatabaseAuthorAndProjectData(
-	std::map<std::pair<std::string, std::string>, int>& projects,
-	std::map<std::string, int> &dbAuthors,
-	std::map<std::string, std::vector<std::string>>& dbProjects,
-	std::map<std::string, std::vector<std::string>>& authorIdToName, 
-	EnvironmentDTO *env)
+void PrintMatches::getDatabaseAuthorAndProjectData(std::map<std::pair<std::string, std::string>, int> &projects,
+												   std::map<std::string, int> &dbAuthors,
+												   std::map<std::string, std::vector<std::string>> &dbProjects,
+												   std::map<std::string, std::vector<std::string>> &authorIdToName,
+												   EnvironmentDTO *env)
 {
 	// Database requests.
-	std::vector<std::string> authorEntries =
-		Utils::split(DatabaseRequests::getAuthor(dbAuthors, env), ENTRY_DELIMITER);
+	std::vector<std::string> authorEntries = Utils::split(DatabaseRequests::getAuthor(dbAuthors, env), ENTRY_DELIMITER);
 	std::vector<std::string> projectEntries =
 		Utils::split(DatabaseRequests::getProjectData(projects, env), ENTRY_DELIMITER);
 
@@ -292,22 +265,24 @@ void PrintMatches::getDatabaseAuthorAndProjectData(
 	}
 }
 
-void PrintMatches::printMatch(
-	HashData hash, 
-	std::map<std::string, std::vector<std::string>>& receivedHashes, 
-	std::map<HashData, std::vector<std::string>>& authors, 
-	std::map<std::string, int>& authorCopiedForm, 
-	std::map<std::string, int>& authorsCopied,
-	std::map<std::string, std::vector<std::string>>& dbProjects,
-	std::map<std::string, std::vector<std::string>>& authorIdToName,
-	std::ofstream &report
-) 
+void PrintMatches::printMatch(HashData hash, std::map<std::string, std::vector<std::string>> &receivedHashes,
+							  std::map<HashData, std::vector<std::string>> &authors,
+							  std::map<std::string, int> &authorCopiedForm, std::map<std::string, int> &authorsCopied,
+							  std::map<std::string, std::vector<std::string>> &dbProjects,
+							  std::map<std::string, std::vector<std::string>> &authorIdToName, std::ofstream &report)
 {
 	std::vector<std::string> dbEntry = receivedHashes[hash.hash];
+
+	std::string linkFile = dbEntry[7];
+	Utils::replace(linkFile, '\\', '/');
+
 	print::printAndWriteToFile("\n" + hash.functionName + " in file " + hash.fileName + " line "
-		+ std::to_string(hash.lineNumber) + " was found in our database: ", report);
-	print::printAndWriteToFile("Function " + dbEntry[6] + " in project " + dbProjects[dbEntry[1]][4]
-		+ " in file " + dbEntry[7] + " line " + dbEntry[8], report);
+		+ std::to_string(hash.lineNumber) + " with hash " + dbEntry[0] + " was found in our database: ", report);
+	print::printAndWriteToFile("Function " + dbEntry[6] + " in project " + dbProjects[dbEntry[1]][4] + " in file " +
+							   dbEntry[7] + " line " + dbEntry[8] + ". (" + dbProjects[dbEntry[1]][5] + "/blob/" +
+							   dbEntry[5] + "/" + linkFile + "#L" + dbEntry[8] + ")",
+							   report);
+
 	print::printAndWriteToFile("Authors of local function: ", report);
 	for (std::string s : authors[hash])
 	{
@@ -316,26 +291,22 @@ void PrintMatches::printMatch(
 		authorsCopied[s]++;
 	}
 	print::printAndWriteToFile("Authors of function found in database: ", report);
-	
+
 	for (int i = 11; i < 11 + std::stoi(dbEntry[10]); i++)
 	{
 		if (authorIdToName.count(dbEntry[i]) > 0)
 		{
 			authorCopiedForm[dbEntry[i]]++;
-			print::printAndWriteToFile(
-				"\t" + authorIdToName[dbEntry[i]][0] + '\t' + authorIdToName[dbEntry[i]][1], 
-				report);
+			print::printAndWriteToFile("\t" + authorIdToName[dbEntry[i]][0] + '\t' + authorIdToName[dbEntry[i]][1],
+									   report);
 		}
 	}
 }
 
-void PrintMatches::printSummary(std::map<std::string, int> &authorCopiedForm,
-	std::map<std::string, int> &authorsCopied,
-	int matches, int methods,
-	std::map<std::string, std::vector<std::string>>& dbProjects,
-	std::map<std::string, std::vector<std::string>>& authorIdToName,
-	std::map<std::pair<std::string, std::string>, int> &projects,
-	std::ofstream &report)
+void PrintMatches::printSummary(std::map<std::string, int> &authorCopiedForm, std::map<std::string, int> &authorsCopied,
+								int matches, int methods, std::map<std::string, std::vector<std::string>> &dbProjects,
+								std::map<std::string, std::vector<std::string>> &authorIdToName,
+								std::map<std::pair<std::string, std::string>, int> &projects, std::ofstream &report)
 {
 	print::printAndWriteToFile("\nSummary:", report);
 	print::printAndWriteToFile("Methods in checked project: " + std::to_string(methods), report);
@@ -345,28 +316,25 @@ void PrintMatches::printSummary(std::map<std::string, int> &authorCopiedForm,
 	print::printAndWriteToFile("Matches: " + std::to_string(matches) + " (" + stream.str() + "%)", report);
 	print::printAndWriteToFile("Projects found in database:", report);
 
-	for (const auto& x : projects)
+	for (const auto &x : projects)
 	{
-		print::printAndWriteToFile(
-			"\t" + dbProjects[x.first.first][4] + ": " + std::to_string(x.second)
-			+ " (" + dbProjects[x.first.first][5] + ")", 
-			report
-		);
+		print::printAndWriteToFile("\t" + dbProjects[x.first.first][4] + ": " + std::to_string(x.second) + " (" +
+									   dbProjects[x.first.first][5] + ")",
+								   report);
 	}
 
 	print::printAndWriteToFile("\nLocal authors present in matches: ", report);
-	for (auto const& x : authorsCopied)
+	for (auto const &x : authorsCopied)
 	{
 		print::printAndWriteToFile(x.first + ": " + std::to_string(x.second), report);
 	}
 
 	print::printAndWriteToFile("\nAuthors present in database matches: ", report);
-	for (auto const& x : authorCopiedForm)
+	for (auto const &x : authorCopiedForm)
 	{
-		print::printAndWriteToFile(
-			'\t' + authorIdToName[x.first][0] + "\t" + authorIdToName[x.first][1] + ": " + std::to_string(x.second), 
-			report
-		);
+		print::printAndWriteToFile('\t' + authorIdToName[x.first][0] + "\t" + authorIdToName[x.first][1] + ": " +
+									   std::to_string(x.second),
+								   report);
 	}
 }
 

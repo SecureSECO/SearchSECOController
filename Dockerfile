@@ -1,5 +1,6 @@
 FROM ubuntu:latest
 ARG DEBIAN_FRONTEND=noninteractive
+ENV TZ="Europe/Amsterdam"
 RUN apt-get -y update && \
     apt-get -y dist-upgrade && \
     apt-get -y install gcc g++ cmake wget autoconf curl libcurl4-openssl-dev git libboost-date-time-dev libboost-regex-dev nlohmann-json3-dev libantlr4-runtime-dev libantlr4-runtime4.8 && \

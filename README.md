@@ -49,7 +49,7 @@ After building the program, it can be called using the following syntax:
 ```
 searchseco command mandatory_argument [--optional_flag flag_argument]
 ``` 
-To see the full list of commands and their functionality see the official [documentation](LINK HERE) or use the `-h` flag.
+To see the full list of commands and their functionality see the official [documentation](./Documentation/Documentation.pdf) or use the `-h` flag.
 
 ## Running using Docker
 The start command of the conrtoller can also be run using Docker. For this you need to have [Docker](https://docs.docker.com/get-docker/) installed. After this you can use the following command in the main folder to build the image:

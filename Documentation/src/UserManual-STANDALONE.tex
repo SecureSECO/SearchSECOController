@@ -1,0 +1,234 @@
+\documentclass{article}
+\usepackage[a4paper, top=25mm, bottom=40mm, 
+   left=30mm, right=30mm]{geometry}
+\usepackage[utf8]{inputenc}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{fancyhdr}
+\usepackage{multirow}
+\usepackage{blindtext}
+\usepackage{array} % for defining a new column type
+\usepackage{varwidth} %for the varwidth minipage environment
+\usepackage[none]{hyphenat}
+\usepackage[breakwords]{truncate}
+\usepackage{changepage}
+\usepackage{tabularx}
+\usepackage[T1]{fontenc}
+\usepackage[scaled=0.83]{beramono}
+
+\usepackage{cleveref}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%   DOCUMENT DEFINITIONS
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\def\doctitle{User Manual}
+\def\teamname{proSECO}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%   PREAMBLE
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\setlength\parindent{0pt} % noindent
+\graphicspath{ {./Pictures/} }
+
+% HEADER
+\addtolength{\headheight}{1.5cm} % make more space for the header
+\pagestyle{fancyplain} % use fancy for all pages except chapter start
+\lhead{
+    \begin{tabular}{c l}
+        \multirow{4}{*}{\includegraphics[height=1.5cm]{secureseco-logo}} & \teamname \\[0.5ex]
+        \cline{2-2}
+        & \footnotesize\truncate{0.5\textwidth}{\doctitle} \\
+        & \footnotesize \today
+    \end{tabular}\vspace{1cm}}
+\renewcommand{\headrulewidth}{0pt} % remove rule below header
+
+
+\begin{document}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%   TITLE PAGE HEADER
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\thispagestyle{empty}
+\begin{flushright}
+\begin{varwidth}{0.6\textwidth}
+\begin{flushright}
+    \huge\doctitle
+\end{flushright}
+\end{varwidth}
+\\\vspace{0.02\textheight}
+\renewcommand{\arraystretch}{1.1}
+\begin{tabular}{r l}
+    \large\today & \multirow{2}{*}{\includegraphics[height=2cm]{secureseco-logo}} \\
+    \large\teamname &  \\
+\end{tabular}
+\renewcommand{\arraystretch}{1}
+\end{flushright}
+\vspace{0.04\textheight}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%   DOCUMENT START
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Introduction}
+This is the User Manual for the Controller program (\url{https://github.com/SecureSECO/SearchSECOController}). This manual assumes the software is installed as explained in the readme file of the GitHub repository.
+
+\section{Usage}
+A command can be run from the commandline using:
+
+\begin{center}
+\texttt{searchseco command [flag <argument>?]*} 
+\end{center}
+
+Or from Visual Studio using:
+\begin{center}
+\texttt{command [flag <argument>?]*} 
+\end{center}
+
+The implemented commands are described in \cref{cmds}. To use the program to its fullest, be sure to also read about \cref{flags}. 
+
+\section{Config file}
+The \texttt{config.txt} file located at \texttt{cfg/config.txt} contains the default values used for the flags. There are some extra flags that can be set in the config file that can not be set in the command line: \texttt{github\_username} and \texttt{github\_token}. These are used by the Crawler to get project meta data and to crawl urls. A token can be generated on the github site by going to your user settings \texttt{->} Developer settings \texttt{->} personal access tokens. In this file you can also set the name of the worker node for better statistical analysis.\\
+Comments can be written in the config file by starting the line with a \texttt{\#}. A flag can be set in the config file by starting with the long hand version of the flag, followed by a colon \texttt{:} and then the default value you want to give it.
+
+\section{Environment file .env}
+The .env file should contain the IP and ports of all servers you want to connect to. This file will be read and used to determine where requests have to be send to. This file should contain a API\_IPS entry. This entry should be in the format \texttt{API\_IPS=ip1?port1,ip2?port2,ip3?port3}. Each ip port combination should start with the ip of the server, followed by a question mark. After that should be the port. Each ip port combination should be separated by a comma.
+
+
+\clearpage
+\section{Commands}
+\label{cmds}
+\subsubsection*{\texttt{start }} 
+\rule{\linewidth}{0.5pt} \vspace{.1cm}
+
+\begin{tabularx}{\textwidth}{lX}
+    \texttt{\textbf{searchseco start}} & \texttt{[flags]}
+\end{tabularx} 
+\vspace{.15cm} \\
+Starts a worker node. This worker node will contribute with finding projects, processing them and sending the found information to the database. The user does not need to provide any input after starting this command. If the user wants the process to stop, they can type \texttt{stop} in the command line. The program will finish the project it is currently working on and terminate when it is done.\par
+
+\subsubsection*{\texttt{check}} \rule{\linewidth}{0.5pt} \vspace{.1cm}
+
+\begin{tabularx}{\textwidth}{lX}
+    \texttt{\textbf{searchseco check} <url>} & \texttt{[flags]}
+\end{tabularx} 
+\vspace{.15cm} \\
+Checks for occurrences of code from the given url in the database, after which the found results will be displayed.\par
+
+\subsubsection*{\texttt{upload}} \rule{\linewidth}{0.5pt} \vspace{.1cm}
+
+\begin{tabularx}{\textwidth}{lX}
+    \texttt{\textbf{searchseco upload} <url>} & \texttt{[flags]}
+\end{tabularx} 
+\vspace{.15cm} \\
+Uploads code from the given url to the database, including relevant metadata. \par
+
+\subsubsection*{\texttt{checkupload}} \rule{\linewidth}{0.5pt} \vspace{.1cm}
+
+\begin{tabularx}{\textwidth}{lX}
+    \texttt{\textbf{searchseco checkupload} <url>} & \texttt{[flags]}
+\end{tabularx} 
+\vspace{.15cm} \\
+Executes the check and upload command as specified above. \par
+
+\clearpage
+\section{Flags}
+\label{flags}
+All flags can be passed after calling \texttt{searchseco command} to change the way the programme behaves. Individual flags can be run without a command. All flags have a short and a long version. The short version is passed with a single dash followed by a single character (e.g. \texttt{searchseco command -v}). The long version is passed with two dashes followed by the name of the flag \texttt{searchseco command -{}-version}. Some flags require an argument, this is passed directly after the flag tag (e.g. \texttt{searchseco command -{}- branch master}).
+
+\subsection{Individual Flags}
+\texttt{-v}\par
+\texttt{--version}\par
+\begin{adjustwidth}{1cm}{}
+Displays the version of the SearchSECO system, and the version of each of its subsystems. If this flag is used with a command, the command will be ignored and the version will be printed.
+\end{adjustwidth}
+
+\texttt{-h}\par
+\texttt{--help}\par
+\begin{adjustwidth}{1cm}{}
+Displays the full help message. If this flag is used with a command, the help message for that specific command will be displayed.
+\end{adjustwidth}
+
+\subsection{Additional Flags}
+\texttt{-V}\par
+\texttt{--verbose}\par
+\begin{adjustwidth}{1cm}{}
+Use this flag to set the verbosity level of the console output. It can be used in combination with any command. Allowed values are 1 (Nothing), 2 (Errors), 3 (Warnings \& Errors), 4 (Everything except debug), 5 (Debug).\\
+\textbf{Default value}: 4 (Everything excep debug). 
+\end{adjustwidth}
+
+\texttt{-c}\par
+\texttt{-{}-cpu}\par
+\begin{adjustwidth}{1cm}{}
+The amount of CPU cores to make available to the worker node. \\
+\textbf{Minimum value}: 2 \\
+\textbf{Default value}: half the amount of cores available on the machine. 
+\end{adjustwidth}
+
+\texttt{-b}\par
+\texttt{-{}-branch}\par
+\begin{adjustwidth}{1cm}{}
+The branch the program will look at. \\
+\textbf{Default value}: master 
+\end{adjustwidth}
+
+
+\clearpage
+\section{Errors}
+\subsection{Ranges}
+For overview of the user errors are put in ranges per submodule as follows.\\
+\begin{tabularx}{\textwidth}{lX} 
+    \textbf{E001-E099} - Controller Errors\\
+    \textbf{E100-E199} - Crawler Errors\\
+    \textbf{E200-E299} - Spider Errors\\
+    \textbf{E300-E399} - Parser Errors\\
+    \textbf{E400-E499} - Database API response Errors.\\
+\end{tabularx}
+
+\subsection{Error List}
+\par \vspace{.5cm}
+\begin{tabularx}{\textwidth}{lX}
+    \textbf{E001} - & The specified flag does not exist. \\
+    \textbf{E002} - & The specified flag does not exist in the config file. \\
+    \textbf{E003} - & The specified argument is invalid for its corresponding flag. \\
+    \textbf{E004} - & The specified argument is invalid for its corresponding flag in the config file. \\
+    \textbf{E005} - & A flag was entered with an unexpected amount of arguments. \\
+    \textbf{E006} - & GitHub authentication data is missing in the config file. \\
+    \textbf{E007} - & A command got an unexpected amount of arguments. \\
+    \textbf{E008} - & No command was entered. \\
+    \textbf{E009} - & The entered command does not exist. \\
+    \textbf{E010} - & The call as a whole as it was entered in the command line could not be parsed. \\
+    \textbf{E011} - & A flag was incorrectly entered as if it were a full-length flag, while it actually is a shorthand flag (e.g. \texttt{-{}-c} instead of \texttt{-c}). \\
+    \textbf{E012} - & A flag was incorrectly entered as if it were a shorthand flag, while it actually is a full-length flag (e.g. \texttt{-cpu} instead of \texttt{-{}-cpu}). \\
+    \textbf{E013} - & A flag could not be parsed at all (e.g. too many leading hyphens). \\
+    \textbf{E014} - & The URL parameter was invalid. \\
+    \textbf{E015} - & Controller terminated after Crawler threw a fatal error. \\
+    \textbf{E016} - & Controller terminated after Spider threw a fatal error. \\
+    \textbf{E017} - & Controller terminated after Parser threw a fatal error. \\
+    \textbf{E018} - & No .env file was found in the \texttt{SearchSECOController} folder. \\
+    \textbf{E019} - & The .env does not contain data to connect to a Database API instance. \\
+    \textbf{E020} - & \textbf{(Debug only)} An unimplemented function was called. \\
+    \textbf{E101} - & GitHub responded with a JSON error. \\
+    \textbf{E102} - & No valid GitHub credentials were provided. \\
+    \textbf{E103} - & The rate limit of the used GitHub token was exceeded.\\
+    \textbf{E104} - & You do not have access to the specified GitHub repository.\\  
+    \textbf{E105} - & GitHub responded with a Bad Gateway error. \\
+    \textbf{E106} - & The specified url was not found. \\
+    \textbf{E107} - & GitHub responded with an unknown error.\\
+    % begin{TODO} floris
+    \textbf{E108} - &  Could not index on the given key (the key does not exist in the JSON variable).\\
+    \textbf{E109} - &  Parsing the given string as a JSON variable went wrong.\\
+    \textbf{E110} - &  A type (conversion) error occurred in a JSON variable. \\
+    \textbf{E111} - &  A field was empty in a JSON variable while trying to get from that field. Difference between this and \textbf{E108} is that this error is thrown when using a \texttt{get()} function.\\
+    \textbf{E112} - &  Out of range error while trying to index on a key.\\
+    \textbf{E200} - &  (not in use) - Git cloning failed. \\
+    \textbf{E201} - &  Opening a stream to read from or write to the command prompt failed.  \\
+    \textbf{E202} - &  (not in use) - A file extension file was not found. \\
+    % end{TODO} floris
+    \textbf{E400} - & No connection could be made with a Database API. \\
+    \textbf{E401} - & The Database API received a bad request. \\
+    \textbf{E402} - & Something went wrong in the Database API. \\
+    \textbf{E403} - & The Database API responded in an unexpected way: the HTTP statuscode was not recognised. \\
+    \textbf{E404} - & The database gave an invalid Job. \\
+\end{tabularx}
+
+\end{document}

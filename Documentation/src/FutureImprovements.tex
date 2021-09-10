@@ -1,0 +1,27 @@
+\documentclass[./Main.tex]{subfiles}
+\begin{document}
+
+\section{Future improvements}
+Here, we discuss observations we made that could be improved in the future.
+
+\begin{itemize}
+    \item The custom parser is quite a bit (30 times) slower than the srcML parser. We could improve this by constructing a more simplified grammar than the general one provided by ANTLR.
+    \item Sometimes jobs are added multiple times to the jobs queue.
+    \item In the database API, multiple methods use similar code leading to much code duplication. Think for example of the single query thread methods. This could be fixed by adding a bit of abstraction to the code. We have also partially applied abstraction already by means of template functions, but other approaches may also be possible.
+    \item In the database API, some components (i.e., ConnectionHandler, Networking and RAFTConsensus) are not (fully) tested due to the fact that the tests did not pass consistently. It would be useful to fix these tests to obtain a better code coverage.
+    \item The unit tests in general do not cover all edge cases. It would be nice to do this later.
+    \item When the uploading of a tag to the database fails the controller will go on to the next tag, while this will also fails when uploading because the previous tag is not present in the database, leading to useless work.
+    \item When a job fails it is just thrown away. In some cases it would be better to put it back in the jobs queue.
+    \item When migrating to GitHub we removed the pipeline. It would be nice to add this back.
+    \item The custom parser needs to convert files to UTF-8 since that is the format ANTLR requires, currently there is some code which converts ANSI to UTF-8 and seems to also work on some other formats. It is not known what happens when the parser encounters a format/character that it can't work with, hopefully this will result in an error in the conversion which would be catched and handled. It could however also be send to ANTLR causing a crash.
+    \item Communication between controller and database-api, as well as between multiple database-api's, is currently unencripted in plain text. It would be trivial to send data to the database-api from any system, and possibly to find and exploit vulnerabilities in the database-api to hack a system running it.
+    \item The contact between the database-api and the database as well as the different databases is not encrypted.
+    \item The contact between the database-api and the database is not authenticated, so anyone would be able to execute queries on the database quite easily.
+    \item SrcML seems to not recognise all valid code, when encountering something it doesn't recognise there is a chance that the rest of the file won't be parsed properly either. Exact cases that srcML doesn't recognise are not known to us.
+    \item The job queue is currently saved in a Cassandra database, this seems to work fine at the moment, but since the Cassandra database handles deletes by inserting tombstones (leading to longer lookup times since all tombstones will be found first) this could lead to problems when scaling up the system.
+    \item Sometimes a job will get stuck. It could be good to implement some sort of timeout to make sure it will continue.
+\end{itemize}
+
+
+
+\end{document}

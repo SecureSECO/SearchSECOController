@@ -1,0 +1,164 @@
+\documentclass[../Main.tex]{subfiles}
+\begin{document}
+\section{Controller}
+
+\subsection{General structure}
+
+The Controller is responsible for handling user input, executing commands and communicating with the rest of the system. All other submodules of our program only communicate with the Controller and not with each other. The Controller is also the program that the users are going to interact with. User commands will be given to the Controller and it is the Controllers job to decide what needs to be done with this user input. Most of what needs to be done with the user input will be handed of to the subcomponents of our program, as the Controller itself is not responsible for most of the logic. The Controller is also responsible for all network communication with the Database api.
+\newpar{User input}
+Our system does not expect a lot of user input. Almost all user input is done at startup, either through command line arguments or typed in after starting the program. The Controller expects the same input in both cases. The first thing the Controller expects is the command to be executed. Another argument might be expected right after the command, depending on which command is typed. After that is room to set additional flags. Each flag has a shorthand version and a long version. The shorthand version will always be in the format -(one character), e.g. -b for branch. The longhand version is the name of the flag with two dashes in front (e.g. -{}-branch).\\
+Flags can also get a default value from a config file. This config file will be read when parsing the user input. If the user input contains a certain flag, then that value will be used. If the input does not contain that flag but the config file does, then the value in the config file will be used. Otherwise a default value will be used.
+
+\newpar{Flags} 
+There are two flags that work more like commands, these are the -v (version) and the -h (help) flags.\\
+The version flag will print the version of the Controller and its submodules into the console.\\
+The help message will print all available commands into the console. You can also give it a specific command. If you do, only the help message for that command will be printed. All flags that are valid for the command will also be printed to the console.\\
+Here is a list of the other flags that can be set:
+\begin{itemize}
+    \item -V verbosity: Sets the verbosity level of the console output. This can be used in combination with any command and can be set to 5 levels: Log all debug information (5), log everything except debug information (4), only log warnings and errors (3), only log errors (2) or log nothing at all (1).
+    \item -c cores: Sets the amount of threads the program is allowed to use.  This can be used in combination with any command.
+    \item -b branch: Sets the branch that will be downloaded from the repository. Can be used with the Check, Upload and Checkupload commands. Without this flag, the default branch (indicated by GitHub) is used.
+\end{itemize}
+
+\newpar{Executing commands}
+Once the user input is parsed, it is time to execute the command. We have created a Command super class, from which we derive a class per command. These derived classes override an \texttt{execute} function that defines the logic to execute the command. They also contain the help message string for the command it represents. We have created a Factory that will return an instance of the correct derived class based on the user input. 
+\newpar{Commands}
+A list of commands that can be executed by the Controller:
+\begin{itemize}
+\item \textbf{Check:} The \texttt{check} command will parse the most recent version of a given git repository, and finds all matches between the methods found in that repository and the methods stored in the database. First, the given repository is cloned in the Spider. The Parser then extracts all methods from the cloned repository. Finally, the Spider extracts local author data by blaming the files in the repository. The only data that is sent to the Database API are the parsed method hashes. The Database API responds with all known methods that have the same hash as one of the sent hashes. To combine the data received from the Database API with the local authors and methods into understandable output, the dedicated \texttt{printMatches} class combines the Spider output, the Parser output and the Database output to give a summary of all matches found. To achieve this, two additional database requests are sent: One to get the names of the authors that the database returned, and another to get the metadata for the projects found in the matches.
+\item \textbf{Upload:} The \texttt{upload} command processes all tags of a given repository, and upload the methods found to the database. First, the Crawler is instructed to retrieve metadata for the repository, like the license and default branch. Next, as with every other command, the Spider is instructed to clone the repository. It also retrieves all tags of the repository. The Controller then instructs the Spider to revert to the first tag and begins looping through all tags. Per tag, the Parser is called to extract methods and the Spider retrieves authors per file. The Controller combines this data to derive which authors worked on a certain method. Together with the project data, all this data is sent to the database and stored. From tag to tag, the Controller checks which files remain unchanged. Since this means the methods in these files also were not changed, no processing needs to be done on these files. This list of unchanged files is sent to the database to update the project version for the methods in these files.
+\item \textbf{Checkupload:} The \texttt{checkupload} command both checks the most recent version for matches with the database, and uploads every version of the given repository. This is mostly an ease-of-use command and is implemented by simply running both the \texttt{check} and \texttt{upload} commands. The output of the \texttt{check} command gives an overview of the encountered matches.
+\item \textbf{Start:} The \texttt{start} command starts a worker node. The idea of a worker node is that it asks the Database API what it needs to do, and then attempts to complete the assigned job. Once it is done with its job, it will ask the Database API for another. This repeats until the user inputs \texttt{stop}, after which the worker node will finish its current job and then stop.\\
+There are 2 types of jobs the Database can give back to the Controller: A Crawl job and a Spider/Parse job. If the Controller gets a Crawl job, then the Crawler is instructed to crawl repositories. These repositories are then sent to the Database API. For the Spider/Parse job, the exact same function that is used for the \texttt{upload} command is called.\\
+There is one more valid response the Database can give to the Controller: A NoJob response. This means that the Jobqueue is empty and another worker is already running a Crawl job. In this case the worker waits for a while and then asks for a job again.
+\end{itemize}
+\newpar{Error handling and logging}
+SearchSECO uses an integrated error handling and logging system, using the Loguru \cite{loguru} library to handle logging. Several verbosity levels can be specified by the user when executing a command. Only the messages with a verbosity level lower than the threshold are displayed. The system generates two log files: one that contains all logs of every verbosity level from all runs, and a smaller file that only contains the warnings and errors from the last run. \\
+To identify and keep track of errors, each submodule has its own range of error codes, which they can define and use independently. Considering the DRY development principle, the actual message logging and program termination are grouped in a single base function. This function has several facades, which are called throughout the program as specific error handlers.\newpage The linking of error codes to their descriptions is set up in a very modular way, so new error messages can easily be added, inserted, or reordered. \\
+The Controller retains the responsibility to terminate execution, so if a submodule runs into a non-fatal error, it is allowed to display its error message only. The fact that it ran into an error then has to be communicated back up to the Controller, so it can decide to retry, or to skip the project. If the state is corrupted such that continuing is actually impossible, only then will execution be terminated. The philosophy is that autonomous worker node should always remain running, and only crash when that is the only option left.
+
+\newpar{Using the submodules}
+The Controller uses the three submodules described below. These are all called via their own interfaces. Should someone want to replace one of these components, the only Controller code that has to change is that part. Also newer components with additional functionality can be easily added. The Controller is responsible for all communication between components and between components and the user. This includes throwing errors and warning the user if something is wrong.\\
+Each submodule is only called in one place of the code. This is all done in a separate module facades class. In this class we have a separate functions for each submodule entry point that we need to call. This means that, if a submodule changes, that we only need to change it in one place in the code.
+
+\newpar{Client-side server-side communication} 
+For sending network request and receiving them on the API we use the ASIO Boost library\cite{boost}. Each request to the database goes in the same way:
+\begin{enumerate}
+    \item The Controller sends a header to the Database API. This header contains a four letter code, referring to what type of request. After this four letter code is a number corresponding to the number of bytes we are going to send for this request. There will be a end line character at the end signalling the end of the request header. 
+    \item The body of the request. Here we send the actual data that we want to send to the database. The size of the body should be the same as the size that was given by the header of the request.
+    \item Receiving a response. The database will always respond with something. The response will always start with a http status code to signal if the request was handled correctly or not. The requested data will follow after the http status code.
+\end{enumerate}
+Data sent and received will all be in a string format. In this string, a end line character is used to signal the end of an entry, and a question mark is used to signal the end of a parameter in an entry.\\
+In the Controller, each Database request has its own method. However, because they are all largely the same, they all use a internal request methods to handle the actual logic of executing a request. The individual methods are to transform the data to the string format that the database expects, and to add the right four letter code. The transforming of the data to a string is done in a separate class \texttt{networkUtils}. The methods in this class take the data that will be send, and transform it into a character buffer that has to the correct format for a database request.
+The Database API will give back an error if the request sent by the Controller is not a valid request. This can occur for multiple reasons:
+\begin{itemize}
+    \item The four letter code given is not a valid command.
+    \item The length of the request that was send in the header is not a valid number.
+    \item The length in the header is not the same as the length of the request received.
+    \item A problem occurred while executing the request.
+    \item The connection drops while processing the request, although in this case no response can be returned.
+\end{itemize}
+
+\subsection{Class/Namespace Documentation}
+
+
+\newpar{entrypoint}
+The \texttt{entrypoint} function in the \texttt{entrypoint} namespace is the first function to be executed. It is the entrypoint for our program. This function expects the command line input argc and argv. Other then that it expects the apiIP and apiPort. These will both be -1 by default. The apiIP and apiPort will both be read out from the .env file if both of them are set to -1 (This is not done by this function, but they are set by this function and passed on from there).\\
+This function will parse the command line input by sending it to the \texttt{input} class. After that the requested command will be executed by with help of the \texttt{CommandFactory} class.\\
+The \texttt{entrypoint} function will also setup the loguru library for logging.\\
+
+\newpar{input}
+\texttt{Input} is responsible for parsing the command line input. This class is used by creating an instance of this class. The constructor takes the command line input as arguments. The constructor will then parse this input with help of its local methods. The result of this will be stored in the member variables of this class. command will contain the command the user typed, executablePath contains the path to the executable and flags will contain the value assigned to each flag.\\\\
+Here is a list of private functions used by the constructor to parse the user input:
+\begin{itemize}
+    \item \texttt{parseCliInput}: Parses the command line input. Another line will be read if no command has been entered. That new line will be used as command line input in this case. This function will parse the executable path itself. It will then call \texttt{parseOptionals}.
+    \item \texttt{parseOptionals}: Parses the command, mandatory arguments and flags of the input using regex. The result of this function will be stored in the flags member variable.
+    \item \texttt{applyDefaults}: Reads the config file and sets the flags defined in that file as the defaults.
+    \item \texttt{sanitizeArgmuments}: Is called for every flag that is found by either in the config file or the user input. Will call the corresponding \texttt{sanitize<Flag>Flag}. The sanitize functions will actually store the value found in the flag object.
+    \item \texttt{validateInteger} and \texttt{requireNArguments}: Helper functions to make sure the input is in a correct format.
+\end{itemize}
+
+\newpar{Flags}
+\texttt{Flags} is a class that is responsible for storing and passing on the value of each flag that is found by the input function. Flags has a member variable for each flag that this program uses. Flags has a few functions to help parsing the flags:
+\begin{itemize}
+    \item \texttt{mapShortFlagToLong}: Maps the shorthand names of the flags to their longer versions. This is used to make it easier to parse.
+    \item \texttt{isFlag}: Checks if a given flag is a valid flag.
+    \item \texttt{isShortHandFlag}: Checks if a given flag is a shorthand version of a flag.
+    \item \texttt{isLongFlag}: Checks if a given flag is a long version of flag.
+    \item \texttt{parseConfig}: Reads the config file and returns flags found in the config file.
+\end{itemize}
+
+\newpar{CommandFactory}
+\texttt{CommandFactories} responsiblity is to create the right command object for the given command. This is done by the \texttt{getCommand} function. This return a command object using a map that goes from a string to a command object.\\
+The \texttt{CommandFactory} also has a function that print the help message.
+
+\newpar{Command}
+\texttt{Command} is a abstract super class from which each command inherits. This class has two functions: \texttt{execute} and \texttt{helpMessage}. \texttt{helpMessage} is not virtual and will always return the \texttt{helpMessageText} property which is set by each command. \texttt{execute} is an abstract function that will execute the command. Each individual will have to implement this logic themselves.
+
+\newpar{Start}
+Implements the \texttt{start} command as explained in the General structure of the controller. The execute function mainly loops forever until stop has been typed in the commandline. It will do a database request to get the next job and subsequently call one of its helper methods to handle the request:
+\begin{itemize}
+    \item \texttt{handleCrawlRequest}: Will call the crawler to crawl urls.
+    \item \texttt{versionProcessing}: Is called for a spider request. Will parse all tags of a given url by first downloading the repository and its metadata. If the repositry has tags, it will be passed on to the \texttt{loopThroughTags} method which will call \texttt{downloadTagged} for each tag in the repository.
+\end{itemize}
+
+\newpar{Check, Upload and Checkupload}
+These classes all inherit from the Command super class and implent their respective command to perform the functionality as described in the previous section General structure. For this they will call the submodules through the \texttt{moduleFacades} class. All communication to the database api is done through the \texttt{DatabaseRequests} class.\\\\
+\texttt{Check} and \texttt{Checkupload} will also call the \texttt{printHashMatches} from the \texttt{PrintHashMatches} class to handle the printing of the summary of the matches found.
+
+\newpar{moduleFacades}
+\texttt{ModuleFacades} is responsible for calling the submodules. This class exists to make it easier when submodules change, because they are only called in one spot. There is a function in \texttt{moduleFacades} for each entrypoint of each submodule.
+\begin{itemize}
+    \item \texttt{downloadRepository}: Calls the the entry point of the spider to download a repository and get the author that worked on it.
+    \item \texttt{getRepositorytags}: Calls the spider to get all tags that are present in the downloaded repository.
+    \item \texttt{parseRepository}: Calls the Parser to parse the downloaded repository that is located at the given filepath.
+    \item \texttt{getProjectMetadata}: Calls the crawler to get the metadata of the given url.
+    \item \texttt{crawlRepositories}: Calls the crawler to crawl more jobs from a given startpoint.
+\end{itemize}
+
+\newpar{DatabaseRequests}
+Database requests is responsible creating all requests to the database. The networking for this is done by the \texttt{Networking} class. The actual body of the request will for most request be generated by the \texttt{NetworkingUtils} class. \texttt{DatabaseRequests} has a function for each database request that can be sent to the Database API.\\ All these individual function will internally call the \texttt{execRequest} function which will actually handle the request and send it to the Database API. The database response will be send to the \texttt{checkResponseCode} function to check if the database returned an error or not. These request are done in the format that is explained in the General structure section of the controller.
+
+\newpar{NetworkHandler}
+The \texttt{NetworkHandler} is responsible for handeling the network communication with the database api. The \texttt{NetworkHandler} also reads out the .env file to get the ips that it needs to connect to.\\
+A \texttt{NetworkHandler} is created by calling the \texttt{createHandler} method. Before you are able to send request with this handler however, you have to call the connect method first. The connect method asks for the server ip and port that you want to connect to. If you give for both of these -1, a random ip from the .env file will be chosen. If the system can not connect to the randomly chosen ip, it will move on to the next until the list is empty. If the system can not connect to any of these ip's or just the one you gave it, it will throw an error.\\
+Once a connection has been established, data can be send and received. Data can be send using the \texttt{sendData} function. Data can be received with the \texttt{receiveData} function. This function will keep reading the data from the connection until the connection gets closed.
+
+
+\newpar{termination}
+The \texttt{termination} namespace is the only place that the program exits. When a class wants the program to exit, it will call a function in \texttt{termination} instead of exiting itself.
+
+\newpar{print}
+The \texttt{print} namespace handles all calls to the console. All logging calls will be done through this methods in this namespace.
+\begin{itemize}
+    \item \texttt{loguruSetSilent} and \texttt{loguruResetThreadName}: External calls to the loguru library.
+    \item \texttt{debug/log/warn}: All log a message to the console and to the log files but at different log levels.
+    \item \texttt{printLine}: Uses \texttt{std::cout} to write to the console and adds a new line character at the end. 
+    \item \texttt{writelineToFile}: Writes a string to a file and adds a new line character at the end. 
+    \item \texttt{printAndWritelineToFile}: Uses \texttt{std::cout} to write to the console and adds a new line character at the end. Will also write this to a file.
+    \item \texttt{versionFull}: Prints the version of this program and its subcomponents to the console. This function is used when the user types \texttt{-v} or \texttt{--version}.
+\end{itemize}
+
+\newpar{error}
+The \texttt{error} namespace contains a function for every error that can be thrown by the system. Each of these individual error functions will call an internal \texttt{err} function. This \texttt{err} function calls the \texttt{terminate} function from the \texttt{terminate} class. The error will be logged to the console and the logs.
+
+\newpar{regex}
+The \texttt{regex} namespace handles all regex functions the system uses. The namespace contains one function for every regex expression the system uses.
+
+\newpar{Utils}
+The \texttt{Utils} class contains generic functions that are can be used by every class.
+\begin{itemize}
+    \item \texttt{Contains}: Checks if a list contains a certain element.
+    \item \texttt{split}: splits a string on a given character.
+    \item \texttt{trim}: Gets rid of the given characters at the end and beginning of a given string.
+    \item \texttt{trimWhiteSpaces}: calls the trim method for whitespace characters.
+    \item \texttt{isNumber}: Checks if a given string is a number.
+    \item \texttt{padLeft}: Adds a given character to a string until it is the given length.
+    \item \texttt{getIntegerTimeFromString}: Converts a yyyy:mm::dd hh:mm:ss format to a long long which represents the time in milliseconds from 1970.
+    \item \texttt{replace}: Replaces each occurrence of a certain character with a different character.
+    \item \texttt{getExecutablePath}: Gets the absolute path to the executable.
+    \item \texttt{shuffle}: randomly shuffles a list.
+    \item \texttt{getIdFromPMD}: Generates an id for a given project.
+\end{itemize}
+
+\end{document}

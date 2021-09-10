@@ -1,0 +1,49 @@
+\documentclass[Documentation]{subfiles}
+\begin{document}
+
+\newgeometry{top=35mm,left=15mm, right=15mm, bottom=25mm} %% Special margins on the titlepage. It is also possible to set each margin separately; see package Geometry.
+
+\newcommand{\horrule}[1]{\rule{\linewidth}{#1}} % Create horizontal rule command with 1 argument of height
+\begin{titlepage} %%% This is your titlepage. Everything should match the conditions as they are right now for a physics thesis; hopefully the conditions won't change soon. In order to change this page into your very own title page, replace the noted parts with your own (like 'Your title').
+	\noindent
+	\begin{minipage}{0.4\textwidth}
+		\includegraphics[width=\linewidth]{secureseco-logo}
+	\end{minipage}
+	\hfill
+    \begin{minipage}{0.4\textwidth}\raggedleft
+		\includegraphics[width=\linewidth]{uulogo}
+	\end{minipage}
+    
+    \par\vspace{0cm}
+	\vspace{2cm}
+    \begin{center}
+    \Huge{\textsc{Documentation}}
+    
+    \vspace{0.5cm}
+     \horrule{2pt}
+    \vspace{0.1cm}
+    \vspace{0pt}\par
+    {\Huge{\textsc{{SearchSECO: A Search Engine for the Worldwide Software Ecosystem}}}\par} %% ENTER TITLE HERE
+    \vspace{0.1cm}
+    \vspace{13pt}\par
+    \horrule{2pt}
+    \end{center}
+	\vspace{1cm}
+    {\scshape\Large Part of SecureSECO\par}
+	\vspace{0.75cm}
+    \centering
+    \vspace{0.5cm}
+    \par
+    \raggedleft
+
+	\vfill
+	{\large \today\par}%%% The date. Replace \today with the necessary date if your necessary date isn't today.
+    
+\end{titlepage}    
+
+\restoregeometry %%% Restores the margins for the rest of the document.
+
+
+
+
+\end{document}

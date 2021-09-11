@@ -117,15 +117,6 @@ std::string DatabaseRequests::getIPs(EnvironmentDTO *env)
 	return result;
 }
 
-std::string DatabaseRequests::addJobs(
-	const std::vector<std::string>& jobs,
-	EnvironmentDTO *env)
-{
-	int dataSize = 0;
-	const char* rawData = NetworkUtils::getJobsRequest(jobs, dataSize);
-	return execRequest(DATABASE_ADD_JOB, rawData, dataSize, env);
-}
-
 std::string DatabaseRequests::addCrawledJobs(
 	const CrawlData& jobs,
 	std::string id,

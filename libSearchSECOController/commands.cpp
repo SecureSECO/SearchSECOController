@@ -279,11 +279,16 @@ void Start::readCommandLine()
 
 void Start::versionProcessing(std::vector<std::string> &splitted, Flags flags, EnvironmentDTO *env)
 {
-	if (splitted.size() < 2 || splitted[1] == "")
+	if (splitted.size() < 5 || splitted[2] == "")
 	{
 		error::errInvalidDatabaseAnswer(__FILE__, __LINE__);
 	}
-	flags.mandatoryArgument = splitted[1];
+
+	std::string jobid       = splitted[1];
+	flags.mandatoryArgument = splitted[2];
+
+	long long currTime = std::stoll(splitted[3]);
+	long long timeout  = std::stoll(splitted[4]);
 
 	// Get project metadata.
 	ProjectMetaData meta = moduleFacades::getProjectMetadata(flags.mandatoryArgument, flags);
@@ -306,6 +311,31 @@ void Start::versionProcessing(std::vector<std::string> &splitted, Flags flags, E
 
 	// Process and upload project.
 	Command::uploadProject(s, flags, meta, env);
+
+	/*
+	std::future<std::tuple<std::vector<HashData>, AuthorData>> future =
+		std::async([this, s, flags] { return Command::parseAndBlame(s, flags); });
+
+	std::future_status result = future.wait_for(std::chrono::seconds(std::max(filesCount * FILE_WAIT_TIME, 10)));
+
+	if (result == std::future_status::timeout)
+	{
+		errno = EDOM;
+		print::warn("Parsing timed out after " + std::to_string(filesCount * FILE_WAIT_TIME) + " seconds.", __FILE__, __LINE__);		
+		return;
+	}
+	else
+	{
+		auto [hashes, authorData] = future.get();
+
+		// Uploading the hashes.
+		print::debug(DatabaseRequests::uploadHashes(hashes, meta, authorData, env, prevVersionTime, unchangedFiles),
+					 __FILE__, __LINE__);
+
+		prevUnchangedFiles = unchangedFiles;
+	}
+	*/
+
 }
 
 #pragma endregion Start

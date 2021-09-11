@@ -224,7 +224,8 @@ const char* NetworkUtils::getUploadCrawlRequest(const CrawlData& urls, std::stri
 	size = std::to_string(urls.finalProjectId).length() + id.length() + 2;
 	for (const auto& x : urls.URLImportanceList)
 	{
-		size += x.first.length() + std::to_string(x.second).length() + 2;
+		size += std::get<0>(x).length() + std::to_string(std::get<1>(x)).length() +
+				std::to_string(std::get<2>(x)).length() + 3;
 	}
 	for (auto const &language : urls.languages)
 	{
@@ -251,9 +252,11 @@ const char* NetworkUtils::getUploadCrawlRequest(const CrawlData& urls, std::stri
 
 	for (auto x : urls.URLImportanceList)
 	{
-		addStringToBuffer(data, pos, x.first);
+		addStringToBuffer(data, pos, std::get<0>(x));
 		data[pos++] = INNER_DELIMITER;
-		addStringToBuffer(data, pos, std::to_string(x.second));
+		addStringToBuffer(data, pos, std::to_string(std::get<1>(x)));
+		data[pos++] = INNER_DELIMITER;
+		addStringToBuffer(data, pos, std::to_string(std::get<2>(x)));
 		data[pos++] = ENTRY_DELIMITER;
 	}
 	return data;

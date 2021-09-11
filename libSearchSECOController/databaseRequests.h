@@ -97,13 +97,6 @@ public:
 	static std::string getIPs(EnvironmentDTO *env);
 
 	/// <summary>
-	/// Sends a request to the api to add the given jobs to the job queue.
-	/// </summary>
-	static std::string addJobs(
-		const std::vector<std::string>& jobs,
-		EnvironmentDTO *env);
-
-	/// <summary>
 	/// Adds the jobs the crawler found to the job queue.
 	/// </summary>
 	/// <param name="jobs">The jobs to be added.</param>

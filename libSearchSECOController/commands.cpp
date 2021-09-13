@@ -54,7 +54,7 @@ std::tuple<std::vector<HashData>, AuthorData> Command::parseAndBlame(Spider *s, 
 	return std::tuple<std::vector<HashData>, AuthorData>(hashes, authorData);
 }
 
-void Command::uploadProject(Spider *s, Flags flags, ProjectMetaData meta, EnvironmentDTO *env)
+void Command::uploadProject(Spider *s, Flags flags, ProjectMetaData meta, std::string jobid, std::string &jobTime, EnvironmentDTO *env)
 {
 	long long startingTime = 0; // Time to start from, request from db.
 
@@ -94,7 +94,7 @@ void Command::uploadProject(Spider *s, Flags flags, ProjectMetaData meta, Enviro
 			print::log("Latest tag of project already in database.", __FILE__, __LINE__);
 			return;
 		}
-		loopThroughTags(s, tags, meta, startingTime, flags, env);
+		loopThroughTags(s, tags, meta, startingTime, flags, jobid, jobTime, env);
 	}
 }
 
@@ -114,7 +114,7 @@ void Command::parseLatest(Spider *s, ProjectMetaData &meta, Flags &flags, Enviro
 }
 
 void Command::loopThroughTags(Spider *s, std::vector<std::tuple<std::string, long long, std::string>> &tags,
-							ProjectMetaData &meta, long long startingTime, Flags &flags, EnvironmentDTO *env)
+							ProjectMetaData &meta, long long startingTime, Flags &flags, std::string jobid, std::string &jobTime, EnvironmentDTO *env)
 {
 	// Skip tags before the starting time.
 	int i = 0;
@@ -151,6 +151,18 @@ void Command::loopThroughTags(Spider *s, std::vector<std::tuple<std::string, lon
 				   __FILE__, __LINE__);
 
 		print::debug("Comparing tags: " + prevTag + " and " + curTag + ".", __FILE__, __LINE__);
+
+		if (env->commandString == "start")
+		{
+			DatabaseRequests::updateJob(jobid, jobTime, env);
+			
+			// If update was unsuccessful or unexpected,
+			if (errno != 0)
+			{
+				// stop the current job.
+				return;
+			}
+		}
 
 		downloadTagged(s, flags, prevTag, curTag, meta, prevVersionTime, prevUnchangedFiles, env);
 
@@ -224,7 +236,7 @@ void Start::execute(Flags flags, EnvironmentDTO *env)
 		}
 		if (splitted[0] == "Spider")
 		{
-			print::log("New job: Download and parse " + splitted[1], __FILE__, __LINE__);
+			print::log("New job: Download and parse " + splitted[2], __FILE__, __LINE__);
 			versionProcessing(splitted, flags, env);
 		}
 		else if (splitted[0] == "Crawl")
@@ -287,7 +299,7 @@ void Start::versionProcessing(std::vector<std::string> &splitted, Flags flags, E
 	std::string jobid       = splitted[1];
 	flags.mandatoryArgument = splitted[2];
 
-	long long currTime = std::stoll(splitted[3]);
+	std::string jobTime = splitted[3];
 	long long timeout  = std::stoll(splitted[4]);
 
 	// Get project metadata.
@@ -309,8 +321,26 @@ void Start::versionProcessing(std::vector<std::string> &splitted, Flags flags, E
 	// Download project.
 	moduleFacades::downloadRepo(s, flags.mandatoryArgument, flags, DOWNLOAD_LOCATION);
 
+	DatabaseRequests::updateJob(jobid, jobTime, env);
+
+	// If update was unsuccessful or unexpected,
+	if (errno != 0)
+	{
+		// stop the current job.
+		return;
+	}
+
 	// Process and upload project.
-	Command::uploadProject(s, flags, meta, env);
+	Command::uploadProject(s, flags, meta, jobid, jobTime, env);
+
+	if (errno == 0)
+	{
+		DatabaseRequests::finishJob(jobid, jobTime, 0, "Success.", env);
+	}
+	else
+	{
+		DatabaseRequests::finishJob(jobid, jobTime, 1, "Unknown error: " + std::to_string(errno) + ".", env);
+	}
 
 	/*
 	std::future<std::tuple<std::vector<HashData>, AuthorData>> future =
@@ -457,7 +487,8 @@ void Upload::execute(Flags flags, EnvironmentDTO *env)
 	moduleFacades::downloadRepo(s, flags.mandatoryArgument, flags, DOWNLOAD_LOCATION);
 
 	// Process and upload project.
-	Command::uploadProject(s, flags, meta, env);
+	std::string jobTime = "";
+	Command::uploadProject(s, flags, meta, "", jobTime, env);
 	this->logPostExecutionMessage(flags.mandatoryArgument, __FILE__, __LINE__);
 }
 
@@ -520,7 +551,8 @@ void CheckUpload::execute(Flags flags, EnvironmentDTO *env)
 
 	Upload::logPreExecutionMessage(url, __FILE__, __LINE__);
 
-	Command::uploadProject(s, flags, meta, env);
+	std::string jobTime = "";
+	Command::uploadProject(s, flags, meta, "", jobTime, env);
 
 	Upload::logPostExecutionMessage(url, __FILE__, __LINE__);
 }

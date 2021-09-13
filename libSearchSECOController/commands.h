@@ -54,7 +54,9 @@ protected:
 	/// <param name="s"> The Spider to use. </param>
 	/// <param name="flags"> Flags to use. </param>
 	/// <param name="meta"> Metadata for the local project. </param>
-	void uploadProject(Spider *s, Flags flags, ProjectMetaData meta, EnvironmentDTO *env);
+	/// <param name="jobid"> JobID of the current job. </param>
+	/// <param name="jobTime"> JobTime for the current job. </param>
+	void uploadProject(Spider *s, Flags flags, ProjectMetaData meta, std::string jobid, std::string &jobTime, EnvironmentDTO *env);
 
 private:
 	
@@ -67,7 +69,7 @@ private:
 	/// Loops through all tags of a project and calls downloadTagged for each of them.
 	/// </summary>
 	void loopThroughTags(Spider *s, std::vector<std::tuple<std::string, long long, std::string>> &tags,
-						 ProjectMetaData &meta, long long startingTime, Flags &flags, EnvironmentDTO *env);
+						 ProjectMetaData &meta, long long startingTime, Flags &flags, std::string jobid, std::string &jobTime, EnvironmentDTO *env);
 
 	/// <summary>
 	/// Parses and uploads a single tag of a repository.

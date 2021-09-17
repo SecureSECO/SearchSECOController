@@ -25,6 +25,7 @@ Utrecht University within the Software Project course.
 
 #define REQUEST_RETRIES 3
 #define BASE_RETRY_WAIT 1000
+#define HANDLED_ERRNO 69
 
 
 class NetworkHandler;

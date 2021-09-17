@@ -56,7 +56,13 @@ protected:
 	/// <param name="meta"> Metadata for the local project. </param>
 	/// <param name="jobid"> JobID of the current job. </param>
 	/// <param name="jobTime"> JobTime for the current job. </param>
-	void uploadProject(Spider *s, Flags flags, ProjectMetaData meta, std::string jobid, std::string &jobTime, EnvironmentDTO *env);
+	void uploadProject(Flags flags, std::string jobid, std::string &jobTime, EnvironmentDTO *env);
+
+	/// <summary>
+	/// Processes project and compares it to the database.
+	/// </summary>
+	/// <param name="flags"> Flags to use. </param>
+	void checkProject(Flags flags, EnvironmentDTO *env);
 
 private:
 	

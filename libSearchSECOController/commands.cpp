@@ -15,6 +15,7 @@ Utrecht University within the Software Project course.
 // External includes.
 #include <iostream>
 #include <thread>
+#include <condition_variable>
 
 #define DOWNLOAD_LOCATION "spiderDownloads"
 
@@ -54,8 +55,58 @@ std::tuple<std::vector<HashData>, AuthorData> Command::parseAndBlame(Spider *s, 
 	return std::tuple<std::vector<HashData>, AuthorData>(hashes, authorData);
 }
 
-void Command::uploadProject(Spider *s, Flags flags, ProjectMetaData meta, std::string jobid, std::string &jobTime, EnvironmentDTO *env)
+void Command::checkProject(Flags flags, EnvironmentDTO *env)
 {
+	auto url = flags.mandatoryArgument;
+
+	Check::logPreExecutionMessage(url, __FILE__, __LINE__);
+
+	// Get project metadata.
+	ProjectMetaData meta = moduleFacades::getProjectMetadata(flags.mandatoryArgument, flags);
+
+	warnAndReturnIfErrno("Error getting project meta data, moving on to the next job.");
+
+	if (flags.flag_branch == "")
+	{
+		// Set default branch.
+		flags.flag_branch = meta.defaultBranch;
+	}
+
+	// Initialize spider.
+	Spider *s = moduleFacades::setupSpider(url, flags);
+
+	warnAndReturnIfErrno("No suitable Spider, skipping project.");
+
+	// Download project.
+	moduleFacades::downloadRepo(s, url, flags, DOWNLOAD_LOCATION);
+
+	auto [hashes, authorData] = Command::parseAndBlame(s, flags);
+	warnAndReturnIfErrno("Error processing project.");
+
+	// Calling the function that will print all the matches for us.
+	PrintMatches::printHashMatches(hashes, DatabaseRequests::findMatches(hashes, env), authorData, env, url);
+
+	Check::logPostExecutionMessage(url, __FILE__, __LINE__);
+}
+
+void Command::uploadProject(Flags flags, std::string jobid, std::string &jobTime, EnvironmentDTO *env)
+{
+	// Get project metadata.
+	ProjectMetaData meta = moduleFacades::getProjectMetadata(flags.mandatoryArgument, flags);
+
+	warnAndReturnIfErrno("Error getting project meta data, moving on to the next job.");
+
+	if (flags.flag_branch == "")
+	{
+		// Set default branch.
+		flags.flag_branch = meta.defaultBranch;
+	}
+
+	// Initialize spider.
+	Spider *s = moduleFacades::setupSpider(flags.mandatoryArgument, flags);
+
+	warnAndReturnIfErrno("No suitable Spider, skipping project.");
+
 	long long startingTime = 0; // Time to start from, request from db.
 
 	// Find most newest version of project in database.
@@ -65,10 +116,14 @@ void Command::uploadProject(Spider *s, Flags flags, ProjectMetaData meta, std::s
 	if (std::stoll(meta.versionTime) <= startingTime)
 	{
 		print::log("Most recent version of project already in database.", __FILE__, __LINE__);
+		DatabaseRequests::finishJob(jobid, jobTime, 2, "Project already known.", env);
 		return;
 	}
 
 	meta.versionHash = moduleFacades::currentVersion(s, DOWNLOAD_LOCATION);
+
+	// Download project.
+	moduleFacades::downloadRepo(s, flags.mandatoryArgument, flags, DOWNLOAD_LOCATION);	
 
 	warnAndReturnIfErrno("Error downloading project, moving on to the next job.");
 
@@ -92,6 +147,7 @@ void Command::uploadProject(Spider *s, Flags flags, ProjectMetaData meta, std::s
 		if (std::get<1>(tags[tagc - 1]) <= startingTime)
 		{
 			print::log("Latest tag of project already in database.", __FILE__, __LINE__);
+			DatabaseRequests::finishJob(jobid, jobTime, 2, "Project already known.", env);
 			return;
 		}
 		loopThroughTags(s, tags, meta, startingTime, flags, jobid, jobTime, env);
@@ -302,42 +358,14 @@ void Start::versionProcessing(std::vector<std::string> &splitted, Flags flags, E
 	std::string jobTime = splitted[3];
 	long long timeout  = std::stoll(splitted[4]);
 
-	// Get project metadata.
-	ProjectMetaData meta = moduleFacades::getProjectMetadata(flags.mandatoryArgument, flags);
-
-	warnAndReturnIfErrno("Error getting project meta data, moving on to the next job.");
-
-	if (flags.flag_branch == "")
-	{
-		// Set default branch.
-		flags.flag_branch = meta.defaultBranch;
-	}
-
-	// Initialize spider.
-	Spider *s = moduleFacades::setupSpider(flags.mandatoryArgument, flags);
-
-	warnAndReturnIfErrno("No suitable Spider, skipping project.");
-
-	// Download project.
-	moduleFacades::downloadRepo(s, flags.mandatoryArgument, flags, DOWNLOAD_LOCATION);
-
-	DatabaseRequests::updateJob(jobid, jobTime, env);
-
-	// If update was unsuccessful or unexpected,
-	if (errno != 0)
-	{
-		// stop the current job.
-		return;
-	}
-
 	// Process and upload project.
-	Command::uploadProject(s, flags, meta, jobid, jobTime, env);
+	Command::uploadProject(flags, jobid, jobTime, env);
 
 	if (errno == 0)
 	{
 		DatabaseRequests::finishJob(jobid, jobTime, 0, "Success.", env);
 	}
-	else
+	else if (errno != HANDLED_ERRNO)
 	{
 		DatabaseRequests::finishJob(jobid, jobTime, 1, "Unknown error: " + std::to_string(errno) + ".", env);
 	}
@@ -401,36 +429,7 @@ void Check::logPostExecutionMessage(std::string url, const char *file, int line)
 
 void Check::execute(Flags flags, EnvironmentDTO *env)
 {
-	auto url = flags.mandatoryArgument;
-
-	this->logPreExecutionMessage(url, __FILE__, __LINE__);
-
-	// Get project metadata.
-	ProjectMetaData meta = moduleFacades::getProjectMetadata(flags.mandatoryArgument, flags);
-
-	warnAndReturnIfErrno("Error getting project meta data, moving on to the next job.");
-
-	if (flags.flag_branch == "")
-	{
-		// Set default branch.
-		flags.flag_branch = meta.defaultBranch;
-	}
-
-	// Initialize spider.
-	Spider *s = moduleFacades::setupSpider(url, flags);
-
-	warnAndReturnIfErrno("No suitable Spider, skipping project.");
-
-	// Download project.
-	moduleFacades::downloadRepo(s, url, flags, DOWNLOAD_LOCATION);
-
-	auto [hashes, authorData] = Command::parseAndBlame(s, flags);
-	warnAndReturnIfErrno("Error processing project.");
-
-	// Calling the function that will print all the matches for us.
-	PrintMatches::printHashMatches(hashes, DatabaseRequests::findMatches(hashes, env), authorData, env, url);
-
-	this->logPostExecutionMessage(url, __FILE__, __LINE__);
+	checkProject(flags, env);
 }
 
 #pragma endregion Check
@@ -467,28 +466,9 @@ void Upload::execute(Flags flags, EnvironmentDTO *env)
 {
 	this->logPreExecutionMessage(flags.mandatoryArgument, __FILE__, __LINE__);
 
-	// Get project metadata.
-	ProjectMetaData meta = moduleFacades::getProjectMetadata(flags.mandatoryArgument, flags);
-
-	warnAndReturnIfErrno("Error getting project meta data, moving on to the next job.");
-
-	if (flags.flag_branch == "")
-	{
-		// Set default branch.
-		flags.flag_branch = meta.defaultBranch;
-	}
-
-	// Initialize spider.
-	Spider *s = moduleFacades::setupSpider(flags.mandatoryArgument, flags);
-
-	warnAndReturnIfErrno("No suitable Spider, skipping project.");
-
-	// Download project.
-	moduleFacades::downloadRepo(s, flags.mandatoryArgument, flags, DOWNLOAD_LOCATION);
-
 	// Process and upload project.
 	std::string jobTime = "";
-	Command::uploadProject(s, flags, meta, "", jobTime, env);
+	Command::uploadProject(flags, "", jobTime, env);
 	this->logPostExecutionMessage(flags.mandatoryArgument, __FILE__, __LINE__);
 }
 
@@ -517,42 +497,12 @@ void CheckUpload::execute(Flags flags, EnvironmentDTO *env)
 
 	auto url = flags.mandatoryArgument;
 
-	Check::logPreExecutionMessage(url, __FILE__, __LINE__);
-
-	// Get project metadata.
-	ProjectMetaData meta = moduleFacades::getProjectMetadata(flags.mandatoryArgument, flags);
-
-	warnAndReturnIfErrno("Error getting project meta data, moving on to the next job.");
-
-	if (flags.flag_branch == "")
-	{
-		// Set default branch.
-		flags.flag_branch = meta.defaultBranch;
-	}
-
-	// Initialize spider.
-	Spider *s = moduleFacades::setupSpider(url, flags);
-
-	warnAndReturnIfErrno("No suitable Spider, skipping project.");
-
-	// Download project.
-	moduleFacades::downloadRepo(s, url, flags, DOWNLOAD_LOCATION);
-
-	auto [hashes, authorData] = Command::parseAndBlame(s, flags);
-	warnAndReturnIfErrno("Error processing project.");
-
-	// Calling the function that will print all the matches for us.
-	PrintMatches::printHashMatches(hashes, DatabaseRequests::findMatches(hashes, env), authorData, env, url);
-
-	Check::logPostExecutionMessage(url, __FILE__, __LINE__);
-
-	// Ugly, but download project again, otherwise we have metadata in the folder already.
-	moduleFacades::downloadRepo(s, url, flags, DOWNLOAD_LOCATION);
+	checkProject(flags, env);
 
 	Upload::logPreExecutionMessage(url, __FILE__, __LINE__);
 
 	std::string jobTime = "";
-	Command::uploadProject(s, flags, meta, "", jobTime, env);
+	Command::uploadProject(flags, "", jobTime, env);
 
 	Upload::logPostExecutionMessage(url, __FILE__, __LINE__);
 }

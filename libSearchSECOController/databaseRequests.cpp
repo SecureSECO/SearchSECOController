@@ -123,6 +123,10 @@ void DatabaseRequests::finishJob(std::string jobid, std::string jobTime, int cod
 	int dataSize = 0;
 	const char *rawData = NetworkUtils::getFinishJobRequest(jobid, jobTime, code, reason, dataSize);
 	execRequest(DATABASE_FINISH_JOB, rawData, dataSize, env);
+	if (errno == 0)
+	{
+		errno = HANDLED_ERRNO;
+	}
 }
 
 std::string DatabaseRequests::getIPs(EnvironmentDTO *env)

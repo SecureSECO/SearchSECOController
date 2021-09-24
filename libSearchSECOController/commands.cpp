@@ -116,7 +116,7 @@ void Command::uploadProject(Flags flags, std::string jobid, std::string &jobTime
 	if (std::stoll(meta.versionTime) <= startingTime)
 	{
 		print::log("Most recent version of project already in database.", __FILE__, __LINE__);
-		DatabaseRequests::finishJob(jobid, jobTime, 2, "Project already known.", env);
+		DatabaseRequests::finishJob(jobid, jobTime, 10, "Project already known.", env);
 		return;
 	}
 
@@ -147,7 +147,7 @@ void Command::uploadProject(Flags flags, std::string jobid, std::string &jobTime
 		if (std::get<1>(tags[tagc - 1]) <= startingTime)
 		{
 			print::log("Latest tag of project already in database.", __FILE__, __LINE__);
-			DatabaseRequests::finishJob(jobid, jobTime, 2, "Project already known.", env);
+			DatabaseRequests::finishJob(jobid, jobTime, 10, "Project already known.", env);
 			return;
 		}
 		loopThroughTags(s, tags, meta, startingTime, flags, jobid, jobTime, env);

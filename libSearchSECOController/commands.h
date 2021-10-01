@@ -17,7 +17,7 @@ Utrecht University within the Software Project course.
 // External includes.
 #include <mutex>
 
-#define warnAndReturnIfErrno(message) if (errno != 0){errno = 0;print::warn(message, __FILE__, __LINE__);return;}
+#define warnAndReturnIfErrno(message) if (errno != 0){print::warn(message, __FILE__, __LINE__);return;}
 
 
 class Command
@@ -46,7 +46,7 @@ protected:
 	/// <param name="s"> The Spider to use. </param>
 	/// <param name="flags"> Flags to use. </param>
 	/// <returns> Tuple of parsed HashData and AuthorData. </returns>
-	std::tuple<std::vector<HashData>, AuthorData> parseAndBlame(Spider *s, Flags flags);
+	std::tuple<std::vector<HashData>, AuthorData> parseAndBlame(long long timeout, Spider *s, Flags flags);
 
 	/// <summary>
 	/// Processes local project and uploads extracted methods to the database.
@@ -56,7 +56,7 @@ protected:
 	/// <param name="meta"> Metadata for the local project. </param>
 	/// <param name="jobid"> JobID of the current job. </param>
 	/// <param name="jobTime"> JobTime for the current job. </param>
-	void uploadProject(Flags flags, std::string jobid, std::string &jobTime, EnvironmentDTO *env);
+	void uploadProject(Flags flags, std::string jobid, std::string &jobTime, long long timeout, EnvironmentDTO *env);
 
 	/// <summary>
 	/// Processes project and compares it to the database.
@@ -69,13 +69,13 @@ private:
 	/// <summary>
 	/// Used by version processing. Will parse and upload the latest version of the project.
 	/// </summary>
-	void parseLatest(Spider *s, ProjectMetaData &meta, Flags &flags, EnvironmentDTO *env);
+	void parseLatest(long long timeout, Spider *s, ProjectMetaData &meta, Flags &flags, EnvironmentDTO *env);
 
 	/// <summary>
 	/// Loops through all tags of a project and calls downloadTagged for each of them.
 	/// </summary>
 	void loopThroughTags(Spider *s, std::vector<std::tuple<std::string, long long, std::string>> &tags,
-						 ProjectMetaData &meta, long long startingTime, Flags &flags, std::string jobid, std::string &jobTime, EnvironmentDTO *env);
+						 ProjectMetaData &meta, long long startingTime, Flags &flags, std::string jobid, std::string &jobTime, long long timeout, EnvironmentDTO *env);
 
 	/// <summary>
 	/// Parses and uploads a single tag of a repository.
@@ -87,7 +87,7 @@ private:
 	/// <param name="meta"> The meta data for the repository. </param>
 	/// <param name="prevVersionTime"> The time for the previous tag. </param>
 	void downloadTagged(Spider *s, Flags flags, std::string prevTag, std::string curTag, ProjectMetaData meta,
-						std::string prevVersionTime, std::vector<std::string> &prevUnchangedFiles, EnvironmentDTO *env);
+						std::string prevVersionTime, std::vector<std::string> &prevUnchangedFiles, long long timeout, EnvironmentDTO *env);
 };
 
 class Start : public Command

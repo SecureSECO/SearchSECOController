@@ -88,7 +88,7 @@ namespace moduleFacades
 	/// <summary>
 	/// Will call the parser to parse the given repository.
 	/// </summary>
-	std::vector<HashData> parseRepository(std::string repository, Flags flags);
+	std::vector<HashData> parseRepository(long long timeout, std::string repository, Flags flags);
 
 	/// <summary>
 	/// Calls the crawler to get the metadata from the given url.

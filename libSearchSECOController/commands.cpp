@@ -16,6 +16,7 @@ Utrecht University within the Software Project course.
 #include <iostream>
 #include <thread>
 #include <condition_variable>
+#include <climits>
 
 #define DOWNLOAD_LOCATION "spiderDownloads"
 
@@ -24,10 +25,10 @@ std::string Command::helpMessage()
 	return helpMessageText;
 }
 
-std::tuple<std::vector<HashData>, AuthorData> Command::parseAndBlame(Spider *s, Flags flags)
+std::tuple<std::vector<HashData>, AuthorData> Command::parseAndBlame(long long timeout, Spider *s, Flags flags)
 {
 	// Parse all parseable files.
-	std::vector<HashData> hashes = moduleFacades::parseRepository(DOWNLOAD_LOCATION, flags);
+	std::vector<HashData> hashes = moduleFacades::parseRepository(timeout, DOWNLOAD_LOCATION, flags);
 
 	if (errno != 0)
 	{
@@ -80,7 +81,7 @@ void Command::checkProject(Flags flags, EnvironmentDTO *env)
 	// Download project.
 	moduleFacades::downloadRepo(s, url, flags, DOWNLOAD_LOCATION);
 
-	auto [hashes, authorData] = Command::parseAndBlame(s, flags);
+	auto [hashes, authorData] = Command::parseAndBlame(INT_MAX, s, flags);
 	warnAndReturnIfErrno("Error processing project.");
 
 	// Calling the function that will print all the matches for us.
@@ -89,7 +90,7 @@ void Command::checkProject(Flags flags, EnvironmentDTO *env)
 	Check::logPostExecutionMessage(url, __FILE__, __LINE__);
 }
 
-void Command::uploadProject(Flags flags, std::string jobid, std::string &jobTime, EnvironmentDTO *env)
+void Command::uploadProject(Flags flags, std::string jobid, std::string &jobTime, long long timeout, EnvironmentDTO *env)
 {
 	// Get project metadata.
 	ProjectMetaData meta = moduleFacades::getProjectMetadata(flags.mandatoryArgument, flags);
@@ -140,7 +141,7 @@ void Command::uploadProject(Flags flags, std::string jobid, std::string &jobTime
 	print::log("Project has " + std::to_string(tagc) + print::plural(" tag", tagc), __FILE__, __LINE__);
 	if (std::stoll(meta.versionTime) > startingTime && tagc == 0)
 	{
-		parseLatest(s, meta, flags, env);
+		parseLatest(timeout, s, meta, flags, env);
 	}
 	else if (tagc != 0)
 	{
@@ -150,15 +151,15 @@ void Command::uploadProject(Flags flags, std::string jobid, std::string &jobTime
 			DatabaseRequests::finishJob(jobid, jobTime, 10, "Project already known.", env);
 			return;
 		}
-		loopThroughTags(s, tags, meta, startingTime, flags, jobid, jobTime, env);
+		loopThroughTags(s, tags, meta, startingTime, flags, jobid, jobTime, timeout, env);
 	}
 }
 
-void Command::parseLatest(Spider *s, ProjectMetaData &meta, Flags &flags, EnvironmentDTO *env)
+void Command::parseLatest(long long timeout, Spider *s, ProjectMetaData &meta, Flags &flags, EnvironmentDTO *env)
 {
 	print::debug("No tags found for project, just looking at HEAD.", __FILE__, __LINE__);
 
-	auto [hashes, authorData] = Command::parseAndBlame(s, flags);
+	auto [hashes, authorData] = Command::parseAndBlame(timeout, s, flags);
 	warnAndReturnIfErrno("Skipping project.");
 
 	if (hashes.size() == 0)
@@ -170,7 +171,7 @@ void Command::parseLatest(Spider *s, ProjectMetaData &meta, Flags &flags, Enviro
 }
 
 void Command::loopThroughTags(Spider *s, std::vector<std::tuple<std::string, long long, std::string>> &tags,
-							ProjectMetaData &meta, long long startingTime, Flags &flags, std::string jobid, std::string &jobTime, EnvironmentDTO *env)
+							ProjectMetaData &meta, long long startingTime, Flags &flags, std::string jobid, std::string &jobTime, long long timeout, EnvironmentDTO *env)
 {
 	// Skip tags before the starting time.
 	int i = 0;
@@ -220,7 +221,7 @@ void Command::loopThroughTags(Spider *s, std::vector<std::tuple<std::string, lon
 			}
 		}
 
-		downloadTagged(s, flags, prevTag, curTag, meta, prevVersionTime, prevUnchangedFiles, env);
+		downloadTagged(s, flags, prevTag, curTag, meta, prevVersionTime, prevUnchangedFiles, timeout, env);
 
 		prevTag = curTag;
 		prevVersionTime = std::to_string(versionTime);
@@ -228,7 +229,7 @@ void Command::loopThroughTags(Spider *s, std::vector<std::tuple<std::string, lon
 }
 
 void Command::downloadTagged(Spider *s, Flags flags, std::string prevTag, std::string curTag, ProjectMetaData meta,
-							 std::string prevVersionTime, std::vector<std::string> &prevUnchangedFiles,
+							 std::string prevVersionTime, std::vector<std::string> &prevUnchangedFiles, long long timeout,
 							 EnvironmentDTO *env)
 {
 	std::vector<std::string> unchangedFiles =
@@ -236,7 +237,7 @@ void Command::downloadTagged(Spider *s, Flags flags, std::string prevTag, std::s
 
 	warnAndReturnIfErrno("Error downloading tagged version of project, moving on to the next tag.");
 
-	auto [hashes, authorData] = Command::parseAndBlame(s, flags);
+	auto [hashes, authorData] = Command::parseAndBlame(timeout, s, flags);
 	warnAndReturnIfErrno("Skipping project.");
 
 	// Uploading the hashes.
@@ -359,7 +360,7 @@ void Start::versionProcessing(std::vector<std::string> &splitted, Flags flags, E
 	long long timeout  = std::stoll(splitted[4]);
 
 	// Process and upload project.
-	Command::uploadProject(flags, jobid, jobTime, env);
+	Command::uploadProject(flags, jobid, jobTime, timeout, env);
 
 	if (errno == 0)
 	{
@@ -468,8 +469,11 @@ void Upload::execute(Flags flags, EnvironmentDTO *env)
 
 	// Process and upload project.
 	std::string jobTime = "";
-	Command::uploadProject(flags, "", jobTime, env);
-	this->logPostExecutionMessage(flags.mandatoryArgument, __FILE__, __LINE__);
+	Command::uploadProject(flags, "", jobTime, 550000, env);
+	if (errno == 0)
+	{
+		this->logPostExecutionMessage(flags.mandatoryArgument, __FILE__, __LINE__);
+	}
 }
 
 #pragma endregion Upload
@@ -502,7 +506,7 @@ void CheckUpload::execute(Flags flags, EnvironmentDTO *env)
 	Upload::logPreExecutionMessage(url, __FILE__, __LINE__);
 
 	std::string jobTime = "";
-	Command::uploadProject(flags, "", jobTime, env);
+	Command::uploadProject(flags, "", jobTime, INT_MAX, env);
 
 	Upload::logPostExecutionMessage(url, __FILE__, __LINE__);
 }

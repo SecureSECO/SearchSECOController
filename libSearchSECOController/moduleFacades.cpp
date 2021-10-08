@@ -72,13 +72,13 @@ std::vector<std::tuple<std::string, long long, std::string>> moduleFacades::getR
 	return tags;
 }
 
-std::vector<HashData> moduleFacades::parseRepository(long long timeout, std::string repository, Flags flags)
+std::vector<HashData> moduleFacades::parseRepository(std::string repository, Flags flags)
 {
 	print::debug("Calling the parser to parse a repository", __FILE__, __LINE__);
 
 	if (std::filesystem::is_directory(repository))
 	{
-		auto hashes = Parser::parse(timeout, repository, flags.flag_cpu);
+		auto hashes = Parser::parse(repository, flags.flag_cpu);
 		print::loguruResetThreadName();
 
 		return hashes;

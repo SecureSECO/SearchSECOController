@@ -20,15 +20,17 @@ Utrecht University within the Software Project course.
 
 #define DOWNLOAD_LOCATION "spiderDownloads"
 
+bool stopped = false;
+
 std::string Command::helpMessage()
 {
 	return helpMessageText;
 }
 
-std::tuple<std::vector<HashData>, AuthorData> Command::parseAndBlame(long long timeout, Spider *s, Flags flags)
+std::tuple<std::vector<HashData>, AuthorData> Command::parseAndBlame(Spider *s, Flags flags)
 {
 	// Parse all parseable files.
-	std::vector<HashData> hashes = moduleFacades::parseRepository(timeout, DOWNLOAD_LOCATION, flags);
+	std::vector<HashData> hashes = moduleFacades::parseRepository(DOWNLOAD_LOCATION, flags);
 
 	if (errno != 0)
 	{
@@ -59,29 +61,34 @@ std::tuple<std::vector<HashData>, AuthorData> Command::parseAndBlame(long long t
 void Command::checkProject(Flags flags, EnvironmentDTO *env)
 {
 	auto url = flags.mandatoryArgument;
+	long long startTime =
+		std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch())
+			.count();
+
+	new std::thread(&Start::handleTimeout, "25000", std::ref(startTime));
 
 	Check::logPreExecutionMessage(url, __FILE__, __LINE__);
 
 	// Get project metadata.
-	ProjectMetaData meta = moduleFacades::getProjectMetadata(flags.mandatoryArgument, flags);
+	// ProjectMetaData meta = moduleFacades::getProjectMetadata(flags.mandatoryArgument, flags);
 
-	warnAndReturnIfErrno("Error getting project meta data, moving on to the next job.");
+	// warnAndReturnIfErrno("Error getting project meta data, moving on to the next job.");
 
-	if (flags.flag_branch == "")
-	{
-		// Set default branch.
-		flags.flag_branch = meta.defaultBranch;
-	}
+	// if (flags.flag_branch == "")
+	//{
+	// Set default branch.
+	//	flags.flag_branch = meta.defaultBranch;
+	//}
 
 	// Initialize spider.
 	Spider *s = moduleFacades::setupSpider(url, flags);
 
-	warnAndReturnIfErrno("No suitable Spider, skipping project.");
+	// warnAndReturnIfErrno("No suitable Spider, skipping project.");
 
 	// Download project.
 	moduleFacades::downloadRepo(s, url, flags, DOWNLOAD_LOCATION);
 
-	auto [hashes, authorData] = Command::parseAndBlame(INT_MAX, s, flags);
+	auto [hashes, authorData] = Command::parseAndBlame(s, flags);
 	warnAndReturnIfErrno("Error processing project.");
 
 	// Calling the function that will print all the matches for us.
@@ -159,7 +166,7 @@ void Command::parseLatest(long long timeout, Spider *s, ProjectMetaData &meta, F
 {
 	print::debug("No tags found for project, just looking at HEAD.", __FILE__, __LINE__);
 
-	auto [hashes, authorData] = Command::parseAndBlame(timeout, s, flags);
+	auto [hashes, authorData] = Command::parseAndBlame(s, flags);
 	warnAndReturnIfErrno("Skipping project.");
 
 	if (hashes.size() == 0)
@@ -237,7 +244,7 @@ void Command::downloadTagged(Spider *s, Flags flags, std::string prevTag, std::s
 
 	warnAndReturnIfErrno("Error downloading tagged version of project, moving on to the next tag.");
 
-	auto [hashes, authorData] = Command::parseAndBlame(timeout, s, flags);
+	auto [hashes, authorData] = Command::parseAndBlame(s, flags);
 	warnAndReturnIfErrno("Skipping project.");
 
 	// Uploading the hashes.
@@ -294,6 +301,10 @@ void Start::execute(Flags flags, EnvironmentDTO *env)
 		if (splitted[0] == "Spider")
 		{
 			print::log("New job: Download and parse " + splitted[2], __FILE__, __LINE__);
+			long long startTime = std::chrono::duration_cast<std::chrono::milliseconds>(
+								 std::chrono::system_clock::now().time_since_epoch())
+								 .count();
+			new std::thread(&Start::handleTimeout, splitted[4], std::ref(startTime));
 			versionProcessing(splitted, flags, env);
 		}
 		else if (splitted[0] == "Crawl")
@@ -318,6 +329,23 @@ void Start::execute(Flags flags, EnvironmentDTO *env)
 	}
 	t.join();
 	logPostExecutionMessage(__FILE__, __LINE__);
+}
+
+void Start::handleTimeout(const std::string timeoutString, long long &startTime)
+{
+	long long timeout = std::stoll(timeoutString);
+	while (!stopped)
+	{
+		std::this_thread::sleep_for(std::chrono::seconds(5));
+		long long currTime =
+			std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch())
+				.count();
+		if (startTime + timeout < currTime)
+		{
+			print::warn("Job timed out.", __FILE__, __LINE__);
+			stopped = true;
+		}
+	}
 }
 
 void Start::handleCrawlRequest(std::vector<std::string> &splitted, Flags flags, EnvironmentDTO *env)

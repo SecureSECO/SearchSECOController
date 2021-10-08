@@ -46,7 +46,7 @@ protected:
 	/// <param name="s"> The Spider to use. </param>
 	/// <param name="flags"> Flags to use. </param>
 	/// <returns> Tuple of parsed HashData and AuthorData. </returns>
-	std::tuple<std::vector<HashData>, AuthorData> parseAndBlame(long long timeout, Spider *s, Flags flags);
+	std::tuple<std::vector<HashData>, AuthorData> parseAndBlame(Spider *s, Flags flags);
 
 	/// <summary>
 	/// Processes local project and uploads extracted methods to the database.
@@ -112,7 +112,15 @@ public:
 	/// Logs the post-execution message.
 	/// </summary>
 	static void logPostExecutionMessage(const char* file, int line);
-private:
+
+	/// <summary>
+	/// Handles the timeout of a job.
+	/// </summary>
+	/// <param name="timeoutString"> The time the job is allowed to take. </param>
+	/// <param name="startTime"> The start time of the job. </param>
+	static void handleTimeout(std::string timeoutString, long long &startTime);
+
+  private:
 	/// <summary>
 	/// Handles crawl requests.
 	/// </summary>

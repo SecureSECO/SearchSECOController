@@ -14,6 +14,7 @@ NOTE: These tests depend on the Linux0dot01 integration test of the spider.
 // Controller includes
 #include "moduleFacades.h"
 #include "Spider.h"
+#include <iostream>
 
 
 //Constants.
@@ -26,8 +27,8 @@ TEST(integrationParser, basic)
 {
 	std::vector<HashData> expected = 
 	{
-		{HashData("", "scrup", "kernel\\console.c", 67, 111)},
-		{HashData("", "rw_hd", "kernel\\hd.c", 101, 117)},
+		{HashData("", "scrup", "kernel/console.c", 67, 111)},
+		{HashData("", "rw_hd", "kernel/hd.c", 101, 117)},
 	};
 
 	std::string url = "https://github.com/zavg/linux-0.01";

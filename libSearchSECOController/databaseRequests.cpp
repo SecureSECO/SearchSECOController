@@ -118,12 +118,13 @@ void DatabaseRequests::updateJob(std::string jobid, std::string &jobTime, Enviro
 	jobTime = execRequest(DATABASE_UPDATE_JOB, rawData, dataSize, env);
 }
 
-void DatabaseRequests::finishJob(std::string jobid, std::string jobTime, int code, std::string reason, EnvironmentDTO *env)
+void DatabaseRequests::finishJob(std::string jobid, std::string jobTime, FinishReason code, std::string reason, EnvironmentDTO *env)
 {
-	if (env->commandString == "start")
+	if (env->commandString == "start" && errno != HANDLED_ERRNO)
 	{
 		int dataSize = 0;
 		const char *rawData = NetworkUtils::getFinishJobRequest(jobid, jobTime, code, reason, dataSize);
+		errno = 0;
 		execRequest(DATABASE_FINISH_JOB, rawData, dataSize, env);
 		if (errno == 0)
 		{

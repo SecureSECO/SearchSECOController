@@ -27,6 +27,23 @@ Utrecht University within the Software Project course.
 #define BASE_RETRY_WAIT 1000
 #define HANDLED_ERRNO 69
 
+enum FinishReason
+{
+	success,
+	unknown,
+	alreadyKnown = 10,
+	projectDownload,
+	tagRetrieval,
+	projectMeta,
+	spiderSetup,
+	headSwitch,
+	jobUpdate,
+	tagUpdate,
+	uploadHashes,
+	parser,
+	authorData
+};
+
 
 class NetworkHandler;
 
@@ -107,7 +124,7 @@ public:
 	/// <param name="jobTime">The time of the job.</param>
 	/// <param name="code">Code to identify the reason the job finished.</param>
 	/// <param name="reason">String containing more information on why the job finished.</param>
-	static void finishJob(std::string jobid, std::string jobTime, int code, std::string reason, EnvironmentDTO *env);
+	static void finishJob(std::string jobid, std::string jobTime, FinishReason code, std::string reason, EnvironmentDTO *env);
 
 	/// <summary>
 	/// Sends a get next job request to the api.

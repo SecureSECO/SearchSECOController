@@ -29,6 +29,9 @@ Here, $T$ represents the time of uploading the project, $P$ indicates the fracti
 
 We need to clone an entire repository before we can parse the parseable files, so a repository with a small fraction of parseable lines will take relatively longer to process per line, than a repository for which we can parse almost every line. Therefore, the priority measure we chose depends on $P$ in a linear way. Since the number of stars and number of parseable bytes is unbounded (unlike $P$, which is bounded between $0$ and $1$), we scale these numbers by taking a base $2$ logarithm. This is also because these are more a measure of popularity than parsing speed, unlike $P$. Since the number of stars is more of an indication of importance than the number of parseable lines, we take a nested double logarithm of $B$. We add $1$ to prevent the logarithm to dip below $0$. Finally, the priority depends on the time of uploading in a linear way, since we want unpopular projects which are in the queue for a while to eventually get moved to the front and processed. The constant of $20.000.000$ was chosen so that a small, somewhat popular repository gets processed before Linux if Linux was uploaded a little over a week later than the smaller repository.
 
+\newpar{Timeout measure}
+On every job there is also a timeout being calculated. This is the amount of time in milliseconds that the database api and controller will allow for this job to take. It is calculated as follows: $$120000 + B/5$$ Here $B$ is the total amount of parseable bytes.
+
 \newpar{Retrieving metadata}
 Besides the crawling of GitHub the Crawler is also responsible for retrieving metadata of a project. When given an URL of a project, the Crawler will retrieve the following information about the project:
 \begin{itemize}

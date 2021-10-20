@@ -10,7 +10,7 @@ Each table has a partition key which is used for the distribution, since a singl
 The structure of our database consists of two keyspaces. One keyspace for the data about the jobs and one with all the data about the methods and projects in the database. 
 
 \subsubsection{Jobs}
-The keyspace with the jobdata, called \texttt{jobs}, contains the following table:
+The keyspace with the jobdata, called \texttt{jobs}, contains the jobs queue table:
 
 \begin{table}[h]
     \centering
@@ -22,11 +22,68 @@ The keyspace with the jobdata, called \texttt{jobs}, contains the following tabl
     Priority & Bigint & C\,$\uparrow$ \\
     Jobid & UUID & C\,$\downarrow$ \\
     Url & Text & \\
+    Retries & Int & \\
+    Timeout & Bigint & \\
     \hline
 \end{tabular}
 \end{table}
 
-As we can see, the jobs queue is sorted with ascending order on the \texttt{Priority} and descending on the \texttt{Jobid}. The \texttt{Constant} is included to make sure that the whole \texttt{Jobqueue} is part of a single partition and can therefore be sorted on the priority. The priority is a 64-bit integer which is calculated as the current time minus the priority score we get from the crawler. The priority is sorted from lowest to highest so the job with the lowest priority will be done first. The job id is a Universally Unique Identifier (or UUID) so it becomes easier to keep track of the different jobs. Finally, the \texttt{Url} is the url that should be parsed when this job is done.
+As we can see, the jobs queue is sorted with ascending order on the \texttt{Priority} and descending on the \texttt{Jobid}. The \texttt{Constant} is included to make sure that the whole \texttt{Jobqueue} is part of a single partition and can therefore be sorted on the priority. The priority is a 64-bit integer which is calculated as the current time minus the priority score we get from the crawler. The priority is sorted from lowest to highest so the job with the lowest priority will be done first. The job id is a Universally Unique Identifier (or UUID) so it becomes easier to keep track of the different jobs. The \texttt{Url} is the url that should be parsed when this job is done. The \texttt{Retries} is the amount of times this job has bee retried. Finally the \texttt{Timeout} is the timeout calculated by the crawler.\\
+
+Next there is also a table containing the jobs that are currently processing:\\
+\begin{table}[h]
+    \centering
+    \begin{tabular}{|ccc|}
+\hline
+    \multicolumn{3}{|c|}{\textbf{currentjobs}}   \\
+    \hline
+    Jobid & UUID & K \\
+    Time & Timestamp & \\
+    Timeout & Bigint & \\
+    Priority & Bigint & \\
+    Url & Text & \\
+    Retries & Int & \\
+    \hline
+\end{tabular}
+\end{table}
+
+The contents is very similar to the jobsqueue table. The main difference is the \texttt{Time}, this is the time at which this job has been given out. This is used for both identifying this job and seeing when this job has timed out.\\
+
+Another table in this keyspace is the table containing the failed jobs:\\
+\begin{table}[h]
+    \centering
+    \begin{tabular}{|ccc|}
+\hline
+    \multicolumn{3}{|c|}{\textbf{failedjobs}}   \\
+    \hline
+    Jobid & UUID & K \\
+    Time & Timestamp & C\,$\downarrow$ \\
+    Timeout & Bigint & \\
+    Priority & Bigint & \\
+    Url & Text & \\
+    Retries & Int & \\
+    ReasonID & Int & \\
+    ReasonData & Text & \\
+    \hline
+\end{tabular}
+\end{table}
+
+This is again similar to the currentjobs table. The differences her are the \texttt{ReasonID} and \texttt{ReasonData}. These two columns represent the reason this job failed, where the id is an identifier for the reason and the data is some extra explanation about this specific failure.\\
+
+The final table in this keyspace is the table containing the current crawlid:
+\begin{table}[h]
+    \centering
+    \begin{tabular}{|ccc|}
+\hline
+    \multicolumn{3}{|c|}{\textbf{variables}}   \\
+    \hline
+    Name & Text & K \\
+    Value & Int & \\
+    \hline
+\end{tabular}
+\end{table}
+
+Here the \texttt{Name} is the name of the variable and \texttt{Value} is the value.
 
 \subsubsection{Projectdata}
 The other keyspace, called \texttt{projectdata}, contains the data for the methods and projects that we store. The first table is the table containing the methods:
@@ -168,6 +225,8 @@ The Job request handler is the class that will actually handle the incoming requ
     We manually keep track of how many jobs are in the job queue. This way we do not have to do a database query each time to get the number of jobs in the queue. When the system starts, we do this query one time to know the initial number of jobs in the database. From there we subtract one each time we take on out, and add one each time we put one in. 
     \item Add Jobs: Adds one or more jobs to the job queue. This request is not meant for the crawl jobs, but specifically for if you want to add extra jobs manually.
     \item Add Crawl Jobs: Does the same thing as Add Jobs, but will mark the crawl job as done. It also requires a crawl ID. This is the ID from where the next crawl job will start crawling. The Database API will remember this ID and give it the the next worker node that is assigned a crawl job.
+    \item Update job: Updates the given job to be started at the new current time. Also returns the new time.
+    \item Finish job: Finishes the given job. It will be removed from the current jobs table and if it failed it will be added to the failed jobs table.
 \end{itemize}
 There is one more request the job request handler will handle: the connect request. The connect request is not called from a worker node, but rather from a different Database API. This request is to connect to the RAFT system. If the node that receives the request is the leader, we will return the IP and port of the leader node. If this node is the leader node, then we will accept the connection and send the initial data that the new node needs.\\
 

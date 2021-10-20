@@ -246,7 +246,6 @@ const char *NetworkUtils::getFinishJobRequest(std::string jobid, std::string job
 	addStringToBuffer(data, pos, std::to_string(code));
 	data[pos++] = INNER_DELIMITER;
 	addStringToBuffer(data, pos, reason);
-	data[pos++] = ENTRY_DELIMITER;
 	return data;
 }
 

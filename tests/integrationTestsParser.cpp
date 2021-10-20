@@ -20,6 +20,8 @@ NOTE: These tests depend on the Linux0dot01 integration test of the spider.
 //Constants.
 #define TEMPPATH "temp"
 
+bool stopped = false;
+
 //Dummy variables.
 Flags parserFlags;
 

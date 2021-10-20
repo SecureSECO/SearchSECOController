@@ -405,7 +405,6 @@ void Start::handleTimeout(const std::string timeoutString, long long &startTime)
 		long long currTime =
 			std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch())
 				.count();
-		print::debug("Comparing start time: " + std::to_string(startTime) + " to current time: " + std::to_string(currTime), __FILE__, __LINE__);
 		if (startTime + timeout < currTime)
 		{
 			print::warn("Job timed out.", __FILE__, __LINE__);

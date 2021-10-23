@@ -409,10 +409,13 @@ TEST(networkingGetAddJobRequest, more_jobs)
 TEST(networkingGetCrawledRequest, two_jobs)
 {
 	int crawlid = 10;
-	CrawlData authors = { {{"url1", 2}, {"url2", 6}}, crawlid };
+	CrawlData authors;
+	authors.URLImportanceList = {std::make_tuple("url1", 2, 420000), std::make_tuple("url2", 6, 690000)};
+	authors.languages = std::map<std::string, int>();
+	authors.finalProjectId = crawlid;
 	int size;
-	const char* buffer = NetworkUtils::getUploadCrawlRequest(authors, size);
-	std::string target = std::to_string(crawlid) + "\nurl1?2\nurl2?6\n";
+	const char *buffer = NetworkUtils::getUploadCrawlRequest(authors, "123", size);
+	std::string target = std::to_string(crawlid) + "?123\nurl1?2?420000\nurl2?6?690000\n";
 	EXPECT_EQ(target, std::string(buffer, buffer + size));
 	EXPECT_EQ(size, target.size());
 }
@@ -420,10 +423,10 @@ TEST(networkingGetCrawledRequest, two_jobs)
 TEST(networkingGetCrawledRequest, empty)
 {
 	int crawlid = 5;
-	CrawlData authors = { {}, crawlid };
+	CrawlData authors = {{}, std::map<std::string, int>(), crawlid};
 	int size;
-	const char* buffer = NetworkUtils::getUploadCrawlRequest(authors, size);
-	std::string target = std::to_string(crawlid) + "\n";
+	const char *buffer = NetworkUtils::getUploadCrawlRequest(authors, "124", size);
+	std::string target = std::to_string(crawlid) + "?124\n";
 	EXPECT_EQ(target, std::string(buffer, buffer + size));
 	EXPECT_EQ(size, target.size());
 }
@@ -431,10 +434,50 @@ TEST(networkingGetCrawledRequest, empty)
 TEST(networkingGetCrawledRequest, more_jobs)
 {
 	int crawlid = 25;
-	CrawlData authors = { {{"url1", 1}, {"url2", 2}, {"url3", 3} , {"url4", 4} , {"url5", 5}}, crawlid };
+	CrawlData authors = {
+		{{"url1", 1, 420000}, {"url2", 2, 420001}, {"url3", 3, 420002}, {"url4", 4, 420003}, {"url5", 5, 420004}},
+						 std::map<std::string, int>(),
+						 crawlid};
 	int size;
-	const char* buffer = NetworkUtils::getUploadCrawlRequest(authors, size);
-	std::string target = std::to_string(crawlid) + "\nurl1?1\nurl2?2\nurl3?3\nurl4?4\nurl5?5\n";
+	const char *buffer = NetworkUtils::getUploadCrawlRequest(authors, "125", size);
+	std::string target = std::to_string(crawlid) + "?125\nurl1?1?420000\nurl2?2?420001\nurl3?3?420002\nurl4?4?420003\nurl5?5?420004\n";
+	EXPECT_EQ(target, std::string(buffer, buffer + size));
+	EXPECT_EQ(size, target.size());
+}
+
+TEST(networkingUpdateJobRequest, basic)
+{
+	std::string jobid = "5d514d6e-2f23-fee7-b378-feda84ec123f";
+	std::string jobTime = "1634297534";
+	int size;
+	const char* buffer = NetworkUtils::getUpdateJobRequest(jobid, jobTime, size);
+	std::string target = "5d514d6e-2f23-fee7-b378-feda84ec123f?1634297534\n";
+	EXPECT_EQ(target, std::string(buffer, buffer + size));
+	EXPECT_EQ(size, target.size());
+}
+
+TEST(networkingFinishJobRequest, success)
+{
+	std::string jobid = "5d514d6e-2f23-fee7-b378-feda84ec123f";
+	std::string jobTime = "1634297534";
+	int code = 0;
+	std::string reason = "Success.";
+	int size;
+	const char* buffer = NetworkUtils::getFinishJobRequest(jobid, jobTime, code, reason, size);
+	std::string target = "5d514d6e-2f23-fee7-b378-feda84ec123f?1634297534?0?Success.\n";
+	EXPECT_EQ(target, std::string(buffer, buffer + size));
+	EXPECT_EQ(size, target.size());
+}
+
+TEST(networkingFinishJobRequest, knownProjectError)
+{
+	std::string jobid = "5d514d6e-2f23-fee7-b378-feda84ec123f";
+	std::string jobTime = "1634297534";
+	int code = 10;
+	std::string reason = "Project already known.";
+	int size;
+	const char* buffer = NetworkUtils::getFinishJobRequest(jobid, jobTime, code, reason, size);
+	std::string target = "5d514d6e-2f23-fee7-b378-feda84ec123f?1634297534?10?Project already known.\n";
 	EXPECT_EQ(target, std::string(buffer, buffer + size));
 	EXPECT_EQ(size, target.size());
 }

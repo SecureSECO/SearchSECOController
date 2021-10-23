@@ -151,6 +151,31 @@ public:
 	static const char* getJobsRequest(const std::vector<std::string>& urls, int& size);
 
 	/// <summary>
+	/// Creates the string to send to the database for updating the job.
+	/// </summary>
+	/// <param name="jobid">The id of the job.</param>
+	/// <param name="time">The job sime.</param>
+	/// <param name="size">This is basically a second return value. 
+	/// The size of the string that is returned will be put in here. 
+	/// The initial value that you give it will be ignored.</param>
+	/// <returns>A char pointer to string with all the data in it.</returns>
+	static const char *getUpdateJobRequest(std::string jobid, std::string jobTime, int &size);
+
+	/// <summary>
+	/// Creates the string to send to the database for finishing the job.
+	/// </summary>
+	/// <param name="jobid">The id of the job.</param>
+	/// <param name="jobTime">The job sime.</param>
+	/// <param name="code">The finish code.</param>
+	/// <param name="reason">The finish reason.</param>
+	/// <param name="size">This is basically a second return value. 
+	/// The size of the string that is returned will be put in here. 
+	/// The initial value that you give it will be ignored.</param>
+	/// <returns>A char pointer to string with all the data in it.</returns>
+	static const char *getFinishJobRequest(std::string jobid, std::string jobTime, int code, std::string reason,
+												  int &size);
+
+	/// <summary>
 	/// Converts the list of urls into a string that can be send to the database,
 	/// so that they can be added as jobs to the job queue.
 	/// This one is used for the automatic crawling.

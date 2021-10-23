@@ -68,11 +68,6 @@ std::tuple<std::vector<HashData>, AuthorData> Command::parseAndBlame(Spider *s, 
 void Command::checkProject(Flags flags, EnvironmentDTO *env)
 {
 	auto url = flags.mandatoryArgument;
-	long long startTime =
-		std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch())
-			.count();
-
-	new std::thread(&Start::handleTimeout, "25000", std::ref(startTime));
 
 	Check::logPreExecutionMessage(url, __FILE__, __LINE__);
 
@@ -96,7 +91,7 @@ void Command::checkProject(Flags flags, EnvironmentDTO *env)
 	moduleFacades::downloadRepo(s, url, flags, DOWNLOAD_LOCATION);
 
 	std::string empty = "";
-	auto [hashes, authorData] = Command::parseAndBlame(s, "HEAD", 0, empty, flags, env);
+	auto [hashes, authorData] = Command::parseAndBlame(s, "HEAD", "0", empty, flags, env);
 	warnAndReturnIfErrno("Error processing project.");
 
 	// Calling the function that will print all the matches for us.

@@ -32,10 +32,7 @@ public:
 	/// Will execute the given command with the flags you give it.
 	/// </summary>
 	/// <param name="flags">The flags with which you want to execute the command.</param>
-	virtual void execute(
-		Flags flags, 
-		EnvironmentDTO *env
-		) = 0;
+	virtual void execute(Flags flags, EnvironmentDTO *env) = 0;
 
 protected:
 	std::string helpMessageText;
@@ -46,7 +43,8 @@ protected:
 	/// <param name="s"> The Spider to use. </param>
 	/// <param name="flags"> Flags to use. </param>
 	/// <returns> Tuple of parsed HashData and AuthorData. </returns>
-	std::tuple<std::vector<HashData>, AuthorData> parseAndBlame(Spider *s, std::string tag, std::string jobid, std::string &jobTime, Flags flags, EnvironmentDTO *env);
+	std::tuple<std::vector<HashData>, AuthorData> parseAndBlame(Spider *s, std::string tag, std::string jobid,
+																std::string &jobTime, Flags flags, EnvironmentDTO *env);
 
 	/// <summary>
 	/// Processes local project and uploads extracted methods to the database.
@@ -56,8 +54,7 @@ protected:
 	/// <param name="meta"> Metadata for the local project. </param>
 	/// <param name="jobid"> JobID of the current job. </param>
 	/// <param name="jobTime"> JobTime for the current job. </param>
-	void uploadProject(Flags flags, std::string jobid, std::string &jobTime, long long *startTime,
-					   EnvironmentDTO *env);
+	void uploadProject(Flags flags, std::string jobid, std::string &jobTime, long long *startTime, EnvironmentDTO *env);
 
 	/// <summary>
 	/// Processes project and compares it to the database.
@@ -66,12 +63,11 @@ protected:
 	void checkProject(Flags flags, EnvironmentDTO *env);
 
 private:
-	
 	/// <summary>
 	/// Used by version processing. Will parse and upload the latest version of the project.
 	/// </summary>
-  void parseLatest(Spider *s, ProjectMetaData &meta, std::string jobid, std::string &jobTime, Flags &flags,
-				   EnvironmentDTO *env);
+	void parseLatest(Spider *s, ProjectMetaData &meta, std::string jobid, std::string &jobTime, Flags &flags,
+					 EnvironmentDTO *env);
 
 	/// <summary>
 	/// Loops through all tags of a project and calls downloadTagged for each of them.
@@ -102,20 +98,17 @@ public:
 	/// <summary>
 	/// Starts the worker node.
 	/// </summary>
-	void execute(
-		Flags flags, 
-		EnvironmentDTO *env
-		) override;
+	void execute(Flags flags, EnvironmentDTO *env) override;
 
 	/// <summary>
 	/// Logs the pre-execution message.
 	/// </summary>
-	static void logPreExecutionMessage(int fCPU, const char* file, int line);
+	static void logPreExecutionMessage(int fCPU, const char *file, int line);
 
 	/// <summary>
 	/// Logs the post-execution message.
 	/// </summary>
-	static void logPostExecutionMessage(const char* file, int line);
+	static void logPostExecutionMessage(const char *file, int line);
 
 	/// <summary>
 	/// Handles the timeout of a job.
@@ -124,17 +117,14 @@ public:
 	/// <param name="startTime"> The start time of the job. </param>
 	static void handleTimeout(std::string timeoutString, long long &startTime);
 
-  private:
+private:
 	/// <summary>
 	/// Handles crawl requests.
 	/// </summary>
-	void handleCrawlRequest(
-		std::vector<std::string> &splitted, 
-		Flags flags, 
-		EnvironmentDTO *env);
+	void handleCrawlRequest(std::vector<std::string> &splitted, Flags flags, EnvironmentDTO *env);
 
 	/// <summary>
-	/// Handles a spider request. 
+	/// Handles a spider request.
 	/// Will spider the given job and parse all tags in the repository by calling downloadTagged.
 	/// </summary>
 	void versionProcessing(std::vector<std::string> &splitted, long long *startTime, Flags flags, EnvironmentDTO *env);

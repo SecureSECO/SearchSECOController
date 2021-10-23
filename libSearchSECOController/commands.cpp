@@ -361,11 +361,13 @@ void Start::execute(Flags flags, EnvironmentDTO *env)
 				// jobid and jobTime are correct or even present (the data from the database is malformed).
 				print::warn("Unexpected job data received from database.", __FILE__, __LINE__);
 			}
+			stopped = false;
 			long long startTime = std::chrono::duration_cast<std::chrono::milliseconds>(
-							 std::chrono::system_clock::now().time_since_epoch())
-							 .count();
+									  std::chrono::system_clock::now().time_since_epoch())
+									  .count();
 			new std::thread(&Start::handleTimeout, splitted[4], std::ref(startTime));
 			versionProcessing(splitted, &startTime, flags, env);
+			stopped = true;
 		}
 		else if (splitted[0] == "Crawl")
 		{

@@ -15,12 +15,13 @@ Utrecht University within the Software Project course.
 // External includes.
 #include <iostream>
 #include <thread>
+#include <atomic>
 #include <condition_variable>
 #include <climits>
 
 #define DOWNLOAD_LOCATION "spiderDownloads"
 
-bool stopped = false;
+std::atomic<bool> stopped(false);
 
 std::string Command::helpMessage()
 {
@@ -39,6 +40,10 @@ std::tuple<std::vector<HashData>, AuthorData> Command::parseAndBlame(Spider *s, 
 		DatabaseRequests::finishJob(jobid, jobTime, FinishReason::parser,
 									"Error parsing tag \"" + tag + "\": " + std::to_string(errno) + ".", env);
 		print::warn("Error parsing project.", __FILE__, __LINE__);
+		return std::tuple<std::vector<HashData>, AuthorData>(std::vector<HashData>(), AuthorData());
+	}
+	if (stopped)
+	{
 		return std::tuple<std::vector<HashData>, AuthorData>(std::vector<HashData>(), AuthorData());
 	}
 
@@ -149,6 +154,11 @@ void Command::uploadProject(Flags flags, std::string jobid, std::string &jobTime
 	{
 		DatabaseRequests::finishJob(jobid, jobTime, FinishReason::projectDownload, "Error downloading project: " + std::to_string(errno) + ".", env);
 	}
+	if (stopped)
+	{
+		DatabaseRequests::finishJob(jobid, jobTime, FinishReason::timeout, "Job timed out on download.",
+									env);
+	}
 	warnAndReturnIfErrno("Error downloading project, moving on to the next job.");
 
 	// Get tags of previous versions.
@@ -250,13 +260,23 @@ void Command::loopThroughTags(Spider *s, std::vector<std::tuple<std::string, lon
 
 		if (env->commandString == "start")
 		{
+			if (stopped)
+			{
+				DatabaseRequests::finishJob(jobid, jobTime, FinishReason::timeout,
+											"Job timed out on tag: " + prevTag + ".",
+											env);
+				return;
+			}
+
 			DatabaseRequests::updateJob(jobid, jobTime, env);
 			
 			// If update was unsuccessful or unexpected,
 			if (errno != 0)
 			{
 				// stop the current job.
-				DatabaseRequests::finishJob(jobid, jobTime, FinishReason::jobUpdate, "Error receiving job update from database: " + std::to_string(errno) + ".", env);
+				DatabaseRequests::finishJob(jobid, jobTime, FinishReason::jobUpdate,
+											"Error receiving job update from database: " + std::to_string(errno) + ".",
+											env);
 				return;
 			}
 			*startTime = std::chrono::duration_cast<std::chrono::milliseconds>(
@@ -291,7 +311,16 @@ void Command::downloadTagged(Spider *s, Flags flags, std::string prevTag, std::s
 	warnAndReturnIfErrno("Error downloading tagged version of project, moving on to the next job.");
 
 	auto [hashes, authorData] = Command::parseAndBlame(s, curTag, jobid, jobTime, flags, env);
+
+
 	warnAndReturnIfErrno("Skipping project.");
+
+	if (stopped)
+	{
+		DatabaseRequests::finishJob(jobid, jobTime, FinishReason::timeout,
+									"Timeout hit on tag: " + curTag + ".", env);
+		return;
+	}
 
 	// Uploading the hashes.
 	print::debug(DatabaseRequests::uploadHashes(hashes, meta, authorData, env, prevVersionTime, unchangedFiles),
@@ -368,6 +397,7 @@ void Start::execute(Flags flags, EnvironmentDTO *env)
 			new std::thread(&Start::handleTimeout, splitted[4], std::ref(startTime));
 			versionProcessing(splitted, &startTime, flags, env);
 			stopped = true;
+			std::this_thread::sleep_for(std::chrono::seconds(5));
 		}
 		else if (splitted[0] == "Crawl")
 		{

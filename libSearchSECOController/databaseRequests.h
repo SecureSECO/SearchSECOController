@@ -41,7 +41,8 @@ enum FinishReason
 	tagUpdate,
 	uploadHashes,
 	parser,
-	authorData
+	authorData,
+	timeout
 };
 
 

@@ -235,7 +235,7 @@ const char *NetworkUtils::getFinishJobRequest(std::string jobid, std::string job
 											  int &size)
 {
 	// First, calculate the size, so we don't have to expand it later.
-	size = jobid.length() + jobTime.length() + std::to_string(code).length() + reason.length() + 4;
+	size = jobid.length() + jobTime.length() + std::to_string(code).length() + reason.length() + 3;
 	char *data = new char[size];
 	// Create the string.
 	int pos = 0;

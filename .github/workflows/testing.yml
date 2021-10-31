@@ -11,7 +11,7 @@ jobs:
              cd dependencies
              sudo apt-get -y -qq update
              sudo apt-get -y -qq dist-upgrade
-             apt-get -y install gcc g++ cmake autoconf curl clang clang-tidy clang-format libcurl4-openssl-dev git libboost-date-time-dev libboost-regex-dev nlohmann-json3-dev libantlr4-runtime-dev libantlr4-runtime4.8
+             sudo apt-get -y install gcc g++ cmake autoconf curl clang clang-tidy clang-format libcurl4-openssl-dev git libboost-date-time-dev libboost-regex-dev nlohmann-json3-dev libantlr4-runtime-dev libantlr4-runtime4.8
       - name: Tests
         run: |
              mkdir controller_test_build
@@ -29,7 +29,7 @@ jobs:
              cd dependencies
              sudo apt-get -y -qq update
              sudo apt-get -y -qq dist-upgrade
-             apt-get -y install gcc g++ cmake autoconf curl clang clang-tidy clang-format libcurl4-openssl-dev git libboost-date-time-dev libboost-regex-dev nlohmann-json3-dev libantlr4-runtime-dev libantlr4-runtime4.8
+             sudo apt-get -y install gcc g++ cmake autoconf curl clang clang-tidy clang-format libcurl4-openssl-dev git libboost-date-time-dev libboost-regex-dev nlohmann-json3-dev libantlr4-runtime-dev libantlr4-runtime4.8
       - name: Run linting
         run: |
              cd libSearchSECOController

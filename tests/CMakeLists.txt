@@ -31,7 +31,7 @@ add_executable(${TEST_NAME}
   databaseAPIMock.h
   databaseAPIMock.cpp
   integrationTestsCrawler.cpp
-  integrationTestsDatabaseAPI.cpp
+  #integrationTestsDatabaseAPI.cpp
   integrationTestsParser.cpp
   integrationTestsSpider.cpp
   #systemTestsUtils.h

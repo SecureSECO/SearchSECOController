@@ -464,7 +464,7 @@ TEST(networkingFinishJobRequest, success)
 	std::string reason = "Success.";
 	int size;
 	const char* buffer = NetworkUtils::getFinishJobRequest(jobid, jobTime, code, reason, size);
-	std::string target = "5d514d6e-2f23-fee7-b378-feda84ec123f?1634297534?0?Success.\n";
+	std::string target = "5d514d6e-2f23-fee7-b378-feda84ec123f?1634297534?0?Success.";
 	EXPECT_EQ(target, std::string(buffer, buffer + size));
 	EXPECT_EQ(size, target.size());
 }
@@ -477,7 +477,7 @@ TEST(networkingFinishJobRequest, knownProjectError)
 	std::string reason = "Project already known.";
 	int size;
 	const char* buffer = NetworkUtils::getFinishJobRequest(jobid, jobTime, code, reason, size);
-	std::string target = "5d514d6e-2f23-fee7-b378-feda84ec123f?1634297534?10?Project already known.\n";
+	std::string target = "5d514d6e-2f23-fee7-b378-feda84ec123f?1634297534?10?Project already known.";
 	EXPECT_EQ(target, std::string(buffer, buffer + size));
 	EXPECT_EQ(size, target.size());
 }

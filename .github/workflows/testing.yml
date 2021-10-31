@@ -5,13 +5,15 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+        with:
+          submodules: recursive
       - name: Install dependencies
         run: |
              mkdir dependencies
              cd dependencies
              sudo apt-get -y -qq update
              sudo apt-get -y -qq dist-upgrade
-             sudo apt-get -y install gcc g++ cmake autoconf curl clang clang-tidy clang-format libcurl4-openssl-dev git libboost-date-time-dev libboost-regex-dev nlohmann-json3-dev libantlr4-runtime-dev libantlr4-runtime4.8
+             sudo apt-get -y -qq install gcc g++ cmake autoconf curl clang clang-tidy clang-format libcurl4-openssl-dev git libboost-date-time-dev libboost-regex-dev nlohmann-json3-dev libantlr4-runtime-dev libantlr4-runtime4.8
       - name: Tests
         run: |
              mkdir controller_test_build
@@ -23,13 +25,15 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+        with:
+          submodules: recursive
       - name: Install dependencies
         run: |
              mkdir dependencies
              cd dependencies
              sudo apt-get -y -qq update
              sudo apt-get -y -qq dist-upgrade
-             sudo apt-get -y install gcc g++ cmake autoconf curl clang clang-tidy clang-format libcurl4-openssl-dev git libboost-date-time-dev libboost-regex-dev nlohmann-json3-dev libantlr4-runtime-dev libantlr4-runtime4.8
+             sudo apt-get -y -qq install gcc g++ cmake autoconf curl clang clang-tidy clang-format libcurl4-openssl-dev git libboost-date-time-dev libboost-regex-dev nlohmann-json3-dev libantlr4-runtime-dev libantlr4-runtime4.8
       - name: Run linting
         run: |
              cd libSearchSECOController

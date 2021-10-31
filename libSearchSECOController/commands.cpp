@@ -376,10 +376,15 @@ void Start::execute(Flags flags, EnvironmentDTO *env)
 	{
 		std::string job = DatabaseRequests::getNextJob(env);
 
+		if (errno != 0)
+		{
+			print::warn("Unable to retrieve new job.", __FILE__, __LINE__);
+		}
+
 		std::vector<std::string> splitted = Utils::split(job, INNER_DELIMITER);
 		if (splitted.size() < 1)
 		{
-			error::errInvalidDatabaseAnswer(__FILE__, __LINE__);
+			print::warn("Incorrect database response.", __FILE__, __LINE__);
 		}
 		if (splitted[0] == "Spider")
 		{
@@ -411,7 +416,7 @@ void Start::execute(Flags flags, EnvironmentDTO *env)
 		}
 		else
 		{
-			error::errInvalidDatabaseAnswer(__FILE__, __LINE__);
+			print::warn("Incorrect database response.", __FILE__, __LINE__);
 		}
 
 		// Check if we need to stop.

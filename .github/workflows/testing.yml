@@ -14,6 +14,8 @@ jobs:
              sudo apt-get -y -qq update
              sudo apt-get -y -qq dist-upgrade
              sudo apt-get -y -qq install gcc g++ cmake autoconf curl clang clang-tidy clang-format libcurl4-openssl-dev git libboost-date-time-dev libboost-regex-dev nlohmann-json3-dev libantlr4-runtime-dev libantlr4-runtime4.8
+             wget http://131.123.42.38/lmcrs/v1.0.0/srcml_1.0.0-1_ubuntu18.04.deb
+             sudo apt-get -y -qq install ./srcml_1.0.0-1_ubuntu18.04.deb
       - name: Tests
         run: |
              mkdir controller_test_build

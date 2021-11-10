@@ -35,7 +35,7 @@ std::tuple<std::vector<HashData>, AuthorData> Command::parseAndBlame(Spider *s, 
 	// Parse all parseable files.
 	std::vector<HashData> hashes = moduleFacades::parseRepository(DOWNLOAD_LOCATION, flags);
 
-	if (errno != 0)
+	if (errno != 0 && !stopped)
 	{
 		DatabaseRequests::finishJob(jobid, jobTime, FinishReason::parser,
 									"Error parsing tag \"" + tag + "\": " + std::to_string(errno) + ".", env);

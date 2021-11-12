@@ -293,7 +293,15 @@ void Input::sanitizeGithubToken(std::string arg, bool fromConfig)
 	print::debug(msg, __FILE__, __LINE__);
 	if (arg == "")
 	{
-		print::warn("Missing github token, functionality will be limited", __FILE__, __LINE__);
+		char *envVar = std::getenv("github_token");
+		if (envVar != nullptr)
+		{
+			arg = envVar;
+		}
+		else
+		{
+			print::warn("Missing github token, functionality will be limited", __FILE__, __LINE__);
+		}
 	}
 
 	this->flags.flag_github_token = arg;
@@ -306,7 +314,15 @@ void Input::sanitizeWorkerName(std::string arg, bool fromConfig)
 	print::debug(msg, __FILE__, __LINE__);
 	if (arg == "")
 	{
-		print::warn("Missing worker name, statistics will be limited", __FILE__, __LINE__);
+		char *envVar = std::getenv("worker_name");
+		if (envVar != nullptr)
+		{
+			arg = envVar;
+		}
+		else
+		{
+			print::warn("Missing worker name, statistics will be limited", __FILE__, __LINE__);
+		}
 	}
 
 	this->flags.flag_worker_name = arg;

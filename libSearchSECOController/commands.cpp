@@ -44,6 +44,8 @@ std::tuple<std::vector<HashData>, AuthorData> Command::parseAndBlame(Spider *s, 
 	}
 	if (stopped)
 	{
+		DatabaseRequests::finishJob(jobid, jobTime, FinishReason::timeout,
+									"Timeout hit during parsing of tag  \"" + tag + "\".", env);
 		return std::tuple<std::vector<HashData>, AuthorData>(std::vector<HashData>(), AuthorData());
 	}
 
@@ -233,14 +235,6 @@ void Command::loopThroughTags(Spider *s, std::vector<std::tuple<std::string, lon
 		std::string prevTag = std::get<0>(tags[i - 1]);
 		std::string prevVersionTime = std::to_string(std::get<1>(tags[i - 1]));
 	}
-
-	moduleFacades::switchVersion(s, "HEAD", DOWNLOAD_LOCATION);
-
-	if (errno != 0)
-	{
-		DatabaseRequests::finishJob(jobid, jobTime, FinishReason::headSwitch, "Error switching to HEAD: " + std::to_string(errno) + ".", env);
-	}
-	warnAndReturnIfErrno("Error switching to HEAD, moving on to the next job.");
 
 	// Loop through remaining tags.
 	for (; i < tags.size(); i++)

@@ -1,0 +1,43 @@
+name: Testing pipeline
+on: [push]
+jobs:
+  Tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          submodules: recursive
+      - name: Install dependencies
+        run: |
+             mkdir dependencies
+             cd dependencies
+             sudo apt-get -y -qq update
+             sudo apt-get -y -qq dist-upgrade
+             sudo apt-get -y -qq install gcc g++ cmake autoconf curl clang clang-tidy clang-format libcurl4-openssl-dev git libboost-date-time-dev libboost-regex-dev nlohmann-json3-dev libantlr4-runtime-dev libantlr4-runtime4.8
+             wget http://131.123.42.38/lmcrs/v1.0.0/srcml_1.0.0-1_ubuntu18.04.deb
+             sudo apt-get -y -qq install ./srcml_1.0.0-1_ubuntu18.04.deb
+      - name: Tests
+        run: |
+             mkdir controller_test_build
+             cd controller_test_build
+             cmake ../tests
+             cmake --build .
+             ./controller_tests --gtest_output="xml:report.xml"
+  Linting:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          submodules: recursive
+      - name: Install dependencies
+        run: |
+             mkdir dependencies
+             cd dependencies
+             sudo apt-get -y -qq update
+             sudo apt-get -y -qq dist-upgrade
+             sudo apt-get -y -qq install gcc g++ cmake autoconf curl clang clang-tidy clang-format libcurl4-openssl-dev git libboost-date-time-dev libboost-regex-dev nlohmann-json3-dev libantlr4-runtime-dev libantlr4-runtime4.8
+      - name: Run linting
+        run: |
+             cd libSearchSECOController
+             clang-tidy *.cpp --extra-arg=-std=c++20 -- -I../SearchSECOParser/libSearchSECOParser/ -I../SearchSECOSpider/libSearchSECOSpider/ -I../SearchSECOCrawler/libSearchSECOCrawler/
+             clang *.cpp -I../SearchSECOParser/libSearchSECOParser/ -I../SearchSECOSpider/libSearchSECOSpider/ -I../SearchSECOCrawler/libSearchSECOCrawler/ -fsyntax-only -std=c++20

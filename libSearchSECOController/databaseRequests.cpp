@@ -168,8 +168,7 @@ std::string DatabaseRequests::execRequest(
 	// Then we wait for the output that the API gives us.
 	std::string output = networkHandler->receiveData();
 
-	// Deleting the data we send and closing the connection.
-	delete[] rawData;
+	// Close the connection.
 	delete networkHandler;
 
 	// Handle the response code.
@@ -190,8 +189,19 @@ std::string DatabaseRequests::execRequest(
 		std::this_thread::sleep_for(
 			std::chrono::milliseconds(waitFor)
 			);
+
+		networkHandler = startConnection(env);
+		networkHandler->sendData(requestType);
+		networkHandler->sendData(rawData, dataSize);
+		output = networkHandler->receiveData();
+		delete networkHandler;
+
+		// Handle the response code.
 		tuple = checkResponseCode(output, env->commandString);
 	}
+
+	// Deleting the data we send.
+	delete[] rawData;
 
 	if (!std::get<0>(tuple)) 
 	{

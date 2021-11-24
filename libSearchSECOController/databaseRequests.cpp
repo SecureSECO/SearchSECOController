@@ -9,6 +9,7 @@ Utrecht University within the Software Project course.
 #include "networking.h"
 #include "print.h"
 #include "utils.h"
+#include <set>
 
 std::string DatabaseRequests::uploadHashes(std::vector<HashData> &hashes, 
 	ProjectMetaData metaData, 
@@ -66,11 +67,11 @@ std::string DatabaseRequests::getAuthor(const std::map<std::string, int> &author
 	return execRequest(DATABASE_GET_AUTHORS_BY_ID, rawData, dataSize, env);
 }
 
-std::string DatabaseRequests::getProjectData(const std::map<std::pair<std::string, std::string>, int> &project,
+std::string DatabaseRequests::getProjectData(const std::set<std::pair<std::string, std::string>> &projects,
 	EnvironmentDTO *env)
 {
 	int dataSize = 0;
-	const char* rawData = NetworkUtils::getProjectsRequest(project, dataSize);
+	const char* rawData = NetworkUtils::getProjectsRequest(projects, dataSize);
 
 	return execRequest(DATABASE_GET_PROJECT_DATA, rawData, dataSize, env);
 }

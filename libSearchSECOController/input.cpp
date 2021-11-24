@@ -15,6 +15,7 @@ Utrecht University within the Software Project course.
 #include <iostream>
 
 #define CONFIGURATION_FILE "cfg/config.txt"
+#pragma warning(disable : 4996)
 
 
 Input::Input(int argc, char* argv[]) 

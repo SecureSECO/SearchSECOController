@@ -93,9 +93,7 @@ public:
 	/// </summary>
 	/// <returns>The string that the database send back.</returns>
 	static std::string getProjectData(
-		const std::map<
-			std::pair<std::string, std::string>, 
-			int> &projects,
+		const std::set<std::pair<std::string, std::string>> &projects,
 		EnvironmentDTO *env);
 
 	/// <summary>

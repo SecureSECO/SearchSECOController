@@ -194,6 +194,87 @@ void Command::uploadProject(Flags flags, std::string jobid, std::string &jobTime
 	}
 }
 
+void Command::uploadPartialProject(Flags flags, std::string version, std::map<std::string, std::vector<int>> lines, std::string vulnCode, EnvironmentDTO *env)
+{
+	// Get project metadata.
+	ProjectMetaData meta = moduleFacades::getProjectMetadata(flags.mandatoryArgument, flags);
+
+	warnAndReturnIfErrno("Error getting project meta data, moving on to the next job.");
+
+	if (flags.flag_branch == "")
+	{
+		// Set default branch.
+		flags.flag_branch = meta.defaultBranch;
+	}
+
+	// Initialize spider.
+	Spider *s = moduleFacades::setupSpider(flags.mandatoryArgument, flags);
+	warnAndReturnIfErrno("No suitable Spider.");
+
+	// Download project.
+	moduleFacades::downloadRepo(s, flags.mandatoryArgument, flags, DOWNLOAD_LOCATION);
+
+	warnAndReturnIfErrno("Error downloading project.");
+
+	moduleFacades::switchVersion(s, version, DOWNLOAD_LOCATION);
+
+	moduleFacades::trimFiles(s, lines, DOWNLOAD_LOCATION);
+
+	// Parse all parseable files.
+	std::vector<HashData> hashes = moduleFacades::parseRepository(DOWNLOAD_LOCATION, flags);
+
+	if (errno != 0)
+	{
+		print::warn("Error parsing project.", __FILE__, __LINE__);
+		return;
+	}
+
+	hashes = trimHashes(hashes, lines);
+
+	// If no methods were found, we do not need to retrieve any author data.
+	if (hashes.size() == 0)
+	{
+		print::debug("No methods present, skipping authors", __FILE__, __LINE__);
+		return;
+	}
+
+	for (int i = 0; i < hashes.size(); i++)
+	{
+		hashes[i].vulnCode = vulnCode;
+	}
+
+	// Retrieve author data.
+	AuthorData authorData = moduleFacades::getAuthors(s, DOWNLOAD_LOCATION);
+
+	if (errno != 0)
+	{
+		print::warn("Error retrieving author data.", __FILE__, __LINE__);
+		return;
+	}
+
+	print::debug(DatabaseRequests::uploadHashes(hashes, meta, authorData, env), __FILE__, __LINE__);
+}
+
+std::vector<HashData> Command::trimHashes(std::vector<HashData> hashes, std::map<std::string, std::vector<int>> lines)
+{
+	std::vector<HashData> result;
+	for (HashData hash : hashes)
+	{
+		if (lines.count(hash.fileName) > 0)
+		{
+			for (int line : lines[hash.fileName])
+			{
+				if (hash.lineNumber <= line && line <= hash.lineNumberEnd)
+				{
+					result.push_back(hash);
+					break;
+				}
+			}
+		}
+	}
+	return result;
+}
+
 void Command::parseLatest(Spider *s, ProjectMetaData &meta, std::string jobid, std::string &jobTime, Flags &flags,
 						  EnvironmentDTO *env)
 {

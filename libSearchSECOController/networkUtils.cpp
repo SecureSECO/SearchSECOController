@@ -64,6 +64,11 @@ void NetworkUtils::addHashDataToBuffer(
 	buffer[pos++] = INNER_DELIMITER;
 	addStringToBuffer(buffer, pos, std::to_string(authors[hd].size()));
 	addStringsToBuffer(buffer, pos, authors[hd]);
+	if (hd.vulnCode != "")
+	{
+		buffer[pos++] = INNER_DELIMITER;
+		addStringToBuffer(buffer, pos, hd.vulnCode);
+	}
 	buffer[pos++] = ENTRY_DELIMITER;
 }
 
@@ -320,6 +325,10 @@ const char* NetworkUtils::getAllDataFromHashes(std::vector<HashData>& data, int&
 			std::to_string(authorSendData[hd].size()).length();
 		// Plus 5 for the seperators.
 		size += 5;
+		if (hd.vulnCode != "")
+		{
+			size += 1 + hd.vulnCode.length();
+		}
 	}
 
 	// Filling the buffer by first adding the header, and then each entry.

@@ -56,6 +56,9 @@ protected:
 	/// <param name="jobTime"> JobTime for the current job. </param>
 	void uploadProject(Flags flags, std::string jobid, std::string &jobTime, long long *startTime, EnvironmentDTO *env);
 
+	void uploadPartialProject(Flags flags, std::string version, std::map<std::string, std::vector<int>> lines,
+							  std::string vulnCode, EnvironmentDTO *env);
+
 	/// <summary>
 	/// Processes project and compares it to the database.
 	/// </summary>
@@ -88,6 +91,8 @@ private:
 	void downloadTagged(Spider *s, Flags flags, std::string prevTag, std::string curTag, ProjectMetaData meta,
 						std::string prevVersionTime, std::vector<std::string> &prevUnchangedFiles, std::string jobid,
 						std::string &jobTime, EnvironmentDTO *env);
+
+	std::vector<HashData> trimHashes(std::vector<HashData> hashes, std::map<std::string, std::vector<int>> lines);
 };
 
 class Start : public Command

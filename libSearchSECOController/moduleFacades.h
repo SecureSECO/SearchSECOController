@@ -63,6 +63,8 @@ namespace moduleFacades
 	/// <param name="repository"> Local path where project is stored. </param>
 	void switchVersion(Spider *s, std::string tag, std::string repository);
 
+	void trimFiles(Spider *s, std::map<std::string, std::vector<int>> lines, std::string repository);
+
 	/// <summary>
 	/// Extracts author data from locally stored project.
 	/// </summary>

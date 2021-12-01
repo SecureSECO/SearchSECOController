@@ -51,7 +51,7 @@ void moduleFacades::switchVersion(Spider *s, std::string tag, std::string reposi
 
 void moduleFacades::trimFiles(Spider *s, std::map<std::string, std::vector<int>> lines, std::string repository)
 {
-	print::debug("Calling the spider to trime the files", __FILE__, __LINE__);
+	print::debug("Calling the spider to trim the files", __FILE__, __LINE__);
 
 	return RunSpider::trimFiles(s, lines, repository);
 

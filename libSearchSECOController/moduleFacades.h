@@ -63,6 +63,12 @@ namespace moduleFacades
 	/// <param name="repository"> Local path where project is stored. </param>
 	void switchVersion(Spider *s, std::string tag, std::string repository);
 
+	/// <summary>
+	/// Trims the local files to only keep the specified ones.
+	/// </summary>
+	/// <param name="s"> Specific spider to use. </param>
+	/// <param name="lines"> The files to keep. </param>
+	/// <param name="repository"> Local path where project is stored. </param>
 	void trimFiles(Spider *s, std::map<std::string, std::vector<int>> lines, std::string repository);
 
 	/// <summary>

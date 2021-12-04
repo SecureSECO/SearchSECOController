@@ -172,10 +172,10 @@ private:
 	/// <summary>
 	/// Prints a match for a given hash.
 	/// </summary>
-	static void printMatch(HashData hash, std::map<std::string, std::vector<Method>> &receivedHashes,
+	static void printMatch(std::vector<HashData> &hashes, std::vector<Method> dbEntries,
 						   std::map<HashData, std::vector<std::string>> &authors,
 						   std::map<std::string, int> &authorCopiedForm, std::map<std::string, int> &authorsCopied,
-						   std::vector<std::pair<HashData *, Method *>> &vulnerabilities,
+						   std::vector<std::pair<HashData *, Method>> &vulnerabilities,
 						   std::map<std::string, std::vector<std::string>> &dbProjects,
 						   std::map<std::string, std::vector<std::string>> &authorIdToName, std::ofstream &report);
 
@@ -183,7 +183,7 @@ private:
 	/// Prints a summary for all the matches found.
 	/// </summary>
 	static void printSummary(std::map<std::string, int> &authorCopiedForm, std::map<std::string, int> &authorsCopied,
-							 std::vector<std::pair<HashData *, Method *>> &vulnerabilities, int matches, int methods,
+							 std::vector<std::pair<HashData *, Method>> &vulnerabilities, int matches, int methods,
 							 std::map<std::string, std::vector<std::string>> &dbProjects,
 							 std::map<std::string, std::vector<std::string>> &authorIdToName,
 							 std::map<std::string, int> &projects, std::ofstream &report);

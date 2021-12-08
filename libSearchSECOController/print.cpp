@@ -160,18 +160,19 @@ void print::versionFull()
 void PrintMatches::printHashMatches(std::vector<HashData> &hashes, std::string databaseOutput, AuthorData &authordata,
 									EnvironmentDTO *env, std::string url)
 {
-	std::map<std::string, std::vector<std::string>> receivedHashes = {};
+	std::map<std::string, std::vector<Method>> receivedHashes = {};
 
-	std::map<std::pair<std::string, std::string>, int> projects;
+	std::map<std::string, int> projectMatches;
+	std::set<std::pair<std::string, std::string>> projectVersions;
 	std::map<std::string, int> dbAuthors;
 	std::map<std::string, std::vector<std::string>> dbProjects;
 	std::map<std::string, std::vector<std::string>> authorIdToName;
 
 	// Separate the response we got into its individual entries.
 	std::vector<std::string> dbentries = Utils::split(databaseOutput, ENTRY_DELIMITER);
-	parseDatabaseHashes(dbentries, receivedHashes, projects, dbAuthors);
+	parseDatabaseHashes(dbentries, receivedHashes, projectMatches, projectVersions, dbAuthors);
 
-	getDatabaseAuthorAndProjectData(projects, dbAuthors, dbProjects, authorIdToName, env);
+	getDatabaseAuthorAndProjectData(projectVersions, dbAuthors, dbProjects, authorIdToName, env);
 
 	// Author data.
 	std::map<std::string, std::vector<HashData *>> transformedList;
@@ -184,26 +185,31 @@ void PrintMatches::printHashMatches(std::vector<HashData> &hashes, std::string d
 	int matches = 0;
 	std::map<std::string, int> authorCopiedForm;
 	std::map<std::string, int> authorsCopied;
+	std::vector<std::pair<HashData *, Method>> vulnerabilities;
+
 	// Add all hashes we got locally to a map.
+	std::map<std::string, std::vector<HashData>> hashMethods = {};
 	for (int i = 0; i < hashes.size(); i++)
 	{
-		if (receivedHashes.count(hashes[i].hash) > 0)
-		{
-			matches++;
-			printMatch(hashes[i], receivedHashes, authors, authorCopiedForm, authorsCopied, dbProjects, authorIdToName,
-					   report);
-		}
+		hashMethods[hashes[i].hash].push_back(hashes[i]);
+	}
+	for (const auto &match : receivedHashes)
+	{
+		matches++;
+		printMatch(hashMethods[match.first], match.second, authors, authorCopiedForm, authorsCopied, vulnerabilities,
+				   dbProjects, authorIdToName, report);
 	}
 
 	print::writelineToFile("\n\n", report);
 
-	printSummary(authorCopiedForm, authorsCopied, matches, hashes.size(), dbProjects, authorIdToName, projects, report);
+	printSummary(authorCopiedForm, authorsCopied, vulnerabilities, matches, hashes.size(), dbProjects, authorIdToName, projectMatches, report);
 	report.close();
 }
 
 void PrintMatches::parseDatabaseHashes(std::vector<std::string> &dbentries,
-									   std::map<std::string, std::vector<std::string>> &receivedHashes,
-									   std::map<std::pair<std::string, std::string>, int> &projects,
+									   std::map<std::string, std::vector<Method>> &receivedHashes,
+									   std::map<std::string, int> &projectMatches,
+									   std::set<std::pair<std::string, std::string>> &projectVersions,
 									   std::map<std::string, int> &dbAuthors)
 {
 	for (std::string entry : dbentries)
@@ -214,25 +220,55 @@ void PrintMatches::parseDatabaseHashes(std::vector<std::string> &dbentries,
 		}
 		std::vector<std::string> entrySplitted = Utils::split(entry, INNER_DELIMITER);
 
-		if (entrySplitted.size() < 7)
+		if (entrySplitted.size() < 12)
 		{
 			continue;
 		}
 
-		receivedHashes[entrySplitted[0]] = entrySplitted;
-		if (entrySplitted.size() < 11)
+		Method method = getMethod(entrySplitted);
+
+		if (receivedHashes.count(entrySplitted[0]) == 1)
 		{
-			continue;
+			receivedHashes[entrySplitted[0]].push_back(method);
 		}
-		for (int i = 11; i < 11 + std::stoi(entrySplitted[10]); i++)
+		else
+		{
+			receivedHashes[entrySplitted[0]] = {method};
+		}
+
+		for (int i = 12; i < 12 + method.numberOfAuthors; i++)
 		{
 			dbAuthors[entrySplitted[i]]++;
 		}
-		projects[std::pair<std::string, std::string>(entrySplitted[1], entrySplitted[2])]++;
+		projectMatches[method.projectID]++;
+		projectVersions.insert(std::pair<std::string, std::string>(method.projectID, method.startVersion));
+		if (method.startVersion != method.endVersion)
+		{
+			projectVersions.insert(std::pair<std::string, std::string>(method.projectID, method.endVersion));
+		}
 	}
 }
 
-void PrintMatches::getDatabaseAuthorAndProjectData(std::map<std::pair<std::string, std::string>, int> &projects,
+PrintMatches::Method PrintMatches::getMethod(std::vector<std::string> entry)
+{
+	Method method;
+	method.hash = entry[0];
+	method.projectID = entry[1];
+	method.startVersion = entry[2];
+	method.startVersionHash = entry[3];
+	method.endVersion = entry[4];
+	method.endVersionHash = entry[5];
+	method.name = entry[6];
+	method.file = entry[7];
+	method.lineNumber = entry[8];
+	method.parserVersion = entry[9];
+	method.vulnCode = entry[10];
+	method.numberOfAuthors = std::stoi(entry[11]);
+	method.authors = std::vector(entry.begin() + 12, entry.end());
+	return method;
+}
+
+void PrintMatches::getDatabaseAuthorAndProjectData(std::set<std::pair<std::string, std::string>> &projectVersions,
 												   std::map<std::string, int> &dbAuthors,
 												   std::map<std::string, std::vector<std::string>> &dbProjects,
 												   std::map<std::string, std::vector<std::string>> &authorIdToName,
@@ -241,7 +277,7 @@ void PrintMatches::getDatabaseAuthorAndProjectData(std::map<std::pair<std::strin
 	// Database requests.
 	std::vector<std::string> authorEntries = Utils::split(DatabaseRequests::getAuthor(dbAuthors, env), ENTRY_DELIMITER);
 	std::vector<std::string> projectEntries =
-		Utils::split(DatabaseRequests::getProjectData(projects, env), ENTRY_DELIMITER);
+		Utils::split(DatabaseRequests::getProjectData(projectVersions, env), ENTRY_DELIMITER);
 
 	// Getting the project data out of it.
 	for (int i = 0; i < projectEntries.size(); i++)
@@ -265,48 +301,76 @@ void PrintMatches::getDatabaseAuthorAndProjectData(std::map<std::pair<std::strin
 	}
 }
 
-void PrintMatches::printMatch(HashData hash, std::map<std::string, std::vector<std::string>> &receivedHashes,
+void PrintMatches::printMatch(std::vector<HashData> &hashes, std::vector<Method> dbEntries,
 							  std::map<HashData, std::vector<std::string>> &authors,
 							  std::map<std::string, int> &authorCopiedForm, std::map<std::string, int> &authorsCopied,
+							  std::vector<std::pair<HashData *, Method>> &vulnerabilities,
 							  std::map<std::string, std::vector<std::string>> &dbProjects,
 							  std::map<std::string, std::vector<std::string>> &authorIdToName, std::ofstream &report)
 {
-	std::vector<std::string> dbEntry = receivedHashes[hash.hash];
-
-	std::string linkFile = dbEntry[7];
-	Utils::replace(linkFile, '\\', '/');
-
-	print::printAndWriteToFile("\n" + hash.functionName + " in file " + hash.fileName + " line "
-		+ std::to_string(hash.lineNumber) + " with hash " + dbEntry[0] + " was found in our database: ", report);
-	print::printAndWriteToFile("Function " + dbEntry[6] + " in project " + dbProjects[dbEntry[1]][4] + " in file " +
-							   dbEntry[7] + " line " + dbEntry[8] + ". (" + dbProjects[dbEntry[1]][5] + "/blob/" +
-							   dbEntry[5] + "/" + linkFile + "#L" + dbEntry[8] + ")",
+	print::printAndWriteToFile("\n" + std::string(128, '-') + "\nHash " + hashes[0].hash + "\n" + std::string(128, '-') + "\nLOCAL",
 							   report);
-
-	print::printAndWriteToFile("Authors of local function: ", report);
-	for (std::string s : authors[hash])
+	for (HashData hash : hashes)
 	{
-		Utils::replace(s, INNER_DELIMITER, '\t');
-		print::printAndWriteToFile(s, report);
-		authorsCopied[s]++;
-	}
-	print::printAndWriteToFile("Authors of function found in database: ", report);
-
-	for (int i = 11; i < 11 + std::stoi(dbEntry[10]); i++)
-	{
-		if (authorIdToName.count(dbEntry[i]) > 0)
+		print::printAndWriteToFile("  *Method " + hash.functionName + " in file " + hash.fileName + " line " +
+									   std::to_string(hash.lineNumber), report);
+		print::printAndWriteToFile("   Authors of local function: ", report);
+		for (std::string s : authors[hash])
 		{
-			authorCopiedForm[dbEntry[i]]++;
-			print::printAndWriteToFile("\t" + authorIdToName[dbEntry[i]][0] + '\t' + authorIdToName[dbEntry[i]][1],
-									   report);
+			Utils::replace(s, INNER_DELIMITER, '\t');
+			print::printAndWriteToFile("  " + s, report);
+			authorsCopied[s]++;
 		}
+		print::printAndWriteToFile("", report);
+	}
+
+	print::printAndWriteToFile("DATABASE", report);
+
+	for (Method method : dbEntries)
+	{
+		std::string linkFile = method.file;
+		Utils::replace(linkFile, '\\', '/');
+
+		print::printAndWriteToFile("  *Method " + method.name + " in project " + dbProjects[method.projectID][4] +
+									   " in file " + method.file + " line " + method.lineNumber,
+								   report);
+		print::printAndWriteToFile("  URL: " + dbProjects[method.projectID][5] + "/blob/" + method.endVersionHash + "/" +
+									   linkFile + "#L" + method.lineNumber,
+								   report);
+
+		if (method.vulnCode != "")
+		{
+			print::printAndWriteToFile("  Method marked as vulnerable with code: " + method.vulnCode + "(https://nvd.nist.gov/vuln/detail/" + method.vulnCode + ").", report);
+			for (HashData hash : hashes)
+			{
+				vulnerabilities.push_back(std::pair(&hash, method));
+			}
+		}
+
+		if (method.numberOfAuthors > 0)
+		{
+			print::printAndWriteToFile("  Authors of function found in database: ", report);
+
+			for (int i = 0; i < method.numberOfAuthors; i++)
+			{
+				if (authorIdToName.count(method.authors[i]) > 0)
+				{
+					authorCopiedForm[method.authors[i]]++;
+					print::printAndWriteToFile("  \t" + authorIdToName[method.authors[i]][0] + '\t' +
+												   authorIdToName[method.authors[i]][1],
+											   report);
+				}
+			}
+		}
+		print::printAndWriteToFile("", report);
 	}
 }
 
 void PrintMatches::printSummary(std::map<std::string, int> &authorCopiedForm, std::map<std::string, int> &authorsCopied,
-								int matches, int methods, std::map<std::string, std::vector<std::string>> &dbProjects,
+								std::vector<std::pair<HashData *, Method>> &vulnerabilities, int matches, int methods,
+								std::map<std::string, std::vector<std::string>> &dbProjects,
 								std::map<std::string, std::vector<std::string>> &authorIdToName,
-								std::map<std::pair<std::string, std::string>, int> &projects, std::ofstream &report)
+								std::map<std::string, int> &projectMatches, std::ofstream &report)
 {
 	print::printAndWriteToFile("\nSummary:", report);
 	print::printAndWriteToFile("Methods in checked project: " + std::to_string(methods), report);
@@ -314,27 +378,102 @@ void PrintMatches::printSummary(std::map<std::string, int> &authorCopiedForm, st
 	std::stringstream stream;
 	stream << std::fixed << std::setprecision(2) << ((float)matches * 100 / methods);
 	print::printAndWriteToFile("Matches: " + std::to_string(matches) + " (" + stream.str() + "%)", report);
-	print::printAndWriteToFile("Projects found in database:", report);
 
-	for (const auto &x : projects)
+	if (vulnerabilities.size() > 0)
 	{
-		print::printAndWriteToFile("\t" + dbProjects[x.first.first][4] + ": " + std::to_string(x.second) + " (" +
-									   dbProjects[x.first.first][5] + ")",
-								   report);
+		print::printAndWriteToFile("\nVulnerabilities found:", report);
+
+		for (const std::pair<HashData *, Method> vulnerability : vulnerabilities)
+		{
+			print::printAndWriteToFile(
+				"Method with hash " + vulnerability.second.hash + " was found to be vulnerable in " +
+					dbProjects[vulnerability.second.projectID][4] + ", with code " + vulnerability.second.vulnCode +
+					"(https://nvd.nist.gov/vuln/detail/" + vulnerability.second.vulnCode + ")",
+				report);
+		}
 	}
 
-	print::printAndWriteToFile("\nLocal authors present in matches: ", report);
-	for (auto const &x : authorsCopied)
+	print::printAndWriteToFile("\nProjects found in database:", report);
+
+	std::vector<std::tuple<int, std::string, std::string>> vprojects = {};
+	for (const auto &x : projectMatches)
 	{
-		print::printAndWriteToFile(x.first + ": " + std::to_string(x.second), report);
+		vprojects.push_back(std::make_tuple(x.second, dbProjects[x.first][4], dbProjects[x.first][5]));
+	}
+
+	int longestProject = 0;
+	for (const auto &x : vprojects)
+	{
+		int length = std::get<1>(x).size();
+		if (length > longestProject)
+		{
+			longestProject = length;
+		}
+	}
+	// Sorting in descending order.
+	std::sort(vprojects.rbegin(), vprojects.rend());
+
+	for (const auto &x : vprojects)
+	{
+		print::printAndWriteToFile(
+			"\t" + std::get<1>(x) +
+				std::string(longestProject - std::get<1>(x).size() - std::to_string(std::get<0>(x)).size() + 5, ' ') +
+				std::to_string(std::get<0>(x)) + " (" + std::get<2>(x) + ")",
+			report);
+	}
+
+	std::vector<std::tuple<int, std::string, std::string>> localAuthors;
+	for (const auto &x : authorsCopied)
+	{
+		std::vector<std::string> author = Utils::split(x.first, '\t');
+		localAuthors.push_back(std::make_tuple(x.second, author[1], author[2]));
+	}
+	std::vector<std::tuple<int, std::string, std::string>> remoteAuthors;
+	for (const auto &x : authorCopiedForm)
+	{
+		std::vector<std::string> author = authorIdToName[x.first];
+		remoteAuthors.push_back(std::make_tuple(x.second, author[0], author[1]));
+	}
+
+	int longestAuthor = 0;
+	for (const auto &x : localAuthors)
+	{
+		int length = std::get<1>(x).size();
+		if (length > longestAuthor)
+		{
+			longestAuthor = length;
+		}
+	}
+	for (const auto &x : remoteAuthors)
+	{
+		int length = std::get<1>(x).size();
+		if (length > longestAuthor)
+		{
+			longestAuthor = length;
+		}
+	}
+
+	std::sort(localAuthors.rbegin(), localAuthors.rend());
+	std::sort(remoteAuthors.rbegin(), remoteAuthors.rend());
+
+	print::printAndWriteToFile("\nLocal authors present in matches: ", report);
+	for (auto const &x : localAuthors)
+	{
+		print::printAndWriteToFile(
+			"\t" + std::get<1>(x) +
+				std::string(longestAuthor - std::get<1>(x).size() - std::to_string(std::get<0>(x)).size() + 5, ' ') +
+				std::to_string(std::get<0>(x)) +  " " + std::get<2>(x),
+			report);
 	}
 
 	print::printAndWriteToFile("\nAuthors present in database matches: ", report);
-	for (auto const &x : authorCopiedForm)
+	for (auto const &x : remoteAuthors)
 	{
-		print::printAndWriteToFile('\t' + authorIdToName[x.first][0] + "\t" + authorIdToName[x.first][1] + ": " +
-									   std::to_string(x.second),
-								   report);
+		print::printAndWriteToFile(
+			"\t" + std::get<1>(x) +
+				std::string(longestAuthor - std::get<1>(x).size() - std::to_string(std::get<0>(x)).size() + 5, ' ') +
+				std::to_string(std::get<0>(x)) + " " + std::get<2>(x),
+			report);
 	}
 }
 
@@ -350,8 +489,8 @@ std::ofstream PrintMatches::setupOutputReport(std::string url)
 	report.open(filename, std::ios::trunc);
 
 	auto header = "Matched the project at \"" + url + "\" against the database.";
-	print::writelineToFile(header, report);
-	print::writelineToFile(std::string(header.length(), '_') + '\n', report);
+	print::printAndWriteToFile(header, report);
+	print::printAndWriteToFile(std::string(header.length(), '_') + '\n', report);
 
 	return report;
 }

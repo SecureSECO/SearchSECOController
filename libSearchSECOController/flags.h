@@ -28,6 +28,10 @@ public:
 
 	std::string flag_worker_name;
 
+	std::string flag_lines;
+	std::string flag_projectCommit;
+	std::string flag_vulnCode;
+
 	Flags();
 
 	/// <summary>

@@ -97,6 +97,11 @@ void Command::checkProject(Flags flags, EnvironmentDTO *env)
 	// Download project.
 	moduleFacades::downloadRepo(s, url, flags, DOWNLOAD_LOCATION);
 
+	if (flags.flag_projectCommit != "")
+	{
+		moduleFacades::switchVersion(s, flags.flag_projectCommit, DOWNLOAD_LOCATION);
+	}
+
 	std::string empty = "";
 	auto [hashes, authorData] = Command::parseAndBlame(s, "HEAD", "0", empty, flags, env);
 	warnAndReturnIfErrno("Error processing project.");
@@ -326,6 +331,88 @@ void Command::downloadTagged(Spider *s, Flags flags, std::string prevTag, std::s
 	}
 
 	prevUnchangedFiles = unchangedFiles;
+}
+
+void Command::uploadPartialProject(Flags flags, std::string version, std::map<std::string, std::vector<int>> lines,
+								   std::string vulnCode, EnvironmentDTO *env)
+{
+	// Get project metadata.
+	ProjectMetaData meta = moduleFacades::getProjectMetadata(flags.mandatoryArgument, flags);
+
+	warnAndReturnIfErrno("Error getting project meta data, moving on to the next job.");
+
+	if (flags.flag_branch == "")
+	{
+		// Set default branch.
+		flags.flag_branch = meta.defaultBranch;
+	}
+
+	// Initialize spider.
+	Spider *s = moduleFacades::setupSpider(flags.mandatoryArgument, flags);
+	warnAndReturnIfErrno("No suitable Spider.");
+
+	// Download project.
+	moduleFacades::downloadRepo(s, flags.mandatoryArgument, flags, DOWNLOAD_LOCATION);
+
+	warnAndReturnIfErrno("Error downloading project.");
+
+	moduleFacades::switchVersion(s, version, DOWNLOAD_LOCATION);
+
+	moduleFacades::trimFiles(s, lines, DOWNLOAD_LOCATION);
+
+	// Parse all parseable files.
+	std::vector<HashData> hashes = moduleFacades::parseRepository(DOWNLOAD_LOCATION, flags);
+
+	if (errno != 0)
+	{
+		print::warn("Error parsing project.", __FILE__, __LINE__);
+		return;
+	}
+
+	hashes = trimHashes(hashes, lines);
+
+	// If no methods were found, we do not need to retrieve any author data.
+	if (hashes.size() == 0)
+	{
+		print::debug("No methods present, skipping authors", __FILE__, __LINE__);
+		return;
+	}
+
+	for (int i = 0; i < hashes.size(); i++)
+	{
+		hashes[i].vulnCode = vulnCode;
+	}
+
+	// Retrieve author data.
+	AuthorData authorData = moduleFacades::getAuthors(s, DOWNLOAD_LOCATION);
+
+	if (errno != 0)
+	{
+		print::warn("Error retrieving author data.", __FILE__, __LINE__);
+		return;
+	}
+
+	print::debug(DatabaseRequests::uploadHashes(hashes, meta, authorData, env), __FILE__, __LINE__);
+}
+
+std::vector<HashData> Command::trimHashes(std::vector<HashData> hashes, std::map<std::string, std::vector<int>> lines)
+{
+	std::vector<HashData> result;
+	for (HashData hash : hashes)
+	{
+		if (lines.count(hash.fileName) > 0)
+		{
+			for (int line : lines[hash.fileName])
+			{
+				if (hash.lineNumber <= line && line <= hash.lineNumberEnd)
+				{
+					result.push_back(hash);
+					break;
+				}
+			}
+		}
+	}
+	return result;
 }
 
 #pragma region Start
@@ -566,8 +653,35 @@ void Upload::execute(Flags flags, EnvironmentDTO *env)
 	this->logPreExecutionMessage(flags.mandatoryArgument, __FILE__, __LINE__);
 
 	// Process and upload project.
-	std::string jobTime = "";
-	Command::uploadProject(flags, "", jobTime, nullptr, env);
+	if (flags.flag_lines != "" || flags.flag_vulnCode != "" || flags.flag_projectCommit != "")
+	{
+		if (flags.flag_lines != "" && flags.flag_vulnCode != "" && flags.flag_projectCommit != "")
+		{
+			std::map<std::string, std::vector<int>> fileLines;
+			std::vector<std::string> files = Utils::split(flags.flag_lines, '?');
+			for (std::string file : files)
+			{
+				std::vector<std::string> splitted = Utils::split(file, ':');
+				std::vector<std::string> lines = Utils::split(splitted[1], ',');
+				std::vector<int> intLines;
+				for (std::string line : lines)
+				{
+					intLines.push_back(std::stoi(line));
+				}
+				fileLines[splitted[0]] = intLines;
+			}
+			Command::uploadPartialProject(flags, flags.flag_projectCommit, fileLines, flags.flag_vulnCode, env);
+		}
+		else
+		{
+			print::warn("Lines, vulnerability code or project commit was specified, but not all of them. Pleas specify all or none.", __FILE__, __LINE__);
+		}
+	}
+	else
+	{
+		std::string jobTime = "";
+		Command::uploadProject(flags, "", jobTime, nullptr, env);
+	}
 	if (errno == 0)
 	{
 		this->logPostExecutionMessage(flags.mandatoryArgument, __FILE__, __LINE__);

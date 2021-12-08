@@ -18,6 +18,7 @@ Utrecht University within the Software Project course.
 // External includes.
 #include <string>
 #include <vector>
+#include <set>
 
 #define ENTRY_DELIMITER '\n'
 #define INNER_DELIMITER '?'
@@ -125,7 +126,7 @@ public:
 	/// The initial value that you give it will be ignored.</param>
 	/// <returns>A char pointer to string with all the data in it.</returns>
 	static const char* getProjectsRequest(
-		const std::map<std::pair<std::string, std::string>, int>& projects, 
+		const std::set<std::pair<std::string, std::string>>& projects, 
 		int& size);
 
 	/// <summary>

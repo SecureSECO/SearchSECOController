@@ -14,14 +14,9 @@ Utrecht University within the Software Project course.
 #include <thread>
 
 
-std::map<std::string, std::string> Flags::shorthandFlagToLong =
-{
-	{"h", "help"},
-	{"v", "version"},
-	{"V", "verbose"},
-	{"c", "cpu"},
-	{"b", "branch"}
-};
+std::map<std::string, std::string> Flags::shorthandFlagToLong = {{"h", "help"}, {"v", "version"}, {"V", "verbose"},
+																 {"c", "cpu"},	{"b", "branch"},  {"l", "lines"},
+																 {"C", "code"}, {"p", "commit"}};
 
 Flags::Flags()
 {

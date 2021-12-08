@@ -57,6 +57,16 @@ protected:
 	void uploadProject(Flags flags, std::string jobid, std::string &jobTime, long long *startTime, EnvironmentDTO *env);
 
 	/// <summary>
+	/// Processes local project and uploads the specified extracted methods to the database with the vulnerability code.
+	/// </summary>
+	/// <param name="flags"> Flags to use. </param>
+	/// <param name="version"> The version of the project to use. </param>
+	/// <param name="lines"> The files with lines to upload. </param>
+	/// <param name="vulnCode"> The vulnerability code to add to the methods. </param>
+	void uploadPartialProject(Flags flags, std::string version, std::map<std::string, std::vector<int>> lines,
+							  std::string vulnCode, EnvironmentDTO *env);
+
+	/// <summary>
 	/// Processes project and compares it to the database.
 	/// </summary>
 	/// <param name="flags"> Flags to use. </param>
@@ -88,6 +98,14 @@ private:
 	void downloadTagged(Spider *s, Flags flags, std::string prevTag, std::string curTag, ProjectMetaData meta,
 						std::string prevVersionTime, std::vector<std::string> &prevUnchangedFiles, std::string jobid,
 						std::string &jobTime, EnvironmentDTO *env);
+
+	/// <summary>
+	/// Trims the hashes to only have the ones that have a line in lines.
+	/// </summary>
+	/// <param name="hashes"> The hashes to trim. </param>
+	/// <param name="lines"> The lines to keep. </param>
+	/// <returns> The hashes to continue with. </returns>
+	std::vector<HashData> trimHashes(std::vector<HashData> hashes, std::map<std::string, std::vector<int>> lines);
 };
 
 class Start : public Command

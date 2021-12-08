@@ -15,6 +15,7 @@ Utrecht University within the Software Project course.
 #include <iostream>
 
 #define CONFIGURATION_FILE "cfg/config.txt"
+#pragma warning(disable : 4996)
 
 
 Input::Input(int argc, char* argv[]) 
@@ -201,6 +202,18 @@ void Input::sanitizeArguments()
 		{
 			Input::sanitizeWorkerName(argument, fromConfig);
 		}
+		else if (flag == "lines")
+		{
+			Input::sanitizeLinesFlag(argument, fromConfig);
+		}
+		else if (flag == "code")
+		{
+			Input::sanitizeCodeFlag(argument, fromConfig);
+		}
+		else if (flag == "commit")
+		{
+			Input::sanitizeCommitFlag(argument, fromConfig);
+		}
 	}
 }
 
@@ -326,6 +339,36 @@ void Input::sanitizeWorkerName(std::string arg, bool fromConfig)
 	}
 
 	this->flags.flag_worker_name = arg;
+}
+
+void Input::sanitizeLinesFlag(std::string arg, bool fromConfig)
+{
+	auto msg = "Sanitizing --lines flag";
+
+	print::debug(msg, __FILE__, __LINE__);
+	Input::requireNArguments(1, "lines", arg);
+
+	this->flags.flag_lines = arg;
+}
+
+void Input::sanitizeCodeFlag(std::string arg, bool fromConfig)
+{
+	auto msg = "Sanitizing --code flag";
+
+	print::debug(msg, __FILE__, __LINE__);
+	Input::requireNArguments(1, "code", arg);
+
+	this->flags.flag_vulnCode = arg;
+}
+
+void Input::sanitizeCommitFlag(std::string arg, bool fromConfig)
+{
+	auto msg = "Sanitizing --commit flag";
+
+	print::debug(msg, __FILE__, __LINE__);
+	Input::requireNArguments(1, "commit", arg);
+
+	this->flags.flag_projectCommit = arg;
 }
 #pragma endregion
 

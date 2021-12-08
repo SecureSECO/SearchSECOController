@@ -37,11 +37,12 @@ bool regex::validateSyntax(std::string callStr, std::tuple<std::string, std::str
 
 void regex::parseFlargPairs(std::string flargStr, std::map<std::string, std::string> &result)
 {
+	flargStr.insert(0, " ");
 	std::map<std::string, std::function<void(std::string, const char*, int)>> failureExpressions =
 	{
-		{ "(?<!-)-([^\\s-]{2,})", error::errParseIncorrectLonghandFlag }, // -wrong.
-		{ "--([^-])(?:\\s|$)", error::errParseIncorrectShorthandFlag },   // --w rong.
-		{ "(-{3,}\\S+)", error::errParseCouldNotParseFlag },             // ---wrong.
+		{ "\\s(?<!-)-([^\\s-]{2,})", error::errParseIncorrectLonghandFlag }, // -wrong.
+		{ "\\s--([^-])(?:\\s|$)", error::errParseIncorrectShorthandFlag },   // --w rong.
+		{ "(\\s-{3,}\\S+)", error::errParseCouldNotParseFlag },             // ---wrong.
 	};
 
 	std::string::const_iterator
@@ -65,7 +66,7 @@ void regex::parseFlargPairs(std::string flargStr, std::map<std::string, std::str
 	// Parse the well-formed flag-argument pairs.
 	result = {};
 	
-	boost::regex expr("(?:(?:-([^-\\s]+)))\\s?([^-\\s]+)?");
+	boost::regex expr("(?:(?: --?([^\\s]+)))\\s?([^\\s]+)?");
 	boost::match_results<std::string::const_iterator> what;
 
 	while (boost::regex_search(start, end, what, expr))

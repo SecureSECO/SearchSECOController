@@ -348,9 +348,9 @@ TEST(networkingGetAuthorsToSend, more_authors)
 
 TEST(networkingGetProjectToSend, two_projects)
 {
-	std::map<std::pair<std::string, std::string>, int> authors = { {{"project1", "12"}, 0}, {{"project2", "51"}, 0 } };
+	std::set<std::pair<std::string, std::string>> projects = { {"project1", "12"}, {"project2", "51"} };
 	int size;
-	const char* buffer = NetworkUtils::getProjectsRequest(authors, size);
+	const char *buffer = NetworkUtils::getProjectsRequest(projects, size);
 	std::string target = "project1?12\nproject2?51\n";
 	EXPECT_EQ(target, std::string(buffer, buffer + size));
 	EXPECT_EQ(size, target.size());
@@ -358,9 +358,9 @@ TEST(networkingGetProjectToSend, two_projects)
 
 TEST(networkingGetProjectToSend, empty)
 {
-	std::map<std::pair<std::string, std::string>, int> authors = { };
+	std::set<std::pair<std::string, std::string>> projects = {};
 	int size;
-	const char* buffer = NetworkUtils::getProjectsRequest(authors, size);
+	const char *buffer = NetworkUtils::getProjectsRequest(projects, size);
 	std::string target = "";
 	EXPECT_EQ(target, std::string(buffer, buffer + size));
 	EXPECT_EQ(size, target.size());
@@ -368,9 +368,13 @@ TEST(networkingGetProjectToSend, empty)
 
 TEST(networkingGetProjectToSend, more_projects)
 {
-	std::map<std::pair<std::string, std::string>, int> authors = { {{"project1", "12"}, 0}, {{"project2", "51"}, 0 }, {{"project3", "69"}, 0 }, {{"project4", "42"}, 0 }, {{"project5", "420"}, 0 } };
+	std::set<std::pair<std::string, std::string>> projects = {{"project1", "12"},
+															 {"project2", "51"},
+															 {"project3", "69"},
+															 {"project4", "42"},
+															 {"project5", "420"}};
 	int size;
-	const char* buffer = NetworkUtils::getProjectsRequest(authors, size);
+	const char *buffer = NetworkUtils::getProjectsRequest(projects, size);
 	std::string target = "project1?12\nproject2?51\nproject3?69\nproject4?42\nproject5?420\n";
 	EXPECT_EQ(target, std::string(buffer, buffer + size));
 	EXPECT_EQ(size, target.size());

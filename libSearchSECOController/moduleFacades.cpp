@@ -49,6 +49,15 @@ void moduleFacades::switchVersion(Spider *s, std::string tag, std::string reposi
 	print::loguruResetThreadName();
 }
 
+void moduleFacades::trimFiles(Spider *s, std::map<std::string, std::vector<int>> lines, std::string repository)
+{
+	print::debug("Calling the spider to trim the files", __FILE__, __LINE__);
+
+	return RunSpider::trimFiles(s, lines, repository);
+
+	print::loguruResetThreadName();
+}
+
 AuthorData moduleFacades::getAuthors(Spider *s, std::string repository)
 {
 	print::debug("Calling the spider to retrieve author data", __FILE__, __LINE__);

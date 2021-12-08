@@ -95,6 +95,18 @@ private:
 	/// Sanitizes the argument of the worker_name flag.
 	/// </summary>
 	void sanitizeWorkerName(std::string arg, bool fromConfig);
+	/// <summary>
+	/// Sanitizes the argument of the (--lines | -l) flag.
+	/// </summary>
+	void sanitizeLinesFlag(std::string arg, bool fromConfig);
+	/// <summary>
+	/// Sanitizes the argument of the (--code | -C) flag.
+	/// </summary>
+	void sanitizeCodeFlag(std::string arg, bool fromConfig);
+	/// <summary>
+	/// Sanitizes the argument of the (--commit | -p) flag.
+	/// </summary>
+	void sanitizeCommitFlag(std::string arg, bool fromConfig);
 
 	/// <summary>
 	/// Helper function to force a certain amount of arguments for a flag. Throws the correct error when 

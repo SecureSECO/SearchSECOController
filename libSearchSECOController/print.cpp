@@ -308,37 +308,39 @@ void PrintMatches::printMatch(std::vector<HashData> &hashes, std::vector<Method>
 							  std::map<std::string, std::vector<std::string>> &dbProjects,
 							  std::map<std::string, std::vector<std::string>> &authorIdToName, std::ofstream &report)
 {
-	print::printAndWriteToFile("\n", report);
+	print::printAndWriteToFile("\n" + std::string(128, '-') + "\nHash " + hashes[0].hash + "\n" + std::string(128, '-') + "\nLOCAL",
+							   report);
 	for (HashData hash : hashes)
 	{
-		print::printAndWriteToFile("Method " + hash.functionName + " in file " + hash.fileName + " line " +
-									   std::to_string(hash.lineNumber) + " with hash " + hash.hash +
-									   " was found in our database.",
-								   report);
-		print::printAndWriteToFile("Authors of local function: ", report);
+		print::printAndWriteToFile("  *Method " + hash.functionName + " in file " + hash.fileName + " line " +
+									   std::to_string(hash.lineNumber), report);
+		print::printAndWriteToFile("   Authors of local function: ", report);
 		for (std::string s : authors[hash])
 		{
 			Utils::replace(s, INNER_DELIMITER, '\t');
-			print::printAndWriteToFile(s, report);
+			print::printAndWriteToFile("  " + s, report);
 			authorsCopied[s]++;
 		}
+		print::printAndWriteToFile("", report);
 	}
 
-	print::printAndWriteToFile("Database matches: ", report);
+	print::printAndWriteToFile("DATABASE", report);
 
 	for (Method method : dbEntries)
 	{
 		std::string linkFile = method.file;
 		Utils::replace(linkFile, '\\', '/');
 
-		print::printAndWriteToFile("Method " + method.name + " in project " + dbProjects[method.projectID][4] + " in file " +
-									   method.file + " line " + method.lineNumber + ". (" + dbProjects[method.projectID][5] +
-									   "/blob/" + method.endVersionHash + "/" + linkFile + "#L" + method.lineNumber + ")",
+		print::printAndWriteToFile("  *Method " + method.name + " in project " + dbProjects[method.projectID][4] +
+									   " in file " + method.file + " line " + method.lineNumber,
+								   report);
+		print::printAndWriteToFile("  URL: " + dbProjects[method.projectID][5] + "/blob/" + method.endVersionHash + "/" +
+									   linkFile + "#L" + method.lineNumber,
 								   report);
 
 		if (method.vulnCode != "")
 		{
-			print::printAndWriteToFile("Method marked as vulnerable with code: " + method.vulnCode + "(https://nvd.nist.gov/vuln/detail/" + method.vulnCode + ").", report);
+			print::printAndWriteToFile("  Method marked as vulnerable with code: " + method.vulnCode + "(https://nvd.nist.gov/vuln/detail/" + method.vulnCode + ").", report);
 			for (HashData hash : hashes)
 			{
 				vulnerabilities.push_back(std::pair(&hash, method));
@@ -347,19 +349,20 @@ void PrintMatches::printMatch(std::vector<HashData> &hashes, std::vector<Method>
 
 		if (method.numberOfAuthors > 0)
 		{
-			print::printAndWriteToFile("Authors of function found in database: ", report);
+			print::printAndWriteToFile("  Authors of function found in database: ", report);
 
 			for (int i = 0; i < method.numberOfAuthors; i++)
 			{
 				if (authorIdToName.count(method.authors[i]) > 0)
 				{
 					authorCopiedForm[method.authors[i]]++;
-					print::printAndWriteToFile("\t" + authorIdToName[method.authors[i]][0] + '\t' +
+					print::printAndWriteToFile("  \t" + authorIdToName[method.authors[i]][0] + '\t' +
 												   authorIdToName[method.authors[i]][1],
 											   report);
 				}
 			}
 		}
+		print::printAndWriteToFile("", report);
 	}
 }
 
@@ -383,7 +386,7 @@ void PrintMatches::printSummary(std::map<std::string, int> &authorCopiedForm, st
 		for (const std::pair<HashData *, Method> vulnerability : vulnerabilities)
 		{
 			print::printAndWriteToFile(
-				"Method with hash " + vulnerability.first->hash + " was found to be vulnerable in " +
+				"Method with hash " + vulnerability.second.hash + " was found to be vulnerable in " +
 					dbProjects[vulnerability.second.projectID][4] + ", with code " + vulnerability.second.vulnCode +
 					"(https://nvd.nist.gov/vuln/detail/" + vulnerability.second.vulnCode + ")",
 				report);

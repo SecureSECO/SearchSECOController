@@ -97,6 +97,11 @@ void Command::checkProject(Flags flags, EnvironmentDTO *env)
 	// Download project.
 	moduleFacades::downloadRepo(s, url, flags, DOWNLOAD_LOCATION);
 
+	if (flags.flag_projectCommit != "")
+	{
+		moduleFacades::switchVersion(s, flags.flag_projectCommit, DOWNLOAD_LOCATION);
+	}
+
 	std::string empty = "";
 	auto [hashes, authorData] = Command::parseAndBlame(s, "HEAD", "0", empty, flags, env);
 	warnAndReturnIfErrno("Error processing project.");

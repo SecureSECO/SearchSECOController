@@ -1,5 +1,5 @@
 name: Testing pipeline
-on: [push]
+on: [pull_request]
 jobs:
   Tests:
     runs-on: ubuntu-latest

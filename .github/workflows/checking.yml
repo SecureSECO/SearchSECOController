@@ -1,0 +1,14 @@
+name: Testing pipeline
+on: [push]
+jobs:
+  Check:
+    runs-on: ubuntu-latest
+    container:
+        image: searchseco/controller
+        env:
+            github_token: ${{ secrets.GITHUB_TOKEN }}
+            worker_name: check-action:${{ github.repository }}
+        options: --entypoint ""
+    steps:
+      - name: Checkupload
+        run: ./controller/build/searchseco check -b ${{ github.ref }} https://github.com/${{ github.repository }}

@@ -1,6 +1,6 @@
 # GitHub credentials
 github_username : username
-github_token : token
+github_token : 
 
 # Worker name
 worker_name : 

@@ -11,4 +11,4 @@ jobs:
         options: --entrypoint ""
     steps:
       - name: Checkupload
-        run: /controller/build/searchseco check https://github.com/${{ github.repository }} -b ${{ github.ref_name }}
+        run: /controller/build/searchseco checkupload https://github.com/${{ github.repository }} -b ${{ github.ref_name }}

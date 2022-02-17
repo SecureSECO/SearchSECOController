@@ -2,8 +2,8 @@ name: Image build
 
 on:
   push:
-#    branches:
-#      - 'development'
+    branches:
+      - 'development'
 
 jobs:
   docker:

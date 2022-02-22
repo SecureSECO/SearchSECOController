@@ -1,7 +1,7 @@
 # SearchSECO Controller
 ![Testing](https://github.com/SecureSECO/SearchSECOController/actions/workflows/testing.yml/badge.svg)
 
-This is the Controller module used by the SearchSECO project. It is responsible for mediating communication between the other modules, and talking to the user. 
+This is the Controller module used by the SearchSECO project. It is responsible for mediating communication between the other modules, and talking to the user. A reference documentation can be found [here](https://secureseco.github.io/SearchSECOController/).
 
 # Installation
 After cloning the repository, make sure to initialize and update the submodules by calling 

@@ -1,0 +1,12 @@
+<map id="JavaScriptParser::PropertyAssignmentContext" name="JavaScriptParser::PropertyAssignmentContext">
+<area shape="rect" id="node1" title=" " alt="" coords="596,169,772,211"/>
+<area shape="rect" id="node5" href="$classJavaScriptParser_1_1ComputedPropertyExpressionAssignmentContext.html" title=" " alt="" coords="820,5,1067,47"/>
+<area shape="rect" id="node6" href="$classJavaScriptParser_1_1FunctionPropertyContext.html" title=" " alt="" coords="854,71,1033,112"/>
+<area shape="rect" id="node7" href="$classJavaScriptParser_1_1PropertyExpressionAssignmentContext.html" title=" " alt="" coords="844,136,1043,177"/>
+<area shape="rect" id="node8" href="$classJavaScriptParser_1_1PropertyGetterContext.html" title=" " alt="" coords="855,201,1031,243"/>
+<area shape="rect" id="node9" href="$classJavaScriptParser_1_1PropertySetterContext.html" title=" " alt="" coords="855,267,1031,308"/>
+<area shape="rect" id="node10" href="$classJavaScriptParser_1_1PropertyShorthandContext.html" title=" " alt="" coords="855,332,1031,373"/>
+<area shape="rect" id="node2" href="$classantlr4_1_1ParserRuleContext.html" title="A rule invocation record for parsing." alt="" coords="380,177,548,203"/>
+<area shape="rect" id="node3" href="$classantlr4_1_1RuleContext.html" title=" " alt="" coords="201,177,332,203"/>
+<area shape="rect" id="node4" href="$classantlr4_1_1tree_1_1ParseTree.html" title=" " alt="" coords="5,177,153,203"/>
+</map>

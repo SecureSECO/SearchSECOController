@@ -1,0 +1,6 @@
+<map id="IndividualErrorHandler" name="IndividualErrorHandler">
+<area shape="rect" id="node1" title=" " alt="" coords="42,5,191,32"/>
+<area shape="rect" id="node2" href="$classEmptyHandler.html" title="A handler that does nothing." alt="" coords="5,80,108,107"/>
+<area shape="rect" id="node3" href="$classLogHandler.html" title="A handler that logs errors to console." alt="" coords="132,80,221,107"/>
+<area shape="rect" id="node4" href="$classLogThrowHandler.html" title="Similar to loghandler but throws a 1 when logging an error and a 0 when logging a warning." alt="" coords="114,155,239,181"/>
+</map>

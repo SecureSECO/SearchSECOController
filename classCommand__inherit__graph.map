@@ -1,0 +1,7 @@
+<map id="Command" name="Command">
+<area shape="rect" id="node1" title=" " alt="" coords="146,5,227,32"/>
+<area shape="rect" id="node2" href="$classCheck.html" title=" " alt="" coords="5,80,64,107"/>
+<area shape="rect" id="node3" href="$classCheckUpload.html" title=" " alt="" coords="87,80,187,107"/>
+<area shape="rect" id="node4" href="$classStart.html" title=" " alt="" coords="212,80,263,107"/>
+<area shape="rect" id="node5" href="$classUpload.html" title=" " alt="" coords="287,80,350,107"/>
+</map>

@@ -1,0 +1,5 @@
+<map id="antlr4::atn::PrecedencePredicateTransition" name="antlr4::atn::PrecedencePredicateTransition">
+<area shape="rect" id="node1" title=" " alt="" coords="5,169,213,211"/>
+<area shape="rect" id="node2" href="$classantlr4_1_1atn_1_1AbstractPredicateTransition.html" title=" " alt="" coords="15,80,203,121"/>
+<area shape="rect" id="node3" href="$classantlr4_1_1atn_1_1Transition.html" title="An ATN transition between any two ATN states. Subclasses define atom, set, epsilon,..." alt="" coords="39,5,180,32"/>
+</map>

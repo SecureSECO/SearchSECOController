@@ -1,0 +1,46 @@
+var namespacecurl =
+[
+    [ "detail", null, [
+      [ "moption_t", "structcurl_1_1detail_1_1moption__t.html", null ],
+      [ "option_t", "structcurl_1_1detail_1_1option__t.html", null ],
+      [ "shoption_t", "structcurl_1_1detail_1_1shoption__t.html", null ]
+    ] ],
+    [ "detail_info", null, [
+      [ "info_t", "structcurl_1_1detail__info_1_1info__t.html", null ]
+    ] ],
+    [ "cookie", "classcurl_1_1cookie.html", "classcurl_1_1cookie" ],
+    [ "cookie_date", "classcurl_1_1cookie__date.html", "classcurl_1_1cookie__date" ],
+    [ "cookie_datetime", "classcurl_1_1cookie__datetime.html", "classcurl_1_1cookie__datetime" ],
+    [ "cookie_time", "classcurl_1_1cookie__time.html", "classcurl_1_1cookie__time" ],
+    [ "curl_cookie", "classcurl_1_1curl__cookie.html", "classcurl_1_1curl__cookie" ],
+    [ "curl_easy", "classcurl_1_1curl__easy.html", "classcurl_1_1curl__easy" ],
+    [ "curl_easy_exception", "classcurl_1_1curl__easy__exception.html", "classcurl_1_1curl__easy__exception" ],
+    [ "curl_easy_info", "classcurl_1_1curl__easy__info.html", null ],
+    [ "curl_easy_info< char * >", "classcurl_1_1curl__easy__info_3_01char_01_5_01_4.html", null ],
+    [ "curl_easy_info< struct curl_slist * >", "classcurl_1_1curl__easy__info_3_01struct_01curl__slist_01_5_01_4.html", null ],
+    [ "curl_exception", "classcurl_1_1curl__exception.html", "classcurl_1_1curl__exception" ],
+    [ "curl_form", "classcurl_1_1curl__form.html", "classcurl_1_1curl__form" ],
+    [ "curl_global", "classcurl_1_1curl__global.html", "classcurl_1_1curl__global" ],
+    [ "curl_header", "classcurl_1_1curl__header.html", "classcurl_1_1curl__header" ],
+    [ "curl_info", "classcurl_1_1curl__info.html", "classcurl_1_1curl__info" ],
+    [ "curl_interface", "classcurl_1_1curl__interface.html", "classcurl_1_1curl__interface" ],
+    [ "curl_ios", "classcurl_1_1curl__ios.html", null ],
+    [ "curl_ios< std::fstream >", "classcurl_1_1curl__ios_3_01std_1_1fstream_01_4.html", null ],
+    [ "curl_ios< std::istream >", "classcurl_1_1curl__ios_3_01std_1_1istream_01_4.html", null ],
+    [ "curl_ios< std::ostream >", "classcurl_1_1curl__ios_3_01std_1_1ostream_01_4.html", null ],
+    [ "curl_ios< std::ostringstream >", "classcurl_1_1curl__ios_3_01std_1_1ostringstream_01_4.html", null ],
+    [ "curl_ios< std::stringstream >", "classcurl_1_1curl__ios_3_01std_1_1stringstream_01_4.html", null ],
+    [ "curl_multi", "classcurl_1_1curl__multi.html", "classcurl_1_1curl__multi" ],
+    [ "curl_multi_exception", "classcurl_1_1curl__multi__exception.html", "classcurl_1_1curl__multi__exception" ],
+    [ "curl_pair", "classcurl_1_1curl__pair.html", "classcurl_1_1curl__pair" ],
+    [ "curl_pair< CURLformoption, std::string >", "classcurl_1_1curl__pair_3_01CURLformoption_00_01std_1_1string_01_4.html", "classcurl_1_1curl__pair_3_01CURLformoption_00_01std_1_1string_01_4" ],
+    [ "curl_pair< T, curl_form >", "classcurl_1_1curl__pair_3_01T_00_01curl__form_01_4.html", "classcurl_1_1curl__pair_3_01T_00_01curl__form_01_4" ],
+    [ "curl_pair< T, curl_header >", "classcurl_1_1curl__pair_3_01T_00_01curl__header_01_4.html", "classcurl_1_1curl__pair_3_01T_00_01curl__header_01_4" ],
+    [ "curl_pair< T, std::string >", "classcurl_1_1curl__pair_3_01T_00_01std_1_1string_01_4.html", "classcurl_1_1curl__pair_3_01T_00_01std_1_1string_01_4" ],
+    [ "curl_receiver", "classcurl_1_1curl__receiver.html", "classcurl_1_1curl__receiver" ],
+    [ "curl_sender", "classcurl_1_1curl__sender.html", "classcurl_1_1curl__sender" ],
+    [ "curl_sender< std::string >", "classcurl_1_1curl__sender_3_01std_1_1string_01_4.html", "classcurl_1_1curl__sender_3_01std_1_1string_01_4" ],
+    [ "curl_share", "classcurl_1_1curl__share.html", "classcurl_1_1curl__share" ],
+    [ "curl_share_exception", "classcurl_1_1curl__share__exception.html", "classcurl_1_1curl__share__exception" ],
+    [ "curl_utility", "classcurl_1_1curl__utility.html", null ]
+];

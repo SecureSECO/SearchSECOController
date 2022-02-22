@@ -1,0 +1,6 @@
+<map id="antlr4::atn::StarBlockStartState" name="antlr4::atn::StarBlockStartState">
+<area shape="rect" id="node1" title="The block that begins a closure loop." alt="" coords="9,229,178,271"/>
+<area shape="rect" id="node2" href="$classantlr4_1_1atn_1_1BlockStartState.html" title="The start of a regular {." alt="" coords="5,155,181,181"/>
+<area shape="rect" id="node3" href="$classantlr4_1_1atn_1_1DecisionState.html" title=" " alt="" coords="11,80,176,107"/>
+<area shape="rect" id="node4" title=" " alt="" coords="53,5,133,32"/>
+</map>

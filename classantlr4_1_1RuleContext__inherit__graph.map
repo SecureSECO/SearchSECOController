@@ -1,0 +1,51 @@
+<map id="antlr4::RuleContext" name="antlr4::RuleContext">
+<area shape="rect" id="node1" title=" " alt="" coords="201,1470,332,1497"/>
+<area shape="rect" id="node3" href="$classantlr4_1_1ParserRuleContext.html" title="A rule invocation record for parsing." alt="" coords="380,1470,548,1497"/>
+<area shape="rect" id="node2" href="$classantlr4_1_1tree_1_1ParseTree.html" title=" " alt="" coords="5,1470,153,1497"/>
+<area shape="rect" id="node4" href="$classJavaScriptParser_1_1AliasNameContext.html" title=" " alt="" coords="613,5,805,47"/>
+<area shape="rect" id="node5" href="$classJavaScriptParser_1_1AnonymousFunctionContext.html" title=" " alt="" coords="611,71,807,112"/>
+<area shape="rect" id="node6" href="$classJavaScriptParser_1_1ArgumentContext.html" title=" " alt="" coords="617,136,801,177"/>
+<area shape="rect" id="node7" href="$classJavaScriptParser_1_1ArgumentsContext.html" title=" " alt="" coords="614,201,805,243"/>
+<area shape="rect" id="node8" href="$classJavaScriptParser_1_1ArrayElementContext.html" title=" " alt="" coords="607,267,812,308"/>
+<area shape="rect" id="node9" href="$classJavaScriptParser_1_1ArrayLiteralContext.html" title=" " alt="" coords="612,332,807,373"/>
+<area shape="rect" id="node10" href="$classJavaScriptParser_1_1ArrowFunctionBodyContext.html" title=" " alt="" coords="603,397,815,439"/>
+<area shape="rect" id="node11" href="$classJavaScriptParser_1_1ArrowFunctionParametersContext.html" title=" " alt="" coords="603,463,815,504"/>
+<area shape="rect" id="node12" href="$classJavaScriptParser_1_1AssignableContext.html" title=" " alt="" coords="613,528,805,569"/>
+<area shape="rect" id="node13" href="$classJavaScriptParser_1_1AssignmentOperatorContext.html" title=" " alt="" coords="611,593,808,635"/>
+<area shape="rect" id="node14" href="$classJavaScriptParser_1_1BigintLiteralContext.html" title=" " alt="" coords="629,659,790,700"/>
+<area shape="rect" id="node15" href="$classJavaScriptParser_1_1BlockContext.html" title=" " alt="" coords="607,725,812,751"/>
+<area shape="rect" id="node16" href="$classJavaScriptParser_1_1BreakStatementContext.html" title=" " alt="" coords="598,776,821,817"/>
+<area shape="rect" id="node17" href="$classJavaScriptParser_1_1CaseBlockContext.html" title=" " alt="" coords="614,841,805,883"/>
+<area shape="rect" id="node18" href="$classJavaScriptParser_1_1CaseClauseContext.html" title=" " alt="" coords="610,907,809,948"/>
+<area shape="rect" id="node19" href="$classJavaScriptParser_1_1CaseClausesContext.html" title=" " alt="" coords="607,972,812,1013"/>
+<area shape="rect" id="node20" href="$classJavaScriptParser_1_1CatchProductionContext.html" title=" " alt="" coords="597,1037,821,1079"/>
+<area shape="rect" id="node21" href="$classJavaScriptParser_1_1ClassDeclarationContext.html" title=" " alt="" coords="596,1103,823,1144"/>
+<area shape="rect" id="node22" href="$classJavaScriptParser_1_1ClassElementContext.html" title=" " alt="" coords="605,1168,813,1209"/>
+<area shape="rect" id="node23" href="$classJavaScriptParser_1_1ClassTailContext.html" title=" " alt="" coords="618,1233,801,1275"/>
+<area shape="rect" id="node24" href="$classJavaScriptParser_1_1ContinueStatementContext.html" title=" " alt="" coords="620,1299,799,1340"/>
+<area shape="rect" id="node25" href="$classJavaScriptParser_1_1DebuggerStatementContext.html" title=" " alt="" coords="618,1364,801,1405"/>
+<area shape="rect" id="node26" href="$classJavaScriptParser_1_1DeclarationContext.html" title=" " alt="" coords="613,1429,806,1471"/>
+<area shape="rect" id="node27" href="$classJavaScriptParser_1_1DefaultClauseContext.html" title=" " alt="" coords="625,1495,794,1536"/>
+<area shape="rect" id="node28" href="$classJavaScriptParser_1_1ElementListContext.html" title=" " alt="" coords="622,1560,797,1601"/>
+<area shape="rect" id="node29" href="$classJavaScriptParser_1_1EmptyStatementContext.html" title=" " alt="" coords="597,1625,821,1667"/>
+<area shape="rect" id="node30" href="$classJavaScriptParser_1_1EosContext.html" title=" " alt="" coords="612,1691,807,1718"/>
+<area shape="rect" id="node31" href="$classJavaScriptParser_1_1ExportFromBlockContext.html" title=" " alt="" coords="627,1743,791,1784"/>
+<area shape="rect" id="node32" href="$classJavaScriptParser_1_1ExportStatementContext.html" title=" " alt="" coords="627,1808,791,1849"/>
+<area shape="rect" id="node33" href="$classJavaScriptParser_1_1ExpressionSequenceContext.html" title=" " alt="" coords="614,1873,805,1915"/>
+<area shape="rect" id="node34" href="$classJavaScriptParser_1_1ExpressionStatementContext.html" title=" " alt="" coords="614,1939,805,1980"/>
+<area shape="rect" id="node35" href="$classJavaScriptParser_1_1FinallyProductionContext.html" title=" " alt="" coords="627,2004,792,2045"/>
+<area shape="rect" id="node36" href="$classJavaScriptParser_1_1FormalParameterArgContext.html" title=" " alt="" coords="625,2069,793,2111"/>
+<area shape="rect" id="node37" href="$classJavaScriptParser_1_1FormalParameterListContext.html" title=" " alt="" coords="625,2135,793,2176"/>
+<area shape="rect" id="node38" href="$classJavaScriptParser_1_1FunctionBodyContext.html" title=" " alt="" coords="620,2200,799,2241"/>
+<area shape="rect" id="node39" href="$classJavaScriptParser_1_1FunctionDeclarationContext.html" title=" " alt="" coords="620,2265,799,2307"/>
+<area shape="rect" id="node40" href="$classJavaScriptParser_1_1GetterContext.html" title=" " alt="" coords="627,2331,791,2372"/>
+<area shape="rect" id="node41" href="$classJavaScriptParser_1_1IdentifierContext.html" title=" " alt="" coords="621,2396,798,2437"/>
+<area shape="rect" id="node42" href="$classJavaScriptParser_1_1IdentifierNameContext.html" title=" " alt="" coords="621,2461,798,2503"/>
+<area shape="rect" id="node43" href="$classJavaScriptParser_1_1IfStatementContext.html" title=" " alt="" coords="611,2527,807,2568"/>
+<area shape="rect" id="node44" href="$classJavaScriptParser_1_1ImportDefaultContext.html" title=" " alt="" coords="627,2592,792,2633"/>
+<area shape="rect" id="node45" href="$classJavaScriptParser_1_1ImportFromBlockContext.html" title=" " alt="" coords="627,2657,792,2699"/>
+<area shape="rect" id="node46" href="$classJavaScriptParser_1_1ImportFromContext.html" title=" " alt="" coords="627,2723,792,2764"/>
+<area shape="rect" id="node47" href="$classJavaScriptParser_1_1ImportNamespaceContext.html" title=" " alt="" coords="627,2788,792,2829"/>
+<area shape="rect" id="node48" href="$classJavaScriptParser_1_1ImportStatementContext.html" title=" " alt="" coords="627,2853,792,2895"/>
+<area shape="rect" id="node49" href="$classJavaScriptParser_1_1IterationStatementContext.html" title=" " alt="" coords="622,2919,797,2960"/>
+</map>

@@ -1,7 +1,5 @@
 <map id="JavaScriptParser::TemplateStringExpressionContext" name="JavaScriptParser::TemplateStringExpressionContext">
-<area shape="rect" id="node1" title=" " alt="" coords="5,319,188,360"/>
-<area shape="rect" id="node2" href="$classJavaScriptParser_1_1SingleExpressionContext.html" title=" " alt="" coords="15,229,179,271"/>
-<area shape="rect" id="node3" href="$classantlr4_1_1ParserRuleContext.html" title="A rule invocation record for parsing." alt="" coords="13,155,181,181"/>
-<area shape="rect" id="node4" href="$classantlr4_1_1RuleContext.html" title=" " alt="" coords="31,80,162,107"/>
-<area shape="rect" id="node5" href="$classantlr4_1_1tree_1_1ParseTree.html" title=" " alt="" coords="23,5,171,32"/>
+<area shape="rect" id="node1" title=" " alt="" coords="5,169,188,211"/>
+<area shape="rect" id="node2" href="$classJavaScriptParser_1_1SingleExpressionContext.html" title=" " alt="" coords="15,80,179,121"/>
+<area shape="rect" id="node3" title=" " alt="" coords="13,5,181,32"/>
 </map>

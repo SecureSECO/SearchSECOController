@@ -1,6 +1,0 @@
-<map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node1" href="$classIndividualErrorHandler.html" title=" " alt="" coords="5,31,155,57"/>
-<area shape="rect" id="node2" href="$classEmptyHandler.html" title="A handler that does nothing." alt="" coords="203,5,305,32"/>
-<area shape="rect" id="node3" href="$classLogHandler.html" title="A handler that logs errors to console." alt="" coords="209,56,299,83"/>
-<area shape="rect" id="node4" href="$classLogThrowHandler.html" title="Similar to loghandler but throws a 1 when logging an error and a 0 when logging a warning." alt="" coords="353,56,479,83"/>
-</map>

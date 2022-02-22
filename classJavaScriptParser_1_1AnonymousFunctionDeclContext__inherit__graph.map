@@ -1,7 +1,5 @@
 <map id="JavaScriptParser::AnonymousFunctionDeclContext" name="JavaScriptParser::AnonymousFunctionDeclContext">
-<area shape="rect" id="node1" title=" " alt="" coords="5,319,201,360"/>
-<area shape="rect" id="node2" href="$classJavaScriptParser_1_1AnonymousFunctionContext.html" title=" " alt="" coords="5,229,201,271"/>
-<area shape="rect" id="node3" href="$classantlr4_1_1ParserRuleContext.html" title="A rule invocation record for parsing." alt="" coords="19,155,187,181"/>
-<area shape="rect" id="node4" href="$classantlr4_1_1RuleContext.html" title=" " alt="" coords="38,80,169,107"/>
-<area shape="rect" id="node5" href="$classantlr4_1_1tree_1_1ParseTree.html" title=" " alt="" coords="29,5,177,32"/>
+<area shape="rect" id="node1" title=" " alt="" coords="5,169,201,211"/>
+<area shape="rect" id="node2" href="$classJavaScriptParser_1_1AnonymousFunctionContext.html" title=" " alt="" coords="5,80,201,121"/>
+<area shape="rect" id="node3" title=" " alt="" coords="19,5,187,32"/>
 </map>

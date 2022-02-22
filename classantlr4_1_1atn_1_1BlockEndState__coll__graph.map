@@ -1,6 +1,0 @@
-<map id="antlr4::atn::BlockEndState" name="antlr4::atn::BlockEndState">
-<area shape="rect" id="node1" title="Terminal node of a simple {." alt="" coords="5,81,176,108"/>
-<area shape="rect" id="node3" href="$classantlr4_1_1atn_1_1BlockStartState.html" title="The start of a regular {." alt="" coords="89,171,265,197"/>
-<area shape="rect" id="node2" title=" " alt="" coords="145,5,225,32"/>
-<area shape="rect" id="node4" href="$classantlr4_1_1atn_1_1DecisionState.html" title=" " alt="" coords="200,81,365,108"/>
-</map>

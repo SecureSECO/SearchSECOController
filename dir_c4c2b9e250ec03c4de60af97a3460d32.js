@@ -10,7 +10,7 @@ var dir_c4c2b9e250ec03c4de60af97a3460d32 =
     [ "IndividualErrorHandler.h", "IndividualErrorHandler_8h_source.html", null ],
     [ "JSON.h", "JSON_8h_source.html", null ],
     [ "LoggerCrawler.h", "LoggerCrawler_8h_source.html", null ],
-    [ "pch.h", "SearchSECOCrawler_2libSearchSECOCrawler_2pch_8h_source.html", null ],
+    [ "pch.h", "pch_8h_source.html", null ],
     [ "ProjectMetadata.h", "ProjectMetadata_8h_source.html", null ],
     [ "RunCrawler.h", "RunCrawler_8h_source.html", null ],
     [ "Utility.h", "Utility_8h_source.html", null ]

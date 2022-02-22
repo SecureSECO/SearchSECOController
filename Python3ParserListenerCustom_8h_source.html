@@ -102,7 +102,7 @@ $(document).ready(function(){initNavTree('Python3ParserListenerCustom_8h_source.
 <div class="line"><a id="l00015" name="l00015"></a><span class="lineno"><a class="line" href="classCustomPython3Listener.html">   15</a></span><span class="keyword">class </span><a class="code hl_class" href="classCustomPython3Listener.html">CustomPython3Listener</a> : <span class="keyword">public</span> <a class="code hl_class" href="classPython3BaseListener.html">Python3BaseListener</a></div>
 <div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span>{</div>
 <div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span><span class="keyword">public</span>:</div>
-<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span>    <a class="code hl_function" href="classCustomPython3Listener.html#a564c34e3cf3668d10a8b0b3e53fc8bfa">CustomPython3Listener</a>(<a class="code hl_class" href="classantlr4_1_1TokenStreamRewriter.html">antlr4::TokenStreamRewriter</a> *tsr, std::string fileName);</div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span>    <a class="code hl_function" href="classCustomPython3Listener.html#a564c34e3cf3668d10a8b0b3e53fc8bfa">CustomPython3Listener</a>(antlr4::TokenStreamRewriter *tsr, std::string fileName);</div>
 <div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span> </div>
 <div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span>    <a class="code hl_class" href="classCustomPython3Listener.html">~CustomPython3Listener</a>();</div>
 <div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span> </div>
@@ -126,7 +126,7 @@ $(document).ready(function(){initNavTree('Python3ParserListenerCustom_8h_source.
 <div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span> </div>
 <div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span><span class="keyword">private</span>:</div>
 <div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>    <span class="comment">// Initial TokenStreamRewriter given to the listener.</span></div>
-<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>    <a class="code hl_class" href="classantlr4_1_1TokenStreamRewriter.html">antlr4::TokenStreamRewriter</a> *baseTsr;</div>
+<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>    antlr4::TokenStreamRewriter *baseTsr;</div>
 <div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span> </div>
 <div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>    <span class="comment">// Stack of TokenStreamRewriter for nested functions.</span></div>
 <div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span>    std::stack&lt;antlr4::TokenStreamRewriter *&gt; tsrs;</div>
@@ -163,7 +163,6 @@ $(document).ready(function(){initNavTree('Python3ParserListenerCustom_8h_source.
 <div class="ttc" id="aclassPython3Parser_1_1FuncdefContext_html"><div class="ttname"><a href="classPython3Parser_1_1FuncdefContext.html">Python3Parser::FuncdefContext</a></div><div class="ttdef"><b>Definition:</b> Python3Parser.h:293</div></div>
 <div class="ttc" id="aclassPython3Parser_1_1NameContext_html"><div class="ttname"><a href="classPython3Parser_1_1NameContext.html">Python3Parser::NameContext</a></div><div class="ttdef"><b>Definition:</b> Python3Parser.h:1562</div></div>
 <div class="ttc" id="aclassPython3Parser_1_1StringContext_html"><div class="ttname"><a href="classPython3Parser_1_1StringContext.html">Python3Parser::StringContext</a></div><div class="ttdef"><b>Definition:</b> Python3Parser.h:1547</div></div>
-<div class="ttc" id="aclassantlr4_1_1TokenStreamRewriter_html"><div class="ttname"><a href="classantlr4_1_1TokenStreamRewriter.html">antlr4::TokenStreamRewriter</a></div><div class="ttdef"><b>Definition:</b> TokenStreamRewriter.h:86</div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

@@ -1,5 +1,4 @@
 <map id="Python3Parser" name="Python3Parser">
-<area shape="rect" id="node1" title=" " alt="" coords="14,155,121,181"/>
-<area shape="rect" id="node2" href="$classantlr4_1_1Parser.html" title="This is all the parsing support code essentially; most of it is error recovery stuff." alt="" coords="18,80,117,107"/>
-<area shape="rect" id="node3" href="$classantlr4_1_1Recognizer.html" title=" " alt="" coords="5,5,129,32"/>
+<area shape="rect" id="node1" title=" " alt="" coords="5,80,112,107"/>
+<area shape="rect" id="node2" title=" " alt="" coords="9,5,108,32"/>
 </map>

@@ -1,7 +1,5 @@
 <map id="JavaScriptParser::PowerExpressionContext" name="JavaScriptParser::PowerExpressionContext">
-<area shape="rect" id="node1" title=" " alt="" coords="5,319,233,360"/>
-<area shape="rect" id="node2" href="$classJavaScriptParser_1_1SingleExpressionContext.html" title=" " alt="" coords="37,229,201,271"/>
-<area shape="rect" id="node3" href="$classantlr4_1_1ParserRuleContext.html" title="A rule invocation record for parsing." alt="" coords="35,155,203,181"/>
-<area shape="rect" id="node4" href="$classantlr4_1_1RuleContext.html" title=" " alt="" coords="54,80,185,107"/>
-<area shape="rect" id="node5" href="$classantlr4_1_1tree_1_1ParseTree.html" title=" " alt="" coords="45,5,193,32"/>
+<area shape="rect" id="node1" title=" " alt="" coords="5,169,233,211"/>
+<area shape="rect" id="node2" href="$classJavaScriptParser_1_1SingleExpressionContext.html" title=" " alt="" coords="37,80,201,121"/>
+<area shape="rect" id="node3" title=" " alt="" coords="35,5,203,32"/>
 </map>

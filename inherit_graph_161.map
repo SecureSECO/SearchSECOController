@@ -1,7 +1,0 @@
-<map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node1" title=" " alt="" coords="5,85,152,112"/>
-<area shape="rect" id="node2" href="$classantlr4_1_1FailedPredicateException.html" title=" " alt="" coords="200,5,407,32"/>
-<area shape="rect" id="node3" href="$classantlr4_1_1InputMismatchException.html" title="This signifies any kind of mismatched input exceptions such as when the current input does not match ..." alt="" coords="202,56,405,83"/>
-<area shape="rect" id="node4" href="$classantlr4_1_1LexerNoViableAltException.html" title=" " alt="" coords="223,107,384,149"/>
-<area shape="rect" id="node5" href="$classantlr4_1_1NoViableAltException.html" title=" " alt="" coords="211,173,396,200"/>
-</map>

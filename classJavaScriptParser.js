@@ -137,8 +137,5 @@ var classJavaScriptParser =
     [ "WhileStatementContext", "classJavaScriptParser_1_1WhileStatementContext.html", null ],
     [ "WithStatementContext", "classJavaScriptParser_1_1WithStatementContext.html", null ],
     [ "YieldExpressionContext", "classJavaScriptParser_1_1YieldExpressionContext.html", null ],
-    [ "YieldStatementContext", "classJavaScriptParser_1_1YieldStatementContext.html", null ],
-    [ "getGrammarFileName", "classJavaScriptParser.html#a30c6f952533d7fc2b96d7560ffab99b1", null ],
-    [ "getTokenNames", "classJavaScriptParser.html#a6c89ea3f5a6764e7bac6e4f141013f48", null ],
-    [ "getVocabulary", "classJavaScriptParser.html#a27f0664705450956cc613e0ff9c08466", null ]
+    [ "YieldStatementContext", "classJavaScriptParser_1_1YieldStatementContext.html", null ]
 ];

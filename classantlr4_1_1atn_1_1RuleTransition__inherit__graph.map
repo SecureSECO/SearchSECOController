@@ -1,4 +1,0 @@
-<map id="antlr4::atn::RuleTransition" name="antlr4::atn::RuleTransition">
-<area shape="rect" id="node1" title=" " alt="" coords="5,80,172,107"/>
-<area shape="rect" id="node2" href="$classantlr4_1_1atn_1_1Transition.html" title="An ATN transition between any two ATN states. Subclasses define atom, set, epsilon,..." alt="" coords="18,5,159,32"/>
-</map>

@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['length_0',['length',['../classantlr4_1_1misc_1_1Interval.html#a48bb5a221dd583d5a1d1c316b46f2b1f',1,'antlr4::misc::Interval::length()'],['../classJSON.html#aa53d9f96c79a7dd7f04b0a523a16f827',1,'JSON::length()']]],
+  ['length_0',['length',['../classJSON.html#aa53d9f96c79a7dd7f04b0a523a16f827',1,'JSON']]],
   ['logdebug_1',['logDebug',['../classLoggerCrawler.html#a6823adcc84f87a1f70a1305d6ee0bd06',1,'LoggerCrawler::logDebug()'],['../classLogger.html#a35656391236b8059dea64d6bfd67288d',1,'Logger::logDebug(const char *message, const char *file, unsigned int line)'],['../classLogger.html#aad99241257814b1b7445fb0e18d78d25',1,'Logger::logDebug(std::string const &amp;message, const char *file, unsigned int line)']]],
   ['logfatal_2',['logFatal',['../classLoggerCrawler.html#a7ced8c2480ff058020f5886d4eea750e',1,'LoggerCrawler::logFatal()'],['../classLogger.html#ae27bc4c9b1746644090af2fa910b1dbc',1,'Logger::logFatal(const char *message, const char *file, unsigned int line, int code)'],['../classLogger.html#a35d7f563b3679b5fa6b2c3229adce245',1,'Logger::logFatal(std::string const &amp;message, const char *file, unsigned int line, int code)']]],
   ['loginfo_3',['logInfo',['../classLogger.html#a18e018c996771217f21e4d01c4dfe36a',1,'Logger::logInfo(std::string const &amp;message, const char *file, unsigned int line)'],['../classLogger.html#a697e13b7ef4fc3d1ca19c36558825997',1,'Logger::logInfo(const char *message, const char *file, unsigned int line)'],['../classLoggerCrawler.html#ac5a3e08a42244c669b55cd436905c5cc',1,'LoggerCrawler::logInfo()']]],

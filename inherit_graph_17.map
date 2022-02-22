@@ -1,3 +1,5 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node1" href="$structantlr4_1_1atn_1_1PredictionContextHasher.html" title=" " alt="" coords="5,5,192,47"/>
+<area shape="rect" id="node1" href="$classErrorHandler.html" title=" " alt="" coords="5,5,184,32"/>
+<area shape="rect" id="node2" href="$classJSONErrorHandler.html" title="An error handler that handles JSON errors." alt="" coords="232,5,363,32"/>
+<area shape="rect" id="node3" href="$classJSONSingletonErrorHandler.html" title="An error handler that handles JSON errors and is a singleton error handler. We use this as the defaul..." alt="" coords="411,5,595,32"/>
 </map>

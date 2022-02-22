@@ -94,10 +94,6 @@ var NAVTREE =
       ] ],
       [ "License", "md_SearchSECOSpider_README.html#autotoc_md46", null ]
     ] ],
-    [ "Deprecated List", "deprecated.html", null ],
-    [ "Namespaces", "namespaces.html", [
-      [ "Namespace List", "namespaces.html", "namespaces_dup" ]
-    ] ],
     [ "Classes", "annotated.html", [
       [ "Class List", "annotated.html", "annotated_dup" ],
       [ "Class Index", "classes.html", null ],
@@ -116,16 +112,9 @@ var NAVTREE =
 
 var NAVTREEINDEX =
 [
-"ANTLRErrorListener_8h_source.html",
-"classCustomPython3Listener.html#a9661d0ad6d76eb35c4d7fb622195d21e",
-"classLogThrowHandler.html",
-"classantlr4_1_1CommonToken.html#a5f52e2bbb31890436c39fbabfe1aaded",
-"classantlr4_1_1RuleContext.html#a2c4b8b84636c681f98dcd86d5c5a8459",
-"classantlr4_1_1atn_1_1ParserATNSimulator.html",
-"classcurl_1_1cookie.html#ac57ab2bda3ab63126f464a62473a987c",
-"classcurl_1_1curl__info.html#a576c35b0f9a387165a04fba43a9fda01",
-"databaseAPIMock_8h_source.html",
-"typecheck-gcc_8h_source.html"
+"AbstractSyntaxToHashable_8h_source.html",
+"classJavaScriptParser_1_1LiteralExpressionContext.html",
+"flags_8h_source.html"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

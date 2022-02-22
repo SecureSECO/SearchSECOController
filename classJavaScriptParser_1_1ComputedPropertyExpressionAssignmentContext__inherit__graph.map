@@ -1,7 +1,5 @@
 <map id="JavaScriptParser::ComputedPropertyExpressionAssignmentContext" name="JavaScriptParser::ComputedPropertyExpressionAssignmentContext">
-<area shape="rect" id="node1" title=" " alt="" coords="5,319,252,360"/>
-<area shape="rect" id="node2" href="$classJavaScriptParser_1_1PropertyAssignmentContext.html" title=" " alt="" coords="41,229,217,271"/>
-<area shape="rect" id="node3" href="$classantlr4_1_1ParserRuleContext.html" title="A rule invocation record for parsing." alt="" coords="45,155,213,181"/>
-<area shape="rect" id="node4" href="$classantlr4_1_1RuleContext.html" title=" " alt="" coords="63,80,194,107"/>
-<area shape="rect" id="node5" href="$classantlr4_1_1tree_1_1ParseTree.html" title=" " alt="" coords="55,5,203,32"/>
+<area shape="rect" id="node1" title=" " alt="" coords="5,169,252,211"/>
+<area shape="rect" id="node2" href="$classJavaScriptParser_1_1PropertyAssignmentContext.html" title=" " alt="" coords="41,80,217,121"/>
+<area shape="rect" id="node3" title=" " alt="" coords="45,5,213,32"/>
 </map>

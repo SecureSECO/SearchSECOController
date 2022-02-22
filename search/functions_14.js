@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['xmlparser_0',['XmlParser',['../classXmlParser.html#adbbf7b2fb6adbdd874f6cbe4bd2072f4',1,'XmlParser']]]
+  ['_7enode_0',['~Node',['../classNode.html#aa0840c3cb5c7159be6d992adecd2097c',1,'Node']]]
 ];

@@ -1,9 +1,0 @@
-<map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node1" title=" " alt="" coords="5,177,111,203"/>
-<area shape="rect" id="node2" href="$classantlr4_1_1tree_1_1xpath_1_1XPathRuleAnywhereElement.html" title="Either {." alt="" coords="171,5,365,47"/>
-<area shape="rect" id="node3" href="$classantlr4_1_1tree_1_1xpath_1_1XPathRuleElement.html" title=" " alt="" coords="199,71,337,112"/>
-<area shape="rect" id="node4" href="$classantlr4_1_1tree_1_1xpath_1_1XPathTokenAnywhereElement.html" title=" " alt="" coords="166,136,370,177"/>
-<area shape="rect" id="node5" href="$classantlr4_1_1tree_1_1xpath_1_1XPathTokenElement.html" title=" " alt="" coords="195,201,341,243"/>
-<area shape="rect" id="node6" href="$classantlr4_1_1tree_1_1xpath_1_1XPathWildcardAnywhereElement.html" title=" " alt="" coords="159,267,377,308"/>
-<area shape="rect" id="node7" href="$classantlr4_1_1tree_1_1xpath_1_1XPathWildcardElement.html" title=" " alt="" coords="187,332,349,373"/>
-</map>

@@ -1,11 +1,9 @@
 <map id="JavaScriptParser::IterationStatementContext" name="JavaScriptParser::IterationStatementContext">
-<area shape="rect" id="node1" title=" " alt="" coords="596,136,771,177"/>
-<area shape="rect" id="node5" href="$classJavaScriptParser_1_1DoStatementContext.html" title=" " alt="" coords="827,5,1031,47"/>
-<area shape="rect" id="node6" href="$classJavaScriptParser_1_1ForInStatementContext.html" title=" " alt="" coords="820,71,1039,112"/>
-<area shape="rect" id="node7" href="$classJavaScriptParser_1_1ForOfStatementContext.html" title=" " alt="" coords="819,136,1040,177"/>
-<area shape="rect" id="node8" href="$classJavaScriptParser_1_1ForStatementContext.html" title=" " alt="" coords="826,201,1033,243"/>
-<area shape="rect" id="node9" href="$classJavaScriptParser_1_1WhileStatementContext.html" title=" " alt="" coords="819,267,1039,308"/>
-<area shape="rect" id="node2" href="$classantlr4_1_1ParserRuleContext.html" title="A rule invocation record for parsing." alt="" coords="380,143,548,170"/>
-<area shape="rect" id="node3" href="$classantlr4_1_1RuleContext.html" title=" " alt="" coords="201,143,332,170"/>
-<area shape="rect" id="node4" href="$classantlr4_1_1tree_1_1ParseTree.html" title=" " alt="" coords="5,143,153,170"/>
+<area shape="rect" id="node1" title=" " alt="" coords="221,136,396,177"/>
+<area shape="rect" id="node3" href="$classJavaScriptParser_1_1DoStatementContext.html" title=" " alt="" coords="453,5,657,47"/>
+<area shape="rect" id="node4" href="$classJavaScriptParser_1_1ForInStatementContext.html" title=" " alt="" coords="445,71,664,112"/>
+<area shape="rect" id="node5" href="$classJavaScriptParser_1_1ForOfStatementContext.html" title=" " alt="" coords="444,136,665,177"/>
+<area shape="rect" id="node6" href="$classJavaScriptParser_1_1ForStatementContext.html" title=" " alt="" coords="451,201,658,243"/>
+<area shape="rect" id="node7" href="$classJavaScriptParser_1_1WhileStatementContext.html" title=" " alt="" coords="445,267,665,308"/>
+<area shape="rect" id="node2" title=" " alt="" coords="5,143,173,170"/>
 </map>

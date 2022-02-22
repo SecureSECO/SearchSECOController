@@ -1,6 +1,4 @@
 <map id="JavaScriptParser::BlockContext" name="JavaScriptParser::BlockContext">
-<area shape="rect" id="node1" title=" " alt="" coords="5,229,211,256"/>
-<area shape="rect" id="node2" href="$classantlr4_1_1ParserRuleContext.html" title="A rule invocation record for parsing." alt="" coords="24,155,192,181"/>
-<area shape="rect" id="node3" href="$classantlr4_1_1RuleContext.html" title=" " alt="" coords="43,80,173,107"/>
-<area shape="rect" id="node4" href="$classantlr4_1_1tree_1_1ParseTree.html" title=" " alt="" coords="34,5,182,32"/>
+<area shape="rect" id="node1" title=" " alt="" coords="5,80,211,107"/>
+<area shape="rect" id="node2" title=" " alt="" coords="24,5,192,32"/>
 </map>

@@ -1,3 +1,6 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node1" href="$classAbstractSyntaxToHashable.html" title=" " alt="" coords="5,5,185,32"/>
+<area shape="rect" id="node1" title=" " alt="" coords="5,31,97,57"/>
+<area shape="rect" id="node2" href="$classJavaScriptLexerBase.html" title=" " alt="" coords="145,5,292,32"/>
+<area shape="rect" id="node4" href="$classPython3Lexer.html" title=" " alt="" coords="168,56,269,83"/>
+<area shape="rect" id="node3" href="$classJavaScriptLexer.html" title=" " alt="" coords="340,5,456,32"/>
 </map>

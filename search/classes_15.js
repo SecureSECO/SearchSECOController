@@ -1,10 +1,8 @@
 var searchData=
 [
-  ['varargslistcontext_0',['VarargslistContext',['../classPython3Parser_1_1VarargslistContext.html',1,'Python3Parser']]],
-  ['variabledeclarationcontext_1',['VariableDeclarationContext',['../classJavaScriptParser_1_1VariableDeclarationContext.html',1,'JavaScriptParser']]],
-  ['variabledeclarationlistcontext_2',['VariableDeclarationListContext',['../classJavaScriptParser_1_1VariableDeclarationListContext.html',1,'JavaScriptParser']]],
-  ['variablestatementcontext_3',['VariableStatementContext',['../classJavaScriptParser_1_1VariableStatementContext.html',1,'JavaScriptParser']]],
-  ['varmodifiercontext_4',['VarModifierContext',['../classJavaScriptParser_1_1VarModifierContext.html',1,'JavaScriptParser']]],
-  ['vfpdefcontext_5',['VfpdefContext',['../classPython3Parser_1_1VfpdefContext.html',1,'Python3Parser']]],
-  ['voidexpressioncontext_6',['VoidExpressionContext',['../classJavaScriptParser_1_1VoidExpressionContext.html',1,'JavaScriptParser']]]
+  ['while_5fstmtcontext_0',['While_stmtContext',['../classPython3Parser_1_1While__stmtContext.html',1,'Python3Parser']]],
+  ['whilestatementcontext_1',['WhileStatementContext',['../classJavaScriptParser_1_1WhileStatementContext.html',1,'JavaScriptParser']]],
+  ['with_5fitemcontext_2',['With_itemContext',['../classPython3Parser_1_1With__itemContext.html',1,'Python3Parser']]],
+  ['with_5fstmtcontext_3',['With_stmtContext',['../classPython3Parser_1_1With__stmtContext.html',1,'Python3Parser']]],
+  ['withstatementcontext_4',['WithStatementContext',['../classJavaScriptParser_1_1WithStatementContext.html',1,'JavaScriptParser']]]
 ];

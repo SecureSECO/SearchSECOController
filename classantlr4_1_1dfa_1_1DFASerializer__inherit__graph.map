@@ -1,4 +1,0 @@
-<map id="antlr4::dfa::DFASerializer" name="antlr4::dfa::DFASerializer">
-<area shape="rect" id="node1" title="A DFA walker that knows how to dump them to serialized strings." alt="" coords="21,5,184,32"/>
-<area shape="rect" id="node2" href="$classantlr4_1_1dfa_1_1LexerDFASerializer.html" title=" " alt="" coords="5,80,200,107"/>
-</map>

@@ -92,8 +92,5 @@ var classPython3Parser =
     [ "Xor_exprContext", "classPython3Parser_1_1Xor__exprContext.html", null ],
     [ "Yield_argContext", "classPython3Parser_1_1Yield__argContext.html", null ],
     [ "Yield_exprContext", "classPython3Parser_1_1Yield__exprContext.html", null ],
-    [ "Yield_stmtContext", "classPython3Parser_1_1Yield__stmtContext.html", null ],
-    [ "getGrammarFileName", "classPython3Parser.html#a6610cd6dd329d3681b8e772cc7a9c103", null ],
-    [ "getTokenNames", "classPython3Parser.html#a840340083f8fba517e437f8d343edd3e", null ],
-    [ "getVocabulary", "classPython3Parser.html#a5ec82d2e2dbe20153cf668520bcd06da", null ]
+    [ "Yield_stmtContext", "classPython3Parser_1_1Yield__stmtContext.html", null ]
 ];

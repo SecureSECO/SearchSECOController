@@ -1,7 +1,0 @@
-<map id="antlr4::ANTLRErrorListener" name="antlr4::ANTLRErrorListener">
-<area shape="rect" id="node1" title="How to emit recognition errors (an interface in Java)." alt="" coords="201,5,380,32"/>
-<area shape="rect" id="node2" href="$classantlr4_1_1BaseErrorListener.html" title=" " alt="" coords="114,80,278,107"/>
-<area shape="rect" id="node5" href="$classantlr4_1_1ProxyErrorListener.html" title=" " alt="" coords="302,80,469,107"/>
-<area shape="rect" id="node3" href="$classantlr4_1_1ConsoleErrorListener.html" title=" " alt="" coords="5,162,187,189"/>
-<area shape="rect" id="node4" href="$classantlr4_1_1tree_1_1xpath_1_1XPathLexerErrorListener.html" title=" " alt="" coords="211,155,381,196"/>
-</map>

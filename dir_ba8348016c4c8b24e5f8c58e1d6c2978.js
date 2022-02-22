@@ -8,7 +8,7 @@ var dir_ba8348016c4c8b24e5f8c58e1d6c2978 =
     [ "HashData.h", "HashData_8h_source.html", null ],
     [ "Logger.h", "SearchSECOParser_2libSearchSECOParser_2Logger_8h_source.html", null ],
     [ "Node.h", "Node_8h_source.html", null ],
-    [ "Parser.h", "libSearchSECOParser_2Parser_8h_source.html", null ],
+    [ "Parser.h", "Parser_8h_source.html", null ],
     [ "SrcMLCaller.h", "SrcMLCaller_8h_source.html", null ],
     [ "StringStream.h", "StringStream_8h_source.html", null ],
     [ "Tag.h", "Tag_8h_source.html", null ],

@@ -1,6 +1,5 @@
 <map id="JavaScriptParserBaseVisitor" name="JavaScriptParserBaseVisitor">
-<area shape="rect" id="node1" title=" " alt="" coords="5,244,195,271"/>
-<area shape="rect" id="node2" href="$classJavaScriptParserVisitor.html" title=" " alt="" coords="21,169,179,196"/>
-<area shape="rect" id="node3" href="$classantlr4_1_1tree_1_1AbstractParseTreeVisitor.html" title=" " alt="" coords="15,80,185,121"/>
-<area shape="rect" id="node4" title=" " alt="" coords="41,5,159,32"/>
+<area shape="rect" id="node1" title=" " alt="" coords="5,169,195,196"/>
+<area shape="rect" id="node2" href="$classJavaScriptParserVisitor.html" title=" " alt="" coords="21,95,179,121"/>
+<area shape="rect" id="node3" title=" " alt="" coords="15,5,185,47"/>
 </map>

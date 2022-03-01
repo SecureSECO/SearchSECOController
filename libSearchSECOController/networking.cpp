@@ -19,6 +19,8 @@ Utrecht University within the Software Project course.
 std::vector<std::pair<std::string, std::string>> NetworkHandler::ips = {};
 bool refreshIPs = true;
 
+extern std::atomic<bool> stopped;
+
 // https://www.boost.org/doc/libs/1_75_0/doc/html/boost_asio/tutorial.html was used as a base.
 boost::asio::io_context NetworkHandler::ioContext;
 
@@ -98,7 +100,7 @@ std::string NetworkHandler::receiveData()
 	print::debug("Listening for a database response", __FILE__, __LINE__);
 	// The buffer we are going to return as a string.
 	std::vector<char> ret = std::vector<char>();
-	for (;;)
+	while (!stopped)
 	{
 		boost::array<char, 128> buf;
 		boost::system::error_code error;

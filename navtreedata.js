@@ -34,65 +34,66 @@ var NAVTREE =
         ] ]
       ] ],
       [ "Usage", "md_README.html#autotoc_md6", [
-        [ "Running using Docker", "md_README.html#autotoc_md7", null ]
+        [ "Running using Docker", "md_README.html#autotoc_md7", null ],
+        [ "Connecting to the official database", "md_README.html#autotoc_md8", null ]
       ] ],
-      [ "License", "md_README.html#autotoc_md8", [
-        [ "Licenses for code from other projects", "md_README.html#autotoc_md9", null ]
+      [ "License", "md_README.html#autotoc_md9", [
+        [ "Licenses for code from other projects", "md_README.html#autotoc_md10", null ]
       ] ]
     ] ],
     [ "Crawler", "md_SearchSECOCrawler_README.html", [
-      [ "Installation", "md_SearchSECOCrawler_README.html#autotoc_md11", [
-        [ "Dependencies", "md_SearchSECOCrawler_README.html#autotoc_md12", null ],
-        [ "Building", "md_SearchSECOCrawler_README.html#autotoc_md13", [
-          [ "Library", "md_SearchSECOCrawler_README.html#autotoc_md14", [
-            [ "CMake", "md_SearchSECOCrawler_README.html#autotoc_md15", null ],
-            [ "Visual Studio", "md_SearchSECOCrawler_README.html#autotoc_md16", null ]
+      [ "Installation", "md_SearchSECOCrawler_README.html#autotoc_md12", [
+        [ "Dependencies", "md_SearchSECOCrawler_README.html#autotoc_md13", null ],
+        [ "Building", "md_SearchSECOCrawler_README.html#autotoc_md14", [
+          [ "Library", "md_SearchSECOCrawler_README.html#autotoc_md15", [
+            [ "CMake", "md_SearchSECOCrawler_README.html#autotoc_md16", null ],
+            [ "Visual Studio", "md_SearchSECOCrawler_README.html#autotoc_md17", null ]
           ] ],
-          [ "Stand-alone", "md_SearchSECOCrawler_README.html#autotoc_md17", [
-            [ "Visual Studio", "md_SearchSECOCrawler_README.html#autotoc_md18", null ]
+          [ "Stand-alone", "md_SearchSECOCrawler_README.html#autotoc_md18", [
+            [ "Visual Studio", "md_SearchSECOCrawler_README.html#autotoc_md19", null ]
           ] ]
         ] ]
       ] ],
-      [ "Usage", "md_SearchSECOCrawler_README.html#autotoc_md19", [
-        [ "Library", "md_SearchSECOCrawler_README.html#autotoc_md20", null ],
-        [ "Stand-alone", "md_SearchSECOCrawler_README.html#autotoc_md21", null ]
+      [ "Usage", "md_SearchSECOCrawler_README.html#autotoc_md20", [
+        [ "Library", "md_SearchSECOCrawler_README.html#autotoc_md21", null ],
+        [ "Stand-alone", "md_SearchSECOCrawler_README.html#autotoc_md22", null ]
       ] ],
-      [ "License", "md_SearchSECOCrawler_README.html#autotoc_md22", [
-        [ "Licenses for code from other projects", "md_SearchSECOCrawler_README.html#autotoc_md23", null ]
+      [ "License", "md_SearchSECOCrawler_README.html#autotoc_md23", [
+        [ "Licenses for code from other projects", "md_SearchSECOCrawler_README.html#autotoc_md24", null ]
       ] ]
     ] ],
     [ "SearchSECOParser", "md_SearchSECOParser_README.html", [
-      [ "Installation", "md_SearchSECOParser_README.html#autotoc_md25", [
-        [ "Dependencies", "md_SearchSECOParser_README.html#autotoc_md26", null ],
-        [ "Building", "md_SearchSECOParser_README.html#autotoc_md27", [
-          [ "Stand-alone", "md_SearchSECOParser_README.html#autotoc_md28", [
-            [ "Visual-Studio", "md_SearchSECOParser_README.html#autotoc_md29", null ],
-            [ "Cmake", "md_SearchSECOParser_README.html#autotoc_md30", null ]
+      [ "Installation", "md_SearchSECOParser_README.html#autotoc_md26", [
+        [ "Dependencies", "md_SearchSECOParser_README.html#autotoc_md27", null ],
+        [ "Building", "md_SearchSECOParser_README.html#autotoc_md28", [
+          [ "Stand-alone", "md_SearchSECOParser_README.html#autotoc_md29", [
+            [ "Visual-Studio", "md_SearchSECOParser_README.html#autotoc_md30", null ],
+            [ "Cmake", "md_SearchSECOParser_README.html#autotoc_md31", null ]
           ] ],
-          [ "Library", "md_SearchSECOParser_README.html#autotoc_md31", null ]
+          [ "Library", "md_SearchSECOParser_README.html#autotoc_md32", null ]
         ] ]
       ] ],
-      [ "Usage", "md_SearchSECOParser_README.html#autotoc_md32", [
-        [ "Stand-alone", "md_SearchSECOParser_README.html#autotoc_md33", null ],
-        [ "Library", "md_SearchSECOParser_README.html#autotoc_md34", null ]
+      [ "Usage", "md_SearchSECOParser_README.html#autotoc_md33", [
+        [ "Stand-alone", "md_SearchSECOParser_README.html#autotoc_md34", null ],
+        [ "Library", "md_SearchSECOParser_README.html#autotoc_md35", null ]
       ] ],
-      [ "License", "md_SearchSECOParser_README.html#autotoc_md35", [
-        [ "Licenses for code from other projects", "md_SearchSECOParser_README.html#autotoc_md36", null ]
+      [ "License", "md_SearchSECOParser_README.html#autotoc_md36", [
+        [ "Licenses for code from other projects", "md_SearchSECOParser_README.html#autotoc_md37", null ]
       ] ]
     ] ],
     [ "SearchSECOSpider", "md_SearchSECOSpider_README.html", [
-      [ "Installation", "md_SearchSECOSpider_README.html#autotoc_md38", null ],
-      [ "Dependencies", "md_SearchSECOSpider_README.html#autotoc_md39", null ],
-      [ "Building", "md_SearchSECOSpider_README.html#autotoc_md40", [
-        [ "Stand-alone", "md_SearchSECOSpider_README.html#autotoc_md41", [
-          [ "Visual Studio", "md_SearchSECOSpider_README.html#autotoc_md42", null ]
+      [ "Installation", "md_SearchSECOSpider_README.html#autotoc_md39", null ],
+      [ "Dependencies", "md_SearchSECOSpider_README.html#autotoc_md40", null ],
+      [ "Building", "md_SearchSECOSpider_README.html#autotoc_md41", [
+        [ "Stand-alone", "md_SearchSECOSpider_README.html#autotoc_md42", [
+          [ "Visual Studio", "md_SearchSECOSpider_README.html#autotoc_md43", null ]
         ] ],
-        [ "Library", "md_SearchSECOSpider_README.html#autotoc_md43", [
-          [ "Visual Studio", "md_SearchSECOSpider_README.html#autotoc_md44", null ],
-          [ "CMake", "md_SearchSECOSpider_README.html#autotoc_md45", null ]
+        [ "Library", "md_SearchSECOSpider_README.html#autotoc_md44", [
+          [ "Visual Studio", "md_SearchSECOSpider_README.html#autotoc_md45", null ],
+          [ "CMake", "md_SearchSECOSpider_README.html#autotoc_md46", null ]
         ] ]
       ] ],
-      [ "License", "md_SearchSECOSpider_README.html#autotoc_md46", null ]
+      [ "License", "md_SearchSECOSpider_README.html#autotoc_md47", null ]
     ] ],
     [ "Classes", "annotated.html", [
       [ "Class List", "annotated.html", "annotated_dup" ],

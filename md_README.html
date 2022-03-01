@@ -141,8 +141,9 @@ Running using Docker</h2>
 <p >In order to use other commands with Docker you can remove the <code>, "start"</code> from the last line of the dockerfile and then use the same build command to build the image and then the interactive run command to run the program. It will then listen for a command input, so any command can be put in.</p>
 <h2><a class="anchor" id="autotoc_md8"></a>
 Connecting to the official database</h2>
-<p >If you want to run the controller connected to the official database, you can use the Docker hub image. To do this you can use the following command if you just want to run the start command: <code>docker run --name controller-container -e "github_token=&lt;github_token&gt;" -e "worker_name=&lt;worker_name&gt;" searchseco/controller</code> If you want to run a custom command you can use the following command: <code>docker run --name controller-container --entrypoint="./controller/build/searchseco" -e "github_token=&lt;github_token&gt;" -e "worker_name=&lt;worker_name&gt;" searchseco/controller &lt;command&gt;</code></p>
-<h1><a class="anchor" id="autotoc_md9"></a>
+<p >If you want to run the controller connected to the official database, you can use the Docker hub image. To do this you can use the following command if you just want to run the start command: </p><div class="fragment"><div class="line">If you want to run a custom command you can use the following command:</div>
+<div class="line">```docker run --name controller-container --entrypoint=<span class="stringliteral">&quot;./controller/build/searchseco&quot;</span> -e <span class="stringliteral">&quot;github_token=&lt;github_token&gt;&quot;</span> -e <span class="stringliteral">&quot;worker_name=&lt;worker_name&gt;&quot;</span> searchseco/controller &lt;command&gt;</div>
+</div><!-- fragment --><h1><a class="anchor" id="autotoc_md9"></a>
 License</h1>
 <p >This project is licensed under the GNU Affero General Public License v3.0. See [LICENSE](LICENSE) for more info.</p>
 <p >This program has been developed by students from the bachelor Computer Science at Utrecht University within the Software Project course. © Copyright Utrecht University (Department of Information and Computing Sciences)</p>

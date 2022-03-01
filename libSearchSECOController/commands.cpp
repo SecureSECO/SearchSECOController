@@ -19,8 +19,6 @@ Utrecht University within the Software Project course.
 #include <condition_variable>
 #include <climits>
 
-#define DOWNLOAD_LOCATION "spiderDownloads"
-
 std::atomic<bool> stopped(false);
 
 std::string Command::helpMessage()
@@ -113,7 +111,7 @@ void Command::checkProject(Flags flags, EnvironmentDTO *env)
 }
 
 void Command::uploadProject(Flags flags, std::string jobid, std::string &jobTime,
-							long long *startTime, EnvironmentDTO *env)
+							long long *startTime, EnvironmentDTO *env, std::string downloadLocation)
 {
 	// Get project metadata.
 	ProjectMetaData meta = moduleFacades::getProjectMetadata(flags.mandatoryArgument, flags);
@@ -152,10 +150,10 @@ void Command::uploadProject(Flags flags, std::string jobid, std::string &jobTime
 		return;
 	}
 
-	meta.versionHash = moduleFacades::currentVersion(s, DOWNLOAD_LOCATION);
+	meta.versionHash = moduleFacades::currentVersion(s, downloadLocation);
 
 	// Download project.
-	moduleFacades::downloadRepo(s, flags.mandatoryArgument, flags, DOWNLOAD_LOCATION);	
+	moduleFacades::downloadRepo(s, flags.mandatoryArgument, flags, downloadLocation);	
 
 	if (errno != 0)
 	{
@@ -170,7 +168,7 @@ void Command::uploadProject(Flags flags, std::string jobid, std::string &jobTime
 
 	// Get tags of previous versions.
 	std::vector<std::tuple<std::string, long long, std::string>> tags =
-		moduleFacades::getRepositoryTags(DOWNLOAD_LOCATION);
+		moduleFacades::getRepositoryTags(downloadLocation);
 
 	if (errno != 0)
 	{
@@ -449,9 +447,31 @@ void Start::execute(Flags flags, EnvironmentDTO *env)
 
 	logPreExecutionMessage(flags.flag_cpu, __FILE__, __LINE__);
 
-	bool s = stop;
 	std::thread t(&Start::readCommandLine, this);
 
+	int threadCount = flags.flag_cpu / 2;
+	flags.flag_cpu = 2;
+
+	std::vector<std::thread> threads;
+
+	for (int i = 0; i < threadCount; i++)
+	{
+		threads.push_back(std::thread(&Start::runStart, this, flags, i, env));
+	}
+
+	for (int i = 0; i < threadCount; i++)
+	{
+		threads[i].join();
+	}
+	
+	t.join();
+	logPostExecutionMessage(__FILE__, __LINE__);
+}
+
+void Start::runStart(Flags flags, int thread, EnvironmentDTO *env)
+{
+	loguru::set_thread_name(("controller"+std::to_string(thread)).c_str());
+	bool s = stop;
 	// Ask for jobs as long as the user does not want to stop.
 	while (!s)
 	{
@@ -481,7 +501,7 @@ void Start::execute(Flags flags, EnvironmentDTO *env)
 									  std::chrono::system_clock::now().time_since_epoch())
 									  .count();
 			new std::thread(&Start::handleTimeout, splitted[4], std::ref(startTime));
-			versionProcessing(splitted, &startTime, flags, env);
+			versionProcessing(splitted, &startTime, flags, DOWNLOAD_LOCATION + std::to_string(thread), env);
 			stopped = true;
 			std::this_thread::sleep_for(std::chrono::seconds(5));
 		}
@@ -505,8 +525,6 @@ void Start::execute(Flags flags, EnvironmentDTO *env)
 		s = stop;
 		mtx.unlock();
 	}
-	t.join();
-	logPostExecutionMessage(__FILE__, __LINE__);
 }
 
 void Start::handleTimeout(const std::string timeoutString, long long &startTime)
@@ -552,7 +570,7 @@ void Start::readCommandLine()
 	}
 }
 
-void Start::versionProcessing(std::vector<std::string> &splitted, long long *startTime, Flags flags, EnvironmentDTO *env)
+void Start::versionProcessing(std::vector<std::string> &splitted, long long *startTime, Flags flags, std::string downloadLocation, EnvironmentDTO *env)
 {
 	if (splitted.size() < 5 || splitted[2] == "")
 	{
@@ -568,7 +586,7 @@ void Start::versionProcessing(std::vector<std::string> &splitted, long long *sta
 	std::string jobTime = splitted[3];
 
 	// Process and upload project.
-	Command::uploadProject(flags, jobid, jobTime, startTime, env);
+	Command::uploadProject(flags, jobid, jobTime, startTime, env, downloadLocation);
 
 	if (errno == 0)
 	{

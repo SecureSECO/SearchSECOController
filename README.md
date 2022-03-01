@@ -63,12 +63,6 @@ This will start the container in detached mode and it will restart automatically
 
 In order to use other commands with Docker you can remove the `, "start"` from the last line of the dockerfile and then use the same build command to build the image and then the interactive run command to run the program. It will then listen for a command input, so any command can be put in.
 
-## Connecting to the official database
-If you want to run the controller connected to the official database, you can use the Docker hub image. To do this you can use the following command if you just want to run the start command:
-`docker run --name controller-container -e "github_token=<github_token>" -e "worker_name=<worker_name>" searchseco/controller`
-If you want to run a custom command you can use the following command:
-`docker run --name controller-container --entrypoint="./controller/build/searchseco" -e "github_token=<github_token>" -e "worker_name=<worker_name>" searchseco/controller <command>`
-
 # License
 
 This project is licensed under the GNU Affero General Public License v3.0. See [LICENSE](LICENSE) for more info.

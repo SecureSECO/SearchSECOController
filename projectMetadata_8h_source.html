@@ -128,37 +128,39 @@ $(document).ready(function(){initNavTree('projectMetadata_8h_source.html',''); i
 <div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>        this-&gt;defaultBranch = defaultBranch;</div>
 <div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>    }</div>
 <div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span> </div>
-<div class="line"><a id="l00050" name="l00050"></a><span class="lineno"><a class="line" href="structProjectMetaData.html#a686ee54c081ce9b49004744893163b9c">   50</a></span>    std::string <a class="code hl_function" href="structProjectMetaData.html#a686ee54c081ce9b49004744893163b9c">getAsHeader</a>()</div>
-<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>    {</div>
-<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>        std::vector&lt;std::string&gt; header = { </div>
-<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>            id, </div>
-<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>            versionTime, </div>
-<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>            versionHash, </div>
-<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>            license, </div>
-<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>            name, </div>
-<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>            url, </div>
-<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>            authorName, </div>
-<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>            authorMail, </div>
-<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>            std::to_string(<a class="code hl_function" href="classParser.html#a9f1bf6f9c4d1a3aee49216114aab5faa">Parser::getHashVersion</a>()) </div>
-<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>        };</div>
-<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>        <span class="keywordflow">return</span> <a class="code hl_function" href="classNetworkUtils.html#a338ae2eea86890f1f9eb1b99bec37a22">NetworkUtils::generateHeader</a>(header);</div>
-<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>    };</div>
-<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span> </div>
-<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>    std::string id;</div>
-<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>    std::string versionTime;</div>
-<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>    std::string versionHash;</div>
-<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>    std::string license;</div>
-<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>    std::string name;</div>
-<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>    std::string url;</div>
-<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>    std::string authorName;</div>
-<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>    std::string authorMail;</div>
-<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>    std::string defaultBranch;</div>
-<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>};</div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>    <a class="code hl_struct" href="structProjectMetaData.html">ProjectMetaData</a>(){};</div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span> </div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno"><a class="line" href="structProjectMetaData.html#a686ee54c081ce9b49004744893163b9c">   52</a></span>    std::string <a class="code hl_function" href="structProjectMetaData.html#a686ee54c081ce9b49004744893163b9c">getAsHeader</a>()</div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>    {</div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>        std::vector&lt;std::string&gt; header = { </div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>            id, </div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>            versionTime, </div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>            versionHash, </div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>            license, </div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>            name, </div>
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>            url, </div>
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>            authorName, </div>
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>            authorMail, </div>
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>            std::to_string(<a class="code hl_function" href="classParser.html#a9f1bf6f9c4d1a3aee49216114aab5faa">Parser::getHashVersion</a>()) </div>
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>        };</div>
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>        <span class="keywordflow">return</span> <a class="code hl_function" href="classNetworkUtils.html#a338ae2eea86890f1f9eb1b99bec37a22">NetworkUtils::generateHeader</a>(header);</div>
+<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>    };</div>
+<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span> </div>
+<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>    std::string id;</div>
+<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>    std::string versionTime;</div>
+<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>    std::string versionHash;</div>
+<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>    std::string license;</div>
+<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>    std::string name;</div>
+<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>    std::string url;</div>
+<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>    std::string authorName;</div>
+<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>    std::string authorMail;</div>
+<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>    std::string defaultBranch;</div>
+<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span>};</div>
 <div class="ttc" id="aclassNetworkUtils_html_a338ae2eea86890f1f9eb1b99bec37a22"><div class="ttname"><a href="classNetworkUtils.html#a338ae2eea86890f1f9eb1b99bec37a22">NetworkUtils::generateHeader</a></div><div class="ttdeci">static std::string generateHeader(std::vector&lt; std::string &gt; &amp;components)</div><div class="ttdoc">Will put all the strings that you pass it into a single string separated by null chars.</div><div class="ttdef"><b>Definition:</b> networkUtils.cpp:383</div></div>
 <div class="ttc" id="aclassParser_html_a9f1bf6f9c4d1a3aee49216114aab5faa"><div class="ttname"><a href="classParser.html#a9f1bf6f9c4d1a3aee49216114aab5faa">Parser::getHashVersion</a></div><div class="ttdeci">static int getHashVersion()</div><div class="ttdoc">Returns the current version of the parser.</div><div class="ttdef"><b>Definition:</b> Parser.h:21</div></div>
 <div class="ttc" id="astructProjectMetaData_html"><div class="ttname"><a href="structProjectMetaData.html">ProjectMetaData</a></div><div class="ttdef"><b>Definition:</b> projectMetadata.h:21</div></div>
 <div class="ttc" id="astructProjectMetaData_html_a0727750d9f9bb0b647173582af856ba4"><div class="ttname"><a href="structProjectMetaData.html#a0727750d9f9bb0b647173582af856ba4">ProjectMetaData::ProjectMetaData</a></div><div class="ttdeci">ProjectMetaData(std::string id, std::string versionTime, std::string versionHash, std::string license, std::string name, std::string url, std::string authorName, std::string authorMail, std::string defaultBranch)</div><div class="ttdoc">Basic constructor. All things that this constructor asks for should be provided by the spider.</div><div class="ttdef"><b>Definition:</b> projectMetadata.h:26</div></div>
-<div class="ttc" id="astructProjectMetaData_html_a686ee54c081ce9b49004744893163b9c"><div class="ttname"><a href="structProjectMetaData.html#a686ee54c081ce9b49004744893163b9c">ProjectMetaData::getAsHeader</a></div><div class="ttdeci">std::string getAsHeader()</div><div class="ttdoc">Will call the NetworkUtils::generateHeader function with the data stored in this struct.</div><div class="ttdef"><b>Definition:</b> projectMetadata.h:50</div></div>
+<div class="ttc" id="astructProjectMetaData_html_a686ee54c081ce9b49004744893163b9c"><div class="ttname"><a href="structProjectMetaData.html#a686ee54c081ce9b49004744893163b9c">ProjectMetaData::getAsHeader</a></div><div class="ttdeci">std::string getAsHeader()</div><div class="ttdoc">Will call the NetworkUtils::generateHeader function with the data stored in this struct.</div><div class="ttdef"><b>Definition:</b> projectMetadata.h:52</div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

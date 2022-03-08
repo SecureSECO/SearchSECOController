@@ -103,8 +103,11 @@ ProjectMetaData moduleFacades::getProjectMetadata(std::string url, Flags flags)
 	print::debug("Calling the crawler to get the metadata from a project", __FILE__, __LINE__);
 
 	ProjectMetadata pmd = RunCrawler::findMetadata(url, flags.flag_github_user, flags.flag_github_token);
-	int er = errno;
 	print::loguruResetThreadName();
+	if (errno != 0)
+	{
+		return ProjectMetaData();
+	}
 
 	std::string versionHash = "";
 
@@ -119,7 +122,6 @@ ProjectMetaData moduleFacades::getProjectMetadata(std::string url, Flags flags)
 		pmd.authorName,
 		pmd.authorMail,
 		pmd.defaultBranch);
-	errno = er;
 	return pm;
 }
 

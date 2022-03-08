@@ -44,6 +44,8 @@ public:
 		this->defaultBranch = defaultBranch;
 	}
 
+	ProjectMetaData(){};
+
 	/// <summary>
 	/// Will call the NetworkUtils::generateHeader function with the data stored in this struct.
 	/// </summary>

@@ -12,6 +12,7 @@ Utrecht University within the Software Project course.
 
 // External includes.
 #include <boost/array.hpp>
+#include <boost/optional.hpp>
 #include <fstream>
 #include <filesystem>
 
@@ -100,13 +101,20 @@ std::string NetworkHandler::receiveData()
 	print::debug("Listening for a database response", __FILE__, __LINE__);
 	// The buffer we are going to return as a string.
 	std::vector<char> ret = std::vector<char>();
-	while (!stopped)
+	bool done = false;
+	while (!done && !stopped)
 	{
 		boost::array<char, 128> buf;
-		boost::system::error_code error;
+		//boost::system::error_code error;
 
 		// Read incoming data.
-		size_t len = socket.read_some(boost::asio::buffer(buf), error);
+		//size_t len = socket.read_some(boost::asio::buffer(buf), error);
+
+		boost::optional<boost::system::error_code> read_result;
+		boost::asio::async_read(
+			socket, boost::asio::buffer(buf),
+			[&read_result, &ret, &done, &buf](const boost::system::error_code &error, size_t len) { read_result.reset(error); 
+
 		print::debug("Receiving " + std::to_string(len) + " bytes", __FILE__, __LINE__);
 
 		// Add it to out buffer.
@@ -119,12 +127,23 @@ std::string NetworkHandler::receiveData()
 		{
 			// Connection closed cleanly by peer.
 			print::debug("Received data from database: " + std::string(ret.begin(), ret.end()), __FILE__, __LINE__);
-			break;
+			done = true;
 		}
 		else if (error)
 		{
 			// If any error occures, we just throw.
 			error::errDBConnection(error.message(), __FILE__, __LINE__);
+		}
+
+		});
+
+		ioContext.reset();
+		while (ioContext.run_one())
+		{
+			if (read_result)
+				break;
+			else if (stopped)
+				socket.cancel();
 		}
 
 	}

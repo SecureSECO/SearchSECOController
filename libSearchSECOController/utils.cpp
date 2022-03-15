@@ -98,7 +98,7 @@ long long Utils::getIntegerTimeFromString(std::string time)
 	epochStart.tm_min = 0;
 	epochStart.tm_hour = 0;
 	epochStart.tm_mday = 1;
-	epochStart.tm_mon = 0;
+	epochStart.tm_mon = 1;
 	epochStart.tm_year = 70;
 	epochStart.tm_wday = 4;
 	epochStart.tm_yday = 0;

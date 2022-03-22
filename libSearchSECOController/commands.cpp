@@ -18,6 +18,8 @@ Utrecht University within the Software Project course.
 #include <atomic>
 #include <condition_variable>
 #include <climits>
+#include <filesystem>
+#include <fstream>
 
 #define DOWNLOAD_LOCATION "spiderDownloads"
 
@@ -267,7 +269,7 @@ void Command::loopThroughTags(Spider *s, std::vector<std::tuple<std::string, lon
 				return;
 			}
 
-			DatabaseRequests::updateJob(jobid, jobTime, env);
+			//DatabaseRequests::updateJob(jobid, jobTime, env);
 			
 			// If update was unsuccessful or unexpected,
 			if (errno != 0)
@@ -452,39 +454,63 @@ void Start::execute(Flags flags, EnvironmentDTO *env)
 	bool s = stop;
 	std::thread t(&Start::readCommandLine, this);
 
+	std::string file = (std::filesystem::path(Utils::getExecutablePath()) / "urlPage").make_preferred().string();
+
+	int page = 1;
+	std::vector<std::tuple<std::string, int, long long>> jobs;
+
+	std::fstream pageFile(file);
+	std::string line;
+	std::getline(pageFile, line);
+	if (line != "")
+		page = std::stoi(line);
+	pageFile.close();
+
+
 	// Ask for jobs as long as the user does not want to stop.
 	while (!s)
 	{
 		stopped = false;
-		std::string job = DatabaseRequests::getNextJob(env);
+		//std::string job = DatabaseRequests::getNextJob(env);
+		while (jobs.size() <= 0)
+		{
+			jobs = moduleFacades::crawlRepositories(page, flags).URLImportanceList;
+			pageFile.open(file);
+			pageFile << std::to_string(page) << std::endl;
+			pageFile.close();
+			page++;
+		}
+
+		std::tuple<std::string, int, long long> job = jobs.front();
+		jobs.erase(jobs.begin());
 
 		if (errno != 0)
 		{
 			print::warn("Unable to retrieve new job.", __FILE__, __LINE__);
 		}
 
-		std::vector<std::string> splitted = Utils::split(job, INNER_DELIMITER);
+		/*std::vector<std::string> splitted = Utils::split(job, INNER_DELIMITER);
 		if (splitted.size() < 1)
 		{
 			print::warn("Incorrect database response.", __FILE__, __LINE__);
 		}
 		if (splitted[0] == "Spider")
-		{
-			print::log("New job: Download and parse " + splitted[2], __FILE__, __LINE__);
-			if (splitted.size() < 5 || splitted[2] == "")
+		{*/
+			print::log("New job: Download and parse " + std::get<0>(job), __FILE__, __LINE__);
+			/*if (splitted.size() < 5 || splitted[2] == "")
 			{
 				// We cannot signal this error to the database, since there is no guarantee that the
 				// jobid and jobTime are correct or even present (the data from the database is malformed).
 				print::warn("Unexpected job data received from database.", __FILE__, __LINE__);
-			}			
+			}*/
 			long long startTime = std::chrono::duration_cast<std::chrono::milliseconds>(
 									  std::chrono::system_clock::now().time_since_epoch())
 									  .count();
-			new std::thread(&Start::handleTimeout, splitted[4], std::ref(startTime));
-			versionProcessing(splitted, &startTime, flags, env);
+			new std::thread(&Start::handleTimeout, std::get<2>(job), std::ref(startTime));
+			versionProcessing(std::get<0>(job), &startTime, flags, env);
 			stopped = true;
 			std::this_thread::sleep_for(std::chrono::seconds(5));
-		}
+		/*}
 		else if (splitted[0] == "Crawl")
 		{
 			print::log("New job: Crawl for more repository URLs", __FILE__, __LINE__);
@@ -498,7 +524,7 @@ void Start::execute(Flags flags, EnvironmentDTO *env)
 		else
 		{
 			print::warn("Incorrect database response.", __FILE__, __LINE__);
-		}
+		}*/
 
 		// Check if we need to stop.
 		mtx.lock();
@@ -509,9 +535,9 @@ void Start::execute(Flags flags, EnvironmentDTO *env)
 	logPostExecutionMessage(__FILE__, __LINE__);
 }
 
-void Start::handleTimeout(const std::string timeoutString, long long &startTime)
+void Start::handleTimeout(const long long timeout, long long &startTime)
 {
-	long long timeout = std::stoll(timeoutString);
+	//long long timeout = std::stoll(timeoutString);
 	while (!stopped)
 	{
 		std::this_thread::sleep_for(std::chrono::seconds(5));
@@ -552,20 +578,21 @@ void Start::readCommandLine()
 	}
 }
 
-void Start::versionProcessing(std::vector<std::string> &splitted, long long *startTime, Flags flags, EnvironmentDTO *env)
+void Start::versionProcessing(std::string &job, long long *startTime, Flags flags,
+							  EnvironmentDTO *env)
 {
-	if (splitted.size() < 5 || splitted[2] == "")
+	/*if (splitted.size() < 5 || splitted[2] == "")
 	{
 		// We cannot signal this error to the database, since there is no guarantee that the
 		// jobid and jobTime are correct or even present (the data from the database is malformed).
 		print::warn("Unexpected job data received from database.", __FILE__, __LINE__);
 		return;
-	}
+	}*/
 
-	std::string jobid       = splitted[1];
-	flags.mandatoryArgument = splitted[2];
+	std::string jobid = "";//splitted[1];
+	flags.mandatoryArgument = job;
 
-	std::string jobTime = splitted[3];
+	std::string jobTime = ""; // splitted[3];
 
 	// Process and upload project.
 	Command::uploadProject(flags, jobid, jobTime, startTime, env);

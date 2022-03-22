@@ -133,7 +133,7 @@ public:
 	/// </summary>
 	/// <param name="timeoutString"> The time the job is allowed to take. </param>
 	/// <param name="startTime"> The start time of the job. </param>
-	static void handleTimeout(std::string timeoutString, long long &startTime);
+	static void handleTimeout(long long timeout, long long &startTime);
 
 private:
 	/// <summary>
@@ -145,7 +145,8 @@ private:
 	/// Handles a spider request.
 	/// Will spider the given job and parse all tags in the repository by calling downloadTagged.
 	/// </summary>
-	void versionProcessing(std::vector<std::string> &splitted, long long *startTime, Flags flags, EnvironmentDTO *env);
+	void versionProcessing(std::string &job, long long *startTime, Flags flags,
+						   EnvironmentDTO *env);
 
 	/// <summary>
 	/// Reads the command line.

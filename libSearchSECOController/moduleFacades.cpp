@@ -106,6 +106,7 @@ ProjectMetaData moduleFacades::getProjectMetadata(std::string url, Flags flags)
 	print::loguruResetThreadName();
 	if (errno != 0)
 	{
+		print::debug("Encountered an error while retrieving the metadata", __FILE__, __LINE__);
 		return ProjectMetaData();
 	}
 

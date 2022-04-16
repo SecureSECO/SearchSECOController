@@ -456,7 +456,14 @@ void Start::execute(Flags flags, EnvironmentDTO *env)
 	while (!s)
 	{
 		stopped = false;
+		long long startTime =
+			std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch())
+				.count();
+		new std::thread(&Start::handleTimeout, "600000", std::ref(startTime));
 		std::string job = DatabaseRequests::getNextJob(env);
+		stopped = true;
+		std::this_thread::sleep_for(std::chrono::seconds(5));
+		stopped = false;
 
 		if (errno != 0)
 		{
@@ -476,7 +483,7 @@ void Start::execute(Flags flags, EnvironmentDTO *env)
 				// We cannot signal this error to the database, since there is no guarantee that the
 				// jobid and jobTime are correct or even present (the data from the database is malformed).
 				print::warn("Unexpected job data received from database.", __FILE__, __LINE__);
-			}			
+			}
 			long long startTime = std::chrono::duration_cast<std::chrono::milliseconds>(
 									  std::chrono::system_clock::now().time_since_epoch())
 									  .count();

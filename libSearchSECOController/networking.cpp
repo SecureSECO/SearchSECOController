@@ -143,7 +143,10 @@ std::string NetworkHandler::receiveData()
 			if (read_result)
 				break;
 			else if (stopped)
+			{
+				print::debug("Database request timed out. Closing socket.", __FILE__, __LINE__);
 				socket.cancel();
+			}
 		}
 
 	}

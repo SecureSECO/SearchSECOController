@@ -13,4 +13,4 @@ RUN cd controller && \
 	cd build && \
 	cmake ../SearchSECOController && \
 	cmake --build .
-ENTRYPOINT ["./controller/build/searchseco"]
+ENTRYPOINT ["./controller/build/searchseco", "start"]

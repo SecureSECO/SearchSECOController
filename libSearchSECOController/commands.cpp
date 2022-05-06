@@ -20,6 +20,7 @@ Utrecht University within the Software Project course.
 #include <climits>
 
 #define DOWNLOAD_LOCATION "spiderDownloads"
+#define TAGS_COUNT 20
 
 std::atomic<bool> stopped(false);
 
@@ -183,6 +184,22 @@ void Command::uploadProject(Flags flags, std::string jobid, std::string &jobTime
 	auto tagc = tags.size();
 
 	print::log("Project has " + std::to_string(tagc) + print::plural(" tag", tagc), __FILE__, __LINE__);
+
+	if (tagc > TAGS_COUNT)
+	{
+		std::vector<std::tuple<std::string, long long, std::string>> newTags =
+			std::vector<std::tuple<std::string, long long, std::string>>(TAGS_COUNT);
+		float fraction = (float)(tagc - 1) / (float)(TAGS_COUNT - 1);
+		for (int i = 0; i < TAGS_COUNT; i++)
+		{
+			print::log("Adding tag: " + std::to_string(fraction * i), __FILE__, __LINE__);
+			newTags[i] = tags[fraction * i];
+		}
+		tags = newTags;
+		tagc = TAGS_COUNT;
+		print::log("Created new tags list", __FILE__, __LINE__);
+	}
+
 	if (std::stoll(meta.versionTime) > startingTime && tagc == 0)
 	{
 		parseLatest(s, meta, jobid, jobTime, flags, env);

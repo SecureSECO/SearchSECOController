@@ -140,13 +140,13 @@ std::string NetworkHandler::receiveData()
 		ioContext.reset();
 		while (ioContext.run_one())
 		{
-			if (read_result)
-				break;
-			else if (stopped)
+			if (stopped)
 			{
 				print::debug("Database request timed out. Closing socket.", __FILE__, __LINE__);
 				socket.cancel();
 			}
+			else if (read_result)
+				break;
 		}
 
 	}

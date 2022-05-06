@@ -192,12 +192,10 @@ void Command::uploadProject(Flags flags, std::string jobid, std::string &jobTime
 		float fraction = (float)(tagc - 1) / (float)(TAGS_COUNT - 1);
 		for (int i = 0; i < TAGS_COUNT; i++)
 		{
-			print::log("Adding tag: " + std::to_string(fraction * i), __FILE__, __LINE__);
 			newTags[i] = tags[fraction * i];
 		}
 		tags = newTags;
 		tagc = TAGS_COUNT;
-		print::log("Created new tags list", __FILE__, __LINE__);
 	}
 
 	if (std::stoll(meta.versionTime) > startingTime && tagc == 0)

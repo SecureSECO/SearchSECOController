@@ -1,4 +1,4 @@
-FROM ubuntu:latest
+FROM ubuntu:focal
 ARG DEBIAN_FRONTEND=noninteractive
 ENV TZ="Europe/Amsterdam"
 RUN apt-get -y update && \
@@ -13,4 +13,4 @@ RUN cd controller && \
 	cd build && \
 	cmake ../SearchSECOController && \
 	cmake --build .
-ENTRYPOINT ["./controller/build/searchseco", "start"]
+ENTRYPOINT ["./controller/build/searchseco"]

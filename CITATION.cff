@@ -1,0 +1,21 @@
+# This CITATION.cff file was generated with cffinit.
+# Visit https://bit.ly/cffinit to generate yours today!
+
+cff-version: 1.2.0
+title: >-
+  SearchSECO - A worldwide software ecosystem method
+  database
+message: >-
+  If you use this software or the associated data,
+  feel free to cite us.
+type: software
+authors:
+  - given-names: Slinger
+    family-names: Jansen
+    email: slinger.jansen@uu.nl
+    affiliation: Utrecht University
+    orcid: 'https://orcid.org/0000-0003-3752-2868'
+  - given-names: Marien
+    family-names: Matser
+    email: m.p.matser@uu.nl
+    affiliation: Utrecht University

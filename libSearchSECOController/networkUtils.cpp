@@ -7,6 +7,8 @@ Utrecht University within the Software Project course.
 // Controller includes.
 #include "networkUtils.h"
 
+#include <algorithm>
+
 
 inline
 bool operator<(HashData const& lhs, HashData const& rhs)
@@ -131,9 +133,9 @@ int NetworkUtils::getAuthors(
 			{
 				CodeBlock cd = rawData[key.first][authorIndex];
 				std::string author = cd.commit->author;
-				author.erase(remove(author.begin(), author.end(), INNER_DELIMITER), author.end()); // remove delimiter from string
+				author.erase(std::remove(author.begin(), author.end(), INNER_DELIMITER), author.end()); // remove delimiter from string
 				std::string mail = cd.commit->authorMail;
-				mail.erase(remove(mail.begin(), mail.end(), INNER_DELIMITER), mail.end()); // remove delimiter from string
+				mail.erase(std::remove(mail.begin(), mail.end(), INNER_DELIMITER), mail.end()); // remove delimiter from string
 				std::string toAdd = INNER_DELIMITER + author + INNER_DELIMITER + mail;
 
 				if (dupes[toAdd] == 0)

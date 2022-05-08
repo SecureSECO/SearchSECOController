@@ -130,7 +130,12 @@ int NetworkUtils::getAuthors(
 				rawData[key.first][authorIndex].line + rawData[key.first][authorIndex].numLines)
 			{
 				CodeBlock cd = rawData[key.first][authorIndex];
-				std::string toAdd = INNER_DELIMITER + cd.commit->author + INNER_DELIMITER + cd.commit->authorMail;
+				std::string author = cd.commit->author;
+				author.erase(remove(author.begin(), author.end(), INNER_DELIMITER), author.end()); // remove delimiter from string
+				std::string mail = cd.commit->authorMail;
+				mail.erase(remove(mail.begin(), mail.end(), INNER_DELIMITER), mail.end()); // remove delimiter from string
+				std::string toAdd = INNER_DELIMITER + author + INNER_DELIMITER + mail;
+
 				if (dupes[toAdd] == 0)
 				{
 					authorSize += toAdd.length();

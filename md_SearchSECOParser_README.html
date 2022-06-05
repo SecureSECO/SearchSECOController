@@ -87,31 +87,31 @@ $(document).ready(function(){initNavTree('md_SearchSECOParser_README.html',''); 
 <div class="contents">
 <div class="textblock"><p ><img src="https://github.com/SecureSECO/SearchSECOParser/actions/workflows/testing.yml/badge.svg" alt="Testing" style="pointer-events: none;" class="inline"/></p>
 <p >This is the <a class="el" href="classParser.html">Parser</a> used by the SearchSECO project, it uses <a href="https://www.srcml.org/#home">srcML</a> to structure C, C++, C#, and Java code into an xml format. It then extracts methods from code files which it then abstracts to find Type-1 and Type-2 code clones (abstracting comments, white spaces, variable names, and function calls). It also supports the parsing of Python and Javascript using a custom parser built using <a href="https://www.antlr.org/">ANTLR</a>, applying the same type of abstraction. It has been tested on Windows 10 and Ubuntu 20.04/18.04, but should work on most UNIX systems.</p>
-<h1><a class="anchor" id="autotoc_md26"></a>
+<h1><a class="anchor" id="autotoc_md28"></a>
 Installation</h1>
-<h2><a class="anchor" id="autotoc_md27"></a>
+<h2><a class="anchor" id="autotoc_md29"></a>
 Dependencies</h2>
 <ul>
 <li>Windows 10+, Ubuntu 18.04+. Might work on older Windows versions or other UNIX systems but has not been tested.</li>
 <li><a href="https://www.srcml.org/#home">SrcML.</a> Make sure srcML is installed and registered in your path.</li>
 <li><a href="https://www.antlr.org/">ANTLR</a>, for Windows the files are included, on UNIX make sure to download libantlr4-runtime-dev (using apt/apt-get).</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md28"></a>
+<h2><a class="anchor" id="autotoc_md30"></a>
 Building</h2>
-<h3><a class="anchor" id="autotoc_md29"></a>
+<h3><a class="anchor" id="autotoc_md31"></a>
 Stand-alone</h3>
-<h4><a class="anchor" id="autotoc_md30"></a>
+<h4><a class="anchor" id="autotoc_md32"></a>
 Visual-Studio</h4>
 <p >Open the solution and simply build the project, copy and past the ANTLR dll file in the external/(debug/release)/antlr folder to the appropriate location (where you build the executable). </p>
-<h4><a class="anchor" id="autotoc_md31"></a>
+<h4><a class="anchor" id="autotoc_md33"></a>
 Cmake</h4>
 <p >Use the Cmake file in the main directory to build both the library and the executable, or use the one in the SearchSECOParser folder to only build the executable.</p>
-<h3><a class="anchor" id="autotoc_md32"></a>
+<h3><a class="anchor" id="autotoc_md34"></a>
 Library</h3>
 <p >Use Cmake to include the libSearchSECOParser folder, link the libSearchSECOParser library, and reference the header files in the folder. Or use the cmake file in libSearchSECOParser folder to build the library.</p>
-<h1><a class="anchor" id="autotoc_md33"></a>
+<h1><a class="anchor" id="autotoc_md35"></a>
 Usage</h1>
-<h2><a class="anchor" id="autotoc_md34"></a>
+<h2><a class="anchor" id="autotoc_md36"></a>
 Stand-alone</h2>
 <p >C:\path\to\parser&gt;SearchSECOParserStandalone.exe location\of\files\to\parse</p>
 <p >Simply give the <a class="el" href="classParser.html">Parser</a> either a directory, or compressed file containing the files you want parsed. It will return a list of found methods with for each method:</p><ul>
@@ -119,14 +119,14 @@ Stand-alone</h2>
 <li>The name of the found method</li>
 <li>Where the method was found (both file and line number)</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md35"></a>
+<h2><a class="anchor" id="autotoc_md37"></a>
 Library</h2>
 <p >Include <em><a class="el" href="Parser_8h_source.html">Parser.h</a></em> in the file you want to use the parser. Call the <em>parse</em> method with the path to the files that you want to parse, and (optionally) the number of threads to use. This will return a vector containing a <a href="https://git.science.uu.nl/searchseco/parser/-/blob/master/Parser/HashData.h">HashData</a> for each found method.</p>
-<h1><a class="anchor" id="autotoc_md36"></a>
+<h1><a class="anchor" id="autotoc_md38"></a>
 License</h1>
 <p >This project is licensed under the GNU Affero General Public License v3.0. See [LICENSE](LICENSE) for more info.</p>
 <p >This program has been developed by students from the bachelor Computer Science at Utrecht University within the Software Project course. © Copyright Utrecht University (Department of Information and Computing Sciences)</p>
-<h2><a class="anchor" id="autotoc_md37"></a>
+<h2><a class="anchor" id="autotoc_md39"></a>
 Licenses for code from other projects</h2>
 <ul>
 <li><a href="https://www.antlr.org/">ANTLR</a>. The license for ANTLR can be found in <a href="external/curl/LICENSE.txt">external/antlr/LICENSE</a> and is applicable to everything in the <a href="external/antlr">external/antlr</a> directory.</li>

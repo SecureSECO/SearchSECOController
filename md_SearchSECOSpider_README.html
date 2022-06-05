@@ -87,39 +87,39 @@ $(document).ready(function(){initNavTree('md_SearchSECOSpider_README.html',''); 
 <div class="contents">
 <div class="textblock"><p ><img src="https://github.com/SecureSECO/SearchSECOSpider/actions/workflows/testing.yml/badge.svg" alt="Testing" style="pointer-events: none;" class="inline"/></p>
 <p >This is the <a class="el" href="classSpider.html">Spider</a> of the SearchSECO project. The <a class="el" href="classSpider.html">Spider</a> is responsible for retrieving data (source files and author data) from (Git-based) sources on the internet and communicating this data to the Controller component of the system. The spider needs a stable internet connection to the source in question to be able to clone projects, to then process these locally.</p>
-<h1><a class="anchor" id="autotoc_md39"></a>
+<h1><a class="anchor" id="autotoc_md41"></a>
 Installation</h1>
 <p >Download the .zip containing the source files and extract the files. </p>
-<h1><a class="anchor" id="autotoc_md40"></a>
+<h1><a class="anchor" id="autotoc_md42"></a>
 Dependencies</h1>
 <ul>
 <li>c++17, we use std::filesystem.</li>
 <li>Windows 10. Might also work on other systems, but has not been tested. </li>
 </ul>
-<h1><a class="anchor" id="autotoc_md41"></a>
+<h1><a class="anchor" id="autotoc_md43"></a>
 Building</h1>
-<h2><a class="anchor" id="autotoc_md42"></a>
+<h2><a class="anchor" id="autotoc_md44"></a>
 Stand-alone</h2>
 <p >Open a command line at the root of the project file structure, and run </p><div class="fragment"><div class="line">mkdir build &amp;&amp; cd build</div>
 <div class="line">cmake ../SearchSECOSpider</div>
 <div class="line">cmake --build .</div>
 </div><!-- fragment --><p> This will build an executable file called <code>SearchSECOSpider</code>, which can be run. </p>
-<h3><a class="anchor" id="autotoc_md43"></a>
-Visual Studio</h3>
-<p >Open the solution file and build the project in Visual Studio 2019, with SearchSECOSpider as the startup project. The standalone project was made for testing purposes to be able to run the project, as opposed to only building a library. There are no practical uses for the standalone project apart from testing the SearchSECOSpider library.</p>
-<h2><a class="anchor" id="autotoc_md44"></a>
-Library</h2>
-<p >The spider can be built as a library using both Visual Studio 2019 and CMake. </p>
 <h3><a class="anchor" id="autotoc_md45"></a>
 Visual Studio</h3>
+<p >Open the solution file and build the project in Visual Studio 2019, with SearchSECOSpider as the startup project. The standalone project was made for testing purposes to be able to run the project, as opposed to only building a library. There are no practical uses for the standalone project apart from testing the SearchSECOSpider library.</p>
+<h2><a class="anchor" id="autotoc_md46"></a>
+Library</h2>
+<p >The spider can be built as a library using both Visual Studio 2019 and CMake. </p>
+<h3><a class="anchor" id="autotoc_md47"></a>
+Visual Studio</h3>
 <p >Open the solution file and build the Spider-Revisited project in Visual Studio 2019. The library can then be found under ../x64/Debug/libSearchSECOSpider.lib.</p>
-<h3><a class="anchor" id="autotoc_md46"></a>
+<h3><a class="anchor" id="autotoc_md48"></a>
 CMake</h3>
 <p >Make sure to have CMake <a href="https://cmake.org/">https://cmake.org/</a> installed. Open a command line at the root of the project file structure, and run </p><div class="fragment"><div class="line">mkdir build &amp;&amp; cd build</div>
 <div class="line">cmake ../libSearchSECOSpider</div>
 <div class="line">cmake --build .</div>
 </div><!-- fragment --><p> The library can then be found from the build directory under /Debug/spider.lib.</p>
-<h1><a class="anchor" id="autotoc_md47"></a>
+<h1><a class="anchor" id="autotoc_md49"></a>
 License</h1>
 <p >This project is licensed under the GNU Affero General Public License v3.0. See [LICENSE](LICENSE) for more info.</p>
 <p >This program has been developed by students from the bachelor Computer Science at Utrecht University within the Software Project course. © Copyright Utrecht University (Department of Information and Computing Sciences) </p>

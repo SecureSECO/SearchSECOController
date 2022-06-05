@@ -177,7 +177,7 @@ private:
 						   std::map<std::string, int> &authorCopiedForm, std::map<std::string, int> &authorsCopied,
 						   std::vector<std::pair<HashData *, Method>> &vulnerabilities,
 						   std::map<std::string, std::vector<std::string>> &dbProjects,
-						   std::map<std::string, std::vector<std::string>> &authorIdToName, std::ofstream &report);
+						   std::map<std::string, std::vector<std::string>> &authorIdToName, std::string &report);
 
 	/// <summary>
 	/// Prints a summary for all the matches found.

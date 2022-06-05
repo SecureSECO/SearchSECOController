@@ -193,16 +193,21 @@ void PrintMatches::printHashMatches(std::vector<HashData> &hashes, std::string d
 	{
 		hashMethods[hashes[i].hash].push_back(hashes[i]);
 	}
+	std::string matchesReport;
 	for (const auto &match : receivedHashes)
 	{
 		matches++;
 		printMatch(hashMethods[match.first], match.second, authors, authorCopiedForm, authorsCopied, vulnerabilities,
-				   dbProjects, authorIdToName, report);
+				   dbProjects, authorIdToName, matchesReport);
 	}
 
-	print::writelineToFile("\n\n", report);
-
 	printSummary(authorCopiedForm, authorsCopied, vulnerabilities, matches, hashes.size(), dbProjects, authorIdToName, projectMatches, report);
+
+	print::printAndWriteToFile("\n\n" + std::string(128, '-'), report);
+	print::printAndWriteToFile("Details of matches found", report);
+	print::printAndWriteToFile(std::string(128, '-'), report);
+	print::printAndWriteToFile(matchesReport, report);
+
 	report.close();
 }
 
@@ -306,41 +311,43 @@ void PrintMatches::printMatch(std::vector<HashData> &hashes, std::vector<Method>
 							  std::map<std::string, int> &authorCopiedForm, std::map<std::string, int> &authorsCopied,
 							  std::vector<std::pair<HashData *, Method>> &vulnerabilities,
 							  std::map<std::string, std::vector<std::string>> &dbProjects,
-							  std::map<std::string, std::vector<std::string>> &authorIdToName, std::ofstream &report)
+							  std::map<std::string, std::vector<std::string>> &authorIdToName, std::string &report)
 {
-	print::printAndWriteToFile("\n" + std::string(128, '-') + "\nHash " + hashes[0].hash + "\n" + std::string(128, '-') + "\nLOCAL",
-							   report);
+	std::string header = "Hash " + hashes[0].hash;
+	report += std::string(header.length(), '-') + "\n";
+	report += header + "\n";
+	report += std::string(header.length(), '-') + "\n\n";
+
 	for (HashData hash : hashes)
 	{
-		print::printAndWriteToFile("  *Method " + hash.functionName + " in file " + hash.fileName + " line " +
-									   std::to_string(hash.lineNumber), report);
-		print::printAndWriteToFile("   Authors of local function: ", report);
+		report += "  *Method " + hash.functionName + " in file " + hash.fileName + " line " +
+				  std::to_string(hash.lineNumber) + "\n";
+		report += "   Authors of local function: \n";
 		for (std::string s : authors[hash])
 		{
 			Utils::replace(s, INNER_DELIMITER, '\t');
-			print::printAndWriteToFile("  " + s, report);
+			report += "  " + s + "\n";
 			authorsCopied[s]++;
 		}
-		print::printAndWriteToFile("", report);
+		report += "\n";
 	}
 
-	print::printAndWriteToFile("DATABASE", report);
+	report += "DATABASE\n";
 
 	for (Method method : dbEntries)
 	{
 		std::string linkFile = method.file;
 		Utils::replace(linkFile, '\\', '/');
 
-		print::printAndWriteToFile("  *Method " + method.name + " in project " + dbProjects[method.projectID][4] +
-									   " in file " + method.file + " line " + method.lineNumber,
-								   report);
-		print::printAndWriteToFile("  URL: " + dbProjects[method.projectID][5] + "/blob/" + method.endVersionHash + "/" +
-									   linkFile + "#L" + method.lineNumber,
-								   report);
+		report += "  *Method " + method.name + " in project " + dbProjects[method.projectID][4] + " in file " +
+				  method.file + " line " + method.lineNumber + "\n";
+		report += "  URL: " + dbProjects[method.projectID][5] + "/blob/" + method.endVersionHash + "/" + linkFile +
+				  "#L" + method.lineNumber + "\n";
 
 		if (method.vulnCode != "")
 		{
-			print::printAndWriteToFile("  Method marked as vulnerable with code: " + method.vulnCode + "(https://nvd.nist.gov/vuln/detail/" + method.vulnCode + ").", report);
+			report += "  Method marked as vulnerable with code: " + method.vulnCode +
+					  "(https://nvd.nist.gov/vuln/detail/" + method.vulnCode + ").\n";
 			for (HashData hash : hashes)
 			{
 				vulnerabilities.push_back(std::pair(&hash, method));
@@ -349,20 +356,19 @@ void PrintMatches::printMatch(std::vector<HashData> &hashes, std::vector<Method>
 
 		if (method.numberOfAuthors > 0)
 		{
-			print::printAndWriteToFile("  Authors of function found in database: ", report);
+			report += "  Authors of function found in database: \n";
 
 			for (int i = 0; i < method.numberOfAuthors; i++)
 			{
 				if (authorIdToName.count(method.authors[i]) > 0)
 				{
 					authorCopiedForm[method.authors[i]]++;
-					print::printAndWriteToFile("  \t" + authorIdToName[method.authors[i]][0] + '\t' +
-												   authorIdToName[method.authors[i]][1],
-											   report);
+					report += "  \t" + authorIdToName[method.authors[i]][0] + '\t' +
+							  authorIdToName[method.authors[i]][1] + "\n";
 				}
 			}
 		}
-		print::printAndWriteToFile("", report);
+		report += "\n";
 	}
 }
 
@@ -489,8 +495,9 @@ std::ofstream PrintMatches::setupOutputReport(std::string url)
 	report.open(filename, std::ios::trunc);
 
 	auto header = "Matched the project at \"" + url + "\" against the database.";
+	print::printAndWriteToFile(std::string(header.length(), '-'), report);
 	print::printAndWriteToFile(header, report);
-	print::printAndWriteToFile(std::string(header.length(), '_') + '\n', report);
+	print::printAndWriteToFile(std::string(header.length(), '-') + '\n', report);
 
 	return report;
 }

@@ -169,6 +169,42 @@ void Command::uploadProject(Flags flags, std::string jobid, std::string &jobTime
 	}
 	warnAndReturnIfErrno("Error downloading project, moving on to the next job.");
 
+	// Retreive the vulnerability commits data.
+	std::vector<std::tuple<std::string, std::string, std::map<std::string, std::vector<int>>>> vulnCommits =
+		moduleFacades::getVulnCommits(DOWNLOAD_LOCATION);
+
+	print::log(std::to_string(vulnCommits.size()) + " vulnerabilities found in project.", __FILE__, __LINE__);
+
+	for(std::tuple<std::string, std::string, std::map<std::string, std::vector<int>>> vulnCommit : vulnCommits)
+	{
+		print::debug("Uploading vulnerability: " + std::get<1>(vulnCommit), __FILE__, __LINE__);
+		if (env->commandString == "start")
+		{
+			if (stopped)
+			{
+				DatabaseRequests::finishJob(jobid, jobTime, FinishReason::timeout,
+											"Job timed out on vulnerability: " + std::get<1>(vulnCommit) + ".", env);
+				return;
+			}
+
+			DatabaseRequests::updateJob(jobid, jobTime, env);
+
+			// If update was unsuccessful or unexpected,
+			if (errno != 0)
+			{
+				// stop the current job.
+				DatabaseRequests::finishJob(jobid, jobTime, FinishReason::jobUpdate,
+											"Error receiving job update from database: " + std::to_string(errno) + ".",
+											env);
+				return;
+			}
+			*startTime = std::chrono::duration_cast<std::chrono::milliseconds>(
+							 std::chrono::system_clock::now().time_since_epoch())
+							 .count();
+		}
+		uploadPartialProject(flags, std::get<0>(vulnCommit), std::get<2>(vulnCommit), std::get<1>(vulnCommit), env, s, meta);
+	}
+
 	// Get tags of previous versions.
 	std::vector<std::tuple<std::string, long long, std::string>> tags =
 		moduleFacades::getRepositoryTags(DOWNLOAD_LOCATION);
@@ -349,27 +385,32 @@ void Command::downloadTagged(Spider *s, Flags flags, std::string prevTag, std::s
 }
 
 void Command::uploadPartialProject(Flags flags, std::string version, std::map<std::string, std::vector<int>> lines,
-								   std::string vulnCode, EnvironmentDTO *env)
+								   std::string vulnCode, EnvironmentDTO *env, Spider *s, ProjectMetaData meta)
 {
-	// Get project metadata.
-	ProjectMetaData meta = moduleFacades::getProjectMetadata(flags.mandatoryArgument, flags);
-
-	warnAndReturnIfErrno("Error getting project meta data, moving on to the next job.");
-
-	if (flags.flag_branch == "")
+	if (meta.id == "")
 	{
-		// Set default branch.
-		flags.flag_branch = meta.defaultBranch;
+		// Get project metadata.
+		ProjectMetaData meta = moduleFacades::getProjectMetadata(flags.mandatoryArgument, flags);
+		warnAndReturnIfErrno("Error getting project meta data, moving on to the next job.");
+
+		if (flags.flag_branch == "")
+		{
+			// Set default branch.
+			flags.flag_branch = meta.defaultBranch;
+		}
 	}
 
-	// Initialize spider.
-	Spider *s = moduleFacades::setupSpider(flags.mandatoryArgument, flags);
-	warnAndReturnIfErrno("No suitable Spider.");
+	if (s == nullptr)
+	{
+		// Initialize spider.
+		Spider *s = moduleFacades::setupSpider(flags.mandatoryArgument, flags);
+		warnAndReturnIfErrno("No suitable Spider.");
 
-	// Download project.
-	moduleFacades::downloadRepo(s, flags.mandatoryArgument, flags, DOWNLOAD_LOCATION);
+		// Download project.
+		moduleFacades::downloadRepo(s, flags.mandatoryArgument, flags, DOWNLOAD_LOCATION);
 
-	warnAndReturnIfErrno("Error downloading project.");
+		warnAndReturnIfErrno("Error downloading project.");
+	}
 
 	moduleFacades::switchVersion(s, version, DOWNLOAD_LOCATION);
 
@@ -406,6 +447,9 @@ void Command::uploadPartialProject(Flags flags, std::string version, std::map<st
 		print::warn("Error retrieving author data.", __FILE__, __LINE__);
 		return;
 	}
+
+	meta.versionTime = moduleFacades::getVersionTime(version, DOWNLOAD_LOCATION);
+	meta.versionHash = version;
 
 	print::debug(DatabaseRequests::uploadHashes(hashes, meta, authorData, env), __FILE__, __LINE__);
 }

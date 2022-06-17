@@ -81,6 +81,26 @@ std::vector<std::tuple<std::string, long long, std::string>> moduleFacades::getR
 	return tags;
 }
 
+std::vector<std::tuple<std::string, std::string, std::map<std::string, std::vector<int>>>>
+moduleFacades::getVulnCommits(std::string downloadPath)
+{
+	print::debug("Calling the spider to get vulnerability commits", __FILE__, __LINE__);
+
+	std::vector<std::tuple<std::string, std::string, std::map<std::string, std::vector<int>>>> commits =
+		RunSpider::getVulns(downloadPath);
+
+	return commits;
+}
+
+std::string moduleFacades::getVersionTime(std::string version, std::string downloadPath)
+{
+	print::debug("Calling the spider to get version time", __FILE__, __LINE__);
+
+	std::string versionTime = RunSpider::getVersionTime(version, downloadPath);
+
+	return versionTime;
+}
+
 std::vector<HashData> moduleFacades::parseRepository(std::string repository, Flags flags)
 {
 	print::debug("Calling the parser to parse a repository", __FILE__, __LINE__);

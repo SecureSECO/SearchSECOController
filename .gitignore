@@ -351,3 +351,5 @@ reports/
 
 #.env file
 .env
+
+*/out/

@@ -64,7 +64,7 @@ protected:
 	/// <param name="lines"> The files with lines to upload. </param>
 	/// <param name="vulnCode"> The vulnerability code to add to the methods. </param>
 	void uploadPartialProject(Flags flags, std::string version, std::map<std::string, std::vector<int>> lines,
-							  std::string vulnCode, EnvironmentDTO *env);
+							  std::string vulnCode, EnvironmentDTO *env, Spider* s = nullptr, ProjectMetaData meta = ProjectMetaData());
 
 	/// <summary>
 	/// Processes project and compares it to the database.

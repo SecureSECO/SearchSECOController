@@ -36,7 +36,7 @@ var searchData=
   ['getprojectrequest_33',['getProjectRequest',['../classNetworkUtils.html#a6f786a2399f82c95b506d70f633a44ab',1,'NetworkUtils']]],
   ['getprojectsrequest_34',['getProjectsRequest',['../classNetworkUtils.html#aad766762e0f15e556a75c46f53ff8ff7',1,'NetworkUtils']]],
   ['getprojectversion_35',['getProjectVersion',['../classDatabaseRequests.html#a2f67764a9fd8e8afcd1809946ae28813',1,'DatabaseRequests']]],
-  ['getrequest_36',['getRequest',['../classGithubInterface.html#a8cec25684c9a30d2930ec0fbe8a7a65b',1,'GithubInterface::getRequest(std::string query)'],['../classGithubInterface.html#ae946ef518bd4ee2a3d786d3e2e80c91e',1,'GithubInterface::getRequest(std::string query, GithubErrorThrowHandler *handler)'],['../classGithubInterface.html#a23c49204e35a2952844cee0a825f090f',1,'GithubInterface::getRequest(std::string query, GithubErrorThrowHandler *handler, JSONErrorHandler *jsonHandler)']]],
+  ['getrequest_36',['getRequest',['../classGithubInterface.html#ae946ef518bd4ee2a3d786d3e2e80c91e',1,'GithubInterface::getRequest(std::string query, GithubErrorThrowHandler *handler)'],['../classGithubInterface.html#a23c49204e35a2952844cee0a825f090f',1,'GithubInterface::getRequest(std::string query, GithubErrorThrowHandler *handler, JSONErrorHandler *jsonHandler)'],['../classGithubInterface.html#a8cec25684c9a30d2930ec0fbe8a7a65b',1,'GithubInterface::getRequest(std::string query)']]],
   ['getspider_37',['getSpider',['../classRunSpider.html#a327760bc988692120f839dbffa743dea',1,'RunSpider']]],
   ['gettag_38',['getTag',['../classNode.html#a87b85a5b59e472377a3873e826f91386',1,'Node::getTag()'],['../classTagMap.html#a8a73472807d74d4c7aad45243bfad543',1,'TagMap::getTag()']]],
   ['gettags_39',['getTags',['../classRunSpider.html#a70d55e729260c864e730cd7fd1a856b5',1,'RunSpider']]],
@@ -44,5 +44,7 @@ var searchData=
   ['gettree_41',['getTree',['../classXmlParser.html#a6e1c5aecb8a7b0ca6f06c61c33050a10',1,'XmlParser']]],
   ['getunchangedfiles_42',['getUnchangedFiles',['../classGitSpider.html#a5442b86a1fcbf644f833cd2b26428b67',1,'GitSpider::getUnchangedFiles()'],['../classSpider.html#ab5f46cb06b57c0ac939c56dbabae4db7',1,'Spider::getUnchangedFiles()']]],
   ['getupdatejobrequest_43',['getUpdateJobRequest',['../classNetworkUtils.html#a3709dec992932737718eda09c237d1d3',1,'NetworkUtils']]],
-  ['getuploadcrawlrequest_44',['getUploadCrawlRequest',['../classNetworkUtils.html#aa1869ef6bf44531e316096fa5ad4d411',1,'NetworkUtils']]]
+  ['getuploadcrawlrequest_44',['getUploadCrawlRequest',['../classNetworkUtils.html#aa1869ef6bf44531e316096fa5ad4d411',1,'NetworkUtils']]],
+  ['getversiontime_45',['getVersionTime',['../classRunSpider.html#a7c606a12fc6fd46a3b261afe22936933',1,'RunSpider']]],
+  ['getvulns_46',['getVulns',['../classRunSpider.html#a3182b7040cd7926dad85d60412c50619',1,'RunSpider']]]
 ];

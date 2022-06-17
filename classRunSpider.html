@@ -112,6 +112,12 @@ Static Public Member Functions</h2></td></tr>
 <tr class="memitem:a70d55e729260c864e730cd7fd1a856b5"><td class="memItemLeft" align="right" valign="top">static std::vector&lt; std::tuple&lt; std::string, long long, std::string &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRunSpider.html#a70d55e729260c864e730cd7fd1a856b5">getTags</a> (std::string const &amp;filePath)</td></tr>
 <tr class="memdesc:a70d55e729260c864e730cd7fd1a856b5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets tags from downloaded repository.  <a href="classRunSpider.html#a70d55e729260c864e730cd7fd1a856b5">More...</a><br /></td></tr>
 <tr class="separator:a70d55e729260c864e730cd7fd1a856b5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3182b7040cd7926dad85d60412c50619"><td class="memItemLeft" align="right" valign="top">static std::vector&lt; std::tuple&lt; std::string, std::string, std::map&lt; std::string, std::vector&lt; int &gt; &gt; &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRunSpider.html#a3182b7040cd7926dad85d60412c50619">getVulns</a> (std::string const &amp;filePath)</td></tr>
+<tr class="memdesc:a3182b7040cd7926dad85d60412c50619"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the commits related to vulnearbilities.  <a href="classRunSpider.html#a3182b7040cd7926dad85d60412c50619">More...</a><br /></td></tr>
+<tr class="separator:a3182b7040cd7926dad85d60412c50619"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7c606a12fc6fd46a3b261afe22936933"><td class="memItemLeft" align="right" valign="top">static std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRunSpider.html#a7c606a12fc6fd46a3b261afe22936933">getVersionTime</a> (std::string version, std::string const &amp;filePath)</td></tr>
+<tr class="memdesc:a7c606a12fc6fd46a3b261afe22936933"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the time of a version.  <a href="classRunSpider.html#a7c606a12fc6fd46a3b261afe22936933">More...</a><br /></td></tr>
+<tr class="separator:a7c606a12fc6fd46a3b261afe22936933"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1ccbe6265421e96f5b0990901910254a"><td class="memItemLeft" align="right" valign="top">static std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRunSpider.html#a1ccbe6265421e96f5b0990901910254a">getCommitHash</a> (std::string const &amp;tag, std::string const &amp;filePath)</td></tr>
 <tr class="memdesc:a1ccbe6265421e96f5b0990901910254a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns commit hash of a tag or HEAD.  <a href="classRunSpider.html#a1ccbe6265421e96f5b0990901910254a">More...</a><br /></td></tr>
 <tr class="separator:a1ccbe6265421e96f5b0990901910254a"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -337,6 +343,87 @@ Static Public Member Functions</h2></td></tr>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>List of tags and their UNIX timestamp. Sorted from newest to oldest. </dd></dl>
+
+</div>
+</div>
+<a id="a7c606a12fc6fd46a3b261afe22936933" name="a7c606a12fc6fd46a3b261afe22936933"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7c606a12fc6fd46a3b261afe22936933">&#9670;&nbsp;</a></span>getVersionTime()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::string RunSpider::getVersionTime </td>
+          <td>(</td>
+          <td class="paramtype">std::string&#160;</td>
+          <td class="paramname"><em>version</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::string const &amp;&#160;</td>
+          <td class="paramname"><em>filePath</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Get the time of a version. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">version</td><td>The version to get the time for. </td></tr>
+    <tr><td class="paramname">filePath</td><td>Location of the repository. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>The time of the version. </dd></dl>
+
+</div>
+</div>
+<a id="a3182b7040cd7926dad85d60412c50619" name="a3182b7040cd7926dad85d60412c50619"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3182b7040cd7926dad85d60412c50619">&#9670;&nbsp;</a></span>getVulns()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt; std::tuple&lt; std::string, std::string, std::map&lt; std::string, std::vector&lt; int &gt; &gt; &gt; &gt; RunSpider::getVulns </td>
+          <td>(</td>
+          <td class="paramtype">std::string const &amp;&#160;</td>
+          <td class="paramname"><em>filePath</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Gets the commits related to vulnearbilities. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">filePath</td><td>Location of repository. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>The commits fixing a vulnerability with their code and lines. </dd></dl>
 
 </div>
 </div>

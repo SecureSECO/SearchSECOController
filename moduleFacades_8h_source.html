@@ -127,13 +127,16 @@ $(document).ready(function(){initNavTree('moduleFacades_8h_source.html',''); ini
 <div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span> </div>
 <div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span>    std::vector&lt;std::tuple&lt;std::string, long long, std::string&gt;&gt; getRepositoryTags(std::string downloadPath);</div>
 <div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span> </div>
-<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span>    </div>
-<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span>    std::vector&lt;HashData&gt; parseRepository(std::string repository, <a class="code hl_class" href="classFlags.html">Flags</a> flags);</div>
-<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span> </div>
-<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span>    <a class="code hl_struct" href="structProjectMetaData.html">ProjectMetaData</a> getProjectMetadata(std::string url, <a class="code hl_class" href="classFlags.html">Flags</a> flags);</div>
-<div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span> </div>
-<div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span>    <a class="code hl_struct" href="structCrawlData.html">CrawlData</a> crawlRepositories(<span class="keywordtype">int</span> startId, <a class="code hl_class" href="classFlags.html">Flags</a> flags);</div>
-<div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span>};</div>
+<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span>    std::vector&lt;std::tuple&lt;std::string, std::string, std::map&lt;std::string, std::vector&lt;int&gt;&gt;&gt;&gt; getVulnCommits(std::string downloadPath);</div>
+<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span> </div>
+<div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span>    std::string getVersionTime(std::string version, std::string downloadPath);</div>
+<div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span> </div>
+<div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span>    std::vector&lt;HashData&gt; parseRepository(std::string repository, <a class="code hl_class" href="classFlags.html">Flags</a> flags);</div>
+<div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span> </div>
+<div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span>    <a class="code hl_struct" href="structProjectMetaData.html">ProjectMetaData</a> getProjectMetadata(std::string url, <a class="code hl_class" href="classFlags.html">Flags</a> flags);</div>
+<div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span> </div>
+<div class="line"><a id="l00123" name="l00123"></a><span class="lineno">  123</span>    <a class="code hl_struct" href="structCrawlData.html">CrawlData</a> crawlRepositories(<span class="keywordtype">int</span> startId, <a class="code hl_class" href="classFlags.html">Flags</a> flags);</div>
+<div class="line"><a id="l00124" name="l00124"></a><span class="lineno">  124</span>};</div>
 <div class="ttc" id="aclassFlags_html"><div class="ttname"><a href="classFlags.html">Flags</a></div><div class="ttdef"><b>Definition:</b> flags.h:16</div></div>
 <div class="ttc" id="aclassSpider_html"><div class="ttname"><a href="classSpider.html">Spider</a></div><div class="ttdef"><b>Definition:</b> Spider.h:17</div></div>
 <div class="ttc" id="astructCrawlData_html"><div class="ttname"><a href="structCrawlData.html">CrawlData</a></div><div class="ttdoc">Data which is returned when crawling. First value in the pair is the URL found, second is the importa...</div><div class="ttdef"><b>Definition:</b> CrawlData.h:20</div></div>

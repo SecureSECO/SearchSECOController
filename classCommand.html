@@ -121,9 +121,9 @@ Protected Member Functions</h2></td></tr>
 <tr class="memitem:aace86366b035e7a5fd9ca21ca0d6dee9"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCommand.html#aace86366b035e7a5fd9ca21ca0d6dee9">uploadProject</a> (<a class="el" href="classFlags.html">Flags</a> flags, std::string jobid, std::string &amp;jobTime, long long *startTime, <a class="el" href="classEnvironmentDTO.html">EnvironmentDTO</a> *env)</td></tr>
 <tr class="memdesc:aace86366b035e7a5fd9ca21ca0d6dee9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Processes local project and uploads extracted methods to the database.  <a href="classCommand.html#aace86366b035e7a5fd9ca21ca0d6dee9">More...</a><br /></td></tr>
 <tr class="separator:aace86366b035e7a5fd9ca21ca0d6dee9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a96b702a16bb38d74b42c43c1514da91e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCommand.html#a96b702a16bb38d74b42c43c1514da91e">uploadPartialProject</a> (<a class="el" href="classFlags.html">Flags</a> flags, std::string version, std::map&lt; std::string, std::vector&lt; int &gt; &gt; lines, std::string vulnCode, <a class="el" href="classEnvironmentDTO.html">EnvironmentDTO</a> *env)</td></tr>
-<tr class="memdesc:a96b702a16bb38d74b42c43c1514da91e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Processes local project and uploads the specified extracted methods to the database with the vulnerability code.  <a href="classCommand.html#a96b702a16bb38d74b42c43c1514da91e">More...</a><br /></td></tr>
-<tr class="separator:a96b702a16bb38d74b42c43c1514da91e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a57d124829cff78029ae82403caa1dcfb"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCommand.html#a57d124829cff78029ae82403caa1dcfb">uploadPartialProject</a> (<a class="el" href="classFlags.html">Flags</a> flags, std::string version, std::map&lt; std::string, std::vector&lt; int &gt; &gt; lines, std::string vulnCode, <a class="el" href="classEnvironmentDTO.html">EnvironmentDTO</a> *env, <a class="el" href="classSpider.html">Spider</a> *s=nullptr, <a class="el" href="structProjectMetaData.html">ProjectMetaData</a> meta=<a class="el" href="structProjectMetaData.html">ProjectMetaData</a>())</td></tr>
+<tr class="memdesc:a57d124829cff78029ae82403caa1dcfb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Processes local project and uploads the specified extracted methods to the database with the vulnerability code.  <a href="classCommand.html#a57d124829cff78029ae82403caa1dcfb">More...</a><br /></td></tr>
+<tr class="separator:a57d124829cff78029ae82403caa1dcfb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a77c3edb59fb21b4c3865359263537125"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCommand.html#a77c3edb59fb21b4c3865359263537125">checkProject</a> (<a class="el" href="classFlags.html">Flags</a> flags, <a class="el" href="classEnvironmentDTO.html">EnvironmentDTO</a> *env)</td></tr>
 <tr class="memdesc:a77c3edb59fb21b4c3865359263537125"><td class="mdescLeft">&#160;</td><td class="mdescRight">Processes project and compares it to the database.  <a href="classCommand.html#a77c3edb59fb21b4c3865359263537125">More...</a><br /></td></tr>
 <tr class="separator:a77c3edb59fb21b4c3865359263537125"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -295,8 +295,8 @@ std::string&#160;</td><td class="memItemRight" valign="bottom"><b>helpMessageTex
 
 </div>
 </div>
-<a id="a96b702a16bb38d74b42c43c1514da91e" name="a96b702a16bb38d74b42c43c1514da91e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a96b702a16bb38d74b42c43c1514da91e">&#9670;&nbsp;</a></span>uploadPartialProject()</h2>
+<a id="a57d124829cff78029ae82403caa1dcfb" name="a57d124829cff78029ae82403caa1dcfb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a57d124829cff78029ae82403caa1dcfb">&#9670;&nbsp;</a></span>uploadPartialProject()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -332,7 +332,19 @@ std::string&#160;</td><td class="memItemRight" valign="bottom"><b>helpMessageTex
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype"><a class="el" href="classEnvironmentDTO.html">EnvironmentDTO</a> *&#160;</td>
-          <td class="paramname"><em>env</em>&#160;</td>
+          <td class="paramname"><em>env</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classSpider.html">Spider</a> *&#160;</td>
+          <td class="paramname"><em>s</em> = <code>nullptr</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structProjectMetaData.html">ProjectMetaData</a>&#160;</td>
+          <td class="paramname"><em>meta</em> = <code><a class="el" href="structProjectMetaData.html">ProjectMetaData</a>()</code>&#160;</td>
         </tr>
         <tr>
           <td></td>

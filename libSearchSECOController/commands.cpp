@@ -205,6 +205,8 @@ void Command::uploadProject(Flags flags, std::string jobid, std::string &jobTime
 		uploadPartialProject(flags, std::get<0>(vulnCommit), std::get<2>(vulnCommit), std::get<1>(vulnCommit), env, s, meta);
 	}
 
+	moduleFacades::switchVersion(s, flags.flag_branch, DOWNLOAD_LOCATION);
+
 	// Get tags of previous versions.
 	std::vector<std::tuple<std::string, long long, std::string>> tags =
 		moduleFacades::getRepositoryTags(DOWNLOAD_LOCATION);

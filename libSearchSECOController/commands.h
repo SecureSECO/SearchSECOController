@@ -76,8 +76,8 @@ private:
 	/// <summary>
 	/// Used by version processing. Will parse and upload the latest version of the project.
 	/// </summary>
-	void parseLatest(Spider *s, ProjectMetaData &meta, std::string jobid, std::string &jobTime, Flags &flags,
-					 EnvironmentDTO *env);
+	void parseLatest(Spider *s, ProjectMetaData &meta, std::string startingTime, std::string jobid, std::string &jobTime,
+				   Flags &flags, EnvironmentDTO *env);
 
 	/// <summary>
 	/// Loops through all tags of a project and calls downloadTagged for each of them.

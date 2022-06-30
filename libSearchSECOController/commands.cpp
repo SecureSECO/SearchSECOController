@@ -153,10 +153,10 @@ void Command::uploadProject(Flags flags, std::string jobid, std::string &jobTime
 		return;
 	}
 
-	meta.versionHash = moduleFacades::currentVersion(s, DOWNLOAD_LOCATION);
-
 	// Download project.
 	moduleFacades::downloadRepo(s, flags.mandatoryArgument, flags, DOWNLOAD_LOCATION);	
+
+	meta.versionHash = moduleFacades::currentVersion(s, DOWNLOAD_LOCATION);
 
 	if (errno != 0)
 	{
@@ -238,7 +238,7 @@ void Command::uploadProject(Flags flags, std::string jobid, std::string &jobTime
 
 	if (std::stoll(meta.versionTime) > startingTime && tagc == 0)
 	{
-		parseLatest(s, meta, jobid, jobTime, flags, env);
+		parseLatest(s, meta, startingTime == 0 ? "" : std::to_string(startingTime), jobid, jobTime, flags, env);
 	}
 	else if (tagc != 0)
 	{
@@ -252,7 +252,7 @@ void Command::uploadProject(Flags flags, std::string jobid, std::string &jobTime
 	}
 }
 
-void Command::parseLatest(Spider *s, ProjectMetaData &meta, std::string jobid, std::string &jobTime, Flags &flags,
+void Command::parseLatest(Spider *s, ProjectMetaData &meta, std::string startingTime, std::string jobid, std::string &jobTime, Flags &flags,
 						  EnvironmentDTO *env)
 {
 	print::debug("No tags found for project, just looking at HEAD.", __FILE__, __LINE__);
@@ -266,7 +266,7 @@ void Command::parseLatest(Spider *s, ProjectMetaData &meta, std::string jobid, s
 		return;
 	}
 
-	print::debug(DatabaseRequests::uploadHashes(hashes, meta, authorData, env), __FILE__, __LINE__);
+	print::debug(DatabaseRequests::uploadHashes(hashes, meta, authorData, env, startingTime), __FILE__, __LINE__);
 	if (errno != 0)
 	{
 		DatabaseRequests::finishJob(jobid, jobTime, FinishReason::uploadHashes, "Error uploading hashes to database: " + std::to_string(errno) + ".", env);

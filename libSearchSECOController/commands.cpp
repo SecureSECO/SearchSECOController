@@ -173,6 +173,8 @@ void Command::uploadProject(Flags flags, std::string jobid, std::string &jobTime
 	std::vector<std::tuple<std::string, std::string, std::map<std::string, std::vector<int>>>> vulnCommits =
 		moduleFacades::getVulnCommits(DOWNLOAD_LOCATION);
 
+	warnAndReturnIfErrno("Error retrieving vulnerable commits, moving on to the next job.");
+
 	print::log(std::to_string(vulnCommits.size()) + " vulnerabilities found in project.", __FILE__, __LINE__);
 
 	for(std::tuple<std::string, std::string, std::map<std::string, std::vector<int>>> vulnCommit : vulnCommits)
@@ -203,6 +205,7 @@ void Command::uploadProject(Flags flags, std::string jobid, std::string &jobTime
 							 .count();
 		}
 		uploadPartialProject(flags, std::get<0>(vulnCommit), std::get<2>(vulnCommit), std::get<1>(vulnCommit), env, s, meta);
+		errno = 0;
 	}
 
 	moduleFacades::switchVersion(s, flags.flag_branch, DOWNLOAD_LOCATION);
@@ -417,6 +420,8 @@ void Command::uploadPartialProject(Flags flags, std::string version, std::map<st
 	moduleFacades::switchVersion(s, version, DOWNLOAD_LOCATION);
 
 	moduleFacades::trimFiles(s, lines, DOWNLOAD_LOCATION);
+
+	warnAndReturnIfErrno("Error in trimming files.");
 
 	// Parse all parseable files.
 	std::vector<HashData> hashes = moduleFacades::parseRepository(DOWNLOAD_LOCATION, flags);

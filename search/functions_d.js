@@ -8,7 +8,7 @@ var searchData=
   ['parsedata_5',['parseData',['../classJavaScriptAntlrImplementation.html#a424eb1417fb064ac2384a764642a3d92',1,'JavaScriptAntlrImplementation::parseData()'],['../classLanguageBase.html#a1f5786db5563a3025b467c351a2b8f35',1,'LanguageBase::parseData()'],['../classPython3AntlrImplementation.html#a80e242ba26951862b1dc233dabf8f5d9',1,'Python3AntlrImplementation::parseData()']]],
   ['parsedir_6',['parseDir',['../classAntlrParsing.html#ac49dd985c18c5affae7cf01782646d9f',1,'AntlrParsing']]],
   ['parsexml_7',['parseXML',['../classXmlParser.html#ae5492de9b2eaf71f59409ea9ea8f75f2',1,'XmlParser']]],
-  ['printhashmatches_8',['printHashMatches',['../classPrintMatches.html#a46b8d705b92ea86ac54718bbf6287f2e',1,'PrintMatches']]],
+  ['printhashmatches_8',['printHashMatches',['../classPrintMatches.html#a946bec2936b773107614035b2ae24550',1,'PrintMatches']]],
   ['printhelpmessage_9',['printHelpMessage',['../classCommandFactory.html#a677ffe04db4f019d40005cb7c112bf9f',1,'CommandFactory']]],
   ['projectmetadata_10',['ProjectMetaData',['../structProjectMetaData.html#a0727750d9f9bb0b647173582af856ba4',1,'ProjectMetaData']]]
 ];

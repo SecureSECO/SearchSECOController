@@ -1,0 +1,14 @@
+name: SearchSECO checking workflow
+on: [workflow_call]
+jobs:
+  Check:
+    runs-on: ubuntu-latest
+    container:
+        image: searchseco/controller
+        env:
+            github_token: ${{ secrets.GITHUB_TOKEN }}
+            worker_name: check-action:${{ github.repository }}
+        options: --entrypoint ""
+    steps:
+      - name: Checkupload
+        run: /controller/build/searchseco checkupload https://github.com/${{ github.repository }} -b ${{ github.ref_name }}

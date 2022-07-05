@@ -1,0 +1,5 @@
+name: Checking pipeline
+on: [pull_request]
+jobs:
+  Check:
+    uses: SecureSECO/SearchSECOController/.github/workflows/checking.yml@development

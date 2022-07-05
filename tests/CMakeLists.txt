@@ -30,8 +30,8 @@ add_executable(${TEST_NAME}
   regexTests.cpp
   databaseAPIMock.h
   databaseAPIMock.cpp
-  integrationTestsCrawler.cpp
-  integrationTestsDatabaseAPI.cpp
+  #integrationTestsCrawler.cpp
+  #integrationTestsDatabaseAPI.cpp
   integrationTestsParser.cpp
   integrationTestsSpider.cpp
   #systemTestsUtils.h

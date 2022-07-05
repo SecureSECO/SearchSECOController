@@ -64,6 +64,14 @@ namespace moduleFacades
 	void switchVersion(Spider *s, std::string tag, std::string repository);
 
 	/// <summary>
+	/// Trims the local files to only keep the specified ones.
+	/// </summary>
+	/// <param name="s"> Specific spider to use. </param>
+	/// <param name="lines"> The files to keep. </param>
+	/// <param name="repository"> Local path where project is stored. </param>
+	void trimFiles(Spider *s, std::map<std::string, std::vector<int>> lines, std::string repository);
+
+	/// <summary>
 	/// Extracts author data from locally stored project.
 	/// </summary>
 	/// <param name="s"> Specific spider to use. </param>
@@ -84,7 +92,21 @@ namespace moduleFacades
 	/// </summary>
 	std::vector<std::tuple<std::string, long long, std::string>> getRepositoryTags(std::string downloadPath);
 
-	
+	/// <summary>
+	/// Retrieve commits that fix a vulnerability.
+	/// </summary>
+	/// <param name="downloadPath"> The location of the git files. </param>
+	/// <returns> The vulnerabilities with their commit and lines. </returns>
+	std::vector<std::tuple<std::string, std::string, std::map<std::string, std::vector<int>>>> getVulnCommits(std::string downloadPath);
+
+	/// <summary>
+	/// Get the time of a version.
+	/// </summary>
+	/// <param name="version"> The version to get the time for. </param>
+	/// <param name="downloadPath"> The location of the git files. </param>
+	/// <returns> The time of the version. </returns>
+	std::string getVersionTime(std::string version, std::string downloadPath);
+
 	/// <summary>
 	/// Will call the parser to parse the given repository.
 	/// </summary>

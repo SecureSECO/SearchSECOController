@@ -9,6 +9,7 @@ Utrecht University within the Software Project course.
 #include "networking.h"
 #include "print.h"
 #include "utils.h"
+#include <set>
 
 std::string DatabaseRequests::uploadHashes(std::vector<HashData> &hashes, 
 	ProjectMetaData metaData, 
@@ -66,11 +67,11 @@ std::string DatabaseRequests::getAuthor(const std::map<std::string, int> &author
 	return execRequest(DATABASE_GET_AUTHORS_BY_ID, rawData, dataSize, env);
 }
 
-std::string DatabaseRequests::getProjectData(const std::map<std::pair<std::string, std::string>, int> &project,
+std::string DatabaseRequests::getProjectData(const std::set<std::pair<std::string, std::string>> &projects,
 	EnvironmentDTO *env)
 {
 	int dataSize = 0;
-	const char* rawData = NetworkUtils::getProjectsRequest(project, dataSize);
+	const char* rawData = NetworkUtils::getProjectsRequest(projects, dataSize);
 
 	return execRequest(DATABASE_GET_PROJECT_DATA, rawData, dataSize, env);
 }
@@ -111,19 +112,32 @@ std::string DatabaseRequests::getNextJob(EnvironmentDTO* env)
 	return execRequest(DATABASE_GET_NEXT_JOB, nullptr, 0, env);
 }
 
+void DatabaseRequests::updateJob(std::string jobid, std::string &jobTime, EnvironmentDTO *env)
+{
+	int dataSize = 0;
+	const char *rawData = NetworkUtils::getUpdateJobRequest(jobid, jobTime, dataSize);
+	jobTime = execRequest(DATABASE_UPDATE_JOB, rawData, dataSize, env);
+}
+
+void DatabaseRequests::finishJob(std::string jobid, std::string jobTime, FinishReason code, std::string reason, EnvironmentDTO *env)
+{
+	if (env->commandString == "start" && errno != HANDLED_ERRNO)
+	{
+		int dataSize = 0;
+		const char *rawData = NetworkUtils::getFinishJobRequest(jobid, jobTime, code, reason, dataSize);
+		errno = 0;
+		execRequest(DATABASE_FINISH_JOB, rawData, dataSize, env);
+		if (errno == 0)
+		{
+			errno = HANDLED_ERRNO;
+		}
+	}
+}
+
 std::string DatabaseRequests::getIPs(EnvironmentDTO *env)
 {
 	std::string result = execRequest(DATABASE_GET_IPS, nullptr, 0, env);
 	return result;
-}
-
-std::string DatabaseRequests::addJobs(
-	const std::vector<std::string>& jobs,
-	EnvironmentDTO *env)
-{
-	int dataSize = 0;
-	const char* rawData = NetworkUtils::getJobsRequest(jobs, dataSize);
-	return execRequest(DATABASE_ADD_JOB, rawData, dataSize, env);
 }
 
 std::string DatabaseRequests::addCrawledJobs(
@@ -155,8 +169,7 @@ std::string DatabaseRequests::execRequest(
 	// Then we wait for the output that the API gives us.
 	std::string output = networkHandler->receiveData();
 
-	// Deleting the data we send and closing the connection.
-	delete[] rawData;
+	// Close the connection.
 	delete networkHandler;
 
 	// Handle the response code.
@@ -177,8 +190,19 @@ std::string DatabaseRequests::execRequest(
 		std::this_thread::sleep_for(
 			std::chrono::milliseconds(waitFor)
 			);
+
+		networkHandler = startConnection(env);
+		networkHandler->sendData(requestType);
+		networkHandler->sendData(rawData, dataSize);
+		output = networkHandler->receiveData();
+		delete networkHandler;
+
+		// Handle the response code.
 		tuple = checkResponseCode(output, env->commandString);
 	}
+
+	// Deleting the data we send.
+	delete[] rawData;
 
 	if (!std::get<0>(tuple)) 
 	{
@@ -201,6 +225,7 @@ std::tuple<bool, std::string> DatabaseRequests::checkResponseCode(std::string da
 	if (statusCode == "200") 
 	{
 		print::debug("Database request successful", __FILE__, __LINE__);
+		errno = 0;
 		return std::make_tuple(true, info);
 	}
 	else if (statusCode == "400") 
@@ -209,6 +234,9 @@ std::tuple<bool, std::string> DatabaseRequests::checkResponseCode(std::string da
 		{
 			print::warn("Sent bad request to database (error 400)", 
 				__FILE__, __LINE__);
+			
+			// Signal error but continue.
+			errno = 400;
 			return std::make_tuple(true, info);
 		}
 		error::errDBBadRequest(info, __FILE__, __LINE__);
@@ -216,9 +244,12 @@ std::tuple<bool, std::string> DatabaseRequests::checkResponseCode(std::string da
 	else if (statusCode == "500") 
 	{
 		if (command == "start")
-		{
+		{			
 			print::warn("Internal error occurred in the database API (error 500)", 
 				__FILE__, __LINE__);
+			
+			// Signal error but continue.
+			errno = 500;
 			return std::make_tuple(false, info);
 		}
 		error::errDBInternalError(info, __FILE__, __LINE__);
@@ -229,6 +260,9 @@ std::tuple<bool, std::string> DatabaseRequests::checkResponseCode(std::string da
 		{
 			print::warn("Database responded in an unexpected way", 
 				__FILE__, __LINE__);
+			
+			// Signal error but continue.
+			errno = EDOM;
 			return std::make_tuple(false, info);
 		}
 		error::errDBUnknownResponse(__FILE__, __LINE__);

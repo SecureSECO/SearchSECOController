@@ -49,6 +49,15 @@ void moduleFacades::switchVersion(Spider *s, std::string tag, std::string reposi
 	print::loguruResetThreadName();
 }
 
+void moduleFacades::trimFiles(Spider *s, std::map<std::string, std::vector<int>> lines, std::string repository)
+{
+	print::debug("Calling the spider to trim the files", __FILE__, __LINE__);
+
+	return RunSpider::trimFiles(s, lines, repository);
+
+	print::loguruResetThreadName();
+}
+
 AuthorData moduleFacades::getAuthors(Spider *s, std::string repository)
 {
 	print::debug("Calling the spider to retrieve author data", __FILE__, __LINE__);
@@ -70,6 +79,26 @@ std::vector<std::tuple<std::string, long long, std::string>> moduleFacades::getR
 	std::vector<std::tuple<std::string, long long, std::string>> tags = RunSpider::getTags(downloadPath);
 
 	return tags;
+}
+
+std::vector<std::tuple<std::string, std::string, std::map<std::string, std::vector<int>>>>
+moduleFacades::getVulnCommits(std::string downloadPath)
+{
+	print::debug("Calling the spider to get vulnerability commits", __FILE__, __LINE__);
+
+	std::vector<std::tuple<std::string, std::string, std::map<std::string, std::vector<int>>>> commits =
+		RunSpider::getVulns(downloadPath);
+
+	return commits;
+}
+
+std::string moduleFacades::getVersionTime(std::string version, std::string downloadPath)
+{
+	print::debug("Calling the spider to get version time", __FILE__, __LINE__);
+
+	std::string versionTime = RunSpider::getVersionTime(version, downloadPath);
+
+	return versionTime;
 }
 
 std::vector<HashData> moduleFacades::parseRepository(std::string repository, Flags flags)
@@ -94,8 +123,12 @@ ProjectMetaData moduleFacades::getProjectMetadata(std::string url, Flags flags)
 	print::debug("Calling the crawler to get the metadata from a project", __FILE__, __LINE__);
 
 	ProjectMetadata pmd = RunCrawler::findMetadata(url, flags.flag_github_user, flags.flag_github_token);
-	int er = errno;
 	print::loguruResetThreadName();
+	if (errno != 0)
+	{
+		print::debug("Encountered an error while retrieving the metadata", __FILE__, __LINE__);
+		return ProjectMetaData();
+	}
 
 	std::string versionHash = "";
 
@@ -110,7 +143,6 @@ ProjectMetaData moduleFacades::getProjectMetadata(std::string url, Flags flags)
 		pmd.authorName,
 		pmd.authorMail,
 		pmd.defaultBranch);
-	errno = er;
 	return pm;
 }
 

@@ -15,22 +15,38 @@ Utrecht University within the Software Project course.
 // External includes.
 #include <iostream>
 #include <thread>
+#include <atomic>
+#include <condition_variable>
+#include <climits>
 
 #define DOWNLOAD_LOCATION "spiderDownloads"
+#define TAGS_COUNT 20
+
+std::atomic<bool> stopped(false);
 
 std::string Command::helpMessage()
 {
 	return helpMessageText;
 }
 
-std::tuple<std::vector<HashData>, AuthorData> Command::parseAndBlame(Spider *s, Flags flags)
+std::tuple<std::vector<HashData>, AuthorData> Command::parseAndBlame(Spider *s, std::string tag, std::string jobid,
+																	 std::string &jobTime, Flags flags,
+																	 EnvironmentDTO *env)
 {
 	// Parse all parseable files.
 	std::vector<HashData> hashes = moduleFacades::parseRepository(DOWNLOAD_LOCATION, flags);
 
-	if (errno != 0)
+	if (errno != 0 && !stopped)
 	{
+		DatabaseRequests::finishJob(jobid, jobTime, FinishReason::parser,
+									"Error parsing tag \"" + tag + "\": " + std::to_string(errno) + ".", env);
 		print::warn("Error parsing project.", __FILE__, __LINE__);
+		return std::tuple<std::vector<HashData>, AuthorData>(std::vector<HashData>(), AuthorData());
+	}
+	if (stopped)
+	{
+		DatabaseRequests::finishJob(jobid, jobTime, FinishReason::timeout,
+									"Timeout hit during parsing of tag  \"" + tag + "\".", env);
 		return std::tuple<std::vector<HashData>, AuthorData>(std::vector<HashData>(), AuthorData());
 	}
 
@@ -46,6 +62,9 @@ std::tuple<std::vector<HashData>, AuthorData> Command::parseAndBlame(Spider *s, 
 
 	if (errno != 0)
 	{
+		DatabaseRequests::finishJob(
+			jobid, jobTime, FinishReason::authorData,
+			"Error retrieving author data for tag \"" + tag + "\": " + std::to_string(errno) + ".", env);
 		print::warn("Error retrieving author data.", __FILE__, __LINE__);
 		return std::tuple<std::vector<HashData>, AuthorData>(std::vector<HashData>(), AuthorData());
 	}
@@ -54,8 +73,73 @@ std::tuple<std::vector<HashData>, AuthorData> Command::parseAndBlame(Spider *s, 
 	return std::tuple<std::vector<HashData>, AuthorData>(hashes, authorData);
 }
 
-void Command::uploadProject(Spider *s, Flags flags, ProjectMetaData meta, EnvironmentDTO *env)
+void Command::checkProject(Flags flags, EnvironmentDTO *env)
 {
+	auto url = flags.mandatoryArgument;
+
+	Check::logPreExecutionMessage(url, __FILE__, __LINE__);
+
+	// Get project metadata.
+	ProjectMetaData meta = moduleFacades::getProjectMetadata(flags.mandatoryArgument, flags);
+
+	warnAndReturnIfErrno("Error getting project meta data, moving on to the next job.");
+
+	if (flags.flag_branch == "")
+	{
+		// Set default branch.
+		flags.flag_branch = meta.defaultBranch;
+	}
+
+	// Initialize spider.
+	Spider *s = moduleFacades::setupSpider(url, flags);
+
+	warnAndReturnIfErrno("No suitable Spider, skipping project.");
+
+	// Download project.
+	moduleFacades::downloadRepo(s, url, flags, DOWNLOAD_LOCATION);
+
+	if (flags.flag_projectCommit != "")
+	{
+		moduleFacades::switchVersion(s, flags.flag_projectCommit, DOWNLOAD_LOCATION);
+	}
+
+	std::string empty = "";
+	auto [hashes, authorData] = Command::parseAndBlame(s, "HEAD", "0", empty, flags, env);
+	warnAndReturnIfErrno("Error processing project.");
+
+	// Calling the function that will print all the matches for us.
+	PrintMatches::printHashMatches(hashes, DatabaseRequests::findMatches(hashes, env), authorData, env, url, meta.id);
+
+	Check::logPostExecutionMessage(url, __FILE__, __LINE__);
+}
+
+void Command::uploadProject(Flags flags, std::string jobid, std::string &jobTime,
+							long long *startTime, EnvironmentDTO *env)
+{
+	// Get project metadata.
+	ProjectMetaData meta = moduleFacades::getProjectMetadata(flags.mandatoryArgument, flags);
+
+	if (errno != 0)
+	{
+		DatabaseRequests::finishJob(jobid, jobTime, FinishReason::projectMeta, "Error getting project meta data: " + std::to_string(errno) + ".", env);
+	}
+	warnAndReturnIfErrno("Error getting project meta data, moving on to the next job.");
+
+	if (flags.flag_branch == "")
+	{
+		// Set default branch.
+		flags.flag_branch = meta.defaultBranch;
+	}
+
+	// Initialize spider.
+	Spider *s = moduleFacades::setupSpider(flags.mandatoryArgument, flags);
+
+	if (errno != 0)
+	{
+		DatabaseRequests::finishJob(jobid, jobTime, FinishReason::spiderSetup, "No suitable spider: " + std::to_string(errno) + ".", env);
+	}
+	warnAndReturnIfErrno("No suitable Spider, skipping project.");
+
 	long long startingTime = 0; // Time to start from, request from db.
 
 	// Find most newest version of project in database.
@@ -65,44 +149,119 @@ void Command::uploadProject(Spider *s, Flags flags, ProjectMetaData meta, Enviro
 	if (std::stoll(meta.versionTime) <= startingTime)
 	{
 		print::log("Most recent version of project already in database.", __FILE__, __LINE__);
+		DatabaseRequests::finishJob(jobid, jobTime, FinishReason::alreadyKnown, "Project already known.", env);
 		return;
 	}
 
+	// Download project.
+	moduleFacades::downloadRepo(s, flags.mandatoryArgument, flags, DOWNLOAD_LOCATION);	
+
 	meta.versionHash = moduleFacades::currentVersion(s, DOWNLOAD_LOCATION);
 
+	if (errno != 0)
+	{
+		DatabaseRequests::finishJob(jobid, jobTime, FinishReason::projectDownload, "Error downloading project: " + std::to_string(errno) + ".", env);
+	}
+	if (stopped)
+	{
+		DatabaseRequests::finishJob(jobid, jobTime, FinishReason::timeout, "Job timed out on download.",
+									env);
+	}
 	warnAndReturnIfErrno("Error downloading project, moving on to the next job.");
+
+	// Retreive the vulnerability commits data.
+	std::vector<std::tuple<std::string, std::string, std::map<std::string, std::vector<int>>>> vulnCommits =
+		moduleFacades::getVulnCommits(DOWNLOAD_LOCATION);
+
+	warnAndReturnIfErrno("Error retrieving vulnerable commits, moving on to the next job.");
+
+	print::log(std::to_string(vulnCommits.size()) + " vulnerabilities found in project.", __FILE__, __LINE__);
+
+	for(std::tuple<std::string, std::string, std::map<std::string, std::vector<int>>> vulnCommit : vulnCommits)
+	{
+		print::debug("Uploading vulnerability: " + std::get<1>(vulnCommit), __FILE__, __LINE__);
+		if (env->commandString == "start")
+		{
+			if (stopped)
+			{
+				DatabaseRequests::finishJob(jobid, jobTime, FinishReason::timeout,
+											"Job timed out on vulnerability: " + std::get<1>(vulnCommit) + ".", env);
+				return;
+			}
+
+			DatabaseRequests::updateJob(jobid, jobTime, env);
+
+			// If update was unsuccessful or unexpected,
+			if (errno != 0)
+			{
+				// stop the current job.
+				DatabaseRequests::finishJob(jobid, jobTime, FinishReason::jobUpdate,
+											"Error receiving job update from database: " + std::to_string(errno) + ".",
+											env);
+				return;
+			}
+			*startTime = std::chrono::duration_cast<std::chrono::milliseconds>(
+							 std::chrono::system_clock::now().time_since_epoch())
+							 .count();
+		}
+		uploadPartialProject(flags, std::get<0>(vulnCommit), std::get<2>(vulnCommit), std::get<1>(vulnCommit), env, s, meta);
+		errno = 0;
+	}
+
+	moduleFacades::switchVersion(s, flags.flag_branch, DOWNLOAD_LOCATION);
 
 	// Get tags of previous versions.
 	std::vector<std::tuple<std::string, long long, std::string>> tags =
 		moduleFacades::getRepositoryTags(DOWNLOAD_LOCATION);
 
-	warnAndReturnIfErrno("Error retrieving tags for project, just using most recent version.");
+	if (errno != 0)
+	{
+		DatabaseRequests::finishJob(jobid, jobTime, FinishReason::tagRetrieval, "Error retrieving tags: " + std::to_string(errno) + ".", env);
+	}
+	warnAndReturnIfErrno("Error retrieving tags for project, moving on to the next job.");
 
 	// This is the first version and there are no tags,
 	// we just need to parse the most recent version we downloaded earlier.
 	auto tagc = tags.size();
 
 	print::log("Project has " + std::to_string(tagc) + print::plural(" tag", tagc), __FILE__, __LINE__);
+
+	if (tagc > TAGS_COUNT)
+	{
+		std::vector<std::tuple<std::string, long long, std::string>> newTags =
+			std::vector<std::tuple<std::string, long long, std::string>>(TAGS_COUNT);
+		float fraction = (float)(tagc - 1) / (float)(TAGS_COUNT - 1);
+		for (int i = 0; i < TAGS_COUNT; i++)
+		{
+			newTags[i] = tags[fraction * i];
+		}
+		tags = newTags;
+		tagc = TAGS_COUNT;
+	}
+
 	if (std::stoll(meta.versionTime) > startingTime && tagc == 0)
 	{
-		parseLatest(s, meta, flags, env);
+		parseLatest(s, meta, startingTime == 0 ? "" : std::to_string(startingTime), jobid, jobTime, flags, env);
 	}
 	else if (tagc != 0)
 	{
 		if (std::get<1>(tags[tagc - 1]) <= startingTime)
 		{
 			print::log("Latest tag of project already in database.", __FILE__, __LINE__);
+			DatabaseRequests::finishJob(jobid, jobTime, FinishReason::alreadyKnown, "Project already known.", env);
 			return;
 		}
-		loopThroughTags(s, tags, meta, startingTime, flags, env);
+		loopThroughTags(s, tags, meta, startingTime, flags, jobid, jobTime, startTime, env);
 	}
 }
 
-void Command::parseLatest(Spider *s, ProjectMetaData &meta, Flags &flags, EnvironmentDTO *env)
+void Command::parseLatest(Spider *s, ProjectMetaData &meta, std::string startingTime, std::string jobid, std::string &jobTime, Flags &flags,
+						  EnvironmentDTO *env)
 {
 	print::debug("No tags found for project, just looking at HEAD.", __FILE__, __LINE__);
 
-	auto [hashes, authorData] = Command::parseAndBlame(s, flags);
+	auto [hashes, authorData] = Command::parseAndBlame(s, "HEAD", jobid, jobTime, flags, env);
+
 	warnAndReturnIfErrno("Skipping project.");
 
 	if (hashes.size() == 0)
@@ -110,11 +269,15 @@ void Command::parseLatest(Spider *s, ProjectMetaData &meta, Flags &flags, Enviro
 		return;
 	}
 
-	print::debug(DatabaseRequests::uploadHashes(hashes, meta, authorData, env), __FILE__, __LINE__);
+	print::debug(DatabaseRequests::uploadHashes(hashes, meta, authorData, env, startingTime), __FILE__, __LINE__);
+	if (errno != 0)
+	{
+		DatabaseRequests::finishJob(jobid, jobTime, FinishReason::uploadHashes, "Error uploading hashes to database: " + std::to_string(errno) + ".", env);
+	}
 }
 
 void Command::loopThroughTags(Spider *s, std::vector<std::tuple<std::string, long long, std::string>> &tags,
-							ProjectMetaData &meta, long long startingTime, Flags &flags, EnvironmentDTO *env)
+							ProjectMetaData &meta, long long startingTime, Flags &flags, std::string jobid, std::string &jobTime, long long *startTime, EnvironmentDTO *env)
 {
 	// Skip tags before the starting time.
 	int i = 0;
@@ -134,8 +297,6 @@ void Command::loopThroughTags(Spider *s, std::vector<std::tuple<std::string, lon
 		std::string prevVersionTime = std::to_string(std::get<1>(tags[i - 1]));
 	}
 
-	moduleFacades::switchVersion(s, "HEAD", DOWNLOAD_LOCATION);
-
 	// Loop through remaining tags.
 	for (; i < tags.size(); i++)
 	{
@@ -152,30 +313,172 @@ void Command::loopThroughTags(Spider *s, std::vector<std::tuple<std::string, lon
 
 		print::debug("Comparing tags: " + prevTag + " and " + curTag + ".", __FILE__, __LINE__);
 
-		downloadTagged(s, flags, prevTag, curTag, meta, prevVersionTime, prevUnchangedFiles, env);
+		if (env->commandString == "start")
+		{
+			if (stopped)
+			{
+				DatabaseRequests::finishJob(jobid, jobTime, FinishReason::timeout,
+											"Job timed out on tag: " + prevTag + ".",
+											env);
+				return;
+			}
+
+			DatabaseRequests::updateJob(jobid, jobTime, env);
+			
+			// If update was unsuccessful or unexpected,
+			if (errno != 0)
+			{
+				// stop the current job.
+				DatabaseRequests::finishJob(jobid, jobTime, FinishReason::jobUpdate,
+											"Error receiving job update from database: " + std::to_string(errno) + ".",
+											env);
+				return;
+			}
+			*startTime = std::chrono::duration_cast<std::chrono::milliseconds>(
+							std::chrono::system_clock::now().time_since_epoch())
+							.count();
+		}
+
+		downloadTagged(s, flags, prevTag, curTag, meta, prevVersionTime, prevUnchangedFiles, jobid, jobTime, env);
 
 		prevTag = curTag;
 		prevVersionTime = std::to_string(versionTime);
+
+		if (errno != 0){
+			// Stop processing tags if a certain tag failed.
+			return;
+		}
 	}
 }
 
 void Command::downloadTagged(Spider *s, Flags flags, std::string prevTag, std::string curTag, ProjectMetaData meta,
 							 std::string prevVersionTime, std::vector<std::string> &prevUnchangedFiles,
+							 std::string jobid, std::string &jobTime, 
 							 EnvironmentDTO *env)
 {
 	std::vector<std::string> unchangedFiles =
 		moduleFacades::updateVersion(s, DOWNLOAD_LOCATION, prevTag, curTag, prevUnchangedFiles);
 
-	warnAndReturnIfErrno("Error downloading tagged version of project, moving on to the next tag.");
+	if (errno != 0)
+	{
+		DatabaseRequests::finishJob(jobid, jobTime, FinishReason::tagUpdate, "Error updating from tag \"" + prevTag + "\" to tag \"" + curTag + "\": "+ std::to_string(errno) + ".", env);
+	}
+	warnAndReturnIfErrno("Error downloading tagged version of project, moving on to the next job.");
 
-	auto [hashes, authorData] = Command::parseAndBlame(s, flags);
+	auto [hashes, authorData] = Command::parseAndBlame(s, curTag, jobid, jobTime, flags, env);
+
+
 	warnAndReturnIfErrno("Skipping project.");
+
+	if (stopped)
+	{
+		DatabaseRequests::finishJob(jobid, jobTime, FinishReason::timeout,
+									"Timeout hit on tag: " + curTag + ".", env);
+		return;
+	}
 
 	// Uploading the hashes.
 	print::debug(DatabaseRequests::uploadHashes(hashes, meta, authorData, env, prevVersionTime, unchangedFiles),
 				 __FILE__, __LINE__);
 
+	if (errno != 0)
+	{
+		DatabaseRequests::finishJob(jobid, jobTime, FinishReason::uploadHashes, "Error uploading hashes to database: " + std::to_string(errno) + ".", env);
+	}
+
 	prevUnchangedFiles = unchangedFiles;
+}
+
+void Command::uploadPartialProject(Flags flags, std::string version, std::map<std::string, std::vector<int>> lines,
+								   std::string vulnCode, EnvironmentDTO *env, Spider *s, ProjectMetaData meta)
+{
+	if (meta.id == "")
+	{
+		// Get project metadata.
+		ProjectMetaData meta = moduleFacades::getProjectMetadata(flags.mandatoryArgument, flags);
+		warnAndReturnIfErrno("Error getting project meta data, moving on to the next job.");
+
+		if (flags.flag_branch == "")
+		{
+			// Set default branch.
+			flags.flag_branch = meta.defaultBranch;
+		}
+	}
+
+	if (s == nullptr)
+	{
+		// Initialize spider.
+		Spider *s = moduleFacades::setupSpider(flags.mandatoryArgument, flags);
+		warnAndReturnIfErrno("No suitable Spider.");
+
+		// Download project.
+		moduleFacades::downloadRepo(s, flags.mandatoryArgument, flags, DOWNLOAD_LOCATION);
+
+		warnAndReturnIfErrno("Error downloading project.");
+	}
+
+	moduleFacades::switchVersion(s, version, DOWNLOAD_LOCATION);
+
+	moduleFacades::trimFiles(s, lines, DOWNLOAD_LOCATION);
+
+	warnAndReturnIfErrno("Error in trimming files.");
+
+	// Parse all parseable files.
+	std::vector<HashData> hashes = moduleFacades::parseRepository(DOWNLOAD_LOCATION, flags);
+
+	if (errno != 0)
+	{
+		print::warn("Error parsing project.", __FILE__, __LINE__);
+		return;
+	}
+
+	hashes = trimHashes(hashes, lines);
+
+	// If no methods were found, we do not need to retrieve any author data.
+	if (hashes.size() == 0)
+	{
+		print::debug("No methods present, skipping authors", __FILE__, __LINE__);
+		return;
+	}
+
+	for (int i = 0; i < hashes.size(); i++)
+	{
+		hashes[i].vulnCode = vulnCode;
+	}
+
+	// Retrieve author data.
+	AuthorData authorData = moduleFacades::getAuthors(s, DOWNLOAD_LOCATION);
+
+	if (errno != 0)
+	{
+		print::warn("Error retrieving author data.", __FILE__, __LINE__);
+		return;
+	}
+
+	meta.versionTime = moduleFacades::getVersionTime(version, DOWNLOAD_LOCATION);
+	meta.versionHash = version;
+
+	print::debug(DatabaseRequests::uploadHashes(hashes, meta, authorData, env), __FILE__, __LINE__);
+}
+
+std::vector<HashData> Command::trimHashes(std::vector<HashData> hashes, std::map<std::string, std::vector<int>> lines)
+{
+	std::vector<HashData> result;
+	for (HashData hash : hashes)
+	{
+		if (lines.count(hash.fileName) > 0)
+		{
+			for (int line : lines[hash.fileName])
+			{
+				if (hash.lineNumber <= line && line <= hash.lineNumberEnd)
+				{
+					result.push_back(hash);
+					break;
+				}
+			}
+		}
+	}
+	return result;
 }
 
 #pragma region Start
@@ -207,6 +510,9 @@ void Start::execute(Flags flags, EnvironmentDTO *env)
 		error::errMissingGithubAuth(__FILE__, __LINE__);
 	}
 
+	// Prevent users from being able to parse different branches with the start command.
+	flags.flag_branch = "";
+
 	logPreExecutionMessage(flags.flag_cpu, __FILE__, __LINE__);
 
 	bool s = stop;
@@ -215,17 +521,42 @@ void Start::execute(Flags flags, EnvironmentDTO *env)
 	// Ask for jobs as long as the user does not want to stop.
 	while (!s)
 	{
+		stopped = false;
+		long long startTime =
+			std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch())
+				.count();
+		new std::thread(&Start::handleTimeout, "600000", std::ref(startTime));
 		std::string job = DatabaseRequests::getNextJob(env);
+		stopped = true;
+		std::this_thread::sleep_for(std::chrono::seconds(5));
+		stopped = false;
+
+		if (errno != 0)
+		{
+			print::warn("Unable to retrieve new job.", __FILE__, __LINE__);
+		}
 
 		std::vector<std::string> splitted = Utils::split(job, INNER_DELIMITER);
 		if (splitted.size() < 1)
 		{
-			error::errInvalidDatabaseAnswer(__FILE__, __LINE__);
+			print::warn("Incorrect database response.", __FILE__, __LINE__);
 		}
 		if (splitted[0] == "Spider")
 		{
-			print::log("New job: Download and parse " + splitted[1], __FILE__, __LINE__);
-			versionProcessing(splitted, flags, env);
+			print::log("New job: Download and parse " + splitted[2], __FILE__, __LINE__);
+			if (splitted.size() < 5 || splitted[2] == "")
+			{
+				// We cannot signal this error to the database, since there is no guarantee that the
+				// jobid and jobTime are correct or even present (the data from the database is malformed).
+				print::warn("Unexpected job data received from database.", __FILE__, __LINE__);
+			}
+			long long startTime = std::chrono::duration_cast<std::chrono::milliseconds>(
+									  std::chrono::system_clock::now().time_since_epoch())
+									  .count();
+			new std::thread(&Start::handleTimeout, splitted[4], std::ref(startTime));
+			versionProcessing(splitted, &startTime, flags, env);
+			stopped = true;
+			std::this_thread::sleep_for(std::chrono::seconds(5));
 		}
 		else if (splitted[0] == "Crawl")
 		{
@@ -239,7 +570,7 @@ void Start::execute(Flags flags, EnvironmentDTO *env)
 		}
 		else
 		{
-			error::errInvalidDatabaseAnswer(__FILE__, __LINE__);
+			print::warn("Incorrect database response.", __FILE__, __LINE__);
 		}
 
 		// Check if we need to stop.
@@ -249,6 +580,23 @@ void Start::execute(Flags flags, EnvironmentDTO *env)
 	}
 	t.join();
 	logPostExecutionMessage(__FILE__, __LINE__);
+}
+
+void Start::handleTimeout(const std::string timeoutString, long long &startTime)
+{
+	long long timeout = std::stoll(timeoutString);
+	while (!stopped)
+	{
+		std::this_thread::sleep_for(std::chrono::seconds(5));
+		long long currTime =
+			std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch())
+				.count();
+		if (startTime + timeout < currTime)
+		{
+			print::warn("Job timed out.", __FILE__, __LINE__);
+			stopped = true;
+		}
+	}
 }
 
 void Start::handleCrawlRequest(std::vector<std::string> &splitted, Flags flags, EnvironmentDTO *env)
@@ -277,35 +625,34 @@ void Start::readCommandLine()
 	}
 }
 
-void Start::versionProcessing(std::vector<std::string> &splitted, Flags flags, EnvironmentDTO *env)
+void Start::versionProcessing(std::vector<std::string> &splitted, long long *startTime, Flags flags, EnvironmentDTO *env)
 {
-	if (splitted.size() < 2 || splitted[1] == "")
+	if (splitted.size() < 5 || splitted[2] == "")
 	{
-		error::errInvalidDatabaseAnswer(__FILE__, __LINE__);
-	}
-	flags.mandatoryArgument = splitted[1];
-
-	// Get project metadata.
-	ProjectMetaData meta = moduleFacades::getProjectMetadata(flags.mandatoryArgument, flags);
-
-	warnAndReturnIfErrno("Error getting project meta data, moving on to the next job.");
-
-	if (flags.flag_branch == "")
-	{
-		// Set default branch.
-		flags.flag_branch = meta.defaultBranch;
+		// We cannot signal this error to the database, since there is no guarantee that the
+		// jobid and jobTime are correct or even present (the data from the database is malformed).
+		print::warn("Unexpected job data received from database.", __FILE__, __LINE__);
+		return;
 	}
 
-	// Initialize spider.
-	Spider *s = moduleFacades::setupSpider(flags.mandatoryArgument, flags);
+	std::string jobid       = splitted[1];
+	flags.mandatoryArgument = splitted[2];
 
-	warnAndReturnIfErrno("No suitable Spider, skipping project.");
-
-	// Download project.
-	moduleFacades::downloadRepo(s, flags.mandatoryArgument, flags, DOWNLOAD_LOCATION);
+	std::string jobTime = splitted[3];
 
 	// Process and upload project.
-	Command::uploadProject(s, flags, meta, env);
+	Command::uploadProject(flags, jobid, jobTime, startTime, env);
+
+	if (errno == 0)
+	{
+		DatabaseRequests::finishJob(jobid, jobTime, FinishReason::success, "Success.", env);
+	}
+	else if (errno != HANDLED_ERRNO)
+	{
+		DatabaseRequests::finishJob(jobid, jobTime, FinishReason::unknown,
+									"Unknown error: " + std::to_string(errno) + ".", env);
+		print::warn("Unexpected error occured with errno " + std::to_string(errno) + ".", __FILE__, __LINE__);
+	}
 }
 
 #pragma endregion Start
@@ -341,36 +688,7 @@ void Check::logPostExecutionMessage(std::string url, const char *file, int line)
 
 void Check::execute(Flags flags, EnvironmentDTO *env)
 {
-	auto url = flags.mandatoryArgument;
-
-	this->logPreExecutionMessage(url, __FILE__, __LINE__);
-
-	// Get project metadata.
-	ProjectMetaData meta = moduleFacades::getProjectMetadata(flags.mandatoryArgument, flags);
-
-	warnAndReturnIfErrno("Error getting project meta data, moving on to the next job.");
-
-	if (flags.flag_branch == "")
-	{
-		// Set default branch.
-		flags.flag_branch = meta.defaultBranch;
-	}
-
-	// Initialize spider.
-	Spider *s = moduleFacades::setupSpider(url, flags);
-
-	warnAndReturnIfErrno("No suitable Spider, skipping project.");
-
-	// Download project.
-	moduleFacades::downloadRepo(s, url, flags, DOWNLOAD_LOCATION);
-
-	auto [hashes, authorData] = Command::parseAndBlame(s, flags);
-	warnAndReturnIfErrno("Error processing project.");
-
-	// Calling the function that will print all the matches for us.
-	PrintMatches::printHashMatches(hashes, DatabaseRequests::findMatches(hashes, env), authorData, env, url);
-
-	this->logPostExecutionMessage(url, __FILE__, __LINE__);
+	checkProject(flags, env);
 }
 
 #pragma endregion Check
@@ -407,28 +725,40 @@ void Upload::execute(Flags flags, EnvironmentDTO *env)
 {
 	this->logPreExecutionMessage(flags.mandatoryArgument, __FILE__, __LINE__);
 
-	// Get project metadata.
-	ProjectMetaData meta = moduleFacades::getProjectMetadata(flags.mandatoryArgument, flags);
-
-	warnAndReturnIfErrno("Error getting project meta data, moving on to the next job.");
-
-	if (flags.flag_branch == "")
-	{
-		// Set default branch.
-		flags.flag_branch = meta.defaultBranch;
-	}
-
-	// Initialize spider.
-	Spider *s = moduleFacades::setupSpider(flags.mandatoryArgument, flags);
-
-	warnAndReturnIfErrno("No suitable Spider, skipping project.");
-
-	// Download project.
-	moduleFacades::downloadRepo(s, flags.mandatoryArgument, flags, DOWNLOAD_LOCATION);
-
 	// Process and upload project.
-	Command::uploadProject(s, flags, meta, env);
-	this->logPostExecutionMessage(flags.mandatoryArgument, __FILE__, __LINE__);
+	if (flags.flag_lines != "" || flags.flag_vulnCode != "" || flags.flag_projectCommit != "")
+	{
+		if (flags.flag_lines != "" && flags.flag_vulnCode != "" && flags.flag_projectCommit != "")
+		{
+			std::map<std::string, std::vector<int>> fileLines;
+			std::vector<std::string> files = Utils::split(flags.flag_lines, '?');
+			for (std::string file : files)
+			{
+				std::vector<std::string> splitted = Utils::split(file, ':');
+				std::vector<std::string> lines = Utils::split(splitted[1], ',');
+				std::vector<int> intLines;
+				for (std::string line : lines)
+				{
+					intLines.push_back(std::stoi(line));
+				}
+				fileLines[splitted[0]] = intLines;
+			}
+			Command::uploadPartialProject(flags, flags.flag_projectCommit, fileLines, flags.flag_vulnCode, env);
+		}
+		else
+		{
+			print::warn("Lines, vulnerability code or project commit was specified, but not all of them. Pleas specify all or none.", __FILE__, __LINE__);
+		}
+	}
+	else
+	{
+		std::string jobTime = "";
+		Command::uploadProject(flags, "", jobTime, nullptr, env);
+	}
+	if (errno == 0)
+	{
+		this->logPostExecutionMessage(flags.mandatoryArgument, __FILE__, __LINE__);
+	}
 }
 
 #pragma endregion Upload
@@ -456,41 +786,12 @@ void CheckUpload::execute(Flags flags, EnvironmentDTO *env)
 
 	auto url = flags.mandatoryArgument;
 
-	Check::logPreExecutionMessage(url, __FILE__, __LINE__);
-
-	// Get project metadata.
-	ProjectMetaData meta = moduleFacades::getProjectMetadata(flags.mandatoryArgument, flags);
-
-	warnAndReturnIfErrno("Error getting project meta data, moving on to the next job.");
-
-	if (flags.flag_branch == "")
-	{
-		// Set default branch.
-		flags.flag_branch = meta.defaultBranch;
-	}
-
-	// Initialize spider.
-	Spider *s = moduleFacades::setupSpider(url, flags);
-
-	warnAndReturnIfErrno("No suitable Spider, skipping project.");
-
-	// Download project.
-	moduleFacades::downloadRepo(s, url, flags, DOWNLOAD_LOCATION);
-
-	auto [hashes, authorData] = Command::parseAndBlame(s, flags);
-	warnAndReturnIfErrno("Error processing project.");
-
-	// Calling the function that will print all the matches for us.
-	PrintMatches::printHashMatches(hashes, DatabaseRequests::findMatches(hashes, env), authorData, env, url);
-
-	Check::logPostExecutionMessage(url, __FILE__, __LINE__);
-
-	// Ugly, but download project again, otherwise we have metadata in the folder already.
-	moduleFacades::downloadRepo(s, url, flags, DOWNLOAD_LOCATION);
+	checkProject(flags, env);
 
 	Upload::logPreExecutionMessage(url, __FILE__, __LINE__);
 
-	Command::uploadProject(s, flags, meta, env);
+	std::string jobTime = "";
+	Command::uploadProject(flags, "", jobTime, nullptr, env);
 
 	Upload::logPostExecutionMessage(url, __FILE__, __LINE__);
 }

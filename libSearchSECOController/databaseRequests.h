@@ -18,11 +18,32 @@ Utrecht University within the Software Project course.
 #define DATABASE_ADD_JOB "upjb"
 #define DATABASE_CRAWL_DATA "upcd"
 #define DATABASE_GET_NEXT_JOB "gtjb"
+#define DATABASE_FINISH_JOB "fnjb"
+#define DATABASE_UPDATE_JOB "udjb"
 #define DATABASE_GET_IPS "gtip"
 #define DATABASE_GET_MOST_RECENT_VERSION_PROJECT "gppr"
 
 #define REQUEST_RETRIES 3
 #define BASE_RETRY_WAIT 1000
+#define HANDLED_ERRNO 69
+
+enum FinishReason
+{
+	success,
+	unknown,
+	alreadyKnown = 10,
+	projectDownload,
+	tagRetrieval,
+	projectMeta,
+	spiderSetup,
+	headSwitch,
+	jobUpdate,
+	tagUpdate,
+	uploadHashes,
+	parser,
+	authorData,
+	timeout
+};
 
 
 class NetworkHandler;
@@ -72,9 +93,7 @@ public:
 	/// </summary>
 	/// <returns>The string that the database send back.</returns>
 	static std::string getProjectData(
-		const std::map<
-			std::pair<std::string, std::string>, 
-			int> &projects,
+		const std::set<std::pair<std::string, std::string>> &projects,
 		EnvironmentDTO *env);
 
 	/// <summary>
@@ -91,17 +110,26 @@ public:
 	static std::string getNextJob(EnvironmentDTO *env);
 
 	/// <summary>
+	/// Send an update job request to the database.
+	/// </summary>
+	/// <param name="jobid">The id of the job.</param>
+	/// <param name="jobTime">The time of the job.</param>
+	static void updateJob(std::string jobid, std::string &jobTime, EnvironmentDTO *env);
+
+	/// <summary>
+	/// Send a finish job request to the database.
+	/// </summary>
+	/// <param name="jobid">The id of the job.</param>
+	/// <param name="jobTime">The time of the job.</param>
+	/// <param name="code">Code to identify the reason the job finished.</param>
+	/// <param name="reason">String containing more information on why the job finished.</param>
+	static void finishJob(std::string jobid, std::string jobTime, FinishReason code, std::string reason, EnvironmentDTO *env);
+
+	/// <summary>
 	/// Sends a get next job request to the api.
 	/// </summary>
 	/// <returns>The next job the worked node should do.</returns>
 	static std::string getIPs(EnvironmentDTO *env);
-
-	/// <summary>
-	/// Sends a request to the api to add the given jobs to the job queue.
-	/// </summary>
-	static std::string addJobs(
-		const std::vector<std::string>& jobs,
-		EnvironmentDTO *env);
 
 	/// <summary>
 	/// Adds the jobs the crawler found to the job queue.

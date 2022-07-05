@@ -171,6 +171,24 @@ The branch the program will look at. \\
 \textbf{Default value}: master 
 \end{adjustwidth}
 
+\texttt{-l}\par
+\texttt{-{}-lines}\par
+\begin{adjustwidth}{1cm}{}
+For the uploading of vulnerabilities the lines to upload. Takes an argument in the form of \texttt{file1:line1,line2?file2:line3,line4,line5}, where the files are the file names including the location in the project with the lines in that file to upload. \\
+\end{adjustwidth}
+
+\texttt{-C}\par
+\texttt{-{}-code}\par
+\begin{adjustwidth}{1cm}{}
+For the uploading of vulnerabilities the vulnerability code to add to the methods. \\
+\end{adjustwidth}
+
+\texttt{-p}\par
+\texttt{-{}-commit}\par
+\begin{adjustwidth}{1cm}{}
+For uploading vulnerabilities and checking a project the commit to use. \\
+\end{adjustwidth}
+
 
 \clearpage
 \section{Errors}
@@ -214,7 +232,6 @@ For overview of the user errors are put in ranges per submodule as follows.\\
     \textbf{E105} - & GitHub responded with a Bad Gateway error. \\
     \textbf{E106} - & The specified url was not found. \\
     \textbf{E107} - & GitHub responded with an unknown error.\\
-    % begin{TODO} floris
     \textbf{E108} - &  Could not index on the given key (the key does not exist in the JSON variable).\\
     \textbf{E109} - &  Parsing the given string as a JSON variable went wrong.\\
     \textbf{E110} - &  A type (conversion) error occurred in a JSON variable. \\
@@ -223,7 +240,6 @@ For overview of the user errors are put in ranges per submodule as follows.\\
     \textbf{E200} - &  (not in use) - Git cloning failed. \\
     \textbf{E201} - &  Opening a stream to read from or write to the command prompt failed.  \\
     \textbf{E202} - &  (not in use) - A file extension file was not found. \\
-    % end{TODO} floris
     \textbf{E400} - & No connection could be made with a Database API. \\
     \textbf{E401} - & The Database API received a bad request. \\
     \textbf{E402} - & Something went wrong in the Database API. \\

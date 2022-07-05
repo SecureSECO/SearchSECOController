@@ -1,4 +1,4 @@
-FROM ubuntu:latest
+FROM ubuntu:focal
 ARG DEBIAN_FRONTEND=noninteractive
 ENV TZ="Europe/Amsterdam"
 RUN apt-get -y update && \

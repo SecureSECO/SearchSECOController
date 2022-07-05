@@ -1,3 +1,7 @@
-/packages
-/.vs
-/x64
+/packages/*
+/.vs/*
+/x64/*
+/vsProjects/*
+/logs/*
+/Documentation/*
+/build

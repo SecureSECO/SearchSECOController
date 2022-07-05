@@ -12,12 +12,15 @@ Utrecht University within the Software Project course.
 
 // External includes.
 #include <boost/array.hpp>
+#include <boost/optional.hpp>
 #include <fstream>
 #include <filesystem>
 
 
 std::vector<std::pair<std::string, std::string>> NetworkHandler::ips = {};
 bool refreshIPs = true;
+
+extern std::atomic<bool> stopped;
 
 // https://www.boost.org/doc/libs/1_75_0/doc/html/boost_asio/tutorial.html was used as a base.
 boost::asio::io_context NetworkHandler::ioContext;
@@ -89,6 +92,7 @@ NetworkHandler* NetworkHandler::createHandler()
 void NetworkHandler::sendData(const char* data, int dataLength)
 {
 	print::debug("Sending " + std::to_string(dataLength) + " bytes to database.", __FILE__, __LINE__);
+	print::debug("Sending: " + std::string(data, dataLength), __FILE__, __LINE__);
 	boost::asio::write(socket, boost::asio::buffer(data, dataLength));
 }
 
@@ -97,13 +101,20 @@ std::string NetworkHandler::receiveData()
 	print::debug("Listening for a database response", __FILE__, __LINE__);
 	// The buffer we are going to return as a string.
 	std::vector<char> ret = std::vector<char>();
-	for (;;)
+	bool done = false;
+	while (!done && !stopped)
 	{
 		boost::array<char, 128> buf;
-		boost::system::error_code error;
+		//boost::system::error_code error;
 
 		// Read incoming data.
-		size_t len = socket.read_some(boost::asio::buffer(buf), error);
+		//size_t len = socket.read_some(boost::asio::buffer(buf), error);
+
+		boost::optional<boost::system::error_code> read_result;
+		boost::asio::async_read(
+			socket, boost::asio::buffer(buf),
+			[&read_result, &ret, &done, &buf](const boost::system::error_code &error, size_t len) { read_result.reset(error); 
+
 		print::debug("Receiving " + std::to_string(len) + " bytes", __FILE__, __LINE__);
 
 		// Add it to out buffer.
@@ -115,13 +126,27 @@ std::string NetworkHandler::receiveData()
 		if (error == boost::asio::error::eof)
 		{
 			// Connection closed cleanly by peer.
-			print::debug("Received data from database.", __FILE__, __LINE__);
-			break;
+			print::debug("Received data from database: " + std::string(ret.begin(), ret.end()), __FILE__, __LINE__);
+			done = true;
 		}
 		else if (error)
 		{
 			// If any error occures, we just throw.
 			error::errDBConnection(error.message(), __FILE__, __LINE__);
+		}
+
+		});
+
+		ioContext.reset();
+		while (ioContext.run_one())
+		{
+			if (stopped)
+			{
+				print::debug("Database request timed out. Closing socket.", __FILE__, __LINE__);
+				socket.cancel();
+			}
+			else if (read_result)
+				break;
 		}
 
 	}

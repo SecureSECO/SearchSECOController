@@ -15,6 +15,8 @@ Utrecht University within the Software Project course.
 // Spider includes.
 #include "CodeBlock.h"
 
+#include <set>
+
 
 namespace print
 {
@@ -105,10 +107,28 @@ public:
 		std::string databaseOutput, 
 		AuthorData &authordata, 
 		EnvironmentDTO *env,
-		std::string url
+		std::string url,
+		std::string projectID
 	);
 
 private:
+	struct Method
+	{
+		std::string hash;
+		std::string projectID;
+		std::string startVersion;
+		std::string startVersionHash;
+		std::string endVersion;
+		std::string endVersionHash;
+		std::string name;
+		std::string file;
+		std::string lineNumber;
+		std::string parserVersion;
+		std::string vulnCode;
+		int numberOfAuthors;
+		std::vector<std::string> authors;
+	};
+
 	/// <summary>
 	/// Will parse the dbentries into the other parameters given.
 	/// </summary>
@@ -125,8 +145,9 @@ private:
 	/// the value is how often we found this author.</param>
 	static void parseDatabaseHashes(
 		std::vector<std::string>& dbentries,
-		std::map<std::string, std::vector<std::string>>& receivedHashes,
-		std::map<std::pair<std::string, std::string>, int> &projects,
+		std::map<std::string, std::vector<Method>>& receivedHashes,
+		std::map<std::string, int> &projectMatches,
+		std::set<std::pair<std::string, std::string>> &projectVersions,
 		std::map<std::string, int> &dbAuthors);
 
 	/// <summary>
@@ -143,7 +164,7 @@ private:
 	/// the value is a list of all the things the database gave us about the author,
 	/// in the same order as we got it.</param>
 	static void getDatabaseAuthorAndProjectData(
-		std::map<std::pair<std::string, std::string>, int>& projects,
+		std::set<std::pair<std::string, std::string>> &projectVersions,
 		std::map<std::string, int>& dbAuthors,
 		std::map<std::string, std::vector<std::string>>& dbProjects,
 		std::map<std::string, std::vector<std::string>>& authorIdToName, 
@@ -152,34 +173,29 @@ private:
 	/// <summary>
 	/// Prints a match for a given hash.
 	/// </summary>
-	static void printMatch(
-		HashData hash,
-		std::map<std::string, std::vector<std::string>>& receivedHashes,
-		std::map<HashData, std::vector<std::string>>& authors, 
-		std::map<std::string, int>& authorCopiedForm,
-		std::map<std::string, int>& authorsCopied,
-		std::map<std::string, std::vector<std::string>> &dbProjects,
-		std::map<std::string, std::vector<std::string>> &authorIdToName,
-		std::ofstream &report
-	);
+	static void printMatch(std::vector<HashData> &hashes, std::vector<Method> dbEntries,
+						   std::map<HashData, std::vector<std::string>> &authors, std::string projectID,
+						   std::map<std::string, int> &authorCopiedForm, std::map<std::string, int> &authorsCopied,
+						   std::vector<std::pair<HashData *, Method>> &vulnerabilities,
+						   std::map<std::string, std::vector<std::string>> &dbProjects,
+						   std::map<std::string, std::vector<std::string>> &authorIdToName, std::string &report);
 
 	/// <summary>
 	/// Prints a summary for all the matches found.
 	/// </summary>
-	static void printSummary(
-		std::map<std::string, int> &authorCopiedForm, 
-		std::map<std::string, int> &authorsCopied, 
-		int matches, int methods,
-		std::map<std::string, std::vector<std::string>>& dbProjects,
-		std::map<std::string, std::vector<std::string>>& authorIdToName,
-		std::map<std::pair<std::string, std::string>, int> &projects,
-		std::ofstream &report);
+	static void printSummary(std::map<std::string, int> &authorCopiedForm, std::map<std::string, int> &authorsCopied,
+							 std::vector<std::pair<HashData *, Method>> &vulnerabilities, int matches, int methods,
+							 std::map<std::string, std::vector<std::string>> &dbProjects,
+							 std::map<std::string, std::vector<std::string>> &authorIdToName,
+							 std::map<std::string, int> &projects, std::ofstream &report);
 
 	/// <summary>
 	/// Sets up the file for the plaintext output report.
 	/// </summary>
 	/// <returns>The pointer to the filestream.</returns>
 	static std::ofstream setupOutputReport(std::string url);
+
+	static Method getMethod(std::vector<std::string> entry);	
 };
 
 namespace error

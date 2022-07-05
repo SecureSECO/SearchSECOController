@@ -108,7 +108,7 @@ void Command::checkProject(Flags flags, EnvironmentDTO *env)
 	warnAndReturnIfErrno("Error processing project.");
 
 	// Calling the function that will print all the matches for us.
-	PrintMatches::printHashMatches(hashes, DatabaseRequests::findMatches(hashes, env), authorData, env, url);
+	PrintMatches::printHashMatches(hashes, DatabaseRequests::findMatches(hashes, env), authorData, env, url, meta.id);
 
 	Check::logPostExecutionMessage(url, __FILE__, __LINE__);
 }

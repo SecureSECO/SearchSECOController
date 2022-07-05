@@ -158,7 +158,7 @@ void print::versionFull()
 #pragma region Matches
 
 void PrintMatches::printHashMatches(std::vector<HashData> &hashes, std::string databaseOutput, AuthorData &authordata,
-									EnvironmentDTO *env, std::string url)
+									EnvironmentDTO *env, std::string url, std::string projectID)
 {
 	std::map<std::string, std::vector<Method>> receivedHashes = {};
 
@@ -196,9 +196,12 @@ void PrintMatches::printHashMatches(std::vector<HashData> &hashes, std::string d
 	std::string matchesReport;
 	for (const auto &match : receivedHashes)
 	{
-		matches++;
-		printMatch(hashMethods[match.first], match.second, authors, authorCopiedForm, authorsCopied, vulnerabilities,
-				   dbProjects, authorIdToName, matchesReport);
+		if (std::count_if(match.second.begin(), match.second.end(), [projectID](Method m) { return m.projectID != projectID; }) > 0)
+		{
+			matches++;
+			printMatch(hashMethods[match.first], match.second, authors, projectID, authorCopiedForm, authorsCopied,
+					   vulnerabilities, dbProjects, authorIdToName, matchesReport);
+		}
 	}
 
 	printSummary(authorCopiedForm, authorsCopied, vulnerabilities, matches, hashes.size(), dbProjects, authorIdToName, projectMatches, report);
@@ -307,7 +310,7 @@ void PrintMatches::getDatabaseAuthorAndProjectData(std::set<std::pair<std::strin
 }
 
 void PrintMatches::printMatch(std::vector<HashData> &hashes, std::vector<Method> dbEntries,
-							  std::map<HashData, std::vector<std::string>> &authors,
+							  std::map<HashData, std::vector<std::string>> &authors, std::string projectID,
 							  std::map<std::string, int> &authorCopiedForm, std::map<std::string, int> &authorsCopied,
 							  std::vector<std::pair<HashData *, Method>> &vulnerabilities,
 							  std::map<std::string, std::vector<std::string>> &dbProjects,
@@ -336,6 +339,10 @@ void PrintMatches::printMatch(std::vector<HashData> &hashes, std::vector<Method>
 
 	for (Method method : dbEntries)
 	{
+		if (method.projectID == projectID)
+		{
+			continue;
+		}
 		std::string linkFile = method.file;
 		Utils::replace(linkFile, '\\', '/');
 

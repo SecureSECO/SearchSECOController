@@ -107,7 +107,8 @@ public:
 		std::string databaseOutput, 
 		AuthorData &authordata, 
 		EnvironmentDTO *env,
-		std::string url
+		std::string url,
+		std::string projectID
 	);
 
 private:
@@ -173,7 +174,7 @@ private:
 	/// Prints a match for a given hash.
 	/// </summary>
 	static void printMatch(std::vector<HashData> &hashes, std::vector<Method> dbEntries,
-						   std::map<HashData, std::vector<std::string>> &authors,
+						   std::map<HashData, std::vector<std::string>> &authors, std::string projectID,
 						   std::map<std::string, int> &authorCopiedForm, std::map<std::string, int> &authorsCopied,
 						   std::vector<std::pair<HashData *, Method>> &vulnerabilities,
 						   std::map<std::string, std::vector<std::string>> &dbProjects,

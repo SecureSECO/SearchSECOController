@@ -23,7 +23,7 @@ Utrecht University within the Software Project course.
 #define DATABASE_GET_IPS "gtip"
 #define DATABASE_GET_MOST_RECENT_VERSION_PROJECT "gppr"
 
-#define REQUEST_RETRIES 3
+#define REQUEST_RETRIES 0
 #define BASE_RETRY_WAIT 1000
 #define HANDLED_ERRNO 69
 

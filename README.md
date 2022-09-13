@@ -4,7 +4,7 @@
 This is the Controller module used by the SearchSECO project. It is responsible for mediating communication between the other modules, and talking to the user. A reference documentation can be found [here](https://secureseco.github.io/SearchSECOController/).
 
 # Running locally
-If you want to run the controller connected to the official database, The easiest way is to use the [Docker hub image](https://hub.docker.com/r/searchseco/controller). To do this you need to have [Docker](https://docs.docker.com/get-docker/) installed. Adter this you can use the following command if you just want to run the start command:
+If you want to run the controller connected to the official database, The easiest way is to use the [Docker hub image](https://hub.docker.com/r/searchseco/controller). To do this you need to have [Docker](https://docs.docker.com/get-docker/) installed. After this you can use the following command if you just want to run the start command:
 ```
 docker run --name controller-container -e "github_token=<github_token>" -e "worker_name=<worker_name>" searchseco/controller
 ```
@@ -40,7 +40,7 @@ After cloning the repository, make sure to initialize and update the submodules 
 - [SearchSECOParser](https://github.com/SecureSECO/SearchSECOParser)
 
 ## Configuration
-There are a couple of configurations that can/need to be done. Firstly the `SearchSECOController/.env` file should contain the ip adresses and ports of the database apis to connect to. Secondly the `SearchSECOController/cfg/config.txt` file contains some more configurations. The worker name fiedl should contain a name for your worker, which will be send to the database api. Also the github token should have a correct github token. For info on creating this token click [here](https://docs.github.com/en/github/authenticating-to-github/keeping-your-account-and-data-secure/creating-a-personal-access-token). The token needs no permissions (see step 7 of guide) so it will not be able to interact with your personal GitHub account in any way. Without providing a token, the program will not be able to use the SearchSECOCrawler (making it impossible to crawl repositories or upload projects). There are also some optional configurations in this file, like the vorbosity of the output and the amount of CPU cores to use.
+There are a couple of configurations that can/need to be done. Firstly the `SearchSECOController/.env` file should contain the ip adresses and ports of the database apis to connect to. Secondly the `SearchSECOController/cfg/config.txt` file contains some more configurations. The worker name field should contain a name for your worker, which will be sent to the database api. Also the github token should have a correct github token. For info on creating this token click [here](https://docs.github.com/en/github/authenticating-to-github/keeping-your-account-and-data-secure/creating-a-personal-access-token). The token needs no permissions (see step 7 of guide) so it will not be able to interact with your personal GitHub account in any way. Without providing a token, the program will not be able to use the SearchSECOCrawler (making it impossible to crawl repositories or upload projects). There are also some optional configurations in this file, like the vorbosity of the output and the amount of CPU cores to use.
 
 ## Building
 ### Docker

@@ -16,6 +16,7 @@ In these commands you should replace `<github_token>` with your [github token](h
 
 # Developing
 For developing there are a couple of ways to run the local code as described here. A more elaborate explanation of the architecture can be found in the full [documentation](./Documentation/Documentation.pdf). 
+
 ## Cloning
 After cloning the repository, make sure to initialize and update the submodules by calling 
 ```

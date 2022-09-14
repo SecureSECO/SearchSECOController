@@ -45,7 +45,7 @@ There are a couple of configurations that can/need to be done. Firstly the `Sear
 
 ## Building
 ### Docker
-You can use the code to build a Docker image. Make sure [Docker](https://docs.docker.com/get-docker/) is installed. In the root of the project you can then run
+You can use the code to build a Docker image. Make sure [Docker](https://docs.docker.com/get-docker/) is installed. In the root of the project run
 ```
 docker build -t controller-image .
 ```

@@ -46,15 +46,18 @@ int cloneAndCheck(std::map<std::string, bool> &dict, std::string url)
 	int count = 0;
 	for (const auto &dirEntry : recursive_directory_iterator(TEMPPATH))
 	{
-		if (Utils::split(dirEntry.path().string(), '/')[1] == ".git") 
+		// use .generic_string(), see https://stackoverflow.com/a/70855593
+		std::vector<std::string> entries;
+		entries = Utils::split(dirEntry.path().generic_string(), '/');
+		if (entries.size() > 1 && entries[1] == ".git")
 		{
 			continue;
 		}
 
 		count++;
-		if(dict.count(dirEntry.path().string()) > 0 && !dict[dirEntry.path().string()]) 
+		if (dict.count(dirEntry.path().generic_string()) > 0 && !dict[dirEntry.path().generic_string()])
 		{
-			dict[dirEntry.path().string()] = true;
+			dict[dirEntry.path().generic_string()] = true;
 		}
 	}
 	return count;

@@ -81,10 +81,8 @@ std::string Utils::padLeft(std::string src, char pad, int length)
 
 long long Utils::getIntegerTimeFromString(std::string time)
 {
-	//TD remove
-	// Somehow, sleeping for 0 milliseconds fixed this conversion. Without this sleep, the integration test fails.
-	std::this_thread::sleep_for(std::chrono::milliseconds(0));
-
+	// avoid usage of std::mktime here.
+	//TD implement via std::chrono, the whole method is possibly available as one library call
 
 	// Used https://stackoverflow.com/questions/4781852/how-to-convert-a-string-to-datetime-in-c for this convertion.
 	static const std::string dateTimeFormat{ "%Y-%m-%dT%H:%M:%SZ" };
@@ -93,25 +91,10 @@ long long Utils::getIntegerTimeFromString(std::string time)
 	ss >> std::get_time(&dt, dateTimeFormat.c_str());
 	std::time_t version = std::mktime(&dt);
 
-	//TD remove
-	// Used https://stackoverflow.com/questions/9483974/converting-time-t-to-int for this part.
-	std::tm epochStart = {};
-	epochStart.tm_sec = 0;
-	epochStart.tm_min = 0;
-	epochStart.tm_hour = 0;
-	epochStart.tm_mday = 1;
-	epochStart.tm_mon = 0;
-	epochStart.tm_year = 70;
-	epochStart.tm_wday = 4;
-	epochStart.tm_yday = 0;
-	epochStart.tm_isdst = -1;
-
-	// hidden bug: on windows, mktime is locale dependent, assigning -1 to base, leading to a (hidden) failure
-	// hidden redundancy: mktime epochStart returns always 0, thus the code is redundant. proof:
-	std::time_t base = 0; // std::mktime(&epochStart);
-
-	auto diff = std::chrono::system_clock::from_time_t(version) - std::chrono::system_clock::from_time_t(base);
+	//TD normalize this, should be doable in one call
+	auto diff = std::chrono::system_clock::from_time_t(version) - std::chrono::system_clock::from_time_t(0);
 	std::chrono::milliseconds s = std::chrono::duration_cast<std::chrono::milliseconds>(diff);
+
 	return s.count();
 }
 void Utils::replace(std::string& string, char replace, char with)

@@ -81,6 +81,7 @@ std::string Utils::padLeft(std::string src, char pad, int length)
 
 long long Utils::getIntegerTimeFromString(std::string time)
 {
+	//TD remove
 	// Somehow, sleeping for 0 milliseconds fixed this conversion. Without this sleep, the integration test fails.
 	std::this_thread::sleep_for(std::chrono::milliseconds(0));
 
@@ -92,6 +93,7 @@ long long Utils::getIntegerTimeFromString(std::string time)
 	ss >> std::get_time(&dt, dateTimeFormat.c_str());
 	std::time_t version = std::mktime(&dt);
 
+	//TD remove
 	// Used https://stackoverflow.com/questions/9483974/converting-time-t-to-int for this part.
 	std::tm epochStart = {};
 	epochStart.tm_sec = 0;
@@ -104,7 +106,10 @@ long long Utils::getIntegerTimeFromString(std::string time)
 	epochStart.tm_yday = 0;
 	epochStart.tm_isdst = -1;
 
-	std::time_t base = std::mktime(&epochStart);
+	// hidden bug: on windows, mktime is locale dependent, assigning -1 to base, leading to a (hidden) failure
+	// hidden redundancy: mktime epochStart returns always 0, thus the code is redundant. proof:
+	std::time_t base = 0; // std::mktime(&epochStart);
+
 	auto diff = std::chrono::system_clock::from_time_t(version) - std::chrono::system_clock::from_time_t(base);
 	std::chrono::milliseconds s = std::chrono::duration_cast<std::chrono::milliseconds>(diff);
 	return s.count();

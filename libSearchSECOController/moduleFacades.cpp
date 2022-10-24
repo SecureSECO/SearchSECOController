@@ -134,8 +134,34 @@ ProjectMetaData moduleFacades::getProjectMetadata(std::string url, Flags flags)
 
 	long long hash = Utils::getIdFromPMD(pmd);
 
-	ProjectMetaData pm = ProjectMetaData(std::to_string(hash),
-		std::to_string(Utils::getIntegerTimeFromString(pmd.version)),
+	//TD preliminary to allow debugging. To be changed when general error-handling is enhanced
+
+	if (errno != 0)
+	{
+		print::debug("ERR!!!", __FILE__, __LINE__);
+	}
+
+	std::string idStr = std::to_string(hash);
+	if (errno != 0)
+	{
+		print::debug("ERR!!!", __FILE__, __LINE__);
+	}
+
+	long long iTime = Utils::getIntegerTimeFromString(pmd.version);
+	if (errno != 0)
+	{
+		print::debug("ERR!!!", __FILE__, __LINE__);
+	}
+
+	std::string iTimeStr = std::to_string(iTime);
+	if (errno != 0)
+	{
+		print::debug("ERR!!!", __FILE__, __LINE__);
+	}
+
+	ProjectMetaData pm = ProjectMetaData(
+		idStr, 
+		iTimeStr,
 		versionHash,
 		pmd.license,
 		pmd.name,

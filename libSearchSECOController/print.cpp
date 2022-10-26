@@ -343,6 +343,15 @@ void PrintMatches::printMatch(std::vector<HashData> &hashes, std::vector<Method>
 		{
 			continue;
 		}
+
+		//TD provide error-handling and reporting
+		// check if data is available to avoid out-of-bounds access to dbProjects
+		if (dbProjects[method.projectID].size() < 4)
+		{
+			print::printline("ERR: projectID " + method.projectID + " has missing dbProjects data");
+			continue;
+		}
+
 		std::string linkFile = method.file;
 		Utils::replace(linkFile, '\\', '/');
 
@@ -411,6 +420,14 @@ void PrintMatches::printSummary(std::map<std::string, int> &authorCopiedForm, st
 	std::vector<std::tuple<int, std::string, std::string>> vprojects = {};
 	for (const auto &x : projectMatches)
 	{
+		// check if data is available to avoid out-of-bounds access to dbProjects
+		// TD provide error-handling and reporting
+		if (dbProjects[x.first].size() < 4)
+		{
+		    print::printline("ERR: projectID " + x.first + " has missing dbProjects data");
+			continue;
+		}
+
 		vprojects.push_back(std::make_tuple(x.second, dbProjects[x.first][4], dbProjects[x.first][5]));
 	}
 

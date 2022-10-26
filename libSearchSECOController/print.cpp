@@ -344,11 +344,19 @@ void PrintMatches::printMatch(std::vector<HashData> &hashes, std::vector<Method>
 			continue;
 		}
 
+		// IMPORTANT: do not use dbProjects[method.projectID] to check for existence, as this adds a new map entry
+		// https://cplusplus.com/reference/map/map/operator[]/
+		if (dbProjects.count(method.projectID) == 0)
+		{
+			// ensure projectID is within dbProjects, if not...
+			continue;
+		}
+
 		//TD provide error-handling and reporting
 		// check if data is available to avoid out-of-bounds access to dbProjects
 		if (dbProjects[method.projectID].size() < 4)
 		{
-			print::printline("ERR: projectID " + method.projectID + " has missing dbProjects data");
+			print::printline("ERR1: projectID " + method.projectID + " has missing dbProjects data");
 			continue;
 		}
 
@@ -420,11 +428,19 @@ void PrintMatches::printSummary(std::map<std::string, int> &authorCopiedForm, st
 	std::vector<std::tuple<int, std::string, std::string>> vprojects = {};
 	for (const auto &x : projectMatches)
 	{
+		// IMPORTANT: do not use dbProjects[method.projectID] to check for existence, as this adds a new map entry
+		// https://cplusplus.com/reference/map/map/operator[]/
+		if (dbProjects.count(x.first) == 0)
+		{
+			// ensure projectID is within dbProjects, if not...
+			continue;
+		}
+
 		// check if data is available to avoid out-of-bounds access to dbProjects
 		// TD provide error-handling and reporting
 		if (dbProjects[x.first].size() < 4)
 		{
-		    print::printline("ERR: projectID " + x.first + " has missing dbProjects data");
+		    print::printline("ERR2: projectID " + x.first + " has missing dbProjects data");
 			continue;
 		}
 

@@ -1,10 +1,6 @@
 name: Image build
 
-on:
-  push:
-    branches:
-      - 'development'
-      - 'master'
+on: [push]
 
 jobs:
   docker:
@@ -33,4 +29,4 @@ jobs:
         with:
           context: .
           push: true
-          tags: searchseco/controller:latest
+          tags: searchseco/controller:${{ github.ref_name }}

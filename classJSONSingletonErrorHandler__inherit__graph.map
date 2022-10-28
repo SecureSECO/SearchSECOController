@@ -1,5 +1,5 @@
 <map id="JSONSingletonErrorHandler" name="JSONSingletonErrorHandler">
-<area shape="rect" id="node1" title="An error handler that handles JSON errors and is a singleton error handler. We use this as the defaul..." alt="" coords="5,155,189,181"/>
-<area shape="rect" id="node2" href="$classJSONErrorHandler.html" title="An error handler that handles JSON errors." alt="" coords="32,80,163,107"/>
-<area shape="rect" id="node3" href="$classErrorHandler.html" title=" " alt="" coords="8,5,187,32"/>
+<area shape="rect" id="node1" title="An error handler that handles JSON errors and is a singleton error handler. We use this as the defaul..." alt="" coords="5,152,189,177"/>
+<area shape="rect" id="node2" href="$classJSONErrorHandler.html" title="An error handler that handles JSON errors." alt="" coords="32,79,163,104"/>
+<area shape="rect" id="node3" href="$classErrorHandler.html" title=" " alt="" coords="8,5,187,31"/>
 </map>

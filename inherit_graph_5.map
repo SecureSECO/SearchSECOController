@@ -1,7 +1,7 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node1" title=" " alt="" coords="5,23,176,65"/>
-<area shape="rect" id="node2" href="$classJavaScriptParserVisitor.html" title=" " alt="" coords="224,5,383,32"/>
-<area shape="rect" id="node4" href="$classPython3Visitor.html" title=" " alt="" coords="250,56,357,83"/>
-<area shape="rect" id="node3" href="$classJavaScriptParserBaseVisitor.html" title=" " alt="" coords="431,5,620,32"/>
-<area shape="rect" id="node5" href="$classPython3BaseVisitor.html" title=" " alt="" coords="457,56,593,83"/>
+<area shape="rect" id="node1" title=" " alt="" coords="5,23,176,63"/>
+<area shape="rect" id="node2" href="$classJavaScriptParserVisitor.html" title=" " alt="" coords="224,5,383,31"/>
+<area shape="rect" id="node4" href="$classPython3Visitor.html" title=" " alt="" coords="250,55,357,80"/>
+<area shape="rect" id="node3" href="$classJavaScriptParserBaseVisitor.html" title=" " alt="" coords="431,5,620,31"/>
+<area shape="rect" id="node5" href="$classPython3BaseVisitor.html" title=" " alt="" coords="457,55,593,80"/>
 </map>

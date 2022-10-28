@@ -1,7 +1,7 @@
 <map id="JavaScriptParser::AnonymousFunctionContext" name="JavaScriptParser::AnonymousFunctionContext">
-<area shape="rect" id="node1" title=" " alt="" coords="221,71,417,112"/>
-<area shape="rect" id="node3" href="$classJavaScriptParser_1_1AnonymousFunctionDeclContext.html" title=" " alt="" coords="473,5,669,47"/>
-<area shape="rect" id="node4" href="$classJavaScriptParser_1_1ArrowFunctionContext.html" title=" " alt="" coords="465,71,677,112"/>
-<area shape="rect" id="node5" href="$classJavaScriptParser_1_1FunctionDeclContext.html" title=" " alt="" coords="482,136,661,177"/>
-<area shape="rect" id="node2" title=" " alt="" coords="5,78,173,105"/>
+<area shape="rect" id="node1" title=" " alt="" coords="221,69,417,109"/>
+<area shape="rect" id="node3" href="$classJavaScriptParser_1_1AnonymousFunctionDeclContext.html" title=" " alt="" coords="473,5,669,45"/>
+<area shape="rect" id="node4" href="$classJavaScriptParser_1_1ArrowFunctionContext.html" title=" " alt="" coords="465,69,677,109"/>
+<area shape="rect" id="node5" href="$classJavaScriptParser_1_1FunctionDeclContext.html" title=" " alt="" coords="482,133,661,173"/>
+<area shape="rect" id="node2" title=" " alt="" coords="5,77,173,102"/>
 </map>

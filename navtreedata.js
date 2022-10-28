@@ -69,7 +69,7 @@ var NAVTREE =
         [ "Building", "md_SearchSECOParser_README.html#autotoc_md30", [
           [ "Stand-alone", "md_SearchSECOParser_README.html#autotoc_md31", [
             [ "Visual-Studio", "md_SearchSECOParser_README.html#autotoc_md32", null ],
-            [ "Cmake", "md_SearchSECOParser_README.html#autotoc_md33", null ]
+            [ "CMake", "md_SearchSECOParser_README.html#autotoc_md33", null ]
           ] ],
           [ "Library", "md_SearchSECOParser_README.html#autotoc_md34", null ]
         ] ]

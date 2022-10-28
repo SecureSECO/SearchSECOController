@@ -1,10 +1,10 @@
 <map id="JavaScriptParser::PropertyAssignmentContext" name="JavaScriptParser::PropertyAssignmentContext">
-<area shape="rect" id="node1" title=" " alt="" coords="221,169,397,211"/>
-<area shape="rect" id="node3" href="$classJavaScriptParser_1_1ComputedPropertyExpressionAssignmentContext.html" title=" " alt="" coords="445,5,692,47"/>
-<area shape="rect" id="node4" href="$classJavaScriptParser_1_1FunctionPropertyContext.html" title=" " alt="" coords="479,71,658,112"/>
-<area shape="rect" id="node5" href="$classJavaScriptParser_1_1PropertyExpressionAssignmentContext.html" title=" " alt="" coords="469,136,668,177"/>
-<area shape="rect" id="node6" href="$classJavaScriptParser_1_1PropertyGetterContext.html" title=" " alt="" coords="481,201,657,243"/>
-<area shape="rect" id="node7" href="$classJavaScriptParser_1_1PropertySetterContext.html" title=" " alt="" coords="481,267,657,308"/>
-<area shape="rect" id="node8" href="$classJavaScriptParser_1_1PropertyShorthandContext.html" title=" " alt="" coords="481,332,657,373"/>
-<area shape="rect" id="node2" title=" " alt="" coords="5,177,173,203"/>
+<area shape="rect" id="node1" title=" " alt="" coords="221,165,397,205"/>
+<area shape="rect" id="node3" href="$classJavaScriptParser_1_1ComputedPropertyExpressionAssignmentContext.html" title=" " alt="" coords="445,5,692,45"/>
+<area shape="rect" id="node4" href="$classJavaScriptParser_1_1FunctionPropertyContext.html" title=" " alt="" coords="479,69,658,109"/>
+<area shape="rect" id="node5" href="$classJavaScriptParser_1_1PropertyExpressionAssignmentContext.html" title=" " alt="" coords="469,133,668,173"/>
+<area shape="rect" id="node6" href="$classJavaScriptParser_1_1PropertyGetterContext.html" title=" " alt="" coords="481,197,657,237"/>
+<area shape="rect" id="node7" href="$classJavaScriptParser_1_1PropertySetterContext.html" title=" " alt="" coords="481,261,657,301"/>
+<area shape="rect" id="node8" href="$classJavaScriptParser_1_1PropertyShorthandContext.html" title=" " alt="" coords="481,325,657,365"/>
+<area shape="rect" id="node2" title=" " alt="" coords="5,173,173,198"/>
 </map>

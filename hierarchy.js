@@ -26,8 +26,6 @@ var hierarchy =
     [ "loguru::decay_char_array< T >", "structloguru_1_1decay__char__array.html", null ],
     [ "loguru::decay_char_array< const char(&)[N]>", "structloguru_1_1decay__char__array_3_01const_01char_07_6_08_0fN_0e_4.html", null ],
     [ "loguru::EcEntryBase", "classloguru_1_1EcEntryBase.html", [
-      [ "loguru::EcEntryData< T >", "classloguru_1_1EcEntryData.html", null ],
-      [ "loguru::EcEntryData< T >", "classloguru_1_1EcEntryData.html", null ],
       [ "loguru::EcEntryData< T >", "classloguru_1_1EcEntryData.html", null ]
     ] ],
     [ "EnvironmentDTO", "classEnvironmentDTO.html", null ],

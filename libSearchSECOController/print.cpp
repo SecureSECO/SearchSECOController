@@ -244,7 +244,7 @@ void PrintMatches::parseDatabaseHashes(std::vector<std::string> &dbentries,
 			receivedHashes[entrySplitted[0]] = {method};
 		}
 
-		for (int i = 12; i < 12 + method.numberOfAuthors; i++)
+		for (int i = 13; i < 13 + method.numberOfAuthors; i++)
 		{
 			dbAuthors[entrySplitted[i]]++;
 		}
@@ -271,8 +271,9 @@ PrintMatches::Method PrintMatches::getMethod(std::vector<std::string> entry)
 	method.lineNumber = entry[8];
 	method.parserVersion = entry[9];
 	method.vulnCode = entry[10];
-	method.numberOfAuthors = std::stoi(entry[11]);
-	method.authors = std::vector(entry.begin() + 12, entry.end());
+	method.license = entry[11];
+	method.numberOfAuthors = std::stoi(entry[12]);
+	method.authors = std::vector(entry.begin() + 13, entry.end());
 	return method;
 }
 
@@ -343,7 +344,10 @@ void PrintMatches::printMatch(std::vector<HashData> &hashes, std::vector<Method>
 		{
 			continue;
 		}
-
+		
+		report += "License of method: ";
+		report += method.license;
+		report += "\n";
 		// IMPORTANT: do not use dbProjects[method.projectID] to check for existence, as this adds a new map entry
 		// https://cplusplus.com/reference/map/map/operator[]/
 		if (dbProjects.count(method.projectID) == 0)

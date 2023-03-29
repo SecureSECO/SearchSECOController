@@ -127,6 +127,7 @@ private:
 		std::string vulnCode;
 		int numberOfAuthors;
 		std::vector<std::string> authors;
+		std::string license;
 	};
 
 	/// <summary>

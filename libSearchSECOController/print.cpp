@@ -432,7 +432,7 @@ PrintMatches::licenseType PrintMatches::convertToLicenseType(const std::string& 
 		{"academic free license v3.0", PrintMatches::PERMISSIVE},
 		{"apache license 2.0", PrintMatches::PERMISSIVE},
 		{"artistic license 2.0", PrintMatches::WEAKLY_PROTECTIVE},
-		{"the unlicense", PrintMatches::PERMISSIVE},
+		{"the unlicense", PrintMatches::PUBLIC_DOMAIN},
 		{"boost software license 1.0", PrintMatches::PERMISSIVE},
 		{"bsd 2-clause \"simplified\" license", PrintMatches::PERMISSIVE},
 		{"bsd 3-clause \"new\" or \"revised\" license", PrintMatches::PERMISSIVE},

@@ -15,6 +15,7 @@ Utrecht University within the Software Project course.
 #include <fstream>
 #include <iostream>
 #include <sstream>
+#include <algorithm>
 
 inline bool operator<(HashData const &lhs, HashData const &rhs)
 {
@@ -158,7 +159,7 @@ void print::versionFull()
 #pragma region Matches
 
 void PrintMatches::printHashMatches(std::vector<HashData> &hashes, std::string databaseOutput, AuthorData &authordata,
-									EnvironmentDTO *env, std::string url, std::string projectID)
+									EnvironmentDTO *env, std::string url, std::string projectID, std::string projectLicense, std::string startVersion)
 {
 	std::map<std::string, std::vector<Method>> receivedHashes = {};
 
@@ -194,17 +195,26 @@ void PrintMatches::printHashMatches(std::vector<HashData> &hashes, std::string d
 		hashMethods[hashes[i].hash].push_back(hashes[i]);
 	}
 	std::string matchesReport;
-	for (const auto &match : receivedHashes)
+	//removed const here
+	int numberOfConflcits = 0;
+	for (auto &match : receivedHashes)
 	{
 		if (std::count_if(match.second.begin(), match.second.end(), [projectID](Method m) { return m.projectID != projectID; }) > 0)
 		{
 			matches++;
+
+			// Function to check for license confclits
+			// method.second is a vector of methods
+			// Checking every method's license for its compatibility with projectLicense
+
+			numberOfConflcits+=checkLicenseConflicts(match.second,projectLicense,startVersion);
+			
 			printMatch(hashMethods[match.first], match.second, authors, projectID, authorCopiedForm, authorsCopied,
 					   vulnerabilities, dbProjects, authorIdToName, matchesReport);
 		}
 	}
 
-	printSummary(authorCopiedForm, authorsCopied, vulnerabilities, matches, hashes.size(), dbProjects, authorIdToName, projectMatches, report);
+	printSummary(authorCopiedForm, authorsCopied, vulnerabilities, matches, hashes.size(), dbProjects, authorIdToName, projectMatches, report,numberOfConflcits);
 
 	print::printAndWriteToFile("\n\n" + std::string(128, '-'), report);
 	print::printAndWriteToFile("Details of matches found", report);
@@ -274,6 +284,8 @@ PrintMatches::Method PrintMatches::getMethod(std::vector<std::string> entry)
 	method.license = entry[11];
 	method.numberOfAuthors = std::stoi(entry[12]);
 	method.authors = std::vector(entry.begin() + 13, entry.end());
+	method.licenseConflict = false;
+	method.licenseConflictMessage = "";
 	return method;
 }
 
@@ -345,9 +357,6 @@ void PrintMatches::printMatch(std::vector<HashData> &hashes, std::vector<Method>
 			continue;
 		}
 		
-		report += "License of method: ";
-		report += method.license;
-		report += "\n";
 		// IMPORTANT: do not use dbProjects[method.projectID] to check for existence, as this adds a new map entry
 		// https://cplusplus.com/reference/map/map/operator[]/
 		if (dbProjects.count(method.projectID) == 0)
@@ -396,15 +405,260 @@ void PrintMatches::printMatch(std::vector<HashData> &hashes, std::vector<Method>
 				}
 			}
 		}
+
+		if (method.licenseConflict)
+		{
+			report += "\n  License conflict found: \n" + method.licenseConflictMessage + "\n";
+		}
+		else
+		{
+			report += "\n  No license conflict found.\n";
+		}
+
 		report += "\n";
 	}
+}
+
+PrintMatches::licenseType PrintMatches::convertToLicenseType(const std::string& licenseString) 
+{
+	//convert license string to lower case
+	std::string licenseLower = licenseString;
+	std::transform(licenseLower.begin(), licenseLower.end(), licenseLower.begin(), ::tolower);
+	
+    static const std::map<std::string, PrintMatches::licenseType> licenseMap = 
+	{
+        {"creative commons license family", PrintMatches::PUBLIC_DOMAIN},
+		{"do what the f*ck you want to public license", PrintMatches::PUBLIC_DOMAIN},
+		{"academic free license v3.0", PrintMatches::PERMISSIVE},
+		{"apache license 2.0", PrintMatches::PERMISSIVE},
+		{"artistic license 2.0", PrintMatches::WEAKLY_PROTECTIVE},
+		{"the unlicense", PrintMatches::PERMISSIVE},
+		{"boost software license 1.0", PrintMatches::PERMISSIVE},
+		{"bsd 2-clause \"simplified\" license", PrintMatches::PERMISSIVE},
+		{"bsd 3-clause \"new\" or \"revised\" license", PrintMatches::PERMISSIVE},
+		{"bsd 3-clause clear license", PrintMatches::PERMISSIVE},
+		{"creative commons zero v1.0 universal", PrintMatches::PUBLIC_DOMAIN},
+		{"eclipse public license 1.0", PrintMatches::WEAKLY_PROTECTIVE},
+		{"mit license", PrintMatches::PERMISSIVE},
+		{"mozilla public license 2.0", PrintMatches::WEAKLY_PROTECTIVE},
+		{"common development and distribution license 1.0", PrintMatches::WEAKLY_PROTECTIVE},\
+		//There is debate if it is weakly copyleft or permissve
+		{"microsoft public license", PrintMatches::WEAKLY_PROTECTIVE},
+		{"gnu general public license v2.0", PrintMatches::STRONGLY_PROTECTIVE},
+		{"gnu general public license v3.0", PrintMatches::STRONGLY_PROTECTIVE},
+		{"gnu lesser general public license v2.1", PrintMatches::STRONGLY_PROTECTIVE},
+		{"gnu lesser general public license v3.0", PrintMatches::STRONGLY_PROTECTIVE},
+		{"affero general public license v3.0", PrintMatches::STRONGLY_PROTECTIVE},
+    };
+
+    auto it = licenseMap.find(licenseLower);
+    if (it != licenseMap.end()) 
+	{
+        return it->second;
+    } 
+	else 
+	{
+        return PrintMatches::UNKNOWN;
+    }
+}
+
+int PrintMatches::checkLicenseConflicts(std::vector<Method>& methods,std::string projectLicense, std::string startVersion)
+{
+	std::map<PrintMatches::Method,std::pair<bool,std::string>> licenseCheckResult;
+	int numberofConflicts = 0;
+
+	//loop through the methods
+	for (Method &method : methods)
+	{
+		bool conflictFound = false;
+    	std::string conflictMessage;
+		
+		//check if the method has a license
+		if (method.license.size() > 0)
+		{
+			licenseType myLicenseType = convertToLicenseType(projectLicense);
+
+			//if method.startVersion < startVersion, aka method was created before the current project
+			//aka this project should be inheriting that method's license restrictions
+			if (method.startVersion < startVersion)
+			{
+    			licenseType borrowedLicenseType = convertToLicenseType(method.license);
+
+				//if the license of the method is unknown, then we can't check for conflicts
+				if (borrowedLicenseType == UNKNOWN || myLicenseType == UNKNOWN)
+				{
+					conflictMessage = "\n  Unknown license type. Unable to check for conflicts.";
+				}
+				else
+				{
+					//Switch on the license type of the method
+					switch (borrowedLicenseType)
+					{
+						case PUBLIC_DOMAIN: 
+						
+						conflictMessage = "\n  Conflict Severity: No conflict\n  Reason: Method was found in a project with Public License.";
+						break;
+
+						case PERMISSIVE:
+
+						conflictMessage = "\n  Conflict Severity: No conflict\n  Reason: Method was found in a project with Permissive License. Ensure that the original license is included in your software";
+						break;
+						
+						case WEAKLY_PROTECTIVE:
+
+						if (myLicenseType == PUBLIC_DOMAIN || myLicenseType == PERMISSIVE)
+						{
+							conflictFound = true;
+							conflictMessage = "\n  Conflict severity: Medium\n  Reason: Repository being checked is less restrictive than the license of the matched method's project. The license for the part of borrowed method has to be under "+method.license;
+						}
+						else
+						{
+							if (method.license == projectLicense)
+							{
+								conflictMessage = "\n  Conflict Severity: No conflict\n  Reason: Repository being checked is compatible with the license of the matched method.";
+							}
+							else
+							{
+								conflictFound = true;
+								conflictMessage = "\n  Conflict severity: Medium\n  Reason: Repository being checked does not use the same weak copy-left license as the matched method. The license for the part of borrowed method has to be under "+method.license;
+							}		
+						}
+						break;
+
+						case STRONGLY_PROTECTIVE:
+						// Conflict if borrowed code is strongly protective and your project is not
+						if (myLicenseType == PUBLIC_DOMAIN || myLicenseType == PERMISSIVE || myLicenseType == WEAKLY_PROTECTIVE)
+						{
+							conflictFound = true;
+							conflictMessage = "\n  Conflict Severity: High\n  Reason: Repository being checked has license - "+projectLicense+", which is less restrictive than the license of the matched method's project with license - "+method.license;
+						}
+						else
+						{
+							if (method.license == projectLicense)
+							{
+								conflictMessage = "\n  Conflict Severity: No conflict\n  Reason: Repository being checked is compatible with the license of the matched method.";
+							}
+							else
+							{
+								conflictFound = true;
+								conflictMessage = "\n  Conflict Severity: High\n  Reason: Repository being checked does not use the same strong copy-left license as the matched method. Please verify if the licenses are compatible.";
+							}
+						}
+						break;
+
+						case UNKNOWN:
+
+						conflictMessage = "\n  Conflict Severity: Unknown\n  Reason: License of matched method wasn't found.";
+						break;
+						
+						default:
+						conflictMessage = "\n  Conflict Severity: Unknown\n  Reason: Unknown";
+						break;
+					}
+				}
+			}
+			//if method.startVersion > startVersion, aka method was created after the current project
+			//aka that method should be inheriting this project's license restrictions
+			else
+			{
+				licenseType borrowingLicenseType = convertToLicenseType(method.license);
+				if (borrowingLicenseType == UNKNOWN || myLicenseType == UNKNOWN)
+				{
+					//handle this differently
+					conflictMessage = "\n  Unknown license type. Unable to check for conflicts.";
+				}
+				else
+				{
+					switch (myLicenseType)
+					{
+						case PUBLIC_DOMAIN: 
+						
+						conflictMessage = "\n  Conflict Severity: No conflict\n  Reason: Method was found in a project with Public License.";
+						break;
+
+						case PERMISSIVE:
+
+						conflictMessage = "\n  Conflict Severity: No conflict\n  Reason: Repository has permissive license. Ensure that the your license is included in the matched method's repository.";
+						break;
+						
+						case WEAKLY_PROTECTIVE:
+
+						if (borrowingLicenseType == PUBLIC_DOMAIN || borrowingLicenseType == PERMISSIVE)
+						{
+							conflictFound = true;
+							conflictMessage = "\n  Conflict Severity: Medium\n  Reason: Matched method's repository has a less restrictive than your license.";
+						}
+						else
+						{
+							if (method.license == projectLicense)
+							{
+								conflictMessage = "\n  Conflict Severity: No conflict\n  Reason: Matched repository is compatible with the license of your repository.";
+							}
+							else
+							{
+								conflictFound = true;
+								conflictMessage = "\n  Conflict Severity: Medium\n  Reason: Repository being checked does not use the same weak copy-left license as the matched method. The license for the part of borrowed method has to be under "+projectLicense;
+							}		
+						}
+						break;
+
+						case STRONGLY_PROTECTIVE:
+						// Conflict if borrowed code is strongly protective and your project is not
+						if (borrowingLicenseType == PUBLIC_DOMAIN || borrowingLicenseType == PERMISSIVE || borrowingLicenseType == WEAKLY_PROTECTIVE)
+						{
+							conflictFound = true;
+							conflictMessage = "\n  Conflict Severity: High\n  Reason: Matched method is less restrictive than the license of the your repository.";
+						}
+						else
+						{
+							if (method.license == projectLicense)
+							{
+								conflictMessage = "\n  Conflict Severity: No conflict\n  Reason: Repository being checked is compatible with the license of the matched method.";
+							}
+							else
+							{
+								conflictFound = true;
+								conflictMessage = "\n  Conflict Severity: High\n  Reason: Matched method does not use the same copy-left license as your project. Contact the author of the matched method to solve the conflict.";
+							}
+						}
+						break;
+
+						case UNKNOWN:
+
+						conflictMessage = "\n  Conflict Severity: Unknown\n  Reason: License of matched method wasn't found.";
+						break;
+						
+						default:
+						conflictMessage = "\n  Conflict Severity: Unknown\n  Reason:Unknown";
+						break;
+					}
+
+				}
+			}
+
+			if(conflictFound)
+			{
+				++numberofConflicts;
+			}
+			method.licenseConflict = conflictFound;
+			method.licenseConflictMessage = conflictMessage;
+
+		}
+		else
+		{
+			print::printline("Error because license does not exist.");
+		}
+	}
+	
+	return numberofConflicts;
+	
 }
 
 void PrintMatches::printSummary(std::map<std::string, int> &authorCopiedForm, std::map<std::string, int> &authorsCopied,
 								std::vector<std::pair<HashData *, Method>> &vulnerabilities, int matches, int methods,
 								std::map<std::string, std::vector<std::string>> &dbProjects,
 								std::map<std::string, std::vector<std::string>> &authorIdToName,
-								std::map<std::string, int> &projectMatches, std::ofstream &report)
+								std::map<std::string, int> &projectMatches, std::ofstream &report, int numberOfConflicts)
 {
 	print::printAndWriteToFile("\nSummary:", report);
 	print::printAndWriteToFile("Methods in checked project: " + std::to_string(methods), report);
@@ -427,6 +681,14 @@ void PrintMatches::printSummary(std::map<std::string, int> &authorCopiedForm, st
 		}
 	}
 
+	if (numberOfConflicts > 0)
+	{
+		print::printAndWriteToFile("\nNumber of license conflicts found: " + std::to_string(numberOfConflicts), report);
+	}
+	else
+	{
+		print::printAndWriteToFile("\nLicense conflicts were checked and no license conflicts found.", report);
+	}
 	print::printAndWriteToFile("\nProjects found in database:", report);
 
 	std::vector<std::tuple<int, std::string, std::string>> vprojects = {};

@@ -438,7 +438,7 @@ PrintMatches::licenseType PrintMatches::convertToLicenseType(const std::string& 
 		{"bsd 3-clause \"new\" or \"revised\" license", PrintMatches::PERMISSIVE},
 		{"bsd 3-clause clear license", PrintMatches::PERMISSIVE},
 		{"creative commons zero v1.0 universal", PrintMatches::PUBLIC_DOMAIN},
-		{"eclipse public license 1.0", PrintMatches::WEAKLY_PROTECTIVE},
+		{"eclipse public license 2.0", PrintMatches::WEAKLY_PROTECTIVE},
 		{"mit license", PrintMatches::PERMISSIVE},
 		{"mozilla public license 2.0", PrintMatches::WEAKLY_PROTECTIVE},
 		{"common development and distribution license 1.0", PrintMatches::WEAKLY_PROTECTIVE},\
@@ -449,6 +449,7 @@ PrintMatches::licenseType PrintMatches::convertToLicenseType(const std::string& 
 		{"gnu lesser general public license v2.1", PrintMatches::STRONGLY_PROTECTIVE},
 		{"gnu lesser general public license v3.0", PrintMatches::STRONGLY_PROTECTIVE},
 		{"affero general public license v3.0", PrintMatches::STRONGLY_PROTECTIVE},
+		{"creative commmons zero v1.0 universal", PrintMatches::PUBLIC_DOMAIN},
     };
 
     auto it = licenseMap.find(licenseLower);
@@ -516,6 +517,11 @@ int PrintMatches::checkLicenseConflicts(std::vector<Method>& methods,std::string
 							if (method.license == projectLicense)
 							{
 								conflictMessage = "\n  Conflict Severity: No conflict\n  Reason: Repository being checked is compatible with the license of the matched method.";
+							}
+							else if (myLicenseType == STRONGLY_PROTECTIVE)
+							{
+								conflictFound = true;
+								conflictMessage = "\n  Conflict Severity: Low\n  Reason: Repository being check uses a more restrictive license ("+projectLicense+") than the license of the matched method ("+method.license+") but check if it still compatible.";
 							}
 							else
 							{
@@ -587,6 +593,11 @@ int PrintMatches::checkLicenseConflicts(std::vector<Method>& methods,std::string
 						{
 							conflictFound = true;
 							conflictMessage = "\n  Conflict Severity: Medium\n  Reason: Matched method's repository has a less restrictive than your license.";
+						}
+						else if (borrowingLicenseType == STRONGLY_PROTECTIVE)
+						{
+							conflictFound = true;
+							conflictMessage = "\n  Conflict Severity: Low\n  Reason: Matched method uses a more restrictive license ("+method.license+") than your license ("+projectLicense+") but check if it still compatible.";
 						}
 						else
 						{

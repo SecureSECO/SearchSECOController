@@ -17,7 +17,8 @@ jobs:
             submodules: recursive
       -
         name: Set IPS
-        run: printf ${{secrets.API_IPS}} >> SearchSECOController/.env
+        #Add the GitHub secret as "API_IPS=xxx.xxx.xxx.xxx"
+        run: printf ${{secrets.API_IPS}} > SearchSECOController/.env
       -
         name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v1

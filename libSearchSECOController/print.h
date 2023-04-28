@@ -219,17 +219,12 @@ private:
 	static Method getMethod(std::vector<std::string> entry);
 
 	/// <summary>
-	/// Take input of license as a string and converts it to a licenseType enum
-	/// </summary>
-	/// <returns>License type of the license string. Possible values: PUBLIC_DOMAIN, WEAKLY_PROTECTIVE, STRONGLY_PROTECTIVE, PERMISSIVE, NETWORK_PROTECTIVE or UNKNOWN</returns>
-	static licenseType convertToLicenseType(const std::string& licenseString);
-
-	/// <summary>
 	/// Checks if the license of the project is compatible with the license of a method. Takes input of methods, project license and startVersion of the project
 	/// </summary>
 	/// <returns>The number of conflicts found</returns>
 	static int checkLicenseConflicts(std::vector<Method>& methods,std::string projectLicense, std::string startVersion);
 					   
+	static std::string convertLicenseStringToAbbreviation(const std::string& licenseString);
 	
 };
 

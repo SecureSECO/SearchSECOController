@@ -15,8 +15,8 @@ Utrecht University within the Software Project course.
 // Spider includes.
 #include "CodeBlock.h"
 
-#include <set>
 
+#include <set>
 
 namespace print
 {
@@ -108,10 +108,24 @@ public:
 		AuthorData &authordata, 
 		EnvironmentDTO *env,
 		std::string url,
-		std::string projectID
+		std::string projectID,
+		std::string license,
+		std::string startVersion
 	);
 
+	enum licenseType 
+	{
+        PUBLIC_DOMAIN,
+        WEAKLY_PROTECTIVE,
+        STRONGLY_PROTECTIVE,
+        PERMISSIVE,
+        NETWORK_PROTECTIVE,
+        UNKNOWN
+    };
+
+
 private:
+
 	struct Method
 	{
 		std::string hash;
@@ -127,6 +141,9 @@ private:
 		std::string vulnCode;
 		int numberOfAuthors;
 		std::vector<std::string> authors;
+		std::string license;
+		bool licenseConflict;
+		std::string licenseConflictMessage;
 	};
 
 	/// <summary>
@@ -187,7 +204,7 @@ private:
 							 std::vector<std::pair<HashData *, Method>> &vulnerabilities, int matches, int methods,
 							 std::map<std::string, std::vector<std::string>> &dbProjects,
 							 std::map<std::string, std::vector<std::string>> &authorIdToName,
-							 std::map<std::string, int> &projects, std::ofstream &report);
+							 std::map<std::string, int> &projects, std::ofstream &report, int numberOfConflicts);
 
 	/// <summary>
 	/// Sets up the file for the plaintext output report.
@@ -195,7 +212,20 @@ private:
 	/// <returns>The pointer to the filestream.</returns>
 	static std::ofstream setupOutputReport(std::string url);
 
-	static Method getMethod(std::vector<std::string> entry);	
+	/// <summary>
+	/// Takes the input of the method entry from the databse and sets attributes for the Method object
+	/// </summary>
+	/// <returns>A Method object with all the attributes set</returns>
+	static Method getMethod(std::vector<std::string> entry);
+
+	/// <summary>
+	/// Checks if the license of the project is compatible with the license of a method. Takes input of methods, project license and startVersion of the project
+	/// </summary>
+	/// <returns>The number of conflicts found</returns>
+	static int checkLicenseConflicts(std::vector<Method>& methods,std::string projectLicense, std::string startVersion);
+					   
+	static std::string convertLicenseStringToAbbreviation(const std::string& licenseString);
+	
 };
 
 namespace error

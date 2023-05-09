@@ -523,13 +523,13 @@ int PrintMatches::checkLicenseConflicts(std::vector<Method>& methods,std::string
 			{
 				
 				std::string borrowingLicenseType = convertLicenseStringToAbbreviation(method.license);
-				std::string conflictMessage = licenseExplMatrix[myLicenseType][borrowingLicenseType].get<std::string>();
 				if (borrowingLicenseType == "Unknown" || myLicenseType == "Unknown")
 				{
 					conflictMessage = "\n  Unknown license type. Unable to check for conflicts.";
 				}
 				else
 				{
+					conflictMessage = licenseExplMatrix[myLicenseType][borrowingLicenseType].get<std::string>();
 					std::string licenseCheckResult = licenseMatrix[myLicenseType][borrowingLicenseType].get<std::string>();
 					if (licenseCheckResult == "Same")
 					{

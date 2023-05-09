@@ -521,15 +521,14 @@ int PrintMatches::checkLicenseConflicts(std::vector<Method>& methods,std::string
 			//aka that method should be inheriting this project's license restrictions
 			else
 			{
-				
 				std::string borrowingLicenseType = convertLicenseStringToAbbreviation(method.license);
-				std::string conflictMessage = licenseExplMatrix[myLicenseType][borrowingLicenseType].get<std::string>();
 				if (borrowingLicenseType == "Unknown" || myLicenseType == "Unknown")
 				{
 					conflictMessage = "\n  Unknown license type. Unable to check for conflicts.";
 				}
 				else
 				{
+					conflictMessage = licenseExplMatrix[myLicenseType][borrowingLicenseType].get<std::string>();
 					std::string licenseCheckResult = licenseMatrix[myLicenseType][borrowingLicenseType].get<std::string>();
 					if (licenseCheckResult == "Same")
 					{

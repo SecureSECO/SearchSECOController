@@ -478,7 +478,6 @@ int PrintMatches::checkLicenseConflicts(std::vector<Method>& methods,std::string
 		if (method.license.size() > 0)
 		{
 			std::string myLicenseType = convertLicenseStringToAbbreviation(projectLicense);
-
 			//if method.startVersion < startVersion, aka method was created before the current project
 			//aka this project should be inheriting that method's license restrictions
 			if (method.startVersion < startVersion)
@@ -492,28 +491,28 @@ int PrintMatches::checkLicenseConflicts(std::vector<Method>& methods,std::string
 				}
 				else
 				{
-					std::string licenseCheckResult = licenseMatrix[borrowedLicenseType][myLicenseType].get<std::string>();
-					conflictMessage = licenseExplMatrix[borrowedLicenseType][myLicenseType].get<std::string>();
+					std::string licenseCheckResult = licenseMatrix[myLicenseType][borrowedLicenseType].get<std::string>();
+					conflictMessage = licenseExplMatrix[myLicenseType][borrowedLicenseType].get<std::string>();
 					if (licenseCheckResult == "Same")
 					{
-						conflictMessage = "\n  Conflict exists: No\n Explanation: "+conflictMessage+"\n";
+						conflictMessage = "\n  Conflict exists: No\n Explanation: This method was borrowed from the matched repository. "+conflictMessage+"\n";
 					}
 					else if (licenseCheckResult == "No")
 					{
 						conflictFound = true;
-						conflictMessage = "\n  Conflict exists: Yes\n  Explanation: "+conflictMessage+"\n";
+						conflictMessage = "\n  Conflict exists: Yes\n  Explanation: This method was borrowed from the matched repository. "+conflictMessage+"\n";
 					}
 					else if (licenseCheckResult == "Yes")
 					{
-						conflictMessage = "\n  Conflict exists: No\n  Explanation: "+conflictMessage+"\n";
+						conflictMessage = "\n  Conflict exists: No\n  Explanation: This method was borrowed from the matched repository. "+conflictMessage+"\n";
 					}
 					else if (licenseCheckResult == "Check Dependency")
 					{
-						conflictMessage = "\n  Conflict exists: Unknown\n  Explanation: "+conflictMessage+"\n";
+						conflictMessage = "\n  Conflict exists: Unknown\n  Explanation: This method was borrowed from the matched repository. "+conflictMessage+"\n";
 					}
 					else if (licenseCheckResult == "Unknown")
 					{
-						conflictMessage = "\n  Conflict exists: Unknown\n  Explanation: "+conflictMessage+"\n";
+						conflictMessage = "\n  Conflict exists: Unknown\n  Explanation: This method was borrowed from the matched repository. "+conflictMessage+"\n";
 					}
 				}
 			}
@@ -521,7 +520,6 @@ int PrintMatches::checkLicenseConflicts(std::vector<Method>& methods,std::string
 			//aka that method should be inheriting this project's license restrictions
 			else
 			{
-				
 				std::string borrowingLicenseType = convertLicenseStringToAbbreviation(method.license);
 				if (borrowingLicenseType == "Unknown" || myLicenseType == "Unknown")
 				{
@@ -529,28 +527,28 @@ int PrintMatches::checkLicenseConflicts(std::vector<Method>& methods,std::string
 				}
 				else
 				{
-					conflictMessage = licenseExplMatrix[myLicenseType][borrowingLicenseType].get<std::string>();
-					std::string licenseCheckResult = licenseMatrix[myLicenseType][borrowingLicenseType].get<std::string>();
+					conflictMessage = licenseExplMatrix[borrowingLicenseType][myLicenseType].get<std::string>();
+					std::string licenseCheckResult = licenseMatrix[borrowingLicenseType][myLicenseType].get<std::string>();
 					if (licenseCheckResult == "Same")
 					{
-						conflictMessage = "\n  Conflict exists: No\n  Explanation: "+conflictMessage+"\n";
+						conflictMessage = "\n  Conflict exists: No\n  Explanation: This method was borrowed from the repository being checked. "+conflictMessage+"\n";
 					}
 					else if (licenseCheckResult == "Yes")
 					{
-						conflictMessage = "\n  Conflict exists: No\n  Explanation: "+conflictMessage+"\n";
+						conflictMessage = "\n  Conflict exists: No\n  Explanation: This method was borrowed from the repository being checked. "+conflictMessage+"\n";
 					}
 					else if (licenseCheckResult == "No")
 					{
 						conflictFound = true;
-						conflictMessage = "\n  Conflict exists: Yes\n  Explanation: "+conflictMessage+"\n";
+						conflictMessage = "\n  Conflict exists: Yes\n  Explanation: This method was borrowed from the repository being checked. "+conflictMessage+"\n";
 					}
 					else if (licenseCheckResult == "Check Dependency")
 					{
-						conflictMessage = "\n  Conflict exists: Unknown\n  Explanation: "+conflictMessage+"\n";
+						conflictMessage = "\n  Conflict exists: Unknown\n  Explanation: This method was borrowed from the repository being checked. "+conflictMessage+"\n";
 					}
 					else if (licenseCheckResult == "Unknown")
 					{
-						conflictMessage = "\n  Conflict exists: Unknown\n  Explanation: "+conflictMessage+"\n";
+						conflictMessage = "\n  Conflict exists: Unknown\n  Explanation: This method was borrowed from the repository being checked. "+conflictMessage+"\n";
 					}	
 				}
 			}
